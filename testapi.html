@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="./assets/jquery-1.12.0.min.js"></script>
+    <title>Voting KoR</title>
+</head>
+
+<body>
+ <h1>BXH KingOfRap Votes</h1>
+ <p id="chart"></p>
+ <hr/>
+
+ <h1 id="result"></h1>
+
+<script type="text/javascript">
+    var base_url = "http://localhost/smartads-stech-php/backend/web/index.php/smartscreen/api/schedules?ime=E301B4C444F31C2029BCBC4B2A72F663";
+
+    function votefor(vote, showResult = true) {
+
+        $.get(base_url, null, function(data, textStatus, xhr) {
+            //document.getElementById('result').innerHTML = 'Total votes: ' + data.data.total + '. Vote: ' + vote;
+            if (data.error) {
+                //console.log(data.error);
+                document.getElementById('result').innerHTML = 'Error: ' + data.error;
+                return;
+            }
+            if (showResult) {
+              data = data.data;
+              result = data.need_refresh_schedules;
+              document.getElementById('chart').innerHTML = document.getElementById('chart').innerHTML + '<br/>' + result;
+            }
+            return data;
+        });
+
+        return [];
+    }
+
+    setInterval( 
+      () => {
+          console.log('fs');
+          votefor(1, true);
+      }, 60*1000);
+
+</script>
+</body>
+
+</html>

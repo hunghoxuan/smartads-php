@@ -1,0 +1,5 @@
+{
+    "require": {
+        "drsdre/yii2-wizardwidget": "*"
+    }
+}

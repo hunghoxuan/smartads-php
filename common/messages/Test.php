@@ -1,0 +1,31 @@
+<?php
+
+return [
+    'addslashes(ID)' => 'addslashes(ID)',
+    'addslashes(Image)' => 'addslashes(Image)',
+    'addslashes(Thumbnail)' => 'addslashes(Thumbnail)',
+    'addslashes(Code)' => 'addslashes(Code)',
+    'addslashes(Name)' => 'addslashes(Name)',
+    'addslashes(Overview)' => 'addslashes(Overview)',
+    'addslashes(Content)' => 'addslashes(Content)',
+    'addslashes(Price)' => 'addslashes(Price)',
+    'addslashes(Category ID)' => 'addslashes(Category ID)',
+    'addslashes(Quantity)' => 'addslashes(Quantity)',
+    'addslashes(Discount)' => 'addslashes(Discount)',
+    'addslashes(Status)' => 'addslashes(Status)',
+    'addslashes(Cost)' => 'addslashes(Cost)',
+    'addslashes(Tax)' => 'addslashes(Tax)',
+    'addslashes(Type)' => 'addslashes(Type)',
+    'addslashes(Is Active)' => 'addslashes(Is Active)',
+    'addslashes(Is New)' => 'addslashes(Is New)',
+    'addslashes(Created Date)' => 'addslashes(Created Date)',
+    'addslashes(Modified Date)' => 'addslashes(Modified Date)',
+    'addslashes(Rate)' => 'addslashes(Rate)',
+    'addslashes(Time Arrival)' => 'addslashes(Time Arrival)',
+    'addslashes(Profile File)' => 'addslashes(Profile File)',
+    'addslashes(Input Range)' => 'addslashes(Input Range)',
+    'addslashes(Avatar Color)' => 'addslashes(Avatar Color)',
+    'addslashes(Created User)' => 'addslashes(Created User)',
+    'addslashes(Modified User)' => 'addslashes(Modified User)',
+];
+?>

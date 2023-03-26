@@ -1,0 +1,43 @@
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS `app_user`;
+CREATE TABLE `app_user` (
+    `id` int(11)  NOT NULL AUTO_INCREMENT ,
+    `avatar` varchar(255)  NULL  ,
+    `name` varchar(255)  NOT NULL  ,
+    `username` varchar(255)  NOT NULL  ,
+    `email` varchar(255)  NOT NULL  ,
+    `password` varchar(255)  NOT NULL  ,
+    `auth_id` int(11)  NULL  ,
+    `auth_key` varchar(32)  NULL  ,
+    `password_hash` varchar(255)  NULL  ,
+    `password_reset_token` varchar(255)  NULL  ,
+    `description` varchar(2000)  NULL  ,
+    `content` text  NULL  ,
+    `gender` varchar(100)  NULL   COMMENT 'group:Personal',
+    `dob` varchar(255)  NULL   COMMENT 'group:Personal',
+    `phone` varchar(25)  NULL   COMMENT 'group:Personal',
+    `weight` varchar(255)  NULL   COMMENT 'group:Personal',
+    `height` varchar(255)  NULL   COMMENT 'group:Personal',
+    `address` varchar(255)  NULL   COMMENT 'group:Location',
+    `country` varchar(100)  NULL   COMMENT 'group:Location',
+    `state` varchar(100)  NULL   COMMENT 'group:Location',
+    `city` varchar(100)  NULL   COMMENT 'group:Location',
+    `balance` decimal(10,0)  NULL   COMMENT 'group:Finance',
+    `point` int(11)  NULL   COMMENT 'group:Finance',
+    `lat` varchar(255)  NULL   COMMENT 'group:Location',
+    `long` varchar(255)  NULL   COMMENT 'group:Location',
+    `rate` float  NULL   COMMENT 'group:Rating',
+    `rate_count` int(11)  NULL   COMMENT 'group:Rating',
+    `is_online` tinyint(1)  NULL   COMMENT 'group:Status',
+    `is_active` tinyint(1)  NOT NULL   COMMENT 'group:Status',
+    `type` varchar(100)  NULL   COMMENT 'data:USER,VIP,PREMIUM;group:Status',
+    `status` varchar(100)  NULL   COMMENT 'data:PENDING,BANNED,REJECTED,NORMAL;group:Status',
+    `properties` text  NULL  ,
+    `role` int(2)  NULL   COMMENT 'data:10:USER,20:MODERATOR,30:ADMIN;editor:select;group:Status',
+    `created_date` datetime  NULL  ,
+    `modified_date` datetime  NULL  ,
+    `application_id` varchar(100)  NULL  ,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+

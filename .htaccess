@@ -1,0 +1,59 @@
+Options +FollowSymlinks
+
+RewriteEngine on
+  # Adaptive-Images -----------------------------------------------------------------------------------
+
+  # Add any directories you wish to omit from the Adaptive-Images process on a new line, as follows:
+  # RewriteCond %{REQUEST_URI} !ignore-this-directory
+  # RewriteCond %{REQUEST_URI} !and-ignore-this-directory-too
+
+  # don't apply the AI behaviour to images inside AI's cache folder:
+  RewriteCond %{REQUEST_URI} !cache
+
+  # Send any GIF, JPG, or PNG request that IS NOT stored inside one of the above directories
+  # to adaptive-images.php so we can select appropriately sized versions
+
+  #error when preview after update
+  #RewriteRule \.(?:jpe?g|gif|png|mp3|doc|mp4|zip)$ images.php
+
+
+# End the processing, if a rewrite already occurred
+RewriteRule ^(backend)/web/ - [L]
+
+# Handle the case of backend, skip ([S=1]) the following rule, if current matched
+#loi khi chay tren share host
+RewriteRule ^admin(/(.*))?$ backend/web/index.php/$2 [S=1]
+
+# If a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+# Otherwise forward it to index.php
+RewriteRule . index.php
+
+<ifModule mod_deflate.c>
+
+AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript text/javascript
+</ifModule>
+
+# You can also change that size at runtime using the .htaccess file without the need to change your php.ini file
+php_value memory_limit 1224M
+php_value upload_max_filesize 1224M
+php_value post_max_size 1224M
+php_value max_execution_time 30
+php_value max_input_time 60
+
+# lỗi khi deploy lên host
+# ko remove được index.php
+# BEGIN WordPress
+#<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteBase /moza-business/
+#RewriteRule ^index\.php$ - [L]
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule . /moza-business/index.php [L]
+#</IfModule>
+
+# END WordPress

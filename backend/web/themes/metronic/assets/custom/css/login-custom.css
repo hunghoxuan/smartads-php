@@ -1,0 +1,15 @@
+.checkbox > label {
+    color: #c9dce9 ;
+}
+
+.help-block-error{
+    color: #F3C5C4 !important;
+}
+
+.login .content .form-actions {
+    padding: 5px 30px 50px !important;
+}
+
+.field-loginform-rememberme{
+    padding-left: 0 !important;
+}

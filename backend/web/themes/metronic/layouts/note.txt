@@ -1,0 +1,86 @@
+- Implement variable GlobalsAssetsPath to login-4.js and app.js to make file location right
+- load yii bootstrap.js to make grid view export works
+- Style of theme overwrite default bootstrap.css
+
+- bootstrap.js (theme) need to load before some generated js of extensions
+
+
+
+
+-> Add CustomAsset with depend  'yii\bootstrap\BootstrapPluginAsset', to load it by default
+
++ editbutton close popup
+	- edit in vendor/jonhitv/src/assets Modalremote.js
+	- edit in vendor/jonhitv/src/assets/ajaxCrud.js
+
+
+
+
++ /*panel before gridview kartik customization*/ -> custom.css
+
+.kv-panel-before {
+
+   border-bottom: 0!important;
+}
+#crud-datatable-container{
+   border: 0 solid #e7ecf1;
+   margin-top:15px;
+}
+.panel-primary>.panel-heading {
+   background: #ffffff;
+   border-color: #ffffff;
+   display: none;
+}
+.panel-primary {
+   border-color: #ffffff;
+}
+.panel-heading {
+   padding: 0;
+   border-bottom: 1px solid transparent;
+   border-top-right-radius: 3px;
+   border-top-left-radius: 3px;
+}
+.kv-panel-before {
+   margin: 0;
+   padding: 0;
+}
+
+.portlet.light.bordered>.portlet-title {
+   border-bottom: 1px solid #eef1f5;
+   margin-bottom: 0;
+}
+.summary{
+   float:right;
+   margin-top:15px;
+}
+
+//delete all not working
+
+-Controller:
+
+public function actionBulkDelete()
+{
+   $request = Yii::$app->request;
+   $pks = $request->post('pks'); // Array or selected records primary keys
+   foreach (Transaction::findAll(json_decode($pks)) as $model) {
+       $model->delete();
+   }
+
+
+   if($request->isAjax){
+       /*
+       *   Process for ajax request
+       */
+       Yii::$app->response->format = Response::FORMAT_JSON;
+       return ['forceClose'=>true,'forceReload'=>true];
+   }else{
+       /*
+       *   Process for non-ajax request
+       */
+       return $this->redirect(['index']);
+   }
+
+}
+
+
+

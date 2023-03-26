@@ -1,0 +1,113 @@
+*Step 0: Prepare
+01. Install yum-utils and enable EPEL repository
+sudo yum install epel-release yum-utils -y
+sudo yum –y update
+sudo yum install -y https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+02. If you are running a firewall, run the following commands to allow HTTP and HTTPS traffic:
+sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --permanent --zone=public --add-service=https
+
+*Step 1: INSTALL PHP
+01. Install PHP 7.1 on CentOS 7
+sudo yum install -y --enablerepo=remi-php71 php php-cli
+
+02. Install PHP extensions
+sudo yum install -y --enablerepo=remi-php71 php-mysqlnd php-dom php-simplexml php-ssh2 php-xml php-xmlreader php-curl php-date php-exif php-filter php-ftp php-gd php-hash php-iconv php-imagick php-json php-libxml php-mbstring php70w-opcache php-openssl php-pcre php-posix php-sockets php-spl php-tokenizer php-zlib
+
+01. Install PHP 7.1 on CentOS 7
+sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+sudo yum --enablerepo=remi-php71 install php
+
+*Step 2: Install and turn on Apache
+01. Install Apache
+sudo yum install httpd -y
+
+02. Verify Apache status
+sudo systemctl status httpd
+
+03. Start Apache on your VPS:
+sudo systemctl start httpd.service
+
+04. Enable Apache to start on boot.
+sudo systemctl enable httpd.service
+
+05. Restart Apache
+sudo systemctl restart httpd.service
+
+06. Turn on mode write Apache
+sudo vim /etc/httpd/conf/httpd.conf
+Find tag /var/www/html
+Set AllowOverride All
+
+*Step 3: INSTALL MYSQL
+01. Install Mysql
+sudo yum install mariadb-server mariadb
+
+02. Start Mysql
+sudo systemctl start mariadb
+
+03. Setup password for root user. Default password is blank, just press . Select  if you want to set password. 
+sudo mysql_secure_installation
+
+*Step 4: Install PhpMyadmin
+01. yum install -y https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+02. yum install --enablerepo=remi-php73 -y httpd php php-cli php-mysqlnd
+
+03. rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+04. yum install -y --enablerepo=remi-php73 phpmyadmin
+
+05. vi /etc/httpd/conf.d/phpMyAdmin.conf
+
+---Please comment out Require ip 127.0.0.1 and Require ip ::1 then add 
+'Require all granted'
+esc -> ':wq' -- Lưu lại chỉnh sửa
+
+06. systemctl restart httpd
+07. firewall-cmd --permanent --add-service=http
+
+08. firewall-cmd --reload
+
+*Step 5: Setup source code 
+01. Clone source code from Git
+cd /var/www/html/
+sudo git clone https://gitlab.com/mozasolution/SmartAds-Stech-PHP.git
+
+02. Setup database
+- Enter into MySQL using "root" user identified by password
+mysql -u root -p
+
+- Create the database
+mysql> CREATE DATABASE stech_smartads;
+
+- Create the user
+mysql> CREATE USER 'stech_smartads'@'localhost' IDENTIFIED BY 'newpass';
+
+- Grant ALL privileges onthe new database to the new User
+mysql> GRANT ALL PRIVILEGES ON stech_smartads.* TO 'stech_smartads'@'localhost' IDENTIFIED BY 'newpass';
+
+- Switch to the New Database
+mysql> USE stech_smartads;
+
+- Insert data from /applications/smartads-stech-php/setup/all.sql
+mysql> SOURCE /var/www/html/backend/applications/smartads-stech-php/setup/all.sql
+
+Config
+
+Make sure the application folder is: smartads-stech-php (required)
+The admin url must be like this: http://ip:port/smartads-stech-php/backend/web/index.php
+Change config files: /config/main-local.php --> main.php, /config/global-local.php --> global.php
+in main.php, make sure 'db' => 'stech_smartads' db.
+
+Set permissions for following folders
+
+cd smartads-stech-php
+setenforce 0
+chown -R apache backend/web/assets
+chown -R apache backend/runtime
+chmod -R 775 backend/runtime
+chmod -R 775 backend/web/assets
+chmod -R 775 applications/smartads/upload

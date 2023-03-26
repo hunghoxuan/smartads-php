@@ -1,0 +1,33 @@
+{
+    "name": "colee/yii2-vue",
+    "type": "library",
+    "description": "Vue.js library for Yii2 framework",
+    "keywords": [
+        "yii2",
+        "colee",
+        "vue",
+        "vuejs",
+        "yii2-vue"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/colee1985/yii2-vue",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "colee",
+            "email": "5969226@qq.com",
+            "issues": "https://github.com/colee1985/yii2-vue/issues?state=open",
+        	"source": "https://github.com/colee1985/yii2-vue"
+        }
+    ],
+    "require": {
+        "php" : "~5.5|~7.0",
+        "yiisoft/yii2-bootstrap": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "colee\\vue\\": ""
+        }
+    }
+}
+

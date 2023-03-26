@@ -1,0 +1,56 @@
+ /*Yii 2 new version -> long text content will break layout of gridview*/
+    /* backend/web/css/site.css*/
+    /*.grid-view td {*/
+        /*white-space: nowrap;*/
+    /*}*/
+
+
+    .grid-view td {
+        white-space: inherit !important;
+    }
+
+Yii::getAlias('@app')
+
+@yii - framework directory.
+
+@app - base path of currently running application. C:\xampp\htdocs\hicom-events\backend/
+
+@runtime - runtime directory.
+
+@vendor - Composer vendor directory.
+
+@webroot - web root directory of currently running web application. C:/xampp/htdocs/hicom-events/backend/web
+
+@web - base URL of currently running web application. /hicom-events/backend/web
+
+
+//Helper for internal (Related to model) -> backend/components
+//Helper for external (Not Related to model) -> projectemplate/components
+
+
+LOOKUP:object_category|id|name
+DROPDOWN:male|female|unknown
+DROPDOWN:{"xx":"Xxxx","yy":"Yyyy"}
+
+
+elseif ($column->dbType == 'date') {
+                $class ="        ".$is_comment."'class' => 'kartik\grid\EditableColumn',\n";
+                $format="        ".$is_comment."'format' => 'date',\n";
+                $editableOptions ="        ".$is_comment."'editableOptions' => [
+                            ".$is_comment."'size' => 'md',
+                            ".$is_comment."'inputType' => \kartik\\editable\Editable::INPUT_WIDGET,
+                            ".$is_comment."'widgetClass' => 'kartik\datecontrol\DateControl',
+                            ".$is_comment."'options' => [
+                                ".$is_comment."'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
+                                ".$is_comment."'displayFormat' => 'yyyy-MM-dd',
+                                ".$is_comment."'saveFormat' => 'php:Y-m-d',
+                                ".$is_comment."'options' => [
+                                    ".$is_comment."'pluginOptions' => [
+                                        ".$is_comment."'autoclose' => true
+                                    ".$is_comment."]
+                                ".$is_comment."]
+                            ".$is_comment."]
+                        ".$is_comment."],\n";
+                $hAlign="        ".$is_comment."'hAlign' => 'left',\n";
+                $vAlign="        ".$is_comment."'vAlign' => 'middle',\n";
+            }

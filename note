@@ -1,0 +1,11 @@
+FIX: 2.0.8
+- CheckboxColumn: Check all not working after ajax reload of kartik gridview (but working with default grid)
+=> How to fix: + Check vendor/yiisoft/yii2/grid/CheckboxColumn.php => has changes in version > 2.0.7,
+$this->registerClientScript(); need to be move from init() to renderHeaderCellContent()
+If it's loaded before render cell content, after ajax reload, kartik gid script will not work because missing JS  in registerClientScript()
+$this->grid->getView()->registerJs("jQuery('#$id').yiiGridView('setSelectionColumn', $options);");
+
+=> Deprecated. Fixed in latest version
+
+//Imagine
+http://www.yiiframework.com/wiki/757/how-to-use-imagine-crop-thumb-effects-for-images-on-yii2/

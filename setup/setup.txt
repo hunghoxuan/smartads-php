@@ -1,0 +1,16 @@
+
+
+3. Auto start Node.Js
+You could install forever using npm like this:
+sudo npm install -g forever
+
+And then start your application with:
+forever server.js
+
+Or as a service:
+forever start server.js
+
+If you're working on your application file, you can use the -w parameter to restart automatically whenever your server.js file changes:
+forever -w server.js
+
+// https://stackoverflow.com/questions/12701259/how-to-make-a-node-js-application-run-permanently

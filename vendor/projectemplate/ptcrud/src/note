@@ -1,0 +1,16 @@
+Nov 17, 2016
+
+- Bootstrap.php
+  $app->getModule('gii')->generators['crud'] = 'projectemplate\ptcrud\generators\Generator';
+  $app->getModule('gii')->generators['model'] = 'projectemplate\ptcrud\model\Generator';
+  //keep crud and model: auto fill working
+
+- projectemplate\ptcrud\src\model\default\model.php
+  check if have field: image, avatar, logo, attachment ..... -> add $file, $file1 variable ro store file upload
+
+- projectemplate\ptcrud\src\model\Generator.php
+  generateActiveFieldAdvanced & generateActiveField -> ajax form and normal form
+  comment created_date, modified_date
+
+- view, columns, controller, form: add file input / show image by default
+

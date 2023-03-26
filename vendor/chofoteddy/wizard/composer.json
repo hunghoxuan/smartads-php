@@ -1,0 +1,43 @@
+{
+    "name": "chofoteddy/yii2-bootstrap-wizard",
+    "description": "Wizard form based on twitter bootstrap plugin (@VinceG)",
+    "homepage": "https://github.com/Chofoteddy/yii2-bootstrap-wizard",
+    "keywords": [
+        "yii2",
+        "wizard",
+        "bootstrap",
+        "yii2-extension"
+    ],
+    "type": "yii2-extension",
+    "version": "0.1",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christopher",
+            "email": "chofoteddy88@yahoo.com.mx"
+        },
+        {
+            "name": "Faryshta",
+            "email": "angeldelcaos@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2-bootstrap": "*",
+        "bower-asset/twitter-bootstrap-wizard": "*"
+    },
+    "require-dev": {
+        "yiisoft/yii2-apidoc": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "chofoteddy\\wizard\\": ""
+        }
+    },
+    "extra": {
+        "asset-installer-paths": {
+            "bower-asset-library": "vendor/bower"
+        }
+    }
+}
