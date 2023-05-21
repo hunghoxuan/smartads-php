@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: HY
@@ -90,24 +91,28 @@ class FActiveField extends ActiveField
         $this->mergeSettings($showLabels, $showErrors);
     }
 
-    protected function getRenderType() {
+    protected function getRenderType()
+    {
         if ($this->form->type !== FActiveForm::TYPE_HORIZONTAL || $this->render_type == self::RENDER_TYPE_BASIC)
             return self::RENDER_TYPE_BASIC;
         return self::RENDER_TYPE_ADVANCE;
     }
 
-    protected function isBasicRenderType() {
+    protected function isBasicRenderType()
+    {
         if ($this->getRenderType() == self::RENDER_TYPE_BASIC || \Yii::$app->request->isAjax || FHtml::currentAction() == 'index')
             return true;
         return false;
     }
 
-    public function labelSpan($span) {
+    public function labelSpan($span)
+    {
         $this->label_span = $span;
         return $this;
     }
 
-    public function label($label = null, $options = []) {
+    public function label($label = null, $options = [])
+    {
         if ($label === false || $label === null)
             $this->label_span = false;
 
@@ -130,7 +135,8 @@ class FActiveField extends ActiveField
         return parent::label($label, $options);
     }
 
-    public function displayType($type) {
+    public function displayType($type)
+    {
         $this->display_type = $type;
         return $this;
     }
@@ -143,25 +149,29 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function getInputId($attribute = '') {
+    public function getInputId($attribute = '')
+    {
         if (empty($attribute))
             $attribute = $this->attribute;
 
         return Html::getInputId($this->model, $attribute);
     }
 
-    public function getInputName($attribute = '') {
+    public function getInputName($attribute = '')
+    {
         if (empty($attribute))
             $attribute = $this->attribute;
 
         return Html::getInputName($this->model, $attribute);
     }
 
-    public function getInputContainerId() {
+    public function getInputContainerId()
+    {
         return $this->getInputId() . '-container';
     }
 
-    public function toggleField($toogle_attribute, $isPrimaryField = false, $label = '', $input_container_id = '') {
+    public function toggleField($toogle_attribute, $isPrimaryField = false, $label = '', $input_container_id = '')
+    {
         $attribute_value = FHtml::getFieldValue($this->model, $toogle_attribute);
 
         $input_id = $this->getInputId();
@@ -191,7 +201,8 @@ class FActiveField extends ActiveField
         return self::toggleField($toogle_attribute, true, '', '');
     }
 
-    public function toggle($content = '') {
+    public function toggle($content = '')
+    {
         $container_id = $this->getInputContainerId();
 
         if (!empty($content))
@@ -207,8 +218,7 @@ class FActiveField extends ActiveField
             $this->parts['{input}'] = "<div class='row'><div id='$container_id' class='col-md-11'>" . $this->parts['{input}'] . "</div><div class='col-md-1 no-padding pull-right'>$this->toggleButton</div></div>";
         else if (!empty($this->toggleButton) && !empty($this->toggleContent)) {
             $this->parts['{input}'] = "<div class='row'><div class='col-md-11'><div id='$container_id' >" . $this->parts['{input}'] . '</div>' . $this->toggleContent . "</div><div class='col-md-1 no-padding pull-right'>$this->toggleButton</div></div>";
-        }
-        else
+        } else
             $this->parts['{input}'] = "<div class='row'><div id='$container_id' class='col-md-12'>" . $this->parts['{input}'] . "</div></div>";
         return $this;
     }
@@ -302,7 +312,6 @@ class FActiveField extends ActiveField
 
             if ($this->render_type !== FHtml::INPUT_RAW)
                 $newInput = FHtml::showModelField($this->model, $this->attribute, $this->showType, FHtml::LAYOUT_NO_LABEL, '');
-
         } else if ($this->edit_type == FHtml::EDIT_TYPE_VIEW) {
             $newInput = '<div style="padding-top:10px">' . FHtml::showModelFieldValue($this->model, $this->attribute, $this->showType, FHtml::LAYOUT_NO_LABEL, '') . '</div>';
         }
@@ -335,7 +344,7 @@ class FActiveField extends ActiveField
 
                 $newInput = "<div class=' $is_mobile_field_css' style='{$style}; padding-right: 15px'><div style='width:100%'>" . $newInput . '</div></div>';
             } else {
-                $newInput = "<div class='col-md-12 $is_mobile_field_css' style='{$style };margin-bottom: 10px'><div style='width:100%'>" . $newInput . '</div></div>';
+                $newInput = "<div class='col-md-12 $is_mobile_field_css' style='{$style};margin-bottom: 10px'><div style='width:100%'>" . $newInput . '</div></div>';
             }
         } else {
             if ($this->form->type == FActiveForm::TYPE_VERTICAL) {
@@ -345,7 +354,7 @@ class FActiveField extends ActiveField
                 $span = 12;
                 $style = ($this->edit_type == FHtml::EDIT_TYPE_INLINE) ? 'margin-top:10px;' : '';
                 $newInput = "" . $newInput . '</div></div>';
-            }  else if ($this->form->type == FActiveForm::TYPE_HORIZONTAL) {
+            } else if ($this->form->type == FActiveForm::TYPE_HORIZONTAL) {
 
                 if (!isset($this->label_span)) {
                     $this->label_span = 3;
@@ -373,9 +382,9 @@ class FActiveField extends ActiveField
         //$this->template = '{input}';
     }
 
-    public function isHidden() {
-        if (isset($this->column))
-        {
+    public function isHidden()
+    {
+        if (isset($this->column)) {
             if ($this->column->is_active == false)
                 return true;
         }
@@ -383,9 +392,9 @@ class FActiveField extends ActiveField
         return false;
     }
 
-    public function isReadOnly() {
-        if (isset($this->column))
-        {
+    public function isReadOnly()
+    {
+        if (isset($this->column)) {
             if ($this->column->is_readonly == 1)
                 return true;
         }
@@ -394,7 +403,8 @@ class FActiveField extends ActiveField
     }
 
     //2017/3/21
-    public function lookup($object_type, $options = [], $populated_fields = [], $search_field = 'name', $id_field = 'id', $class = FHtml::EDITOR_SELECT) {
+    public function lookup($object_type, $options = [], $populated_fields = [], $search_field = 'name', $id_field = 'id', $class = FHtml::EDITOR_SELECT)
+    {
         $this->isSettingField = true;
         if (is_string($options)) {
             $options = [];
@@ -405,28 +415,27 @@ class FActiveField extends ActiveField
         self::select($items, $options, $object_type, $populated_fields, $search_field, $id_field, $class);
         $result = $this->parts['{input}'];
         $post_id = $id;
-//
-//        if (!empty($post_id)) {
-//            $module = FHtml::getModelModule($object_type);
-//            $controller = str_replace("_", "-", $object_type);
-//            $result .= "<div class='col-md-12>'";
-//            $result .= FHtml::showModalButton(FHtml::t('common', 'Edit'), FHtml::getRootUrl() . "/admin/$module/$controller/index?id=$post_id&action=edit", 'modal-remote', 'btn btn-xs btn-default');
-//            $result .= FHtml::showLinkButton('<span class="glyphicon glyphicon-resize-full"></span>', FHtml::getRootUrl() . "/wordpress/wp-admin/post.php?post=$post_id&action=edit", 'btn btn-xs btn-default');
-//            $result .= "</div>";
-//        }
+        //
+        //        if (!empty($post_id)) {
+        //            $module = FHtml::getModelModule($object_type);
+        //            $controller = str_replace("_", "-", $object_type);
+        //            $result .= "<div class='col-md-12>'";
+        //            $result .= FHtml::showModalButton(FHtml::t('common', 'Edit'), FHtml::getRootUrl() . "/admin/$module/$controller/index?id=$post_id&action=edit", 'modal-remote', 'btn btn-xs btn-default');
+        //            $result .= FHtml::showLinkButton('<span class="glyphicon glyphicon-resize-full"></span>', FHtml::getRootUrl() . "/wordpress/wp-admin/post.php?post=$post_id&action=edit", 'btn btn-xs btn-default');
+        //            $result .= "</div>";
+        //        }
 
         $this->parts['{input}'] = $result;
         return $this;
     }
 
-    public function selectCustomRenderer($items, $itemRenderer = null, $options = []) {
+    public function selectCustomRenderer($items, $itemRenderer = null, $options = [])
+    {
         $this->isSettingField = true;
 
         if (!isset($items)) {
             $items = FHtml::getComboArray($this->attribute, $this->object_type, $this->attribute);
-        }
-        else if (is_string($items))
-        {
+        } else if (is_string($items)) {
             $items = FHtml::getComboArray($items);
         }
 
@@ -473,10 +482,9 @@ class FActiveField extends ActiveField
             $result[] = $itemHtml;
         }
         $result[] = "</select>";
-        $this->parts['{input}'] = implode( $result, "\n");
+        $this->parts['{input}'] = implode("\n", $result);
 
         return $this;
-
     }
 
     //2017.4.18
@@ -486,9 +494,7 @@ class FActiveField extends ActiveField
 
         if (!isset($items)) {
             $items = FHtml::getComboArray($this->attribute, $this->object_type, $this->attribute);
-        }
-        else if (is_string($items))
-        {
+        } else if (is_string($items)) {
             $items = FHtml::getComboArray($items);
         } else if (is_array($items)) {
             $items = FHtml::getComboArray($items);
@@ -510,7 +516,7 @@ class FActiveField extends ActiveField
         $options = array_merge($this->inputOptions, $options);
         $this->adjustLabelFor($options);
 
-        if (!empty($lookup_object))  {
+        if (!empty($lookup_object)) {
             /* @var $class \yii\base\Widget */
             $config['model'] = $this->model;
             $config['attribute'] = $this->attribute;
@@ -532,11 +538,9 @@ class FActiveField extends ActiveField
 
             if (empty($items)) {
                 self::textInput();
-            }
-            else if (count($items) <= 12 && !$this->isBasicRenderType() && in_array($this->attribute, FHtml::FIELDS_STATUS)) {
+            } else if (count($items) <= 12 && !$this->isBasicRenderType() && in_array($this->attribute, FHtml::FIELDS_STATUS)) {
                 $this->selectHtml($items, $options);
-            }
-            else {
+            } else {
                 if ($this->isBasicRenderType()) {
                     parent::dropDownList($items);
                     return $this;
@@ -552,7 +556,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function selectHtml($items, $options = [], $class = 'common\widgets\fselect\FSelect') {
+    public function selectHtml($items, $options = [], $class = 'common\widgets\fselect\FSelect')
+    {
         /* @var $class \yii\base\Widget */
         if (is_array($options))
             $config = $options;
@@ -570,24 +575,27 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function textInput($options = []) {
+    public function textInput($options = [])
+    {
         $this->checkStringFieldValue();
         return parent::textInput($options);
     }
 
-    public function textbox($options = []) {
+    public function textbox($options = [])
+    {
         return $this->textInput($options);
     }
 
-    public function string($options = []) {
+    public function string($options = [])
+    {
         return $this->textInput($options);
     }
 
-    public function selectInput($items = null, $options = []) {
+    public function selectInput($items = null, $options = [])
+    {
         $this->isSettingField = true;
 
-        if (is_string($items))
-        {
+        if (is_string($items)) {
             $items = null;
             $this->object_type = $items;
         }
@@ -602,7 +610,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function selectLookup($object_type, $options = [], $populated_fields = [], $search_field = 'name', $id_field = 'id') {
+    public function selectLookup($object_type, $options = [], $populated_fields = [], $search_field = 'name', $id_field = 'id')
+    {
         return self::select(null, $options, $object_type, $populated_fields, $search_field, $id_field, FHtml::EDITOR_SELECT);
     }
 
@@ -628,20 +637,18 @@ class FActiveField extends ActiveField
 
         if (!isset($items)) {
             $items = FHtml::getComboArray($this->attribute, $this->object_type, $this->attribute);
-        }
-        else if (is_string($items))
-        {
+        } else if (is_string($items)) {
             $items = FHtml::getComboArray($items);
         } else if (is_array($items)) {
             $items = FHtml::getComboArray($items);
         }
 
-//        if (empty($items)) {
-//            $this->checkStringFieldValue();
-//            self::textInput();
-//            return $this;
-//        }
-//        else
+        //        if (empty($items)) {
+        //            $this->checkStringFieldValue();
+        //            self::textInput();
+        //            return $this;
+        //        }
+        //        else
         if ((count($items) <= 6  && in_array(str_replace('_array', '', $this->attribute), FHtml::FIELDS_STATUS)) || $this->isBasicRenderType()) {
             $this->selectHtml($items, array_merge($options, ['multiple' => true]));
             //self::checkboxList($items);
@@ -660,7 +667,7 @@ class FActiveField extends ActiveField
 
         $config['pluginOptions'] = ['allowClear' => true, 'tags' => true, 'multiple' => true];
 
-        if (!empty($lookup_object))  {
+        if (!empty($lookup_object)) {
             $config = array_merge($config, FHtml::getSelect2Options($this->object_type, $populated_fields, $lookup_object, $search_field, $id_field));
             if (key_exists('pluginOptions', $config))
                 $config['pluginOptions'] = array_merge($config['pluginOptions'], ['allowClear' => true, 'tags' => true, 'multiple' => true]);
@@ -694,14 +701,15 @@ class FActiveField extends ActiveField
 
         $config['options'] = $options;
 
-        $config['pluginOptions'] = ['convertFormat' => true, 'format' => $format, 'class' => 'form-control', 'autoclose' => true, 'todayHighlight' => true, 'todayBtn' => true, 'daysOfWeekDisabled' => $disabled_date, 'hoursDisabled' => $disabled_hours ];
+        $config['pluginOptions'] = ['convertFormat' => true, 'format' => $format, 'class' => 'form-control', 'autoclose' => true, 'todayHighlight' => true, 'todayBtn' => true, 'daysOfWeekDisabled' => $disabled_date, 'hoursDisabled' => $disabled_hours];
 
         $this->parts['{input}'] = $class::widget($config);
 
         return $this;
     }
 
-    public function dateRange($format = 'yyyy-mm-dd', $options = [], $disabled_date = '', $disabled_hours = '', $class = 'common\widgets\FDateRangePicker') {
+    public function dateRange($format = 'yyyy-mm-dd', $options = [], $disabled_date = '', $disabled_hours = '', $class = 'common\widgets\FDateRangePicker')
+    {
         $options = array_merge($this->inputOptions, $options);
         $this->adjustLabelFor($options);
 
@@ -712,14 +720,16 @@ class FActiveField extends ActiveField
 
         $config['pluginOptions'] = array_merge([
             'ranges' => [],
-            'showDropdowns' => true,'presetDropdown' => false, 'format' => $format, 'class' => 'form-control', 'hideInput' => false , 'timePicker' => true], $options);
+            'showDropdowns' => true, 'presetDropdown' => false, 'format' => $format, 'class' => 'form-control', 'hideInput' => false, 'timePicker' => true
+        ], $options);
 
         $this->parts['{input}'] = $class::widget($config);
 
         return $this;
     }
 
-    public function dateTimeRange($format = 'yyyy-mm-dd', $options = [], $disabled_date = '', $disabled_hours = '', $class = 'common\widgets\FDateRangePicker') {
+    public function dateTimeRange($format = 'yyyy-mm-dd', $options = [], $disabled_date = '', $disabled_hours = '', $class = 'common\widgets\FDateRangePicker')
+    {
         $options = array_merge($options, ['timePicker' => true]);
         return $this->dateRange($format, $options, $disabled_date, $disabled_hours, $class);
     }
@@ -744,7 +754,7 @@ class FActiveField extends ActiveField
 
         $config['options'] = $options;
 
-        $config['pluginOptions'] = ['convertFormat' => true, 'format' => $format, 'class' => 'form-control', 'autoclose' => true, 'todayHighlight' => true, 'todayBtn' => true, 'daysOfWeekDisabled' => $disabled_date, 'hoursDisabled' => $disabled_hours ];
+        $config['pluginOptions'] = ['convertFormat' => true, 'format' => $format, 'class' => 'form-control', 'autoclose' => true, 'todayHighlight' => true, 'todayBtn' => true, 'daysOfWeekDisabled' => $disabled_date, 'hoursDisabled' => $disabled_hours];
 
         $this->parts['{input}'] = $class::widget($config);
 
@@ -754,7 +764,7 @@ class FActiveField extends ActiveField
     public function selectDate($items = [], $format = 'yyyy-mm-dd', $options = [], $disabled_date = '', $disabled_hours = '', $class = FHtml::EDITOR_DATE)
     {
         if (empty($items))
-            $items = [date('Y-m-d',strtotime("-1 days")) => 'Yesterday', date('Y-m-d') => 'Today', date('Y-m-d',strtotime("+1 days")) => 'Tomorrow'];
+            $items = [date('Y-m-d', strtotime("-1 days")) => 'Yesterday', date('Y-m-d') => 'Today', date('Y-m-d', strtotime("+1 days")) => 'Tomorrow'];
         if (!empty($items))
             self::values($items);
 
@@ -764,7 +774,7 @@ class FActiveField extends ActiveField
     public function selectDateInput($items = [], $format = 'yyyy-mm-dd', $options = [], $disabled_date = '', $disabled_hours = '', $class = 'common\widgets\FDatePicker')
     {
         if (empty($items))
-            $items = [date('Y-m-d',strtotime("-1 days")) => 'Yesterday', date('Y-m-d') => 'Today', date('Y-m-d',strtotime("+1 days")) => 'Tomorrow'];
+            $items = [date('Y-m-d', strtotime("-1 days")) => 'Yesterday', date('Y-m-d') => 'Today', date('Y-m-d', strtotime("+1 days")) => 'Tomorrow'];
         if (!empty($items))
             self::values($items);
 
@@ -776,7 +786,8 @@ class FActiveField extends ActiveField
         return self::html($options, $preset, $class);
     }
 
-    public function textarea($config = []) {
+    public function textarea($config = [])
+    {
         $this->checkStringFieldValue();
 
         $config['class'] = 'form-control';
@@ -798,7 +809,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function markdown($config = []) {
+    public function markdown($config = [])
+    {
         $result = FMarkdownEditor::widget(array_merge(['model' => $this->model, 'attribute' => $this->attribute], $config));
         $this->parts['{input}'] = $result;
 
@@ -811,24 +823,24 @@ class FActiveField extends ActiveField
         $options = array_merge($options, ['rows' =>  strlen($value) / 100]);
         return $this->textarea($options);
 
-//        if ($this->isBasicRenderType()) {
-//            return $this->textarea(['rows' => 5]);
-//        }
-//
-//        $options = array_merge($this->inputOptions, $options);
-//        $this->adjustLabelFor($options);
-//        /* @var $class \yii\base\Widget */
-//        $config['model'] = $this->model;
-//        $config['attribute'] = $this->attribute;
-//        $config['view'] = $this->form->getView();
-//
-//        $config['options'] = $options;
-//
-//        $config['preset'] = $preset;
-//
-//        $this->parts['{input}'] = $class::widget($config);
-//
-//        return $this;
+        //        if ($this->isBasicRenderType()) {
+        //            return $this->textarea(['rows' => 5]);
+        //        }
+        //
+        //        $options = array_merge($this->inputOptions, $options);
+        //        $this->adjustLabelFor($options);
+        //        /* @var $class \yii\base\Widget */
+        //        $config['model'] = $this->model;
+        //        $config['attribute'] = $this->attribute;
+        //        $config['view'] = $this->form->getView();
+        //
+        //        $config['options'] = $options;
+        //
+        //        $config['preset'] = $preset;
+        //
+        //        $this->parts['{input}'] = $class::widget($config);
+        //
+        //        return $this;
     }
 
     public function boolean($options = [], $class = FHtml::EDITOR_SWITCH)
@@ -845,19 +857,20 @@ class FActiveField extends ActiveField
         return parent::checkbox($options, false);
 
         /* @var $class \yii\base\Widget */
-//        $config['model'] = $this->model;
-//        $config['attribute'] = $this->attribute;
-//        $config['view'] = $this->form->getView();
-//        $options['id'] = $this->getInputId($this->attribute);
-//        $config['options'] = $options;
-//
-//        $this->parts['{input}'] = '<div class="" style="padding-left:15px">' . $class::widget($config, $options) . '</div>';
-//
-//        return $this;
+        //        $config['model'] = $this->model;
+        //        $config['attribute'] = $this->attribute;
+        //        $config['view'] = $this->form->getView();
+        //        $options['id'] = $this->getInputId($this->attribute);
+        //        $config['options'] = $options;
+        //
+        //        $this->parts['{input}'] = '<div class="" style="padding-left:15px">' . $class::widget($config, $options) . '</div>';
+        //
+        //        return $this;
     }
 
 
-    public function bool($options = [], $class = FHtml::EDITOR_SWITCH) {
+    public function bool($options = [], $class = FHtml::EDITOR_SWITCH)
+    {
         return $this->checkbox($options, $class);
     }
 
@@ -881,20 +894,22 @@ class FActiveField extends ActiveField
         return self::fileInput($options, $accept, $max, $class);
     }
 
-    public function filesArray($options = [], $accept = '', $max = null, $class = FHtml::EDITOR_FILE) {
+    public function filesArray($options = [], $accept = '', $max = null, $class = FHtml::EDITOR_FILE)
+    {
         return $this->filesMultiple($options, $accept, $max, $class);
     }
 
-    public function filesMultiple($options = [], $accept = '', $max = null, $class = FHtml::EDITOR_FILE) {
+    public function filesMultiple($options = [], $accept = '', $max = null, $class = FHtml::EDITOR_FILE)
+    {
         if ($this->isBasicRenderType()) {
             $file_name = FHtml::getFieldValue($this->model, $this->attribute);
             $folder = FHtml::getUploadFolder($this->model);
-            $full_file = FHtml::getFullUploadFolder($folder) . '/' . $file_name; $file_size = '';
+            $full_file = FHtml::getFullUploadFolder($folder) . '/' . $file_name;
+            $file_size = '';
             if (is_file($full_file)) {
                 //$file_size = FHtml::convertToKBytes(filesize($full_file));
                 $file = !empty($file_name) ? FHtml::showImage($file_name, $folder, '', '80px') : '';
-            }
-            else
+            } else
                 $file = '';
 
             $options['id'] = $this->getInputId($this->attribute);
@@ -924,7 +939,7 @@ class FActiveField extends ActiveField
 
         $config['options'] = $options;
 
-        $config['pluginOptions'] = ['browseLabel' => FHtml::t('button', 'Upload Files'), 'browseClass' => 'btn btn-primary', 'maxFileSize' => $max, 'showPreview' => true, 'showCaption' => false, 'showRemove' => true,'showUpload' => false, 'pluginOptions' => ['browseLabel' => '', 'removeLabel' => '', 'previewFileType' => 'any']];
+        $config['pluginOptions'] = ['browseLabel' => FHtml::t('button', 'Upload Files'), 'browseClass' => 'btn btn-primary', 'maxFileSize' => $max, 'showPreview' => true, 'showCaption' => false, 'showRemove' => true, 'showUpload' => false, 'pluginOptions' => ['browseLabel' => '', 'removeLabel' => '', 'previewFileType' => 'any']];
         //var_dump($options); die;
         $this->parts['{input}'] = "<div class='row1'>" .  \kartik\widgets\FileInput::widget($config) . '</div>';
         return $this;
@@ -935,12 +950,12 @@ class FActiveField extends ActiveField
         if ($this->isBasicRenderType()) {
             $file_name = FHtml::getFieldValue($this->model, $this->attribute);
             $folder = FHtml::getUploadFolder($this->model);
-            $full_file = FHtml::getFullUploadFolder($folder) . '/' . $file_name; $file_size = '';
+            $full_file = FHtml::getFullUploadFolder($folder) . '/' . $file_name;
+            $file_size = '';
             if (is_file($full_file)) {
                 //$file_size = FHtml::convertToKBytes(filesize($full_file));
                 $file = !empty($file_name) ? FHtml::showImage($file_name, $folder, '', '80px') : '';
-            }
-            else
+            } else
                 $file = '';
 
             $options['id'] = $this->getInputId($this->attribute);
@@ -970,7 +985,7 @@ class FActiveField extends ActiveField
 
         $config['options'] = $options;
 
-        $config['pluginOptions'] = ['maxFileSize' => $max, 'showPreview' => false, 'showCaption' => false, 'showRemove' => true,'showUpload' => false, 'pluginOptions' => ['browseLabel' => '', 'removeLabel' => '', 'previewFileType' => 'any']];
+        $config['pluginOptions'] = ['maxFileSize' => $max, 'showPreview' => false, 'showCaption' => false, 'showRemove' => true, 'showUpload' => false, 'pluginOptions' => ['browseLabel' => '', 'removeLabel' => '', 'previewFileType' => 'any']];
         //var_dump($options); die;
         $this->parts['{input}'] = "<div class='row1'>" .  $class::widget($config) . '</div>';
 
@@ -994,9 +1009,9 @@ class FActiveField extends ActiveField
         $options = array_merge($options, ['type' => 'time']);
         return self::textInput($options);
 
-//        $options = array_merge($options, ['pluginOptions' => ['showSeconds' => $showSeconds, 'showMeridian' => $showMeridian]]);
-//
-//        return self::widget($class, $options);
+        //        $options = array_merge($options, ['pluginOptions' => ['showSeconds' => $showSeconds, 'showMeridian' => $showMeridian]]);
+        //
+        //        return self::widget($class, $options);
     }
 
     public function numericInput($options = [], $autoGroup = false,  $class = FHtml::EDITOR_NUMERIC)
@@ -1070,19 +1085,19 @@ class FActiveField extends ActiveField
 
     public function rate($count = 5, $min = 0, $max = 5, $step = 1, $starCaptions = [], $class = FHtml::EDITOR_RATE)
     {
-        $options = ['pluginOptions' => [ 'stars' => $count, 'min' => $min, 'max' => $max, 'step' => $step, 'showClear' => true, 'showCaption' => true, 'defaultCaption' => '{rating}', 'starCaptions' => $starCaptions]];
+        $options = ['pluginOptions' => ['stars' => $count, 'min' => $min, 'max' => $max, 'step' => $step, 'showClear' => true, 'showCaption' => true, 'defaultCaption' => '{rating}', 'starCaptions' => $starCaptions]];
         return self::widget($class, $options);
     }
 
     public function slide($min = 0, $max = 100, $step = 1, $class = FHtml::EDITOR_SLIDE)
     {
-        $options = ['sliderColor'=> 'grey', 'handleColor'=> 'danger', 'pluginOptions'=>['min'=>$min,'max'=>$max,'step'=>15]];
+        $options = ['sliderColor' => 'grey', 'handleColor' => 'danger', 'pluginOptions' => ['min' => $min, 'max' => $max, 'step' => 15]];
         return self::widget($class, $options);
     }
 
     public function progress($min = 0, $max = 100, $step = 1, $class = FHtml::EDITOR_SLIDE)
     {
-        $options = ['sliderColor'=> 'grey', 'handleColor'=> 'danger', 'pluginOptions'=>['min'=>$min,'max'=>$max,'step'=>15]];
+        $options = ['sliderColor' => 'grey', 'handleColor' => 'danger', 'pluginOptions' => ['min' => $min, 'max' => $max, 'step' => 15]];
         return self::widget($class, $options);
     }
 
@@ -1124,45 +1139,53 @@ class FActiveField extends ActiveField
     }
 
     //2017.5.17
-    public function hintLabel($content, $layout = '<div class="label-hint" style="color:grey; font-size:80%">{content}</div>') {
+    public function hintLabel($content, $layout = '<div class="label-hint" style="color:grey; font-size:80%">{content}</div>')
+    {
         $this->labelHint =  str_replace('{content}', $content, $layout);
         return $this;
     }
 
-    public function appendContent($content, $layout = "<div class='row'><div class='col-md-2'>{input}</div><div class='col-md-10'>{content}</div></div>") {
+    public function appendContent($content, $layout = "<div class='row'><div class='col-md-2'>{input}</div><div class='col-md-10'>{content}</div></div>")
+    {
         $id = $this->getInputId();
         $attribute = $this->attribute;
-        $content = str_replace(['{id}', '{attribute}'], [$id, $attribute], $content) ;
+        $content = str_replace(['{id}', '{attribute}'], [$id, $attribute], $content);
 
         $this->appendContent =  str_replace('{content}', $content, $layout);
         return $this;
     }
 
-    public function appendText($content, $layout = "<div class='row'><div class='col-md-12'>{input}</div><div class=\"col-md-12 label-hint\" style=\"padding-top:5px; color:grey; font-size:80%\">{content}</div></div>") {
+    public function appendText($content, $layout = "<div class='row'><div class='col-md-12'>{input}</div><div class=\"col-md-12 label-hint\" style=\"padding-top:5px; color:grey; font-size:80%\">{content}</div></div>")
+    {
         return self::appendContent($content, $layout);
     }
 
-    public function hintInput($content, $options = []) {
+    public function hintInput($content, $options = [])
+    {
         return self::appendText($content);
     }
 
-    public function description($content, $options = []) {
+    public function description($content, $options = [])
+    {
         return self::appendText($content);
     }
 
-    public function help($content, $options = []) {
+    public function help($content, $options = [])
+    {
         return self::appendText($content);
     }
 
-    public function prependContent($content, $layout = "<div class='row'><div class='col-md-2'>{content}</div><div class='col-md-10'>{input}</div></div>") {
+    public function prependContent($content, $layout = "<div class='row'><div class='col-md-2'>{content}</div><div class='col-md-10'>{input}</div></div>")
+    {
         $id = $this->getInputId();
         $attribute = $this->attribute;
-        $content = str_replace(['{id}', '{attribute}'], [$id, $attribute], $content) ;
+        $content = str_replace(['{id}', '{attribute}'], [$id, $attribute], $content);
         $this->prependContent =  str_replace('{content}', $content, $layout);
         return $this;
     }
 
-    public function renderView($view = '', $params = [], $options = []) {
+    public function renderView($view = '', $params = [], $options = [])
+    {
         $id = $this->getInputId();
         $attribute = $this->attribute;
         $formName = BaseInflector::camelize(FHtml::getTableName($this->model));
@@ -1171,7 +1194,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function appendView($view = '', $params = [], $layout = '<div class="row"><div class="col-md-12">{content}</div></div>') {
+    public function appendView($view = '', $params = [], $layout = '<div class="row"><div class="col-md-12">{content}</div></div>')
+    {
         $id = $this->getInputId();
         $attribute = $this->attribute;
         $formName = BaseInflector::camelize(FHtml::getTableName($this->model));
@@ -1181,7 +1205,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function prependView($view = '', $params = [], $layout = '<div class="row"><div class="col-md-12">{content}</div></div>') {
+    public function prependView($view = '', $params = [], $layout = '<div class="row"><div class="col-md-12">{content}</div></div>')
+    {
         $id = $this->getInputId();
         $attribute = $this->attribute;
         $formName = BaseInflector::camelize(FHtml::getTableName($this->model));
@@ -1192,11 +1217,13 @@ class FActiveField extends ActiveField
     }
 
 
-    public function values($data = ['' => 'Empty'], $layout = "<div class='row'><div class='col-md-2'>{select}</div><div class='col-md-10'>{input}</div></div>") {
+    public function values($data = ['' => 'Empty'], $layout = "<div class='row'><div class='col-md-2'>{select}</div><div class='col-md-10'>{input}</div></div>")
+    {
         $data = FHtml::getComboArray($data);
-        if (strpos( $layout, ':') !== false) {
+        if (strpos($layout, ':') !== false) {
             $arr = explode(':', $layout);
-            $idx1 = $arr[0]; $idx2 = $arr[1];
+            $idx1 = $arr[0];
+            $idx2 = $arr[1];
             $layout = "<div class='row'><div class='col-md-$idx1'>{select}</div><div class='col-md-$idx2'>{input}</div></div>";
         } else if (empty($layout) || $layout == '<br/>') {
             $layout = "{select}<br/>{input}";
@@ -1206,15 +1233,16 @@ class FActiveField extends ActiveField
         $attribute = $this->attribute;
 
         $content = "<select id='{$id}_Select' name='{$id}_Select' class='form-control-small'>";
-        $selected = ''; $is_selected = false;
+        $selected = '';
+        $is_selected = false;
 
         $value = FHtml::getFieldValue($this->model, $this->attribute);
         foreach ($data as $key => $value1) {
             $value1 = FHtml::t('common', $value1);
             if (!empty($key) && $key == $value && empty($selected)) {
-                $selected = 'selected'; $is_selected = true;
-            }
-            else
+                $selected = 'selected';
+                $is_selected = true;
+            } else
                 $selected = '';
             $content .=  "<option value='$key' $selected>$value1</option>";
         }
@@ -1230,14 +1258,14 @@ class FActiveField extends ActiveField
         $content = str_replace(['{id}', '{attribute}'], [$id, $attribute], $content);
 
         $result = $this->parts['{input}'];
-        $this->parts['{input}'] = FHtml::strReplace($layout, ['{select}' => $content, '{input}' => $result ]);
+        $this->parts['{input}'] = FHtml::strReplace($layout, ['{select}' => $content, '{input}' => $result]);
 
         //$this->prependContent =  str_replace('{content}', $content, $layout);
 
         if (empty($selected))
             FHtml::currentView()->registerJs("$('#$id').hide();");
 
-        FHtml::currentView()->registerJs(  "$('#{$id}_Select').change(function() {
+        FHtml::currentView()->registerJs("$('#{$id}_Select').change(function() {
             var myValue = $(this).val();
             var myText = $('#{$id}_Select :selected').val();
     
@@ -1253,7 +1281,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function selectCondition($items, $options = [], $condition = []) {
+    public function selectCondition($items, $options = [], $condition = [])
+    {
         //$items = array_merge([FHtml::NULL_VALUE, $items]);
         $items = FHtml::getComboArray($items);
 
@@ -1301,7 +1330,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function onChange($value_controls = [], $layout = "<div class='row'><div class='col-md-2'>{content}</div><div class='col-md-10'>{input}</div></div>") {
+    public function onChange($value_controls = [], $layout = "<div class='row'><div class='col-md-2'>{content}</div><div class='col-md-10'>{input}</div></div>")
+    {
         $id = $this->getInputId();
         $attribute = $this->attribute;
         $value = $this->getFieldValue();
@@ -1363,11 +1393,13 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function getFieldValue() {
+    public function getFieldValue()
+    {
         return FHtml::field_exists($this->model, $this->attribute) ? $this->model->{$this->attribute} : FHtml::getFieldValue($this->model, $this->attribute);
     }
 
-    public function checkStringFieldValue() {
+    public function checkStringFieldValue()
+    {
         $value = $this->getFieldValue();
 
         if (is_array($value)) {
@@ -1377,7 +1409,8 @@ class FActiveField extends ActiveField
         return $value;
     }
 
-    public function checkArrayFieldValue() {
+    public function checkArrayFieldValue()
+    {
         $value = $this->getFieldValue();
         if (!is_array($value))
             $this->model->{$this->attribute} = FHtml::decode($value);
@@ -1385,7 +1418,8 @@ class FActiveField extends ActiveField
         return $value;
     }
 
-    public function checkboxList($items, $options = [], $columns_count = 2) {
+    public function checkboxList($items, $options = [], $columns_count = 2)
+    {
         $this->checkArrayFieldValue();
 
         if (is_numeric($options)) {
@@ -1396,7 +1430,7 @@ class FActiveField extends ActiveField
         $items = FHtml::removeEmptyValues($items);
 
         if (!key_exists('item', $options)) {
-            $column_size = 12/$columns_count;
+            $column_size = 12 / $columns_count;
             if ($columns_count == 2) {
                 $options['item'] = function ($index, $label, $name, $checked, $value) {
                     if (!empty($checked) && $checked > 0)
@@ -1489,18 +1523,19 @@ class FActiveField extends ActiveField
         return self::radioList($items, $options);
     }
 
-    public function radioButtonGroup($items, $options = []) {
+    public function radioButtonGroup($items, $options = [])
+    {
         $items1 = $items; //FHtml::removeEmptyValues($items);
         //$options = array_merge(['style' => 'padding-left:20px']);
         if (count($items1) > 1) {
 
             return parent::radioList($items1, $options);
-        }
-        else
+        } else
             return parent::dropDownList($items1, $options);
     }
 
-    public function map($address_field = 'address', $lat_field = 'lat', $long_field = 'long', $api_key = '', $class = '\pigolab\locationpicker\CoordinatesPicker') {
+    public function map($address_field = 'address', $lat_field = 'lat', $long_field = 'long', $api_key = '', $class = '\pigolab\locationpicker\CoordinatesPicker')
+    {
 
         if (empty($api_key))
             $api_key = FHtml::setting('google_map_api_key', 'AIzaSyDt8PQG_AqjJnmYJLp5XXXHLweFfS8YWc0');
@@ -1554,17 +1589,20 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function dynamicInput($editor = '', $lookup = '', $options = []) {
+    public function dynamicInput($editor = '', $lookup = '', $options = [])
+    {
         //$this->parts['{input}'] = FHtml::buildEditor($this->model, $this->attribute, $this->form, $editor, $lookup, $this);
         FHtml::buildEditor($this->model, $this->attribute, $this->form, $editor, $lookup, $this);
         return $this;
     }
 
-    public function editor($editor = '', $lookup = '', $options = []) {
+    public function editor($editor = '', $lookup = '', $options = [])
+    {
         return self::dynamicInput($editor, $lookup, $options);
     }
 
-    public function multipleInput($columns = [], $min = 0, $max = null, $position =  MultipleInput::POS_ROW) {
+    public function multipleInput($columns = [], $min = 0, $max = null, $position =  MultipleInput::POS_ROW)
+    {
         $value = FHtml::getFieldValue($this->model, $this->attribute);
         if (!is_array($value)) {
             $value = FHtml::decode($value);
@@ -1597,8 +1635,7 @@ class FActiveField extends ActiveField
             $columns1 = [];
             foreach ($columns as $key => $value) {
                 if (is_array($value)) {
-                    if (!key_exists('type', $value))
-                    {
+                    if (!key_exists('type', $value)) {
                         $columns1[] = [
                             'name' => $key,
                             'enableError' => true,
@@ -1608,7 +1645,7 @@ class FActiveField extends ActiveField
                                 'class' => 'col-md-3 form-label',
                                 'style' => 'border:solid 1px lightgray',
 
-                            ] ,
+                            ],
                             'items' => FHtml::getComboArray($value),
                             'headerOptions' => [
                                 'style' => 'vertical-align:middle'
@@ -1619,8 +1656,7 @@ class FActiveField extends ActiveField
                             $value['name'] = $key;
                         $columns1[] = $value;
                     }
-                }
-                else if (is_string($value)) {
+                } else if (is_string($value)) {
                     if (is_numeric($key) || strpos($value, ':') !== false) {
                         $name = is_string($key) ? $key : $value;
                         $name_arr = FModel::parseAttribute($name);
@@ -1659,7 +1695,7 @@ class FActiveField extends ActiveField
                                 'class' => 'col-md-3 form-label',
                                 'style' => 'border:solid 1px lightgray',
 
-                            ] ,
+                            ],
                             //'items' => $value,
                             'headerOptions' => [
                                 'style' => 'vertical-align:middle'
@@ -1669,23 +1705,29 @@ class FActiveField extends ActiveField
                 }
             }
 
-            $options = ['min' => $min, 'max' => $max,
+            $options = [
+                'min' => $min, 'max' => $max,
                 'addButtonPosition' => $position, // show add button in the header,
-                'columns' => $columns1];
+                'columns' => $columns1
+            ];
         } else if (is_string($columns)) {
 
-            $options = ['min' => $min, 'max' => $max,
+            $options = [
+                'min' => $min, 'max' => $max,
                 'addButtonPosition' => $position, // show add button in the header,
                 'columns' => [[
                     'name' => $columns,
                     'enableError' => true,
                     'title' => false
-                ]]];
+                ]]
+            ];
         } else {
 
-            $options = ['min' => $min, 'max' => $max,
+            $options = [
+                'min' => $min, 'max' => $max,
                 'addButtonPosition' => $position, // show add button in the header,
-                'columns' => []];
+                'columns' => []
+            ];
         }
 
         $this->widget(MultipleInput::className(), $options);
@@ -1693,7 +1735,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function fieldsInput($fields = []) {
+    public function fieldsInput($fields = [])
+    {
         $value = FHtml::getFieldValue($this->model, $this->attribute);
         if (!is_array($value)) {
             $value = FHtml::decode($value);
@@ -1726,7 +1769,8 @@ class FActiveField extends ActiveField
         $columns = $fields;
 
         $position = false;
-        $max = count($fields); $min = count($fields);
+        $max = count($fields);
+        $min = count($fields);
 
         if (is_array($columns) && key_exists('columns', $columns))
             $options = $columns;
@@ -1790,24 +1834,29 @@ class FActiveField extends ActiveField
                 }
             ];
 
-            $options = ['min' => $min, 'max' => $max,
+            $options = [
+                'min' => $min, 'max' => $max,
                 'addButtonPosition' => $position, // show add button in the header,
-                'columns' => $columns1];
-
+                'columns' => $columns1
+            ];
         } else if (is_string($columns)) {
 
-            $options = ['min' => $min, 'max' => $max,
+            $options = [
+                'min' => $min, 'max' => $max,
                 'addButtonPosition' => $position, // show add button in the header,
                 'columns' => [[
                     'name' => $columns,
                     'enableError' => true,
                     'title' => false
-                ]]];
+                ]]
+            ];
         } else {
 
-            $options = ['min' => $min, 'max' => $max,
+            $options = [
+                'min' => $min, 'max' => $max,
                 'addButtonPosition' => null, // show add button in the header,
-                'columns' => []];
+                'columns' => []
+            ];
         }
 
         $this->widget(MultipleInput::className(), $options);
@@ -1815,7 +1864,8 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function multipleFiles($view_path = '', $options = []) {
+    public function multipleFiles($view_path = '', $options = [])
+    {
         $this->render_type = FHtml::INPUT_RAW;
 
         $options = array_merge(['model' => $this->model, 'form' => $this->form, 'canEdit' => !$this->isReadOnly()], $options);
@@ -1826,22 +1876,26 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function files($view_path = '', $options = []) {
+    public function files($view_path = '', $options = [])
+    {
         return $this->multipleFiles($view_path, $options);
     }
 
-    public function attributes($options = []) {
+    public function attributes($options = [])
+    {
         $options = array_merge(['model' => $this->model, 'form' => $this->form, 'canEdit' => !$this->isReadOnly()], $options);
 
         $this->parts['{input}'] = FormObjectAttributes::widget($options);
         return $this;
     }
 
-    public function arrayInput($columns = [], $min = 0, $max = null, $position =  MultipleInput::POS_ROW) {
+    public function arrayInput($columns = [], $min = 0, $max = null, $position =  MultipleInput::POS_ROW)
+    {
         return $this->multipleInput($columns, $min,  $max, $position);
     }
 
-    public function arrayKeyValuesInput($columns = ['id', 'name']) {
+    public function arrayKeyValuesInput($columns = ['id', 'name'])
+    {
         $table = FHtml::getTableName($this->model);
         $value = FHtml::getFieldValue($this->model, $this->attribute);
 
@@ -1857,45 +1911,55 @@ class FActiveField extends ActiveField
         return $this->arrayInput($columns);
     }
 
-    public function tagsInput() {
+    public function tagsInput()
+    {
         return $this->multipleInput([]);
     }
 
-    public function tags() {
+    public function tags()
+    {
         return $this->multipleInput(['label', 'url']);
     }
 
-    public function links() {
+    public function links()
+    {
         return $this->multipleInput(['label', 'url']);
     }
 
-    public function text($simple = true) {
+    public function text($simple = true)
+    {
         if ($simple)
             return $this->textarea();
         return $this->html();
     }
 
-    public function emailsArray($max = null) {
+    public function emailsArray($max = null)
+    {
         return $this->multipleInput(['name', 'email'], 1, $max);
     }
 
-    public function coordinate($max = 1) {
+    public function coordinate($max = 1)
+    {
         return $this->multipleInput(['latitude', 'longtitude'], 1, $max);
     }
 
-    public function coordinateArray($max = null) {
+    public function coordinateArray($max = null)
+    {
         return $this->coordinate($max);
     }
 
-    public function address($max = 1) {
+    public function address($max = 1)
+    {
         return $this->multipleInput(['address', 'city', 'post', 'lat', 'long'], 1, $max);
     }
 
-    public function addressArray($max = null) {
+    public function addressArray($max = null)
+    {
         return $this->multipleInput(['address', 'city', 'post', 'lat', 'long'], 1, $max);
     }
 
-    public function relation($table, $options = [], $object_fields = [], $relation_type = '',  $grid_type = 'list', $view_path = '') {
+    public function relation($table, $options = [], $object_fields = [], $relation_type = '',  $grid_type = 'list', $view_path = '')
+    {
         $this->render_type = FHtml::INPUT_RAW;
 
         $options = array_merge(['model' => $this->model, 'form' => $this->form, 'canEdit' => !$this->isReadOnly()], $options);
@@ -1917,24 +1981,29 @@ class FActiveField extends ActiveField
         return $this;
     }
 
-    public function oneToMany($table, $options = [], $object_fields = [], $relation_type = '', $grid_type = '', $view_path = '') {
+    public function oneToMany($table, $options = [], $object_fields = [], $relation_type = '', $grid_type = '', $view_path = '')
+    {
         return self::relation($table, $options,  $object_fields, $relation_type, $grid_type, $view_path);
     }
 
-    public function hasOne($table, $options = [], $object_fields = [], $relation_type = '', $grid_type = '', $view_path = '') {
+    public function hasOne($table, $options = [], $object_fields = [], $relation_type = '', $grid_type = '', $view_path = '')
+    {
         return self::oneToMany($table, $options, $object_fields, $relation_type, $grid_type, $view_path);
     }
 
-    public function manyToMany($table, $options = [], $object_fields = [], $relation_type = '', $grid_type = '', $view_path = '') {
+    public function manyToMany($table, $options = [], $object_fields = [], $relation_type = '', $grid_type = '', $view_path = '')
+    {
         return self::relation($table, $options, $object_fields, $relation_type, $grid_type, $view_path);
     }
 
-    public function hasMany($table, $options = [], $object_fields = [], $relation_type = '', $grid_type = '', $view_path = '') {
+    public function hasMany($table, $options = [], $object_fields = [], $relation_type = '', $grid_type = '', $view_path = '')
+    {
         return self::manyToMany($table, $options, $object_fields, $relation_type, $grid_type, $view_path);
     }
 
-    public function wordpress( $condition = [], $field = 'wp_post_id', $options = []) {
-        $condition = is_array($condition) ? array_merge(['post_status' => Wp::POST_STATUS_PUBLISH, 'post_type' => Wp::POST_TYPE_POST ], $condition) : $condition;
+    public function wordpress($condition = [], $field = 'wp_post_id', $options = [])
+    {
+        $condition = is_array($condition) ? array_merge(['post_status' => Wp::POST_STATUS_PUBLISH, 'post_type' => Wp::POST_TYPE_POST], $condition) : $condition;
         $models = WpPosts::findComboArray($condition, 'ID', '{post_title} ({post_type}: {ID})');
 
         $this->select($models, $options);
@@ -1957,14 +2026,13 @@ class FActiveField extends ActiveField
 
         $this->parts['{input}'] = $result;
         return $this;
-
     }
 
-    public function jexcel($columns = ['Name', 'Overview']) {
+    public function jexcel($columns = ['Name', 'Overview'])
+    {
         $data = $this->getFieldValue();
-        $result = JExcel::widget(['data' => $data, 'id' => $this->getInputId(), 'colHeaders' => $columns, 'attribute' => $this->attribute, 'model' => $this->model, 'name' => $this->getInputName()]  );
+        $result = JExcel::widget(['data' => $data, 'id' => $this->getInputId(), 'colHeaders' => $columns, 'attribute' => $this->attribute, 'model' => $this->model, 'name' => $this->getInputName()]);
         $this->parts['{input}'] = $result;
         return $result;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
  * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
@@ -74,7 +75,8 @@ class FSecurity extends FFile
             return '';
     }
 
-    public static function setCurrentUser($user) {
+    public static function setCurrentUser($user)
+    {
         if (!isset($user)) {
             $_SESSION['moza.user_role'] = null;
             $_SESSION['moza.user_id'] = null;
@@ -219,7 +221,8 @@ class FSecurity extends FFile
         return $role == \common\models\User::ROLE_ADMIN || $role == \common\models\User::ROLE_MODERATOR;
     }
 
-    public static function isReadOnly($model) {
+    public static function isReadOnly($model)
+    {
         if (isset($model) && method_exists($model, 'getIsReadOnly'))
             return $model->getIsReadOnly();
 
@@ -228,7 +231,8 @@ class FSecurity extends FFile
         return false;
     }
 
-    public static function isLocked($model) {
+    public static function isLocked($model)
+    {
         if (isset($model) && method_exists($model, 'getIsLocked'))
             return $model->getIsLocked();
 
@@ -468,7 +472,6 @@ class FSecurity extends FFile
 
                 $roles1 = array_merge($roles1, $role);
             }
-
         }
 
         if (empty($action))
@@ -656,7 +659,8 @@ class FSecurity extends FFile
         return $result;
     }
 
-    public static function getApplicationObjectTypes() {
+    public static function getApplicationObjectTypes()
+    {
         $modules = self::getApplicationModulesComboArray();
         $arr = [];
         foreach ($modules as $module => $module_name) {
@@ -700,12 +704,12 @@ class FSecurity extends FFile
 
             $arr = array_merge($arr, ["$module\\" . FHtml::NULL_VALUE  => FHtml::t('common', 'Module') . ' : ' . FHtml::t('common', BaseInflector::camel2words($module))]);
 
-//            $arr = array_merge($arr, ["$module/manage" => "Full Rights"]);
-//            $arr = array_merge($arr, ["$module/edit" => ""]);
-//            $arr = array_merge($arr, ["$module/create" => "Create"]);
-//            $arr = array_merge($arr, ["$module/update" => "Update"]);
-//            $arr = array_merge($arr, ["$module/delete" => "Delete"]);
-//            $arr = array_merge($arr, ["$module" => "View"]);
+            //            $arr = array_merge($arr, ["$module/manage" => "Full Rights"]);
+            //            $arr = array_merge($arr, ["$module/edit" => ""]);
+            //            $arr = array_merge($arr, ["$module/create" => "Create"]);
+            //            $arr = array_merge($arr, ["$module/update" => "Update"]);
+            //            $arr = array_merge($arr, ["$module/delete" => "Delete"]);
+            //            $arr = array_merge($arr, ["$module" => "View"]);
 
             foreach ($menu_controllers as $controller => $controller_name) {
                 if (!key_exists($controller, $arr1))
@@ -779,7 +783,8 @@ class FSecurity extends FFile
         return $arr;
     }
 
-    public static function getApplicationActions($get_from_modules = true) {
+    public static function getApplicationActions($get_from_modules = true)
+    {
         $application_id = FHtml::currentApplicationId();
 
         $actions = [];
@@ -800,7 +805,8 @@ class FSecurity extends FFile
         return $actions;
     }
 
-    public static function getModulesArray() {
+    public static function getModulesArray()
+    {
         return static::getApplicationModulesComboArray(true);
     }
 
@@ -910,10 +916,12 @@ class FSecurity extends FFile
     public static function getUserRoleModels($user)
     {
         $models = $user->hasMany(AuthPermission::className(), ['object_id' => 'id'])
-            ->andOnCondition(['AND',
+            ->andOnCondition([
+                'AND',
                 ['relation_type' => 'user-role'],
                 ['object2_id' => 'auth_group'],
-                ['object_type' => 'user']]);
+                ['object_type' => 'user']
+            ]);
         return $models;
     }
 
@@ -924,7 +932,8 @@ class FSecurity extends FFile
         return $result;
     }
 
-    public static function getGroupRoleModels($group) {
+    public static function getGroupRoleModels($group)
+    {
 
         $arr = [];
         $roles = $group->roles;
@@ -1030,7 +1039,6 @@ class FSecurity extends FFile
                 $new_user->object2_id = $role;
                 $new_user->object2_type = 'auth_role';
                 $new_user->relation_type = 'user-role';
-
             } else if (is_string($role)) {
                 if (empty($role))
                     continue;
@@ -1078,7 +1086,6 @@ class FSecurity extends FFile
         } else {
             $name = "$controller/$action";
             $description = empty($description) ? ($action == 'manage' ? 'Create, Update, Delete' : $action) : $description;
-
         }
 
         $role = AuthRole::findOne(['code' => $name]);
@@ -1108,15 +1115,13 @@ class FSecurity extends FFile
             $group->save();
         }
 
-        if (isset($group) && !empty($actions))
-        {
+        if (isset($group) && !empty($actions)) {
             foreach ($actions as $action) {
                 if ($action == 'view')
                     $action = '';
 
                 $role_model = self::createAuthRole($controller, $action);
-                if (isset($role_model))
-                {
+                if (isset($role_model)) {
                     self::saveAuthPermission('auth_group', $group->id, 'group-role', 'auth_role', [$role_model->id]);
                 }
             }
@@ -1125,7 +1130,8 @@ class FSecurity extends FFile
         return $group;
     }
 
-    public static function generateHash($arr, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = true) {
+    public static function generateHash($arr, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = true)
+    {
         if (!is_array($arr))
             $arr = [$arr];
 
@@ -1139,7 +1145,8 @@ class FSecurity extends FFile
         return bin2hex($sha1);
     }
 
-    public static function checkHash($hash, $arr, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = null) {
+    public static function checkHash($hash, $arr, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = null)
+    {
         if (isset($secret_key_position)) {
             $hash1 = self::generateHash($arr, $algorithm, $secret_key, $secret_key_position);
             $hash2 = '';
@@ -1154,7 +1161,8 @@ class FSecurity extends FFile
             return false;
     }
 
-    public static function checkExpired($time, $max = FOOTPRINT_TIME_LIMIT) {
+    public static function checkExpired($time, $max = FOOTPRINT_TIME_LIMIT)
+    {
         $time_value = is_numeric($time) ? $time : strtotime($time);
 
         $duration = FHtml::time() - $time_value;
@@ -1165,7 +1173,8 @@ class FSecurity extends FFile
         return true;
     }
 
-    public static function checkFootPrint($hash, $time, $arr, $check_footprint = true, $check_time = true, $max_duration = FOOTPRINT_TIME_LIMIT, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY) {
+    public static function checkFootPrint($hash, $time, $arr, $check_footprint = true, $check_time = true, $max_duration = FOOTPRINT_TIME_LIMIT, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY)
+    {
         if ($check_footprint && !self::checkHash($hash, $arr, $algorithm, $secret_key))
             return FError::INVALID_FOOTPRINT;
 
@@ -1175,7 +1184,8 @@ class FSecurity extends FFile
         return '';
     }
 
-    public static function getTokenParams($user_name = '', $url = '', $object_type = '', $object_id) {
+    public static function getTokenParams($user_name = '', $url = '', $object_type = '', $object_id)
+    {
         if (empty($user_name))
             $user_name = FHtml::currentUserId();
 
@@ -1191,14 +1201,16 @@ class FSecurity extends FFile
         return [FHtml::currentApplicationId(), $user_name, $url, $object_type, $object_id];
     }
 
-    public static function generateToken($user_name = '', $url = '', $object_type = '', $object_id = '', $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = true) {
+    public static function generateToken($user_name = '', $url = '', $object_type = '', $object_id = '', $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = true)
+    {
         $arr = self::getTokenParams($user_name, $url, $object_type, $object_id);
         $a = self::generateHash($arr, $algorithm, $secret_key, $secret_key_position);
 
         return $a;
     }
 
-    public static function checkToken($token = '', $user_name = '', $url = '', $object_type = '', $object_id = '', $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = true) {
+    public static function checkToken($token = '', $user_name = '', $url = '', $object_type = '', $object_id = '', $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = true)
+    {
         if (empty($token))
             $token = FHtml::getRequestParam(FSecurity::REQUEST_PARAM_TOKEN);
 
@@ -1209,16 +1221,19 @@ class FSecurity extends FFile
         return self::checkHash($token, $arr, $algorithm, $secret_key, $secret_key_position);
     }
 
-    public static function getUserAccessAuthKeyParams($user_id) {
+    public static function getUserAccessAuthKeyParams($user_id)
+    {
         return FHtml::getUserAccessToken($user_id);
     }
 
-    public static function generateUserAccessAuthKey($user_id, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = true) {
+    public static function generateUserAccessAuthKey($user_id, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = true)
+    {
         $arr = self::getUserAccessAuthKeyParams($user_id);
         return self::generateHash($arr, $algorithm, $secret_key, $secret_key_position);
     }
 
-    public static function checkUserAccess($user_id = '', $auth_key = '', $user_auth_key = '') {
+    public static function checkUserAccess($user_id = '', $auth_key = '', $user_auth_key = '')
+    {
         if (empty($auth_key)) //
             $auth_key = FSecurity::getUserAccessToken();
 
@@ -1245,8 +1260,8 @@ class FSecurity extends FFile
                 Yii::$app->user->switchIdentity($user, 0);
 
                 //refresh current page and remove proccesed params --> temporarily removed
-//                $url = FHtml::createUrl(FHtml::currentUrlPath(), FHtml::RequestParams([FSecurity::REQUEST_PARAM_AUTH_KEY, 'user']));
-//                FHtml::currentControllerObject()->redirect($url);
+                //                $url = FHtml::createUrl(FHtml::currentUrlPath(), FHtml::RequestParams([FSecurity::REQUEST_PARAM_AUTH_KEY, 'user']));
+                //                FHtml::currentControllerObject()->redirect($url);
                 return FHtml::currentUserIdentity();
             }
         }
@@ -1314,20 +1329,15 @@ class FSecurity extends FFile
         // The cases. f means function name
         // Case1: f({object, method}, params)
         // Case2: f({class, function}, params)
-        if(is_array($call_arg) && count($call_arg) == 2)
-        {
-            if(is_object($call_arg[0]))
-            {
+        if (is_array($call_arg) && count($call_arg) == 2) {
+            if (is_object($call_arg[0])) {
                 $Object = $call_arg[0];
                 $Class = get_class($Object);
-            }
-            else if(is_string($call_arg[0]))
-            {
+            } else if (is_string($call_arg[0])) {
                 $Class = $call_arg[0];
             }
 
-            if(is_string($call_arg[1]))
-            {
+            if (is_string($call_arg[1])) {
                 $Method = $call_arg[1];
             } else if (is_array($call_arg[1])) {
                 list($Class, $Method) = explode("->", $call_arg[0]);
@@ -1338,14 +1348,12 @@ class FSecurity extends FFile
             }
         }
         // Case3: f("class::function", params)
-        else if(is_string($call_arg) && strpos($call_arg, "::") !== FALSE)
-        {
+        else if (is_string($call_arg) && strpos($call_arg, "::") !== FALSE) {
 
             list($Class, $Method) = explode("::", $call_arg);
         }
         // Case4: f("function", params)
-        else if(is_string($call_arg) && strpos($call_arg, "->") !== FALSE)
-        {
+        else if (is_string($call_arg) && strpos($call_arg, "->") !== FALSE) {
 
             list($Class, $Method) = explode("->", $call_arg);
             if (class_exists($Class)) {
@@ -1354,47 +1362,40 @@ class FSecurity extends FFile
                     $objectClass = array_merge($properties, ['class' => $Class::className()]);
                 else
                     $objectClass = ['class' => $Class::className()];
-                $Object = \Yii::createObject( $objectClass, FHtml::getFieldValue($param_array, ['constructors', 'objectParams', 0]));
+                $Object = \Yii::createObject($objectClass, FHtml::getFieldValue($param_array, ['constructors', 'objectParams', 0]));
                 return $Object->$Method(FHtml::getFieldValue($param_array, ['methodParams', 'params', 2]));
             }
-        }
-        else if(is_string($call_arg) && strpos($call_arg, "::") === FALSE)
-        {
+        } else if (is_string($call_arg) && strpos($call_arg, "::") === FALSE) {
 
             $Method = $call_arg;
         }
         // Case5: f(closure, params)
-        else if(is_object($call_arg) && $call_arg instanceof \Closure)
-        {
+        else if (is_object($call_arg) && $call_arg instanceof \Closure) {
             $Method = $call_arg;
             return $Method($param_array);
-        }
-        else if(is_object($call_arg))
-        {
+        } else if (is_object($call_arg)) {
             $Class = $call_arg;
             $Method = $param_array[0];
             unset($param_array[0]);
             return $Class->$Method($param_array);
-        }
-        else throw new \Exception("Case not allowed! Invalid Data supplied!");
-        if($Class) $Func = new \ReflectionMethod($Class, $Method);
+        } else throw new \Exception("Case not allowed! Invalid Data supplied!");
+        if ($Class) $Func = new \ReflectionMethod($Class, $Method);
         else $Func = new \ReflectionFunction($Method);
         $params = array();
-        foreach($Func->getParameters() as $Param)
-        {
-            if($Param->isDefaultValueAvailable()) $params[$Param->getPosition()] = $Param->getDefaultValue();
-            if(array_key_exists($Param->name, $param_array)) $params[$Param->getPosition()] = $param_array[$Param->name];
-            if(!$Param->isOptional() && !isset($params[$Param->getPosition()])) die("No Defaultvalue available and no Value supplied!\r\n");
+        foreach ($Func->getParameters() as $Param) {
+            if ($Param->isDefaultValueAvailable()) $params[$Param->getPosition()] = $Param->getDefaultValue();
+            if (array_key_exists($Param->name, $param_array)) $params[$Param->getPosition()] = $param_array[$Param->name];
+            if (!$Param->isOptional() && !isset($params[$Param->getPosition()])) die("No Defaultvalue available and no Value supplied!\r\n");
         }
-        if($Func instanceof \ReflectionFunction) return $Func->invokeArgs($params);
-        if($Func->isStatic()) return $Func->invokeArgs(null, $params);
+        if ($Func instanceof \ReflectionFunction) return $Func->invokeArgs($params);
+        if ($Func->isStatic()) return $Func->invokeArgs(null, $params);
         else return $Func->invokeArgs($Object, $params);
     }
 
-    public static function executeApplicationFunction($func_name, $params = null) {
+    public static function executeApplicationFunction($func_name, $params = null)
+    {
         $helper = FHtml::getApplicationHelper();
-        if (isset($helper) && method_exists($helper, $func_name))
-        {
+        if (isset($helper) && method_exists($helper, $func_name)) {
             return $helper->$func_name($params);
         }
         if (isset($helper) && method_exists($helper, 'execute')) {
@@ -1402,7 +1403,8 @@ class FSecurity extends FFile
         }
     }
 
-    public static function createBackendMenu($application_id = '') {
+    public static function createBackendMenu($application_id = '')
+    {
         if (empty($application_id))
             $application_id = FHtml::currentApplicationId();
 
@@ -1421,7 +1423,8 @@ class FSecurity extends FFile
         return $menu;
     }
 
-    public static function getPublicUrls() {
+    public static function getPublicUrls()
+    {
         return ['site/index'];
     }
 
@@ -1436,8 +1439,7 @@ class FSecurity extends FFile
         if (empty($route))
             return null;
 
-        if (is_array($route))
-        {
+        if (is_array($route)) {
             $url = $route[0];
             unset($route[0]);
             if (!empty($route)) {
@@ -1450,7 +1452,9 @@ class FSecurity extends FFile
         }
 
         $object_type = '';
-        $module = ''; $controller = ''; $action = '';
+        $module = '';
+        $controller = '';
+        $action = '';
         $arr = FHtml::parseUrl($route, $name);
         $controller = $arr['controller'];
         $module = $arr['module'];
@@ -1493,7 +1497,6 @@ class FSecurity extends FFile
                     'url' => FHtml::createUrl([$check->route]),
                     'module' => $module, 'controller' => $controller, 'action' => $action
                 );
-
             } else {
                 $menu = array(
                     'active' => $active,
@@ -1561,20 +1564,23 @@ class FSecurity extends FFile
 
         if (!($children === false) && is_array($children)) { // if all child menu is not visible and also set parent menu is invisible
             $menu['children'] = $children;
-            $visible = false; $active = false;
+            $visible = false;
+            $active = false;
             foreach ($children as $child) {
-                $visible = $visible || $child['visible'];
-                $active = $active || $child['active'];
+                if ($child && is_array($child)) {
+                    $visible = $visible || $child['visible'];
+                    $active = $active || $child['active'];
+                }
             }
             $menu['visible'] = $visible;
             $menu['active'] = $active;
-
         }
 
         return $menu;
     }
 
-    public static function addAdminMenu($menu, $appendedMenu = ['Users', 'System', 'Tools'], $controller = '') {
+    public static function addAdminMenu($menu, $appendedMenu = ['Users', 'System', 'Tools'], $controller = '')
+    {
         if (empty($controller))
             $controller = FHtml::currentController();
 
@@ -1589,8 +1595,7 @@ class FSecurity extends FFile
                 $menu_existed = false;
                 foreach ($menu as $i => $menu_item) {
 
-                    if (is_array($menu_item) && key_exists('name', $menu_item) && $menu_item['name'] == $menu_name)
-                    {
+                    if (is_array($menu_item) && key_exists('name', $menu_item) && $menu_item['name'] == $menu_name) {
                         $menu_existed = true;
                         break;
                     }
@@ -1675,7 +1680,6 @@ class FSecurity extends FFile
 
         if (isset($helper) && method_exists($helper, 'getBackendMenu')) {
             $menu =  $helper::getBackendMenu($controller, $action);
-
         } else {
             // 2. Otherwise, return default menu
             $menu[] = AuthMenu::buildDashBoardMenu();
@@ -1684,14 +1688,14 @@ class FSecurity extends FFile
             $menu = self::addAdminMenu($menu, $modules);
         }
 
-        $menu[] = AuthMenu::menuItem (
+        $menu[] = AuthMenu::menuItem(
             '#',
             'My Profile',
             'glyphicon glyphicon-user',
             in_array($controller, ['user']) && $action == 'profile',
             [],
             [
-                AuthMenu::menuItem (
+                AuthMenu::menuItem(
                     '/user/profile',
                     'Edit Profile',
                     '',
@@ -1699,7 +1703,7 @@ class FSecurity extends FFile
                     []
                 ),
 
-                AuthMenu::menuItem (
+                AuthMenu::menuItem(
                     '/site/logout',
                     'Logout',
                     '',
@@ -1718,7 +1722,8 @@ class FSecurity extends FFile
         return $menu;
     }
 
-    public static function getDynamicMenuFromDB($controller = null, $action = null) {
+    public static function getDynamicMenuFromDB($controller = null, $action = null)
+    {
         if (empty($controller))
             $controller = FHtml::currentController();
 
@@ -1834,7 +1839,7 @@ class FSecurity extends FFile
                     $class = $module['class'];
 
                     if (!file_exists(FFile::getFullFileName("$class.php")));
-                        continue;
+                    continue;
 
                     if (!class_exists($module['class']))
                         continue;
@@ -1854,9 +1859,8 @@ class FSecurity extends FFile
             return $actions;
         }
 
-        if (!StringHelper::endsWith($controllerDir, 'controllers'))
-        {
-            if (key_exists($controllerDir, \Yii::$app->modules )) {
+        if (!StringHelper::endsWith($controllerDir, 'controllers')) {
+            if (key_exists($controllerDir, \Yii::$app->modules)) {
                 $module = \Yii::$app->modules[$controllerDir];
                 if (method_exists($module, 'getBasePath')) {
                     $basePath = $module->getBasePath();
@@ -1883,18 +1887,19 @@ class FSecurity extends FFile
         asort($controllerlist);
         $fulllist = [];
         if ($getActions) {
-            foreach ($controllerlist as $controller):
+            foreach ($controllerlist as $controller) :
                 $fulllist = array_merge($fulllist, self::getControllerActions($controllerDir, $controller));
             endforeach;
         } else {
-            foreach ($controllerlist as $controller):
+            foreach ($controllerlist as $controller) :
                 $fulllist[BaseInflector::camel2id(substr($controller, 0, -14))] = substr($controller, 0, -14);
             endforeach;
         }
         return $fulllist;
     }
 
-    public static function getApiControllerActions() {
+    public static function getApiControllerActions()
+    {
         $application_id = FHtml::currentApplicationId();
         $modules = array_merge(['' => ''], FHtml::getApplicationModulesComboArray());
         $actions = [];
@@ -1920,11 +1925,11 @@ class FSecurity extends FFile
         return $actions;
     }
 
-    public static function getControllerActions($controllerDir = '', $controller = '') {
+    public static function getControllerActions($controllerDir = '', $controller = '')
+    {
         $fulllist = [];
-        if (!StringHelper::endsWith($controllerDir, 'controllers') && !empty($controller))
-        {
-            if (key_exists($controllerDir, \Yii::$app->modules )) {
+        if (!StringHelper::endsWith($controllerDir, 'controllers') && !empty($controller)) {
+            if (key_exists($controllerDir, \Yii::$app->modules)) {
                 $module = \Yii::$app->modules[$controllerDir];
                 if (method_exists($module, 'getBasePath')) {
                     $basePath = $module->getBasePath();
@@ -1952,15 +1957,14 @@ class FSecurity extends FFile
             }
 
             $handle = is_file($controllerDir . '/' . $controller) ? fopen($controllerDir . '/' . $controller, "r") : null;
-
         } else {
             $handle = is_file($controllerDir) ? fopen($controllerDir, "r") : null;
         }
 
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
-                if (preg_match('/public function action(.*?)\(/', $line, $display)):
-                    if (strlen($display[1]) > 2):
+                if (preg_match('/public function action(.*?)\(/', $line, $display)) :
+                    if (strlen($display[1]) > 2) :
                         $fulllist[BaseInflector::camel2id(substr($controller, 0, -14))][] = strtolower($display[1]);
                     endif;
                 endif;
@@ -1970,7 +1974,8 @@ class FSecurity extends FFile
         return $fulllist;
     }
 
-    public static function getAuthorizedMenu($menu = []) {
+    public static function getAuthorizedMenu($menu = [])
+    {
         if (empty($menu))
             $menu = FSecurity::getBackendMenu();
 
@@ -2022,7 +2027,8 @@ class FSecurity extends FFile
         return $menu;
     }
 
-    public static function getAuthorizedModulesControllersFromMenu($menu = []) {
+    public static function getAuthorizedModulesControllersFromMenu($menu = [])
+    {
         if (empty($menu))
             $menu = FSecurity::getBackendMenu();
 
@@ -2039,7 +2045,7 @@ class FSecurity extends FFile
                 $url = $child_menu_item['url'];
                 $url_arr = explode('/', $url);
                 $action = count($url_arr) > 1 ? $url_arr[count($url_arr) - 1] : '';
-                $l = strpos( $action, '?');
+                $l = strpos($action, '?');
                 if ($l > 0)
                     $action = substr($action, 0, $l);
 
@@ -2067,7 +2073,8 @@ class FSecurity extends FFile
     }
 
     //Hung: return Authorized Columuns for one model, used in Search model, Index
-    public static function getAuthorizedColumns($model) {
+    public static function getAuthorizedColumns($model)
+    {
         if (is_string($model))
             $model = FHtml::createModel($model);
         if (isset($model) && is_object($model)) {
@@ -2079,7 +2086,8 @@ class FSecurity extends FFile
     }
 
     //Hung: return Authorized Condition for one model, used in Search model, Index
-    public static function getAuthorizedSearchParamsForUser($model = null, $user = null) {
+    public static function getAuthorizedSearchParamsForUser($model = null, $user = null)
+    {
         if (isset($model))
             $controller = str_replace('_', '-', FHtml::getTableName($model));
         else
@@ -2166,15 +2174,18 @@ class FSecurity extends FFile
         return self::isAuthorized(self::ACTION_EDIT, $module, $field, 'view', $form_type, '', '', $manualValue);
     }
 
-    public static function isLocalhost() {
+    public static function isLocalhost()
+    {
         return FHtml::currentHost() == 'http://localhost';
     }
 
-    public static function isAdminUser() {
+    public static function isAdminUser()
+    {
         return self::isRoleAdmin() && strtolower(FHtml::currentUsername()) == 'admin';
     }
 
-    public static function logAction($condition = [], $action = '', $status = '', $info = '', $object_type = '', $object_id = '', $user_id = '', $ip_address = '') {
+    public static function logAction($condition = [], $action = '', $status = '', $info = '', $object_type = '', $object_id = '', $user_id = '', $ip_address = '')
+    {
         if (!self::isUserLogsEnabled())
             return;
 
@@ -2183,63 +2194,62 @@ class FSecurity extends FFile
 
         $completed = false;
         if (!isset($log)) {
-	        $log = new UserLogs();
-        }
-        else
+            $log = new UserLogs();
+        } else
             $completed = true;
 
 
-//	    $log->ip_address = !empty($ip_address) ? $ip_address : FHtml::currentIPAddress();
-//        $log->action = !empty($action) ? $action : FHtml::currentAction();
-//        $log->link_url = FHtml::currentUrl();
-//        $log->log_date = FHtml::Today();
-//        $log->object_type = !empty($object_type) ? $object_type : FHtml::currentController();
-//        $log->object_id = !empty($object_id) ? $object_id : FHtml::getRequestParam(['id', 'object_id']);
-//        $log->user_id = !empty($user_id) ? $user_id : FHtml::currentUserId();
-//        $log->application_id = FHtml::currentApplicationId();
-//        $log->status = !empty($status) ? $status : ($completed ? FHtml::STATUS_FINISH : '');
-//        $log->note = $info;
-//        if ($completed && $status != FHtml::NULL_VALUE)
-//            $log->modified_date = FHtml::Now();
-//        else
-//            $log->created_date = FHtml::Now();
-//
-//        $log->save();
+        //	    $log->ip_address = !empty($ip_address) ? $ip_address : FHtml::currentIPAddress();
+        //        $log->action = !empty($action) ? $action : FHtml::currentAction();
+        //        $log->link_url = FHtml::currentUrl();
+        //        $log->log_date = FHtml::Today();
+        //        $log->object_type = !empty($object_type) ? $object_type : FHtml::currentController();
+        //        $log->object_id = !empty($object_id) ? $object_id : FHtml::getRequestParam(['id', 'object_id']);
+        //        $log->user_id = !empty($user_id) ? $user_id : FHtml::currentUserId();
+        //        $log->application_id = FHtml::currentApplicationId();
+        //        $log->status = !empty($status) ? $status : ($completed ? FHtml::STATUS_FINISH : '');
+        //        $log->note = $info;
+        //        if ($completed && $status != FHtml::NULL_VALUE)
+        //            $log->modified_date = FHtml::Now();
+        //        else
+        //            $log->created_date = FHtml::Now();
+        //
+        //        $log->save();
 
-	    // long test with postgres sql
-	    $columns = $log->getAttributes();
-	    ArrayHelper::remove($columns, 'id');
-	    $columns = array_combine(array_keys($columns), [
-		    FHtml::Today(),
-		    !empty($user_id) ? $user_id : FHtml::currentUserId(),
-		    !empty($action) ? $action : FHtml::currentAction(),
-		    !empty($object_type) ? $object_type : FHtml::currentController(),
-		    !empty($object_id) ? $object_id : FHtml::getRequestParam(['id', 'object_id']),
-		    FHtml::currentUrl(),
-		    !empty($ip_address) ? $ip_address : FHtml::currentIPAddress(),
-		    '',
-		    $info,
-		    !empty($status) ? $status : ($completed ? FHtml::STATUS_FINISH : ''),
-		    FHtml::Now(),
-		    FHtml::Now(),
-		    FHtml::currentApplicationId()
-	    ]);
+        // long test with postgres sql
+        $columns = $log->getAttributes();
+        ArrayHelper::remove($columns, 'id');
+        $columns = array_combine(array_keys($columns), [
+            FHtml::Today(),
+            !empty($user_id) ? $user_id : FHtml::currentUserId(),
+            !empty($action) ? $action : FHtml::currentAction(),
+            !empty($object_type) ? $object_type : FHtml::currentController(),
+            !empty($object_id) ? $object_id : FHtml::getRequestParam(['id', 'object_id']),
+            FHtml::currentUrl(),
+            !empty($ip_address) ? $ip_address : FHtml::currentIPAddress(),
+            '',
+            $info,
+            !empty($status) ? $status : ($completed ? FHtml::STATUS_FINISH : ''),
+            FHtml::Now(),
+            FHtml::Now(),
+            FHtml::currentApplicationId()
+        ]);
 
-	    $command = FHtml::currentDb()->createCommand();
+        $command = FHtml::currentDb()->createCommand();
 
-	    if ($log->isNewRecord) {
-		    ArrayHelper::remove($columns, 'modified_date');
-		    $command = $command->insert($log::tableName(), $columns);
-	    }
-	    else {
-		    ArrayHelper::remove($columns, 'created_date');
-			$command = $command->update($log::tableName(), $columns, ['id' => $log->id]);
-	    }
-		$command->execute();
-	    FHtml::clearMessages();
+        if ($log->isNewRecord) {
+            ArrayHelper::remove($columns, 'modified_date');
+            $command = $command->insert($log::tableName(), $columns);
+        } else {
+            ArrayHelper::remove($columns, 'created_date');
+            $command = $command->update($log::tableName(), $columns, ['id' => $log->id]);
+        }
+        $command->execute();
+        FHtml::clearMessages();
     }
 
-    public static function isUserLogsEnabled() {
+    public static function isUserLogsEnabled()
+    {
         if (!FHtml::isTableExisted('user_logs') || !FHtml::isModuleExisted('users') || !FConfig::settingUserActionsLogEnabled())
             return false;
 
@@ -2337,7 +2347,8 @@ class FSecurity extends FFile
      * @param int $user_id
      * @return UserAlias|null
      */
-    public static function getUserAlias($user_alias_name = "", $user_id = 0, $user_name = '') {
+    public static function getUserAlias($user_alias_name = "", $user_id = 0, $user_name = '')
+    {
         $current_user_id = self::currentUserId();
         if ($user_id == 0) {
             $user_id = $current_user_id;
@@ -2365,7 +2376,8 @@ class FSecurity extends FFile
         return null;
     }
 
-    public static function getUserAliasTable() {
+    public static function getUserAliasTable()
+    {
         return self::TABLE_ALIAS_USER;
     }
 
@@ -2373,11 +2385,13 @@ class FSecurity extends FFile
      * @param $user_alias_id
      * @return mixed|null|\yii\web\Session
      */
-    public static function setCurrentAliasId($user_alias_id) {
+    public static function setCurrentAliasId($user_alias_id)
+    {
         return FHtml::Session('user_alias_id', $user_alias_id);
     }
 
-    public static function currentUserAliasId() {
+    public static function currentUserAliasId()
+    {
         $user_id = self::currentUserId();
 
         if (empty($user_id))
@@ -2411,7 +2425,8 @@ class FSecurity extends FFile
      * @param User $model
      * @return bool
      */
-    public static function loginUserAlias($model = null) {
+    public static function loginUserAlias($model = null)
+    {
 
         if (!$model) {
             return false;
@@ -2435,7 +2450,8 @@ class FSecurity extends FFile
         return false;
     }
 
-    public static function updateUserOnlineStatus($user, $is_login = true) {
+    public static function updateUserOnlineStatus($user, $is_login = true)
+    {
         if (isset($user) && is_object($user)) {
             $save = false;
             if (FHtml::field_exists($user, self::USER_FIELD_IS_ONLINE)) {
@@ -2457,13 +2473,13 @@ class FSecurity extends FFile
         return false;
     }
 
-    public static function getUserAccessToken($userid = null) {
+    public static function getUserAccessToken($userid = null)
+    {
 
         if (isset($userid) && is_object($userid) && method_exists($userid, 'getAuthKey'))
             return $userid->getAuthKey();
 
-        if (!empty($userid))
-        {
+        if (!empty($userid)) {
             if (is_numeric($userid))
                 $user = User::findOne($userid);
             else
@@ -2493,13 +2509,13 @@ class FSecurity extends FFile
         return $user;
     }
 
-    public static function getUserStatusArray() {
+    public static function getUserStatusArray()
+    {
         return [\common\models\User::STATUS_ACTIVE => FHtml::t('common', 'Enabled'), \common\models\User::STATUS_DISABLED => FHtml::t('common', 'Disabled')];
     }
 
-    public function generateLoginToken($user_id) {
+    public function generateLoginToken($user_id)
+    {
         return md5($user_id . time());
     }
-
-
 }

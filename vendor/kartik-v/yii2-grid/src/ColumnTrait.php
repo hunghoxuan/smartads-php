@@ -142,8 +142,8 @@ trait ColumnTrait
                     $fmt = ($format == 'scientific') ? "0{$append}E+00" : "\\#\\{$tSep}\\#\\#0" . $append;
                     break;
                 case 'currency':
-                    $curr = is_array($this->format) && isset($this->format[1]) ? $this->format[1] :
-                        isset($formatter->currencyCode) ? $formatter->currencyCode . ' ' : '';
+                    $curr = is_array($this->format) && (isset($this->format[1]) ? $this->format[1] :
+                        isset($formatter->currencyCode)) ? $formatter->currencyCode . ' ' : '';
                     $fmt = "{$curr}\\#\\{$tSep}\\#\\#0{$dSep}00";
                     break;
                 case 'date':
@@ -326,14 +326,12 @@ trait ColumnTrait
     protected function isValidAlignment($type = 'hAlign')
     {
         if ($type === 'hAlign') {
-            return (
-                $this->hAlign === GridView::ALIGN_LEFT ||
+            return ($this->hAlign === GridView::ALIGN_LEFT ||
                 $this->hAlign === GridView::ALIGN_RIGHT ||
                 $this->hAlign === GridView::ALIGN_CENTER
             );
         } elseif ($type = 'vAlign') {
-            return (
-                $this->vAlign === GridView::ALIGN_TOP ||
+            return ($this->vAlign === GridView::ALIGN_TOP ||
                 $this->vAlign === GridView::ALIGN_MIDDLE ||
                 $this->vAlign === GridView::ALIGN_BOTTOM
             );
@@ -390,7 +388,8 @@ trait ColumnTrait
      */
     protected function setPageRows()
     {
-        if ($this->grid->showPageSummary && isset($this->pageSummary) && $this->pageSummary !== false &&
+        if (
+            $this->grid->showPageSummary && isset($this->pageSummary) && $this->pageSummary !== false &&
             !is_string($this->pageSummary)
         ) {
             $provider = $this->grid->dataProvider;
