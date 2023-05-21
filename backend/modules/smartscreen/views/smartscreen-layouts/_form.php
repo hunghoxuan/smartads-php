@@ -1,8 +1,9 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "SmartscreenLayouts".
  */
 
@@ -81,7 +82,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
                             <?= FHtml::t('common', $moduleTitle) ?>
-                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?>                        </span>
+                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -106,10 +107,10 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                         ?>
 
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'is_default' => ['value' => $form->fieldNoLabel($model, 'is_default')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3])],
+                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox()],
+                                            'is_default' => ['value' => $form->fieldNoLabel($model, 'is_default')->checkbox()],
 
                                         ]]); ?>
 
@@ -135,6 +136,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                                             'style' => 'width: 300px',
                                                         ]
                                                     ],
+
                                                     [
                                                         'name' => 'marginTop',
                                                         'title' => 'Top (%)',
@@ -151,6 +153,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                                             'class' => 'input-priority'
                                                         ]
                                                     ],
+
                                                     [
                                                         'name' => 'percentWidth',
                                                         'title' => 'Width (%)',
@@ -209,9 +212,9 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                 <?= isset($full_frame) ? \backend\modules\smartscreen\Smartscreen::showLayoutPreview($full_frame) : '' ?>
             </div>
         </div>
-            </div>
-        </div>
     </div>
+</div>
+</div>
 </div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end() ?>

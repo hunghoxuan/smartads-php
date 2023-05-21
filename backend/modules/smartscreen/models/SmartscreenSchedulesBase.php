@@ -79,5 +79,13 @@ class SmartscreenSchedulesBase extends \common\models\BaseModel //\yii\db\Active
         ];
     }
 
+    public function getOnwerIdField()
+    {
+        return 'owner_id';
+    }
 
+    public function getIsActiveField()
+    {
+        return 'loop';
+    }
 }

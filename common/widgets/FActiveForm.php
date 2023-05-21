@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: HY
@@ -25,6 +26,7 @@ use yii\helpers\BaseInflector;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\Pjax;
+use \kartik\widgets\Select2;
 
 class FActiveForm extends ActiveForm
 {
@@ -56,7 +58,7 @@ class FActiveForm extends ActiveForm
         if ($this->display_type == self::TYPE_GRID) { //inline
             $this->formConfig = [];
             $this->type = self::TYPE_VERTICAL;
-            $this->fieldConfig = ['options' => ['class'=> '', 'style' => '']];
+            $this->fieldConfig = ['options' => ['class' => '', 'style' => '']];
         }
 
         $this->fieldClass = 'common\widgets\FActiveField';
@@ -70,11 +72,10 @@ class FActiveForm extends ActiveForm
             $this->formConfig = [];
 
             $this->formConfig = ['labelSpan' => 0];
-            $this->fieldConfig = ['options' => ['class'=> '', 'style' => '']];
-
+            $this->fieldConfig = ['options' => ['class' => '', 'style' => '']];
         } else if ($this->type == self::TYPE_INLINE) {
             $this->formConfig = [];
-            $this->fieldConfig = ['options' => ['class'=> 'col-md-12 col-xs-12', 'style' => 'padding-bottom: 10px; padding-top:10px;font-size:12px;color:grey']];
+            $this->fieldConfig = ['options' => ['class' => 'col-md-12 col-xs-12', 'style' => 'padding-bottom: 10px; padding-top:10px;font-size:12px;color:grey']];
         } else { //inline
             $this->display_type = $this->type;
             $this->type = self::TYPE_HORIZONTAL;
@@ -160,7 +161,8 @@ class FActiveForm extends ActiveForm
         }
     }
 
-    public function fieldSmall($model, $attribute, $options = [], $size = null) {
+    public function fieldSmall($model, $attribute, $options = [], $size = null)
+    {
         $field = self::field($model, $attribute, $options);
         $field->labelSpan(6);
         return $field;
@@ -175,6 +177,32 @@ class FActiveForm extends ActiveForm
         parent::initForm();
     }
 
+    public function selectMany($model, $attribute, $items, $options = [])
+    {
+        $field = self::fieldNoLabel($model, $attribute, $options);
+        return $field->widget(Select2::classname(), [
+            'data'    => $items,
+            'options' => array_merge($options, ['placeholder' => FHtml::t('Select many'), 'multiple' => true, 'disabled' => false]),
+            'pluginOptions' => [
+                'tags'            => true,
+                'tokenSeparators' => [',', ' '],
+            ],
+        ]);
+    }
+
+    public function select($model, $attribute, $items, $options = [])
+    {
+        $field = self::field($model, $attribute, $options);
+        return $field->widget(Select2::classname(), [
+            'data'    => $items,
+            'options' => array_merge($options, ['placeholder' => FHtml::t('Select'), 'multiple' => false, 'disabled' => false]),
+            'pluginOptions' => [
+                'tags'            => true,
+                'tokenSeparators' => [',', ' '],
+            ],
+        ]);
+    }
+
     public function run()
     {
         if ((isset($this->dynamicForm) && $this->dynamicForm == true) && FHtml::settingDynamicForm()) { //dynamically build form base on fields info in database
@@ -184,16 +212,15 @@ class FActiveForm extends ActiveForm
                 $this->object_type = str_replace('-', '_', BaseInflector::camel2id(FHtml::currentController(), '_'));
 
             $content = $this->render('../../../backend/views/www/_form_3cols', ['model' => $this->model, 'modulePath' => $this->moduleKey, 'fields' => $this->fields]);
-
         } else {
             $content = ob_get_clean();
         }
 
         if ($this->is_modal) {
             \yii\bootstrap\Modal::begin([
-                'header'=> FHtml::t('common', !empty($this->title) ? $this->title : $this->object_type),
+                'header' => FHtml::t('common', !empty($this->title) ? $this->title : $this->object_type),
                 'toggleButton' => [
-                    'label'=> FHtml::t('button', $this->label), 'class'=>'btn btn-success'
+                    'label' => FHtml::t('button', $this->label), 'class' => 'btn btn-success'
                 ],
             ]);
         }
@@ -210,7 +237,7 @@ class FActiveForm extends ActiveForm
         echo Html::beginForm($this->action, $this->method, $this->options);
 
         if (isset($this->model) && !empty(FHtml::getTableName($this->model))) {
-            echo Html::activeHiddenInput($this->model, 'id', [ 'value' => $this->model->id]);
+            echo Html::activeHiddenInput($this->model, 'id', ['value' => $this->model->id]);
         }
 
         echo $content;
@@ -256,5 +283,4 @@ class FActiveForm extends ActiveForm
             \yii\bootstrap\Modal::end();
         }
     }
-
 }

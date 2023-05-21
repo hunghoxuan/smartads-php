@@ -91,28 +91,22 @@ class Smartscreen extends Module
             $title,
             'glyphicon glyphicon-cog',
             FHtml::isInArray($controller, $menu),
-            [User::ROLE_ADMIN],
+            [User::ROLE_ADMIN, User::ROLE_MANAGER],
             [
                 !FHtml::isInArray('smartscreen-campaigns', $menu) ? null : AuthMenu::menuItem(
                     '/smartscreen/smartscreen-campaigns/index',
                     'Campaigns',
                     'glyphicon glyphicon-wrench',
                     $controller == 'smartscreen-campaigns',
-                    [User::ROLE_ADMIN]
+                    [User::ROLE_ADMIN, User::ROLE_MANAGER, User::ROLE_USER]
                 ),
-                !FHtml::isInArray('smartscreen-channels', $menu) ? null : AuthMenu::menuItem(
-                    '/smartscreen/smartscreen-channels/index',
-                    'Channels',
-                    'glyphicon glyphicon-wrench',
-                    $controller == 'smartscreen-channels',
-                    [User::ROLE_ADMIN]
-                ),
+
                 !FHtml::isInArray('smartscreen-schedules', $menu) ? null : AuthMenu::menuItem(
                     '/smartscreen/smartscreen-schedules/index?date=' . $today,
                     'Schedules',
                     'glyphicon glyphicon-wrench',
                     $controller == 'smartscreen-schedules',
-                    [User::ROLE_ADMIN, User::ROLE_USER]
+                    [User::ROLE_ADMIN, User::ROLE_MANAGER, User::ROLE_USER]
                 ),
                 !FHtml::isInArray('smartscreen-layouts', $menu) ? null : AuthMenu::menuItem(
                     '/smartscreen/smartscreen-layouts/index',
@@ -133,15 +127,15 @@ class Smartscreen extends Module
                     'Content',
                     'glyphicon glyphicon-wrench',
                     $controller == 'smartscreen-content',
-                    [User::ROLE_ADMIN, User::ROLE_USER]
+                    [User::ROLE_ADMIN, User::ROLE_MANAGER, User::ROLE_USER]
                 ),
-                //                !FHtml::isInArray('smartscreen-scripts', $menu) ? null : AuthMenu::menuItem(
-                //                    '/smartscreen/smartscreen-scripts/index',
-                //                    'Scripts',
-                //                    'glyphicon glyphicon-wrench',
-                //                    $controller == 'smartscreen-scripts',
-                //                    [User::ROLE_ADMIN]
-                //                ),
+                !FHtml::isInArray('smartscreen-channels', $menu) ? null : AuthMenu::menuItem(
+                    '/smartscreen/smartscreen-channels/index',
+                    'Channels',
+                    'glyphicon glyphicon-wrench',
+                    $controller == 'smartscreen-channels',
+                    [User::ROLE_ADMIN]
+                ),
                 !FHtml::isInArray('smartscreen-station', $menu) ? null : AuthMenu::menuItem(
                     '/smartscreen/smartscreen-station/index',
                     'Stations',
@@ -770,7 +764,6 @@ class Smartscreen extends Module
             $device_id = $device->id;
             $autoCalculateStarttime = !empty($device_id);
             $listSchedule = Smartscreen::findSchedules($device_id, null, null, null, $limit, $forAPI, $date, $date_end);
-            //FHtml::var_dump($listSchedule); die;
             $listSchedule = Smartscreen::fixSchedules($listSchedule, $date, $start_time, $forAPI, $showCurrentOnly || $autoCalculateStarttime);
             if (isset($listSchedule[0]['schedules'])) {
                 $listSchedule = $listSchedule[0]['schedules'];
@@ -2918,10 +2911,10 @@ class Smartscreen extends Module
                 $data[] = array(
                     'id' => $frame->id,
                     'name' => $frame->name,
+                    'marginLeft' => $frame->marginLeft,
+                    'marginTop' => $frame->marginTop,
                     'percentWidth' => $frame->percentWidth,
                     'percentHeight' => $frame->percentHeight,
-                    'marginTop' => $frame->marginTop,
-                    'marginLeft' => $frame->marginLeft,
                     'backgroundColor' => static::getBackgroundColor($frame->backgroundColor),
                     'contentLayout' => $contentLayout,
                     'data' => $list_content
@@ -3887,7 +3880,7 @@ class Smartscreen extends Module
                 }
                 //$result = $result . $item->description . '<span style="color:grey"> [' . $item->file . '] </span>' . '<br/>';
                 $file_kind = $item->file_kind === 'time' ? 'm' : ($item->file_kind === 'second' ? 's' : ' times');
-                $image = !empty($item->file) ? FHtml::showImage($item->file, 'smartscreen-file', '', '62px', 'border:1px solid lightgrey;', !empty($item->description) ? $item->description : (is_object($model) ? $model->title : '')) : '<span class="label label-sm label-default">' . $item->command . '</span>';
+                $image = !empty($item->file) ? FHtml::showImage($item->file, 'smartscreen-file', '', '40px', 'border:1px solid lightgrey;', !empty($item->description) ? $item->description : (is_object($model) ? $model->title : '')) : '<span class="label label-sm label-default">' . $item->command . '</span>';
                 //$result .= "<div class='row'> <div class='col-md-10' style='padding-bottom: 5px; margin-bottom: 5px;'>" . $image .  "<span style=\"color:grey\"> " . $item->description . "</span></div>" . "<div class='col-md-2 pull-right' style=\"color:grey; text-align: right\"> "  . $item->file_duration . '' . $file_kind . " </div>" . "</div>";
                 $result .= "<div class='' style='float:left;margin-right:5px;'>" . $image . (!empty($item->file_duration) ? "<div style='font-size: 80%;color:grey;text-align: center'>$item->file_duration $file_kind</div>" : "") . "</div>";
             }

@@ -67,137 +67,137 @@ $list_device = \yii\helpers\ArrayHelper::map(\backend\modules\smartscreen\models
     ]
 ]);
 ?>
-    <div class="form">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="portlet light">
-                    <div class="visible-print">
-                        <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
+<div class="form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="visible-print">
+                    <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
+                </div>
+                <div class="portlet-title tabbable-line hidden-print">
+                    <div class="caption caption-md">
+                        <i class="icon-globe theme-font hide"></i>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) . ":" . FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?></span>
                     </div>
-                    <div class="portlet-title tabbable-line hidden-print">
-                        <div class="caption caption-md">
-                            <i class="icon-globe theme-font hide"></i>
-                            <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) . ":" . FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?></span>
-                        </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <div class="form">
-                            <div class="form-body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active row" id="tab_1_1">
-                                        <div class="col-md-12">
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                                'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                //'content_id' => ['value' => $form->fieldNoLabel($model, 'content_id')->select(\backend\modules\smartscreen\Smartscreen::getContentTypeComboArray()), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                //'layout_id' => ['value' => $form->fieldNoLabel($model, 'layout_id')->select([]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-//                                                '_layout_id' => ['value' => $form->fieldNoLabel($model, '_layout_id')->widget(\unclead\multipleinput\MultipleInput::className(), [
-//                                                    'addButtonPosition' => false,
-//                                                    'columns' => [
-//                                                        [
-//                                                            'name' => 'layout',
-//                                                            'type' => kartik\select2\Select2::className(),
-//                                                            'title' => 'Layout',
-//                                                            'headerOptions' => [
-//                                                                'style' => 'border:none;visible:none',
-//                                                            ],
-//                                                            'options' => [
-//                                                                'class' => 'col-md-2',
-//                                                                'data' => \backend\modules\smartscreen\models\SmartscreenLayouts::findAllForCombo(),
-//                                                                'options' => [
-//                                                                    'placeholder' => 'Select a layout ...',
-//                                                                    'onchange' => <<< JS
-//                                                                    var selectId = $(this).attr('id');
-//                                                                    var tr = $(this).closest('tr');
-//                                                                    var tbody = $(this).closest('tbody');
-//                                                                    $.post(" get-content?layout_id=" + $(this).val() + "&selectId=" + selectId, function(data){
-//                                                                        tbody.find('.child_' + selectId).remove();
-//                                                                        tr.after(data);
-//                                                                        $(".contentSelect2").select2();
-//                                                                    });
-//JS
-//                                                                ],
-//                                                                'pluginOptions' => [
-//                                                                    'allowClear' => true,
-//                                                                    'class' => 'col-md-4'
-//                                                                ],
-//                                                            ]
-//                                                        ],
-//                                                        [
-//                                                            'name' => 'start_time',
-//                                                            'title' => false,
-//                                                            'options' => [
-//                                                                'style' => 'border:none;visible:none',
-//
-//                                                                'class' => 'col-md-2'
-//                                                            ],
-//                                                            'headerOptions' => [
-//                                                                'style' => 'border:none;visible:none',
-//                                                            ]
-//                                                        ],
-//
-//
-//                                                        [
-//                                                            'name' => 'start_time',
-//                                                            'title' => false,
-//                                                            'options' => [
-//                                                                'style' => 'border:none;visible:none',
-//
-//                                                                'class' => 'col-md-2'
-//                                                            ],
-//                                                            'headerOptions' => [
-//                                                                'style' => 'border:none;visible:none',
-//                                                            ]
-//                                                        ],
-//
-//                                                        [
-//                                                            'name' => 'start_time',
-//                                                            'title' => false,
-//                                                            'options' => [
-//                                                                'style' => 'border:none;visible:none',
-//
-//                                                                'class' => 'col-md-2'
-//                                                            ],
-//                                                            'headerOptions' => [
-//                                                                'style' => 'border:none;visible:none',
-//                                                            ]
-//                                                        ],
-//                                                        [
-//                                                            'name' => 'id',
-//
-//                                                            'options' => [
-//                                                                'style' => 'border:none;width:0px;visible:none',
-//                                                            ],
-//                                                            'headerOptions' => [
-//                                                                'style' => 'border:none;width:0px;visible:none',
-//                                                            ]
-//                                                        ],
-//                                                    ]
-//                                                ])->label(false), 'label' => false, 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'is_default' => ['value' => $form->fieldNoLabel($model, 'is_default')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                //'device_id' => ['value' => $form->fieldNoLabel($model, 'device_id')->checkboxList($list_device), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                </div>
+                <div class="portlet-body form">
+                    <div class="form">
+                        <div class="form-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active row" id="tab_1_1">
+                                    <div class="col-md-12">
+                                        <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3])],
+                                            //'content_id' => ['value' => $form->fieldNoLabel($model, 'content_id')->select(\backend\modules\smartscreen\Smartscreen::getContentTypeComboArray())],
+                                            //'layout_id' => ['value' => $form->fieldNoLabel($model, 'layout_id')->select([])],
+                                            //                                                '_layout_id' => ['value' => $form->fieldNoLabel($model, '_layout_id')->widget(\unclead\multipleinput\MultipleInput::className(), [
+                                            //                                                    'addButtonPosition' => false,
+                                            //                                                    'columns' => [
+                                            //                                                        [
+                                            //                                                            'name' => 'layout',
+                                            //                                                            'type' => kartik\select2\Select2::className(),
+                                            //                                                            'title' => 'Layout',
+                                            //                                                            'headerOptions' => [
+                                            //                                                                'style' => 'border:none;visible:none',
+                                            //                                                            ],
+                                            //                                                            'options' => [
+                                            //                                                                'class' => 'col-md-2',
+                                            //                                                                'data' => \backend\modules\smartscreen\models\SmartscreenLayouts::findAllForCombo(),
+                                            //                                                                'options' => [
+                                            //                                                                    'placeholder' => 'Select a layout ...',
+                                            //                                                                    'onchange' => <<< JS
+                                            //                                                                    var selectId = $(this).attr('id');
+                                            //                                                                    var tr = $(this).closest('tr');
+                                            //                                                                    var tbody = $(this).closest('tbody');
+                                            //                                                                    $.post(" get-content?layout_id=" + $(this).val() + "&selectId=" + selectId, function(data){
+                                            //                                                                        tbody.find('.child_' + selectId).remove();
+                                            //                                                                        tr.after(data);
+                                            //                                                                        $(".contentSelect2").select2();
+                                            //                                                                    });
+                                            //JS
+                                            //                                                                ],
+                                            //                                                                'pluginOptions' => [
+                                            //                                                                    'allowClear' => true,
+                                            //                                                                    'class' => 'col-md-4'
+                                            //                                                                ],
+                                            //                                                            ]
+                                            //                                                        ],
+                                            //                                                        [
+                                            //                                                            'name' => 'start_time',
+                                            //                                                            'title' => false,
+                                            //                                                            'options' => [
+                                            //                                                                'style' => 'border:none;visible:none',
+                                            //
+                                            //                                                                'class' => 'col-md-2'
+                                            //                                                            ],
+                                            //                                                            'headerOptions' => [
+                                            //                                                                'style' => 'border:none;visible:none',
+                                            //                                                            ]
+                                            //                                                        ],
+                                            //
+                                            //
+                                            //                                                        [
+                                            //                                                            'name' => 'start_time',
+                                            //                                                            'title' => false,
+                                            //                                                            'options' => [
+                                            //                                                                'style' => 'border:none;visible:none',
+                                            //
+                                            //                                                                'class' => 'col-md-2'
+                                            //                                                            ],
+                                            //                                                            'headerOptions' => [
+                                            //                                                                'style' => 'border:none;visible:none',
+                                            //                                                            ]
+                                            //                                                        ],
+                                            //
+                                            //                                                        [
+                                            //                                                            'name' => 'start_time',
+                                            //                                                            'title' => false,
+                                            //                                                            'options' => [
+                                            //                                                                'style' => 'border:none;visible:none',
+                                            //
+                                            //                                                                'class' => 'col-md-2'
+                                            //                                                            ],
+                                            //                                                            'headerOptions' => [
+                                            //                                                                'style' => 'border:none;visible:none',
+                                            //                                                            ]
+                                            //                                                        ],
+                                            //                                                        [
+                                            //                                                            'name' => 'id',
+                                            //
+                                            //                                                            'options' => [
+                                            //                                                                'style' => 'border:none;width:0px;visible:none',
+                                            //                                                            ],
+                                            //                                                            'headerOptions' => [
+                                            //                                                                'style' => 'border:none;width:0px;visible:none',
+                                            //                                                            ]
+                                            //                                                        ],
+                                            //                                                    ]
+                                            //                                                ])->label(false), 'label' => false],
+                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox()],
+                                            'is_default' => ['value' => $form->fieldNoLabel($model, 'is_default')->checkbox()],
+                                            //'device_id' => ['value' => $form->fieldNoLabel($model, 'device_id')->checkboxList($list_device)],
 
 
-                                            ]]);  ?>
+                                        ]]);  ?>
 
-                                        </div>
                                     </div>
-
-
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php $type = FHtml::getFieldValue($model, 'type');
-                if (isset($modelMeta) && !empty($type)) { ?>
-                    <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
-                <?php } ?>
-                <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
             </div>
+            <?php $type = FHtml::getFieldValue($model, 'type');
+            if (isset($modelMeta) && !empty($type)) { ?>
+                <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
+            <?php } ?>
+            <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
         </div>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end(); ?>
 
@@ -256,4 +256,3 @@ JS;
 $this->registerJs($script);
 
 ?>
-

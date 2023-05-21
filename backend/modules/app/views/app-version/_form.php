@@ -92,25 +92,25 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
                                         <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'file' => ['value' => $form->fieldNoLabel($model, 'file')->file(['accept' => '']), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'platform' => ['value' => $form->fieldNoLabel($model, 'platform')->select(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'package_version' => ['value' => $form->fieldNoLabel($model, 'package_version')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'package_name' => ['value' => $form->fieldNoLabel($model, 'package_name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'platform_info' => ['value' => $form->fieldNoLabel($model, 'platform_info')->selectMany(\backend\modules\smartscreen\models\SmartscreenStation::findAllForCombo()), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW, 'label' => 'Device'],
-                                            //'history' => ['value' => $form->fieldNoLabel($model, 'history')->selectMany(\backend\modules\smartscreen\models\SmartscreenStation::findAllForCombo()), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3])],
+                                            'file' => ['value' => $form->fieldNoLabel($model, 'file')->file(['accept' => ''])],
+                                            'platform' => ['value' => $form->fieldNoLabel($model, 'platform')->select(['android', 'apps'])],
+                                            'package_version' => ['value' => $form->fieldNoLabel($model, 'package_version')->numeric()],
+                                            'package_name' => ['value' => $form->fieldNoLabel($model, 'package_name')->textInput()],
+                                            'platform_info' => ['value' => $form->fieldNoLabel($model, 'platform_info')->selectMany(\backend\modules\smartscreen\models\SmartscreenStation::findAllForCombo()), 'label' => 'Device'],
+                                            //'history' => ['value' => $form->fieldNoLabel($model, 'history')->selectMany(\backend\modules\smartscreen\models\SmartscreenStation::findAllForCombo())],
 
-                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'is_default' => ['value' => $form->fieldNoLabel($model, 'is_default')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox()],
+                                            'is_default' => ['value' => $form->fieldNoLabel($model, 'is_default')->checkbox()],
                                         ]]); ?>
 
                                         <!--
                                         <?= FFormTable::widget(['model' => $model, 'title' => FHtml::t('common', 'Notify Devices'), 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            'device' => ['value' => $form->fieldNoLabel($model, '_devices')->selectMany(\backend\modules\smartscreen\models\SmartscreenStation::findAllForCombo(['status' => 1], 'id', 'name', 'name asc')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'device' => ['value' => $form->fieldNoLabel($model, '_devices')->selectMany(\backend\modules\smartscreen\models\SmartscreenStation::findAllForCombo(['status' => 1], 'id', 'name', 'name asc'))],
 
-                                            'ime' => ['value' => $form->fieldNoLabel($model, '_ime')->textarea(['rows' => 6]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'Upgrade' => ['value' => $form->fieldNoLabel($model, '_is_upgrade')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'ime' => ['value' => $form->fieldNoLabel($model, '_ime')->textarea(['rows' => 6])],
+                                            'Upgrade' => ['value' => $form->fieldNoLabel($model, '_is_upgrade')->checkbox()],
                                         ]]); ?>
                                         -->
                                     </div>

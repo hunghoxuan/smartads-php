@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "AppUserFeedback".
-*/
+ *
+ ***
+ * This is the customized model class for table "AppUserFeedback".
+ */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -37,30 +38,30 @@ $canDelete = FHtml::isInRole('', 'delete', $currentRole);
 ?>
 
 <?php if (!Yii::$app->request->isAjax) {
-$this->title = FHtml::t($moduleTitle);
-$this->params['mainIcon'] = 'fa fa-list';
-$this->params['toolBarActions'] = array(
-'linkButton'=>array(),
-'button'=>array(),
-'dropdown'=>array(),
-);
+    $this->title = FHtml::t($moduleTitle);
+    $this->params['mainIcon'] = 'fa fa-list';
+    $this->params['toolBarActions'] = array(
+        'linkButton' => array(),
+        'button' => array(),
+        'dropdown' => array(),
+    );
 } ?>
 
 
 <?php $form = FActiveForm::begin([
-'id' => 'app-user-feedback-form',
-'type' => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
-'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
-'staticOnly' => false, // check the Role here
-'readonly' => !$canEdit, // check the Role here
-'enableClientValidation' => true,
-'enableAjaxValidation' => false,
-'options' => [
-    //'class' => 'form-horizontal',
-    'enctype' => 'multipart/form-data'
-]
+    'id' => 'app-user-feedback-form',
+    'type' => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
+    'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
+    'staticOnly' => false, // check the Role here
+    'readonly' => !$canEdit, // check the Role here
+    'enableClientValidation' => true,
+    'enableAjaxValidation' => false,
+    'options' => [
+        //'class' => 'form-horizontal',
+        'enctype' => 'multipart/form-data'
+    ]
 ]);
- ?>
+?>
 
 
 <div class="form">
@@ -71,7 +72,7 @@ $this->params['toolBarActions'] = array(
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
-                            <?= FHtml::t('common', $moduleTitle) ?> : <?= FHtml::showObjectConfigLink($model) ?>                        </span>
+                            <?= FHtml::t('common', $moduleTitle) ?> : <?= FHtml::showObjectConfigLink($model) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -79,15 +80,15 @@ $this->params['toolBarActions'] = array(
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info')?></a>
+                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
                         </li>
                         <li>
-                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads')?></a>
+                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads') ?></a>
                         </li>
                         <li>
-                            <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Attributes')?></a>
+                            <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Attributes') ?></a>
                         </li>
-                                                </ul>
+                    </ul>
                 </div>
                 <div class="portlet-body form">
                     <div class="form">
@@ -95,13 +96,13 @@ $this->params['toolBarActions'] = array(
                             <div class="tab-content">
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
-                                               <?= $form->field($model, 'user_id')->select(FHtml::getComboArray('@user', 'user', 'user_id', true, 'id', 'name')) ?>
+                                        <?= $form->field($model, 'user_id')->select(FHtml::getComboArray('@user', 'user', 'user_id', true, 'id', 'name')) ?>
 
-       <?= $form->field($model, 'object_id')->select(FHtml::getComboArray('app_user_feedback', 'app_user_feedback', 'object_id', true, 'id', 'name')) ?>
+                                        <?= $form->field($model, 'object_id')->select(FHtml::getComboArray('app_user_feedback', 'app_user_feedback', 'object_id', true, 'id', 'name')) ?>
 
-       <?= $form->field($model, 'comment')->html() ?>
+                                        <?= $form->field($model, 'comment')->html() ?>
 
-       <?= $form->field($model, 'response')->textarea(['rows' => 3]) ?>
+                                        <?= $form->field($model, 'response')->textarea(['rows' => 3]) ?>
 
 
                                         <!--
@@ -109,42 +110,42 @@ $this->params['toolBarActions'] = array(
                                         -->
 
 
-                                               <?= FHtml::showGroupHeader('Groups') ?>                                        <div class="row">
+                                        <?= FHtml::showGroupHeader('Groups') ?> <div class="row">
                                             <div class="col-md-6">
-                                               <?= $form->field($model, 'object_type')->select(FHtml::getComboArray('app_user_feedback', 'app_user_feedback', 'object_type', true, 'id', 'name'))->labelSpan(6) ?>
+                                                <?= $form->field($model, 'object_type')->select(FHtml::getComboArray('app_user_feedback', 'app_user_feedback', 'object_type', true, 'id', 'name'))->labelSpan(6) ?>
 
-       <?= $form->field($model, 'type')->select(FHtml::getComboArray('app_user_feedback', 'app_user_feedback', 'type', true, 'id', 'name'))->labelSpan(6) ?>
+                                                <?= $form->field($model, 'type')->select(FHtml::getComboArray('app_user_feedback', 'app_user_feedback', 'type', true, 'id', 'name'))->labelSpan(6) ?>
 
-       <?= $form->field($model, 'status')->select(FHtml::getComboArray('app_user_feedback', 'app_user_feedback', 'status', true, 'id', 'name'))->labelSpan(6) ?>
+                                                <?= $form->field($model, 'status')->select(FHtml::getComboArray('app_user_feedback', 'app_user_feedback', 'status', true, 'id', 'name'))->labelSpan(6) ?>
 
                                             </div>
                                             <div class="col-md-6">
-                                                                                            </div>
+                                            </div>
                                         </div>
-                                        
-                                        
+
+
                                     </div>
                                 </div>
 
                                 <div class="tab-pane row" id="tab_1_2">
                                     <div class="col-md-12">
-                                        
-                                        <?= FormObjectFile::widget( [
-                                        'model' => $model, 'form' => $form,
-                                        'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => 'object-file'
+
+                                        <?= FormObjectFile::widget([
+                                            'model' => $model, 'form' => $form,
+                                            'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => 'object-file'
                                         ]) ?>
                                     </div>
                                 </div>
 
                                 <div class="tab-pane row" id="tab_1_3">
                                     <div class="col-md-12">
-                                        <?= FormObjectAttributes::widget( [
-                                        'model' => $model, 'form' => $form,
-                                        'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath
+                                        <?= FormObjectAttributes::widget([
+                                            'model' => $model, 'form' => $form,
+                                            'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath
                                         ]) ?>
                                     </div>
                                 </div>
-                                
+
                                 <!--<div class="tab-pane row" id="tab_1_p">
                                     <div class="col-md-12">
                                                                             </div>
@@ -158,11 +159,11 @@ $this->params['toolBarActions'] = array(
                 </div>
             </div>
 
-            
-            <?php            $type = FHtml::getFieldValue($model, 'type');
+
+            <?php $type = FHtml::getFieldValue($model, 'type');
             if (isset($modelMeta) && !empty($type))
                 echo FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]);
-              ?>
+            ?>
             <script language="javascript" type="text/javascript">
                 function submitForm($saveType) {
                     $('#saveType').val($saveType);
@@ -171,12 +172,12 @@ $this->params['toolBarActions'] = array(
 
             <?php if (Yii::$app->request->isAjax) { ?>
 
-            <input type="hidden" id="saveType" name="saveType">
+                <input type="hidden" id="saveType" name="saveType">
 
             <?php } else { ?>
-            <input type="hidden" id="saveType" name="saveType">
+                <input type="hidden" id="saveType" name="saveType">
 
-            <?=      FHtml::showActionsButton($model, $canEdit, $canDelete)  ?>
+                <?= FHtml::showActionsButton($model, $canEdit, $canDelete)  ?>
             <?php } ?>
         </div>
         <div class="profile-sidebar col-md-3 col-xs-12 hidden-print">
@@ -184,9 +185,9 @@ $this->params['toolBarActions'] = array(
                 <?= FHtml::showModelPreview($model) ?>
             </div>
             <div class="row" style="padding-left:35px; color:grey">
-                <?=  FHtml::showModelHistory($model) ?>
+                <?= FHtml::showModelHistory($model) ?>
             </div>
         </div>
     </div>
 </div>
-   <?php FActiveForm::end(); ?>
+<?php FActiveForm::end(); ?>

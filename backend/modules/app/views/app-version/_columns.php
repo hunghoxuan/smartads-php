@@ -39,16 +39,17 @@ return [
         'headerOptions' => ['class' => 'kartik-sheet-style'],
         'expandOneOnly' => false
     ],
-//    [
-//        'attribute' => 'id',
-//        'width' => '50px',
-//    ],
+    //    [
+    //        'attribute' => 'id',
+    //        'width' => '50px',
+    //    ],
     [
         'attribute' => 'platform',
         'contentOptions' => ['class' => 'col-md-1 nowrap'],
         'hAlign' => 'left',
         'group' => true,
-        //'groupedRow' => true,
+        'groupedRow' => true,
+        'readonly' => true,
     ],
     [
         'attribute' => 'package_name',
@@ -63,60 +64,60 @@ return [
         'attribute' => 'name',
         'contentOptions' => ['class' => 'col-md-2 nowrap'],
     ],
-    [ 
+    [
         'attribute' => 'description',
         'contentOptions' => ['class' => 'col-md-2 nowrap'],
     ],
 
 
-//    [
-//        'attribute' => 'platform_info',
-//        'contentOptions' => ['class' => 'col-md-2 nowrap'],
-//    ],
+    //    [
+    //        'attribute' => 'platform_info',
+    //        'contentOptions' => ['class' => 'col-md-2 nowrap'],
+    //    ],
 
-//    [
-//        'attribute' => 'file',
-//        'contentOptions' => ['class' => 'col-md-1 nowrap'],
-//    ],
+    //    [
+    //        'attribute' => 'file',
+    //        'contentOptions' => ['class' => 'col-md-1 nowrap'],
+    //    ],
     //[ 
-        //'attribute' => 'count_views',
-        //'width' => '50px',
+    //'attribute' => 'count_views',
+    //'width' => '50px',
     //],
     //[ 
-        //'attribute' => 'count_downloads',
-        //'width' => '50px',
+    //'attribute' => 'count_downloads',
+    //'width' => '50px',
     //],
-    [ 
+    [
         'attribute' => 'is_active',
         'width' => '20px',
     ],
-    [ 
+    [
         'attribute' => 'is_default',
         'width' => '20px',
     ],
     //[ 
-        //'attribute' => 'history',
-        //'contentOptions' => ['class' => 'col-md-1 nowrap'],
+    //'attribute' => 'history',
+    //'contentOptions' => ['class' => 'col-md-1 nowrap'],
     //],
     //[ 
-        //'attribute' => 'created_date',
-        //'width' => '50px',
+    //'attribute' => 'created_date',
+    //'width' => '50px',
     //],
     //[ 
-        //'attribute' => 'created_user',
-        //'width' => '80px',
-        //'filterType' => GridView::FILTER_SELECT2, 
-        //'filter' => FHtml::getComboArray('app_version', 'app_version', 'created_user', true, 'id', 'name'),
+    //'attribute' => 'created_user',
+    //'width' => '80px',
+    //'filterType' => GridView::FILTER_SELECT2, 
+    //'filter' => FHtml::getComboArray('app_version', 'app_version', 'created_user', true, 'id', 'name'),
     //],
     [
         'attribute' => 'modified_date',
         'width' => '50px',
     ],
     //[ 
-        //'attribute' => 'modified_user',
-        //'width' => '80px',
-        //'filterType' => GridView::FILTER_SELECT2, 
-        //'filter' => FHtml::getComboArray('app_version', 'app_version', 'modified_user', true, 'id', 'name'),
+    //'attribute' => 'modified_user',
+    //'width' => '80px',
+    //'filterType' => GridView::FILTER_SELECT2, 
+    //'filter' => FHtml::getComboArray('app_version', 'app_version', 'modified_user', true, 'id', 'name'),
     //],
     [
         'attribute' => 'file',
@@ -145,7 +146,7 @@ return [
             'role' => 'modal-remote',
             'title' => FHtml::t('common', 'Delete'),
             'data-confirm' => false,
-            'data-method' => false,// for overide yii data api
+            'data-method' => false, // for overide yii data api
             'data-request-method' => 'post',
             'data-toggle' => 'tooltip',
             'data-confirm-title' => FHtml::t('common', 'Confirmation'),

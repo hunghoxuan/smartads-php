@@ -16,12 +16,10 @@ use common\components\FConstant;
 use common\components\FHtml;
 use yii\helpers\Json;
 
-/**
-* Developed by Hung Ho (Steve): hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "backend\models\MusicArtist".
-*/
+/*
+ * This is the customized model class for table "backend\models\MusicArtist".
+ */
+
 class UserInfoAction extends BaseAction
 {
     public function run()
@@ -35,13 +33,10 @@ class UserInfoAction extends BaseAction
             $user = \backend\models\UserAPI::findOne(['id' => $this->user_id], false);
         } else {
             $user = \backend\models\UserAPI::findOne(['code' => $this->user_id], false);
-
         }
 
         if (isset($user))
-            return FApi::getOutputForAPI($user, FConstant::SUCCESS, 'OK', ['code'=> 200]);
+            return FApi::getOutputForAPI($user, FConstant::SUCCESS, 'OK', ['code' => 200]);
         return null;
     }
 }
-
-

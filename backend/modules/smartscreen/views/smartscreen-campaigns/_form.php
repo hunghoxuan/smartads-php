@@ -16,6 +16,7 @@ use yii\widgets\Pjax;
 use backend\modules\smartscreen\Smartscreen;
 use backend\modules\smartscreen\models\SmartscreenSchedulesSearch;
 use backend\modules\smartscreen\models\SmartscreenSchedules;
+use common\components\FSecurity;
 
 $form_Type = $this->params['activeForm_type'];
 
@@ -25,6 +26,7 @@ $moduleKey   = 'smartscreen-schedules';
 
 $currentRole   = FHtml::getCurrentRole();
 $currentAction = FHtml::currentAction();
+$isInRole = FSecurity::isInRole($moduleKey, $currentAction, [FSecurity::ROLE_ADMIN, FSecurity::ROLE_USER]);
 
 $canEdit      = FHtml::isInRole('', 'edit', $currentRole, FHtml::getFieldValue($model, ['user_id', 'created_user']));
 $canDelete    = FHtml::isInRole('', 'delete', $currentRole);
@@ -39,7 +41,6 @@ $list_layout   = SmartscreenLayouts::findAllForCombo();
 $list_channels = \backend\modules\smartscreen\models\SmartscreenChannels::findAllForCombo();
 
 if ($model->isNewRecord) {
-
     $model->is_active = 1;
     $model->date = date('Y-m-d');
     $model->type = Smartscreen::SCHEDULE_TYPE_CAMPAIGN;
@@ -59,39 +60,39 @@ $campaignHasTime = FHtml::setting('smartscreen.campaign_has_time', false);
 ?>
 
 <?php if (!Yii::$app->request->isAjax) {
-	$this->title                    = FHtml::t($moduleTitle);
-	$this->params['mainIcon']       = 'fa fa-list';
-	$this->params['toolBarActions'] = array(
-		'linkButton' => array(),
-		'button'     => array(),
-		'dropdown'   => array(),
-	);
+    $this->title                    = FHtml::t($moduleTitle);
+    $this->params['mainIcon']       = 'fa fa-list';
+    $this->params['toolBarActions'] = array(
+        'linkButton' => array(),
+        'button'     => array(),
+        'dropdown'   => array(),
+    );
 } ?>
 
 <?php if ($ajax) Pjax::begin(['id' => 'crud-datatable']) ?>
 
 <?php $form = FActiveForm::begin([
-	'id'                     => 'smartscreen-schedules-form',
-	'type'                   => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
-	'formConfig'             => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
-	'staticOnly'             => false, // check the Role here
-	'readonly'               => !$canEdit, // check the Role here
-	'edit_type'              => $edit_type,
-	'display_type'           => $display_type,
-	'enableClientValidation' => true,
-	'enableAjaxValidation'   => false,
-	'options'                => [
-		//'class' => 'form-horizontal',
-		'enctype' => 'multipart/form-data'
-	]
+    'id'                     => 'smartscreen-schedules-form',
+    'type'                   => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
+    'formConfig'             => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
+    'staticOnly'             => false, // check the Role here
+    'readonly'               => !$canEdit, // check the Role here
+    'edit_type'              => $edit_type,
+    'display_type'           => $display_type,
+    'enableClientValidation' => true,
+    'enableAjaxValidation'   => false,
+    'options'                => [
+        //'class' => 'form-horizontal',
+        'enctype' => 'multipart/form-data'
+    ]
 ]);
 
 if (json_decode($model->channel_id, true) != null) {
-	$model->channel_id =  json_decode($model->channel_id, true);
+    $model->channel_id =  json_decode($model->channel_id, true);
 }
 
 if (json_decode($model->device_id, true) != null) {
-	$model->device_id =  json_decode($model->device_id, true);
+    $model->device_id =  json_decode($model->device_id, true);
 }
 
 
@@ -103,7 +104,7 @@ if (json_decode($model->device_id, true) != null) {
         <div class="col-md-12">
             <div class="portlet light">
                 <div class="visible-print">
-					<?= (FHtml::isViewAction($currentAction)) ? FHtml::showPrintHeader($moduleName) : '' ?>
+                    <?= (FHtml::isViewAction($currentAction)) ? FHtml::showPrintHeader($moduleName) : '' ?>
                 </div>
                 <div class="portlet-title tabbable-line hidden-print">
                     <div class="caption caption-md">
@@ -132,39 +133,6 @@ if (json_decode($model->device_id, true) != null) {
                                             $disabled = true;
                                         }
                                         ?>
-										<?php echo FFormTable::widget([
-                                            'hide_field' => false,
-											'model'      => $model,
-											'form'       => $form,
-											'columns'    => 1,
-                                            'attributes' => [
-                                                'name' => [
-                                                    'value'         => $form->fieldNoLabel($model, 'name')->textInput(),
-                                                    'columnOptions' => ['colspan' => 1],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'channel_id' => [
-                                                    'value'         => $form->fieldNoLabel($model, 'channel_id')->widget(Select2::classname(), [
-                                                        'data'    => $list_channels,
-                                                        'options' => ['placeholder' => 'Tất cả Nhóm thiết bị', 'multiple' => false, 'disabled' => $disabled]
-                                                    ]),
-                                                    'columnOptions' => ['colspan' => 1],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'device_id'  => [
-                                                    'value'         => $form->fieldNoLabel($model, 'device_id')->widget(Select2::classname(), [
-                                                        'data'          => $list_device,
-                                                        'options'       => ['placeholder' => 'Tất cả thiết bị', 'multiple' => true, 'disabled' => $disabled],
-                                                        'pluginOptions' => [
-                                                            'tags'            => true,
-                                                            'tokenSeparators' => [',', ' '],
-                                                        ],
-                                                    ]),
-                                                    'columnOptions' => ['colspan' => 1],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                            ]
-										]); ?>
 
 
                                         <?php echo FFormTable::widget([
@@ -177,46 +145,82 @@ if (json_decode($model->device_id, true) != null) {
                                             'columns'    => 2,
                                             'attributes' => [
 
+                                                'name' => [
+                                                    'value'         => $form->fieldNoLabel($model, 'name')->textInput(),
 
+                                                    'type'          => FHtml::INPUT_RAW
+                                                ],
                                                 'date'     => [
                                                     'value'         => $form->fieldNoLabel($model, 'date')->date(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'date_end' => [
                                                     'value'         => $form->fieldNoLabel($model, 'date_end')->date(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
 
                                                 'start_time'     => [
-                                                        'visible' => $campaignHasTime,
+                                                    'visible' => $campaignHasTime,
                                                     'value'         => $form->fieldNoLabel($model, 'start_time')->time(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'end_time'     => [
                                                     'visible' => $campaignHasTime,
                                                     'value'         => $form->fieldNoLabel($model, 'end_time')->time(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'duration'     => [
                                                     'visible' => $campaignHasTime,
                                                     'value'         => $form->fieldNoLabel($model, 'duration')->numeric()->appendText('mins'),
-                                                    'columnOptions' => ['colspan' => 1],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'is_active'     => [
-                                                    'value'         => $form->fieldNoLabel($model, 'is_active')->boolean(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'days'     => [
                                                     'value'         => $form->fieldNoLabel($model, 'days')->checkBoxList(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
+                                            ]
+                                        ]); ?>
+                                        <hr />
+                                        <?php echo FFormTable::widget([
+                                            'hide_field' => false,
+                                            'model'      => $model,
+                                            'form'       => $form,
+                                            'columns'    => 1,
+                                            // 'title'     => FHtml::t('common', 'Security'),
+                                            'attributes' => [
+
+                                                'channel_id' => [
+                                                    'value'         => $form->fieldNoLabel($model, 'channel_id')->widget(Select2::classname(), [
+                                                        'data'    => $list_channels,
+                                                        'options' => ['placeholder' => 'Tất cả Nhóm thiết bị', 'multiple' => false, 'disabled' => $disabled]
+                                                    ]),
+
+                                                    'type'          => FHtml::INPUT_RAW
+                                                ],
+                                                'device_id'  => [
+                                                    'value'         => $form->fieldNoLabel($model, 'device_id')->widget(Select2::classname(), [
+                                                        'data'          => $list_device,
+                                                        'options'       => ['placeholder' => 'Tất cả thiết bị', 'multiple' => true, 'disabled' => $disabled],
+                                                        'pluginOptions' => [
+                                                            'tags'            => true,
+                                                            'tokenSeparators' => [',', ' '],
+                                                        ],
+                                                    ]),
+
+                                                    'type'          => FHtml::INPUT_RAW
+                                                ],
+                                                'is_active'     => [
+                                                    'visible'       => $model->getPermission('is_active'),
+                                                    'value'         => $form->fieldNoLabel($model, 'is_active')->boolean(),
+                                                    'columnOptions' => ['colspan' => 1, 'disable' => true],
+                                                    'type'          => FHtml::INPUT_RAW
+                                                ]
                                             ]
                                         ]); ?>
 
@@ -231,18 +235,18 @@ if (json_decode($model->device_id, true) != null) {
                 </div>
             </div>
 
-			<?php $type = FHtml::getFieldValue($model, 'type');
-			$canDelete = false;
-			$deleteParams = Smartscreen::getCurrentParams(['id' => $model->id]);
+            <?php $type = FHtml::getFieldValue($model, 'type');
+            $canDelete = false;
+            $deleteParams = Smartscreen::getCurrentParams(['id' => $model->id]);
 
-			$deleteUrl = !$model->isNewRecord ? FHtml::createUrl('/smartscreen/smartscreen-campaigns/delete', $deleteParams) : '';
-			$deleteButton = "<a data-pjax='0' href='$deleteUrl' class='btn btn-danger pull-right'>". FHtml::t('Delete') . "</a>";
+            $deleteUrl = !$model->isNewRecord ? FHtml::createUrl('/smartscreen/smartscreen-campaigns/delete', $deleteParams) : '';
+            $deleteButton = "<a data-pjax='0' href='$deleteUrl' class='btn btn-danger pull-right'>" . FHtml::t('Delete') . "</a>";
 
             $cancelUrl = $returnUrl;
-            $cancelButton = "<a data-pjax='0' href='$cancelUrl' class='btn btn-default'>". FHtml::t('Cancel') . "</a>";
-			$buttons = '{save}{delete}' . $cancelButton . $deleteButton;
-			?>
-			<?= false ?  '' : ((FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete, $buttons)) ?>
+            $cancelButton = "<a data-pjax='0' href='$cancelUrl' class='btn btn-default'>" . FHtml::t('Cancel') . "</a>";
+            $buttons = '{save}{delete}' . $cancelButton . $deleteButton;
+            ?>
+            <?= false ?  '' : ((FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete, $buttons)) ?>
         </div>
     </div>
 </div>

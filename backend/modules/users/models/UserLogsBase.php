@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "user_logs".
  *
 
@@ -36,8 +35,8 @@ class UserLogsBase extends \common\models\BaseModel //\yii\db\ActiveRecord
 {
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'user_logs';
 
     public static function tableName()
@@ -54,14 +53,14 @@ class UserLogsBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'log_date', 'user_id', 'action', 'object_type', 'object_id', 'link_url', 'ip_address', 'duration', 'note', 'status', 'created_date', 'modified_date', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['user_id'], 'required'],
             [['object_id'], 'integer'],
             [['note'], 'string'],
@@ -73,26 +72,26 @@ class UserLogsBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('UserLogs', 'ID'),
-                    'log_date' => FHtml::t('UserLogs', 'Log Date'),
-                    'user_id' => FHtml::t('UserLogs', 'User ID'),
-                    'action' => FHtml::t('UserLogs', 'Action'),
-                    'object_type' => FHtml::t('UserLogs', 'Object Type'),
-                    'object_id' => FHtml::t('UserLogs', 'Object ID'),
-                    'link_url' => FHtml::t('UserLogs', 'Link Url'),
-                    'ip_address' => FHtml::t('UserLogs', 'Ip Address'),
-                    'duration' => FHtml::t('UserLogs', 'Duration'),
-                    'note' => FHtml::t('UserLogs', 'Note'),
-                    'status' => FHtml::t('UserLogs', 'Status'),
-                    'created_date' => FHtml::t('UserLogs', 'Created Date'),
-                    'modified_date' => FHtml::t('UserLogs', 'Modified Date'),
-                    'application_id' => FHtml::t('UserLogs', 'Application ID'),
-                ];
+            'id' => FHtml::t('UserLogs', 'ID'),
+            'log_date' => FHtml::t('UserLogs', 'Log Date'),
+            'user_id' => FHtml::t('UserLogs', 'User ID'),
+            'action' => FHtml::t('UserLogs', 'Action'),
+            'object_type' => FHtml::t('UserLogs', 'Object Type'),
+            'object_id' => FHtml::t('UserLogs', 'Object ID'),
+            'link_url' => FHtml::t('UserLogs', 'Link Url'),
+            'ip_address' => FHtml::t('UserLogs', 'Ip Address'),
+            'duration' => FHtml::t('UserLogs', 'Duration'),
+            'note' => FHtml::t('UserLogs', 'Note'),
+            'status' => FHtml::t('UserLogs', 'Status'),
+            'created_date' => FHtml::t('UserLogs', 'Created Date'),
+            'modified_date' => FHtml::t('UserLogs', 'Modified Date'),
+            'application_id' => FHtml::t('UserLogs', 'Application ID'),
+        ];
     }
 
     public static function tableSchema()
@@ -127,8 +126,4 @@ class UserLogsBase extends \common\models\BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

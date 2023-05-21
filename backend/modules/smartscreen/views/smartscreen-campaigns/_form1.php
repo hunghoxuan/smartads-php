@@ -1,10 +1,5 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "SmartscreenSchedules".
- */
+
 
 use backend\modules\smartscreen\models\SmartscreenLayouts;
 use backend\modules\smartscreen\models\SmartscreenStationAPI;
@@ -83,7 +78,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
                             <?= FHtml::t('common', $moduleTitle) ?>
-                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?>                        </span>
+                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -130,7 +125,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                                     'tags' => true,
                                                     'tokenSeparators' => [',', ' '],
                                                 ],
-                                            ]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            ])],
 
                                             'date' => ['value' => $form->fieldNoLabel($model, 'date')->widget(DatePicker::classname(), [
                                                 'pluginOptions' => [
@@ -138,7 +133,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                                     'format' => 'dd-mm-yyyy',
                                                     'todayHighlight' => true,
                                                 ]
-                                            ]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            ])],
                                         ]]); ?>
 
                                         <div class="clearfix"></div>
@@ -211,10 +206,9 @@ JS
 
                                 <div class="tab-pane row" id="tab_1_2">
                                     <div class="col-md-12">
-                                        <?php echo FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => [
-                                        ]]); ?>
+                                        <?php echo FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => []]); ?>
 
-                                        <hr/>
+                                        <hr />
                                         <?php echo FormObjectFile::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]);
                                         ?>
 

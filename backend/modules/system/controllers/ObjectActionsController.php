@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "ObjectActions".
-*/
+ *
+ ***
+ * This is the customized model class for table "ObjectActions".
+ */
+
 namespace backend\modules\system\controllers;
 
 use Yii;
@@ -36,7 +37,7 @@ class ObjectActionsController extends AdminController
     protected $moduleKey = 'object_actions';
     protected $object_type = 'object_actions';
 
-/**
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -90,32 +91,32 @@ class ObjectActionsController extends AdminController
      * @return mixed
      */
     public function actionIndex()
-    {    
-              $searchModel = new ObjectActionsSearch();
-       $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    {
+        $searchModel = new ObjectActionsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-       //Save model if has Create new form in Index view
-       FHtml::saveModel($this->object_type);
+        //Save model if has Create new form in Index view
+        FHtml::saveModel($this->object_type);
 
-       if (Yii::$app->request->post('hasEditable')) {
-           $Id = Yii::$app->request->post('editableKey');
+        if (Yii::$app->request->post('hasEditable')) {
+            $Id = Yii::$app->request->post('editableKey');
 
-           $model = ObjectActions::findOne($Id);
+            $model = ObjectActions::findOne($Id);
 
-           $out = Json::encode(['output' => '', 'message' => '']);
+            $out = Json::encode(['output' => '', 'message' => '']);
 
-           $post = [];
-           $posted = current($_POST['ObjectActions']);
-           $post['ObjectActions'] = $posted;
+            $post = [];
+            $posted = current($_POST['ObjectActions']);
+            $post['ObjectActions'] = $posted;
 
-           if ($model->load($post)) {
-               $model->save();
-               $output = '';
-               $out = Json::encode(['output' => $output, 'message' => '']);
-           }
-           echo $out;
-           return;
-       }
+            if ($model->load($post)) {
+                $model->save();
+                $output = '';
+                $out = Json::encode(['output' => $output, 'message' => '']);
+            }
+            echo $out;
+            return;
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -130,23 +131,23 @@ class ObjectActionsController extends AdminController
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $request = Yii::$app->request;
 
         $model = $this->findModel($id);
         $type = FHtml::getFieldValue($model, 'type');
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> FHtml::t($this->moduleName)." #".$id,
-                    'content'=>$this->renderPartial('view', [
-                        'model' => $model
-                    ]),
-                    'footer'=>Html::a(FHtml::t('Update'),['update','id'=>$id],['class'=>'btn btn-primary pull-left','role'=>$this->view->params['displayType']]).
-                              Html::button(FHtml::t('Close'),['class'=>'btn btn-default','data-dismiss'=>"modal"])
-                ];
-        }else{
+                'title' => FHtml::t($this->moduleName) . " #" . $id,
+                'content' => $this->renderPartial('view', [
+                    'model' => $model
+                ]),
+                'footer' => Html::a(FHtml::t('Update'), ['update', 'id' => $id], ['class' => 'btn btn-primary pull-left', 'role' => $this->view->params['displayType']]) .
+                    Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
+            ];
+        } else {
             return $this->render('view', ['model' => $model]);
         }
     }
@@ -163,9 +164,9 @@ class ObjectActionsController extends AdminController
 
         $model = $this->createModel($this->object_type);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
-        }else{
+        } else {
             if ($model->load($request->post())) {
                 $model->id = null;
 
@@ -201,14 +202,14 @@ class ObjectActionsController extends AdminController
 
         $model = $this->findModel($id);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
         } else {
             if ($model->load($request->post())) {
                 if ($model->save()) {
                     if ($this->saveType() == 'clone') {
                         return $this->redirect(['create', 'id' => $model->id]);
-                    }  else if ($this->saveType() == 'add') {
+                    } else if ($this->saveType() == 'add') {
                         return $this->redirect(['create']);
                     } else if ($this->saveType() == 'save') {
                         return $this->redirect(['update', 'id' => $model->id]);
@@ -236,10 +237,10 @@ class ObjectActionsController extends AdminController
 
         $this->findModel($id)->delete();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#' . $this->getPjaxContainerId()];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
+        } else {
             return $this->redirect(['index']);
         }
     }
@@ -249,15 +250,15 @@ class ObjectActionsController extends AdminController
         $request = Yii::$app->request;
         ObjectActions::deleteAll();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#' . $this->getPjaxContainerId()];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
+        } else {
             return $this->redirect(['index']);
         }
     }
 
-     /**
+    /**
      * Delete multiple existing ObjectActions model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
@@ -276,10 +277,10 @@ class ObjectActionsController extends AdminController
             }
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-        }else{
+        } else {
             return $this->redirect(['index']);
         }
     }
@@ -299,7 +300,7 @@ class ObjectActionsController extends AdminController
             }
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
         } else {
@@ -322,7 +323,8 @@ class ObjectActionsController extends AdminController
         return $model;
     }
 
-    protected function createModel($className = '', $id = '', $params = null) {
+    protected function createModel($className = '', $id = '', $params = null)
+    {
         $model = parent::createModel($className, $id, $params);
         return $model;
     }

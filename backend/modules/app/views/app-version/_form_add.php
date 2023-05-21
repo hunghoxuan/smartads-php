@@ -56,38 +56,37 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
     ]
 ]); ?>
 
-    <div class="form">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="portlet light">
-                    <div class="portlet-title tabbable-line hidden-print">
-                        <div class="caption caption-md">
-                            <i class="icon-globe theme-font hide"></i>
-                            <span class="caption-subject font-blue-madison uppercase"><?= FHtml::t('common', 'Create') ?></span>
-                        </div>
-                        <div class="tools pull-right">
-                            <a href="#" class="fullscreen"></a>
-                            <a href="#" class="collapse"></a>
-                        </div>
+<div class="form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title tabbable-line hidden-print">
+                    <div class="caption caption-md">
+                        <i class="icon-globe theme-font hide"></i>
+                        <span class="caption-subject font-blue-madison uppercase"><?= FHtml::t('common', 'Create') ?></span>
                     </div>
-                    <div class="portlet-body form">
-                        <div class="form">
-                            <div class="form-body">
-                                <div class="tab-content no-padding">
-                                    <div class="tab-pane active row" id="tab_1_1">
-                                        <div class="col-md-12">
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
-                                                'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'file' => ['value' => $form->fieldNoLabel($model, 'file')->file(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            ]]); ?>
-                                            <?php /*
+                    <div class="tools pull-right">
+                        <a href="#" class="fullscreen"></a>
+                        <a href="#" class="collapse"></a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form">
+                        <div class="form-body">
+                            <div class="tab-content no-padding">
+                                <div class="tab-pane active row" id="tab_1_1">
+                                    <div class="col-md-12">
+                                        <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3])],
+                                            'file' => ['value' => $form->fieldNoLabel($model, 'file')->file()],
+                                        ]]); ?>
+                                        <?php /*
 ;
                                             */ ?>
-                                            <?php /*
+                                        <?php /*
                                             */ ?>
-                                            <?= (FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete, '_form_add') : FHtml::showActionsButton($model, $canEdit, $canDelete, '_form_add') ?>
-                                        </div>
+                                        <?= (FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete, '_form_add') : FHtml::showActionsButton($model, $canEdit, $canDelete, '_form_add') ?>
                                     </div>
                                 </div>
                             </div>
@@ -97,5 +96,6 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
             </div>
         </div>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end() ?>

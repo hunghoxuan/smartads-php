@@ -11,16 +11,17 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "settings_menu".
  */
 class SettingsMenu extends SettingsMenuBase //\yii\db\ActiveRecord
 {
     public $role_array;
 
-    const LOOKUP = ['group' => [['id' => SettingsMenu::GROUP_FRONTEND, 'name' => FRONTEND], ['id' => SettingsMenu::GROUP_BACKEND, 'name' => BACKEND],],
+    const LOOKUP = [
+        'group' => [['id' => SettingsMenu::GROUP_FRONTEND, 'name' => FRONTEND], ['id' => SettingsMenu::GROUP_BACKEND, 'name' => BACKEND],],
         'menu_type' => [['id' => SettingsMenu::MENU_TYPE_CATEGORY, 'name' => 'CATEGORY'], ['id' => SettingsMenu::MENU_TYPE_TYPE, 'name' => 'TYPE'], ['id' => SettingsMenu::MENU_TYPE_STATUS, 'name' => 'STATUS'], ['id' => SettingsMenu::MENU_TYPE_MIXED, 'name' => 'MIXED'],],
         'display_type' => [['id' => SettingsMenu::DISPLAY_TYPE_DEFAULT, 'name' => 'DEFAULT'], ['id' => SettingsMenu::DISPLAY_TYPE_TREE, 'name' => 'TREE'], ['id' => SettingsMenu::DISPLAY_TYPE_MEGA, 'name' => 'MEGA'],],
     ];
@@ -31,9 +32,7 @@ class SettingsMenu extends SettingsMenuBase //\yii\db\ActiveRecord
 
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
-    const COLUMNS = [
-
-    ];
+    const COLUMNS = [];
 
     /**
      * @inheritdoc

@@ -68,11 +68,11 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
     ]
 ]);
 ?>
-    <div class="form">
-        <div class="row">
-            <div class="col-md-<?= $col_size1 ?>">
-                <div class="portlet light">
-                    <?php if (!Yii::$app->request->isAjax) { ?>
+<div class="form">
+    <div class="row">
+        <div class="col-md-<?= $col_size1 ?>">
+            <div class="portlet light">
+                <?php if (!Yii::$app->request->isAjax) { ?>
 
                     <div class="visible-print">
                         <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
@@ -92,47 +92,47 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                             </li>
                         </ul>
                     </div>
-                    <?php } ?>
-                    <div class="portlet-body form">
-                        <div class="form">
-                            <div class="form-body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active row" id="tab_1_1">
-                                        <div class="col-md-12">
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
+                <?php } ?>
+                <div class="portlet-body form">
+                    <div class="form">
+                        <div class="form-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active row" id="tab_1_1">
+                                    <div class="col-md-12">
+                                        <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
 
-                                                'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'content' => ['value' => $form->fieldNoLabel($model, 'content')->html(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'image' => ['value' => $form->fieldNoLabel($model, 'image')->image(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3])],
+                                            'content' => ['value' => $form->fieldNoLabel($model, 'content')->html()],
+                                            'image' => ['value' => $form->fieldNoLabel($model, 'image')->image()],
+                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox()],
 
-                                            ]]); ?>
+                                        ]]); ?>
 
-                                        </div>
                                     </div>
-
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php $type = FHtml::getFieldValue($model, 'type');
-                if (isset($modelMeta) && !empty($type)) { ?>
-                    <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
-                <?php } ?>
-
-                <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
-
-             </div>
-            <?php if ($col_size2 > 0) { ?>
-                <div class="profile-sidebar col-md-<?= $col_size2 ?> col-xs-12 hidden-print">
-                    <div class="portlet light">
-                        <?= FHtml::showModelPreview($model) ?>
-                    </div>
-                </div>
+            </div>
+            <?php $type = FHtml::getFieldValue($model, 'type');
+            if (isset($modelMeta) && !empty($type)) { ?>
+                <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
             <?php } ?>
+
+            <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
+
         </div>
+        <?php if ($col_size2 > 0) { ?>
+            <div class="profile-sidebar col-md-<?= $col_size2 ?> col-xs-12 hidden-print">
+                <div class="portlet light">
+                    <?= FHtml::showModelPreview($model) ?>
+                </div>
+            </div>
+        <?php } ?>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end(); ?>

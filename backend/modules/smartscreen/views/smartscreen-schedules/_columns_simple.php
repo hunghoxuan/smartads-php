@@ -125,15 +125,15 @@ return [
         },
     ],
 
-    [
-        'class'          => FHtml::COLUMN_VIEW,
-        'attribute'      => 'content_id',
-        'label'          => FHtml::t('common', 'Content'),
-        'contentOptions' => ['class' => $show_all == 0 ? 'col-md-5 nowrap text-left' : 'col-md-4 nowrap text-left'],
-        'value'          => function ($model) {
-            return Smartscreen::showScheduleOverview($model);
-        },
-    ],
+    // [
+    //     'class'          => FHtml::COLUMN_VIEW,
+    //     'attribute'      => 'content_id',
+    //     'label'          => FHtml::t('common', 'Content'),
+    //     'contentOptions' => ['class' => $show_all == 0 ? 'col-md-5 nowrap text-left' : 'col-md-4 nowrap text-left'],
+    //     'value'          => function ($model) {
+    //         return Smartscreen::showScheduleOverview($model);
+    //     },
+    // ],
     [
         'class'          => FHtml::COLUMN_VIEW,
         'visible' => $show_all > 0,

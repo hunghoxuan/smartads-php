@@ -19,7 +19,7 @@ $currentRole = FHtml::getCurrentRole();
 $currentAction = FHtml::currentAction();
 
 $canEdit = isset($canEdit) ? $canEdit : FHtml::isInRole($model, 'edit', $currentRole, FHtml::getFieldValue($model, ['user_id', 'created_user']));
-$canDelete = isset($canDelete) ? $canDelete :FHtml::isInRole($model, 'delete', $currentRole);
+$canDelete = isset($canDelete) ? $canDelete : FHtml::isInRole($model, 'delete', $currentRole);
 $edit_type = isset($edit_type) ? $edit_type : (FHtml::isViewAction($currentAction) ? FHtml::EDIT_TYPE_VIEW : FHtml::EDIT_TYPE_DEFAULT);
 $display_type = isset($display_type) ? $display_type : (FHtml::isViewAction($currentAction) ? FHtml::DISPLAY_TYPE_TABLE : FHtml::DISPLAY_TYPE_DEFAULT);
 
@@ -56,27 +56,27 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : '_
     ]
 ]); ?>
 
-    <div class="form">
-        <div class="row">
-            <div class="col-md-12">
+<div class="form">
+    <div class="row">
+        <div class="col-md-12">
 
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
-                                                'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'image' => ['value' => $form->fieldNoLabel($model, 'image')->image(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            ]]); ?>
-                                            <?php /*
+            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
+                'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3])],
+                'image' => ['value' => $form->fieldNoLabel($model, 'image')->image()],
+            ]]); ?>
+            <?php /*
 ;
                                             */ ?>
-                                            <?= FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 2, 'attributes' => [
-                                                'type' => ['value' => $form->fieldNoLabel($model, 'type')->select(FHtml::getComboArray('object_link', 'object_link', 'type', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            ]]); ?>
-            </div>
-            <div class="col-md-12">
-                <?= (FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete, $ajax) : FHtml::showActionsButton($model, $canEdit, $canDelete, $ajax) ?>
-            </div>
+            <?= FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 2, 'attributes' => [
+                'type' => ['value' => $form->fieldNoLabel($model, 'type')->select(FHtml::getComboArray('object_link', 'object_link', 'type', true, 'id', 'name'))],
+                'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox()],
+            ]]); ?>
+        </div>
+        <div class="col-md-12">
+            <?= (FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete, $ajax) : FHtml::showActionsButton($model, $canEdit, $canDelete, $ajax) ?>
         </div>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end() ?>

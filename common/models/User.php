@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models;
 
 use backend\models\Auth;
@@ -43,20 +44,23 @@ class User extends BaseUser
      */
     public function getGroups()
     {
-        if (!FHtml::isTableExisted(AuthPermission::tableName()))
+        if (!FHTml::isDBSecurityEnabled() || !FHtml::isTableExisted(AuthPermission::tableName()))
             return null;
 
         $models = $this->hasMany(AuthPermission::className(), ['object2_id' => 'id'])
-            ->andOnCondition(['AND',
+            ->andOnCondition([
+                'AND',
                 ['relation_type' => 'group-user'],
-                ['object2_type' => 'user']]);
+                ['object2_type' => 'user']
+            ]);
         return $models;
     }
 
     /**
      * @return array
      */
-    public function getGroupsArray() {
+    public function getGroupsArray()
+    {
 
         $arr1 = (is_array($this->groups)) ? ArrayHelper::getColumn($this->groups, 'object_id') : [];
         $arr2 = (is_array($this->groups)) ? ArrayHelper::getColumn($this->groups, 'object_type') : [];
@@ -74,13 +78,15 @@ class User extends BaseUser
      */
     public function getRights()
     {
-        if (!FHtml::isTableExisted(AuthPermission::tableName()))
+        if (!FHTml::isDBSecurityEnabled() || !FHtml::isTableExisted(AuthPermission::tableName()))
             return null;
 
         $models = $this->hasMany(AuthPermission::className(), ['object_id' => 'id'])
-            ->andOnCondition(['AND',
+            ->andOnCondition([
+                'AND',
                 ['relation_type' => 'user-role'],
-                ['object_type' => 'user']]);
+                ['object_type' => 'user']
+            ]);
 
         return $models;
     }
@@ -88,7 +94,8 @@ class User extends BaseUser
     /**
      * @return array
      */
-    public function getRightsArray() {
+    public function getRightsArray()
+    {
         $arr1 = (is_array($this->rights)) ? ArrayHelper::getColumn($this->rights, 'object2_id') : [];
         $arr2 = (is_array($this->rights)) ? ArrayHelper::getColumn($this->rights, 'object2_type') : [];
 
@@ -123,11 +130,13 @@ class User extends BaseUser
         return $this->hasOne(Auth::className(), ['id' => 'auth_id']);
     }
 
-    public function getAliasUserId() {
+    public function getAliasUserId()
+    {
         return $this->id;
     }
 
-    public function getRoleName() {
+    public function getRoleName()
+    {
         if (isset($this->staff, $this->staff->role)) {
             return $this->staff->role->name;
         }
@@ -142,11 +151,13 @@ class User extends BaseUser
         return $this->role;
     }
 
-    public function getTabName() {
+    public function getTabName()
+    {
         return '';
     }
 
-    public function getDepartmentName() {
+    public function getDepartmentName()
+    {
         return '';
     }
 }

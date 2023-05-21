@@ -6,7 +6,7 @@ class Lorem extends Base
 {
     protected static $wordList = array(
         'alias', 'consequatur', 'aut', 'perferendis', 'sit', 'voluptatem',
-        'accusantium', 'doloremque', 'aperiam', 'eaque','ipsa', 'quae', 'ab',
+        'accusantium', 'doloremque', 'aperiam', 'eaque', 'ipsa', 'quae', 'ab',
         'illo', 'inventore', 'veritatis', 'et', 'quasi', 'architecto',
         'beatae', 'vitae', 'dicta', 'sunt', 'explicabo', 'aspernatur', 'aut',
         'odit', 'aut', 'fugit', 'sed', 'quia', 'consequuntur', 'magni',
@@ -64,8 +64,8 @@ class Lorem extends Base
     public static function words($nb = 3, $asText = false)
     {
         $words = array();
-        for ($i=0; $i < $nb; $i++) {
-            $words []= static::word();
+        for ($i = 0; $i < $nb; $i++) {
+            $words[] = static::word();
         }
 
         return $asText ? implode(' ', $words) : $words;
@@ -92,7 +92,7 @@ class Lorem extends Base
         $words = static::words($nbWords);
         $words[0] = ucwords($words[0]);
 
-        return implode($words, ' ') . '.';
+        return implode(' ', $words) . '.';
     }
 
     /**
@@ -106,8 +106,8 @@ class Lorem extends Base
     public static function sentences($nb = 3, $asText = false)
     {
         $sentences = array();
-        for ($i=0; $i < $nb; $i++) {
-            $sentences []= static::sentence();
+        for ($i = 0; $i < $nb; $i++) {
+            $sentences[] = static::sentence();
         }
 
         return $asText ? implode(' ', $sentences) : $sentences;
@@ -116,7 +116,7 @@ class Lorem extends Base
     /**
      * Generate a single paragraph
      *
-      * @example 'Sapiente sunt omnis. Ut pariatur ad autem ducimus et. Voluptas rem voluptas sint modi dolorem amet.'
+     * @example 'Sapiente sunt omnis. Ut pariatur ad autem ducimus et. Voluptas rem voluptas sint modi dolorem amet.'
      * @param integer $nbSentences         around how many sentences the paragraph should contain
      * @param boolean $variableNbSentences set to false if you want exactly $nbSentences returned,
      *                                      otherwise $nbSentences may vary by +/-40% with a minimum of 1
@@ -145,8 +145,8 @@ class Lorem extends Base
     public static function paragraphs($nb = 3, $asText = false)
     {
         $paragraphs = array();
-        for ($i=0; $i < $nb; $i++) {
-            $paragraphs []= static::paragraph();
+        for ($i = 0; $i < $nb; $i++) {
+            $paragraphs[] = static::paragraph();
         }
 
         return $asText ? implode("\n\n", $paragraphs) : $paragraphs;

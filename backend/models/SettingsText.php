@@ -12,9 +12,9 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "settings_text".
  */
 class SettingsText extends \common\models\BaseModel
@@ -26,20 +26,24 @@ class SettingsText extends \common\models\BaseModel
     public $group;
     public $application_id;
 
-    public static function getTableSchema($db = null) {
+    public static function getTableSchema($db = null)
+    {
         return null;
     }
 
-    public function getTableName() {
+    public function getTableName()
+    {
         return 'settings_text';
     }
 
-    public function attributes() {
+    public function attributes()
+    {
         return [];
     }
 
 
-    public static function findAll($condition = [], $order_by = [], $page_size = -1, $page = 1, $isCached = false, $display_fields = [], $asArray = false, $load_activeonly = true) {
+    public static function findAll($condition = [], $order_by = [], $page_size = -1, $page = 1, $isCached = false, $display_fields = [], $asArray = false, $load_activeonly = true)
+    {
         if (self::isSqlDb())
             return parent::findAll($condition, $order_by, $page_size, $page, $isCached, $display_fields, $asArray, $load_activeonly);
 
@@ -72,18 +76,21 @@ class SettingsText extends \common\models\BaseModel
         return $result;
     }
 
-    public function getGroupName($name = '') {
+    public function getGroupName($name = '')
+    {
 
         $a = empty($name) ? $this->name : $name;
         $arr = explode('.', $a);
         return (count($arr) > 1) ? $arr[0] : $a;
     }
 
-    public static function deleteAll($condition = '', $params = []) {
+    public static function deleteAll($condition = '', $params = [])
+    {
         FHtml::deleteApplicationTranslations();
     }
 
-    public function save($runValidation = true, $attributeNames = null) {
+    public function save($runValidation = true, $attributeNames = null)
+    {
         if (self::isSqlDb())
             return parent::save($runValidation, $attributeNames);
 
@@ -107,7 +114,8 @@ class SettingsText extends \common\models\BaseModel
         return true;
     }
 
-    public static function findOne($condition, $selected_fields = [], $asArray = false, $applications_enabled = true) {
+    public static function findOne($condition, $selected_fields = [], $asArray = false, $applications_enabled = true)
+    {
         if (self::isSqlDb())
             return parent::findOne($condition);
 
@@ -115,8 +123,7 @@ class SettingsText extends \common\models\BaseModel
             $params = self::getApplicationTranslations();
             $i = 1;
             foreach ($params as $key => $value) {
-                if ((is_numeric($condition) && $i == $condition) || (is_string($condition) && $key == $condition))
-                {
+                if ((is_numeric($condition) && $i == $condition) || (is_string($condition) && $key == $condition)) {
                     $model = new SettingsText();
                     $model->name = $key;
                     $model->content = $value;
@@ -131,7 +138,8 @@ class SettingsText extends \common\models\BaseModel
         return null;
     }
 
-    public static function getDb() {
+    public static function getDb()
+    {
         return 'text';
     }
 
@@ -145,7 +153,8 @@ class SettingsText extends \common\models\BaseModel
         return false;
     }
 
-    public static function getApplicationTranslations($isCached = false) {
+    public static function getApplicationTranslations($isCached = false)
+    {
         return FHtml::getApplicationTranslations(FHtml::currentLang(), $isCached);
     }
 }

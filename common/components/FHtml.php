@@ -1,8 +1,9 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
  */
 
@@ -131,36 +132,39 @@ class FHtml extends FFrontend
         return $html;
     }
 
-    public static function buttonDeleteAll($icon = '<span class="glyphicon glyphicon-trash"></span>', $title = 'Delete All', $action = 'delete-all', $color = 'warning') {
+    public static function buttonDeleteAll($icon = '<span class="glyphicon glyphicon-trash"></span>', $title = 'Delete All', $action = 'delete-all', $color = 'warning')
+    {
         $button = self::buttonAction($icon, $title, $action, $color, true);
 
         return $button;
     }
 
-    public static function buttonAction($icon = '', $title = '', $action = '', $color = '', $confirm = false, $translated = true, $style = 'float:left; margin-right:10px;') {
+    public static function buttonAction($icon = '', $title = '', $action = '', $color = '', $confirm = false, $translated = true, $style = 'float:left; margin-right:10px;')
+    {
         $view = FHtml::currentView();
 
         // Hung:
-//        if (!is_array($action)) {
-//            $controller = FHtml::currentController();
-//            $action = strpos($action, '/') === false ? "$controller/$action" : $action;
-//        }
+        //        if (!is_array($action)) {
+        //            $controller = FHtml::currentController();
+        //            $action = strpos($action, '/') === false ? "$controller/$action" : $action;
+        //        }
 
         if (is_array($icon)) {
             $icon = $icon[0];
         }
-        if (is_string($translated))
-        {
+        if (is_string($translated)) {
             $style = $translated;
             $translated = true;
         }
 
-        $button = FHtml::a(trim($icon . '&nbsp;' . (empty($title) ? '' : ($translated ? FHtml::t('button', $title) : $title))), $action,
+        $button = FHtml::a(
+            trim($icon . '&nbsp;' . (empty($title) ? '' : ($translated ? FHtml::t('button', $title) : $title))),
+            $action,
             $confirm ?
                 [
                     "class" => !empty($color) && in_array($color, ['default', 'success', 'primary', 'danger', 'warning']) ? "btn btn-$color" : $color,
                     'role' => is_bool($confirm) ? 'modal-remote' : "modal-remote-bulk",
-                    'data-confirm' => false, 'data-method' => false,// for overide yii data api
+                    'data-confirm' => false, 'data-method' => false, // for overide yii data api
                     'data-request-method' => 'post',
                     'data-confirm-title' => FHtml::t('message', $title),
                     'data-confirm-message' => FHtml::t('message', 'Are you sure you want to do this') . ' ?',
@@ -172,7 +176,8 @@ class FHtml extends FFrontend
                     'title' => FHtml::t('message', $title),
                     "class" => !empty($color) && in_array($color, ['default', 'success', 'primary', 'danger', 'warning']) ? "btn btn-$color" : $color,
                     'style' => $style
-                ]);
+                ]
+        );
 
         return $button;
     }
@@ -202,11 +207,11 @@ class FHtml extends FFrontend
             }
         }
 
-//        if (is_array($url) && count($url) == 1)
-//            $url = $url[0];
-//
-//        if (is_string($url) && strpos($url, '/') === false)
-//            $url = FHtml::currentController() . '/' . $url;
+        //        if (is_array($url) && count($url) == 1)
+        //            $url = $url[0];
+        //
+        //        if (is_string($url) && strpos($url, '/') === false)
+        //            $url = FHtml::currentController() . '/' . $url;
 
         //if is in popup mode (iframe) then keep layout=no in this link
         $is_layout = FHtml::getRequestParam('layout');
@@ -233,23 +238,25 @@ class FHtml extends FFrontend
     {
         if ($dropdown) {
             $bulkActionButton = '<div class="dropdown pull-left">&nbsp;<button class="btn btn-default" data-toggle="dropdown">' . FHtml::t('button', 'Actions') . '</button>' . DropdownX::widget([
-                    'items' => $items
+                'items' => $items
 
-                ]) . '</div>';
+            ]) . '</div>';
         } else {
             $bulkActionButton = '';
             foreach ($items as $label => $item) {
-                $bulkActionButton .= static::buttonBulkAction('',key_exists('label', $item) ? $item['label'] : $label, key_exists('url', $item) ? $item['url'] : $item, 'btn btn-default', $is_confirm, false);
+                $bulkActionButton .= static::buttonBulkAction('', key_exists('label', $item) ? $item['label'] : $label, key_exists('url', $item) ? $item['url'] : $item, 'btn btn-default', $is_confirm, false);
             }
         }
         return $bulkActionButton;
     }
 
-    public static function buttonBulkAction($icon = '', $label, $action, $color = '', $confirm = true, $translated = true) {
+    public static function buttonBulkAction($icon = '', $label, $action, $color = '', $confirm = true, $translated = true)
+    {
         return static::buttonAction($icon, $label, $action, $color, $confirm ? 'bulk' : false, $translated);
     }
 
-    public static function buttonBulkChangeFieldActions($items, $action = 'bulk-action', $confirm = true) {
+    public static function buttonBulkChangeFieldActions($items, $action = 'bulk-action', $confirm = true)
+    {
         if (is_string($items)) {
             if (strpos($items, '.') !== false) {
                 $arr = explode('.', $items);
@@ -297,7 +304,7 @@ class FHtml extends FFrontend
 
             $result = ['label' => $label, 'items' => $child];
         } else {
-            $result = '<li>' . static::buttonBulkAction('<i class="glyphicon glyphicon-file"></i> '. $label, '', ["bulk-action", "action" => $action, "field" => $field], '', false) . '</li>';
+            $result = '<li>' . static::buttonBulkAction('<i class="glyphicon glyphicon-file"></i> ' . $label, '', ["bulk-action", "action" => $action, "field" => $field], '', false) . '</li>';
         }
 
         return $result;
@@ -325,22 +332,24 @@ class FHtml extends FFrontend
 
     public static function buildBulkActionMenu($icon = '', $title = '', $action = '', $style = '', $confirm = false)
     {
-        return '<li>' . FHtml::a($icon . FHtml::t('button', $title),
-                is_array($action) ? $action : [$action],
-                $confirm ?
-                    [
-                        'role' => is_bool($confirm) ? 'modal-remote' : "modal-remote-bulk",
-                        'data-confirm' => false, 'data-method' => false,// for overide yii data api
-                        'data-request-method' => 'post',
-                        'data-confirm-title' => FHtml::t('message', 'Confirmation'),
-                        'data-confirm-message' => FHtml::t('message', 'Are you sure'),
-                        'style' => $style
-                    ] : [
+        return '<li>' . FHtml::a(
+            $icon . FHtml::t('button', $title),
+            is_array($action) ? $action : [$action],
+            $confirm ?
+                [
+                    'role' => is_bool($confirm) ? 'modal-remote' : "modal-remote-bulk",
+                    'data-confirm' => false, 'data-method' => false, // for overide yii data api
+                    'data-request-method' => 'post',
+                    'data-confirm-title' => FHtml::t('message', 'Confirmation'),
+                    'data-confirm-message' => FHtml::t('message', 'Are you sure'),
+                    'style' => $style
+                ] : [
                     'role' => '',
-                    'data-confirm' => false, 'data-method' => false,// for overide yii data api
+                    'data-confirm' => false, 'data-method' => false, // for overide yii data api
                     'data-request-method' => 'post',
                     'style' => $style
-                ] ) . '</li>';
+                ]
+        ) . '</li>';
     }
 
     public static function buildDeleteAllMenu()
@@ -353,11 +362,11 @@ class FHtml extends FFrontend
 
     public static function buildPopulateMenu()
     {
-        return '<li>' . FHtml::a('<i class="glyphicon glyphicon-refresh"></i> ' . FHtml::t('button', 'Populate'),
-                ["populate"],
-                [
-
-                ]) . '</li>';
+        return '<li>' . FHtml::a(
+            '<i class="glyphicon glyphicon-refresh"></i> ' . FHtml::t('button', 'Populate'),
+            ["populate"],
+            []
+        ) . '</li>';
     }
 
     public static function buildBulkDividerMenu()
@@ -377,13 +386,13 @@ class FHtml extends FFrontend
             echo '<pre>';
             var_dump($object);
             //echo '<b>'; echo get_class($where); echo ': '; echo get_called_class(); echo ': '; echo '</b><br/>';
-//            if (is_object($object) || is_array($object)) {
-//	            //print_r($object);
-//            }
-//            else {
-//
-//	            //echo $object;
-//            }
+            //            if (is_object($object) || is_array($object)) {
+            //	            //print_r($object);
+            //            }
+            //            else {
+            //
+            //	            //echo $object;
+            //            }
             echo '</pre>';
         }
     }
@@ -401,11 +410,13 @@ class FHtml extends FFrontend
         }
     }
 
-    public static function dump($object, $condition = true) {
+    public static function dump($object, $condition = true)
+    {
         return static::var_dump($object, $condition);
     }
 
-    public static function showPre($data, $condition = true) {
+    public static function showPre($data, $condition = true)
+    {
         if ($condition) {
             echo "<pre>";
             print_r($data);
@@ -413,7 +424,8 @@ class FHtml extends FFrontend
         }
     }
 
-    public static function showDiv($content, $css = '', $showEmpty = '') {
+    public static function showDiv($content, $css = '', $showEmpty = '')
+    {
         if (!empty($css) && strpos($css, ':') !== false)
             return "<div style='$css'>$content</div>";
         else if (!empty($css))
@@ -506,7 +518,8 @@ class FHtml extends FFrontend
                 $image_existed = false;
                 $imageLink = $image;
                 $str = '<img src="' . FHtml::getImageUrl('video.png', 'www') . '" ';
-                $width = '80px'; $height = '80px';
+                $width = '80px';
+                $height = '80px';
 
                 if (!empty($width)) {
                     $str = $str . ' width="' . $width . '" ';
@@ -524,8 +537,7 @@ class FHtml extends FFrontend
                 $folder = FHtml::getFullUploadFolder($model_dir);
                 $imagePath = $folder . DS . $image;
 
-                if (StringHelper::startsWith($imagePath, 'applications') || StringHelper::startsWith($imagePath, 'backend'))
-                {
+                if (StringHelper::startsWith($imagePath, 'applications') || StringHelper::startsWith($imagePath, 'backend')) {
                     $imagePath = DS . $imagePath;
                 }
 
@@ -533,10 +545,8 @@ class FHtml extends FFrontend
                     $image_existed = self::is_image($imagePath, false);
                     $imageLink1 = $imagePath;
                     $imageLink = self::getImageUrl($image, $model_dir);
-
                 } else {
-                    if (FHtml::isViewAction($current_action))
-                    {
+                    if (FHtml::isViewAction($current_action)) {
                         $width = '70px';
                         $height = '50px';
                     }
@@ -550,8 +560,7 @@ class FHtml extends FFrontend
         } else {
             $imageLink1 = 'Empty Data';
             $image_existed = false;
-            if (FHtml::isViewAction($current_action))
-            {
+            if (FHtml::isViewAction($current_action)) {
                 $width = '70px';
                 $height = '50px';
             }
@@ -559,9 +568,9 @@ class FHtml extends FFrontend
         }
         if (empty($str)) {
             if (strlen($imageLink) > 0) {
-//                if (ends_with($imageLink, '.mp4') || ends_with($imageLink, '.avi')) {
-//                    return '<img src="' . FHtml::getImageUrl('video.png', 'www') . "\" width=$width height=$height />";
-//                }
+                //                if (ends_with($imageLink, '.mp4') || ends_with($imageLink, '.avi')) {
+                //                    return '<img src="' . FHtml::getImageUrl('video.png', 'www') . "\" width=$width height=$height />";
+                //                }
                 if ($image_existed || FHtml::is_image($imageLink)) {
                     if (FHtml::isExport()) {
                         return $imageLink;
@@ -614,17 +623,20 @@ class FHtml extends FFrontend
         return $str;
     }
 
-    public static function isPrint() {
+    public static function isPrint()
+    {
         $print = FHtml::getRequestParam('print');
         return $print;
     }
 
-    public static function isExport() {
+    public static function isExport()
+    {
         $export = FHtml::getRequestParam('export');
         return $export;
     }
 
-    public static function showVideo($file, $title = '') {
+    public static function showVideo($file, $title = '')
+    {
         $parsed = FContent::parseUrl($file);
         $image = $file;
         if (!empty($parsed)) {
@@ -635,11 +647,9 @@ class FHtml extends FFrontend
             $url = '';
         }
 
-        if (in_array($file_type, ['youtube', 'vimeo']))
-        {
+        if (in_array($file_type, ['youtube', 'vimeo'])) {
             return self::showIframe($url);
-        }
-        else if (strpos($image, 'api.soundcloud.com') !== false) {
+        } else if (strpos($image, 'api.soundcloud.com') !== false) {
             $image = str_replace('https://', 'https%3A//', $image);
             return ' <iframe width="100%" height="" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=' . $image . '&amp;auto_play=false&amp;hide_related=false&amp;visual=true"></iframe>';
         } else if (strpos($file, 'vimeo.com') !== false) {
@@ -653,7 +663,8 @@ class FHtml extends FFrontend
         }
     }
 
-    public static function showFile($file, $title = '', $data = '', $showName = true, $css = 'form-label') {
+    public static function showFile($file, $title = '', $data = '', $showName = true, $css = 'form-label')
+    {
 
         $path_parts = pathinfo($file);
         $file_name = $path_parts['basename'];
@@ -663,7 +674,8 @@ class FHtml extends FFrontend
         $file_size = null;
 
         if (ends_with($file_path, "no_image.png")) {
-            echo $file_path; die;
+            echo $file_path;
+            die;
         }
         if (is_file($file_path)) {
 
@@ -673,7 +685,7 @@ class FHtml extends FFrontend
                 $data = $file;
             if (empty($title)) {
                 $arr = explode('/', $file);
-                $arr = explode('.', $arr[count($arr)-1] );
+                $arr = explode('.', $arr[count($arr) - 1]);
                 $title =  $arr[0];
             }
 
@@ -810,7 +822,8 @@ class FHtml extends FFrontend
         return self::showPrice($old_price, $price, $discount, $currency, $color, $show_friendly, $show_price);
     }
 
-    public static function getModelPriceParams($model) {
+    public static function getModelPriceParams($model)
+    {
         if (!isset($model))
             return 0;
 
@@ -827,7 +840,7 @@ class FHtml extends FFrontend
             if (is_numeric($discount)) {
                 $price = $old_price * (100 - $discount) / 100;
             }
-        }else {
+        } else {
             $price = $old_price;
         }
 
@@ -907,12 +920,11 @@ class FHtml extends FFrontend
                 $decimals = $arr[1] > 0 ? strlen($arr[1]) - 2 : 0;
 
                 //if ($decimals > $dec1)
-                    //$decimals = $dec1;
+                //$decimals = $dec1;
             }
 
             return number_format($value, $decimals, FHtml::settingDecimalSeparatorFormat(), FHtml::settingThousandSeparatorFormat());
-        }
-        else
+        } else
             return $value;
     }
 
@@ -930,10 +942,9 @@ class FHtml extends FFrontend
             $decimal_digits = self::getCurrencyDecimalDigits($prefix);
 
             //if (is_numeric($decimal_digits))
-               // $value = round($value, $decimal_digits);
+            // $value = round($value, $decimal_digits);
             return number_format($value, $decimal_digits, Fhtml::settingDecimalSeparatorFormat(), Fhtml::settingThousandSeparatorFormat()) . " <small style='font-size:100%; color:grey'>" . $symbol . '</small> ';
-        }
-        else
+        } else
             return '';
     }
 
@@ -958,7 +969,8 @@ class FHtml extends FFrontend
             return '';
     }
 
-    public static function showNumberInWords($number, $currency = '', $after_decimal_display_as_number = false) {
+    public static function showNumberInWords($number, $currency = '', $after_decimal_display_as_number = false)
+    {
         if (is_numeric($currency))
             $level = $currency + 1;
         else
@@ -973,7 +985,6 @@ class FHtml extends FFrontend
             $prefix = FHtml::t('number', $currency);
             $prefix2 = FHtml::t('number', 'cents');
             $less_than_ten = '';
-
         } else {
             $hyphen = ' ';
             $conjunction = ' ';
@@ -1189,7 +1200,6 @@ class FHtml extends FFrontend
             $result .= '</ul></div>';
 
             return $result;
-
         }
         return number_format($value, 0, ".", ",") . $postfix;
     }
@@ -1328,7 +1338,6 @@ class FHtml extends FFrontend
                         $label = FHtml::getFieldLabel($model, $field1);
 
                     $result .= self::showField($label, $field_value, $showType1, $layout, $css, $table, $field1, $dbType, $model->primaryKey, FHtml::NULL_LABEL, $newline, $inlineEdit, $pjax_container);
-
                 }
             } catch (Exception $e) {
                 return FHtml::addError($e);
@@ -1351,7 +1360,6 @@ class FHtml extends FFrontend
                 return FHtml::SHOW_ACTIVE;
             $table = $model;
             $model = FHtml::createModel($model);
-
         } else {
             $table = FHtml::getTableName($model);
         }
@@ -1401,7 +1409,8 @@ class FHtml extends FFrontend
         return $showType1;
     }
 
-    public static function getLookupSettings($model, $column = '', $moduleName = null, $module = null) {
+    public static function getLookupSettings($model, $column = '', $moduleName = null, $module = null)
+    {
         if (is_string($model)) {
             $table = $model;
             $model = FHtml::createModel($table);
@@ -1496,7 +1505,7 @@ class FHtml extends FFrontend
             $str .= '<tr><td class="col-md-3 col-xs-3 form-label">[label]</td></td><td>[value]</td></tr>';
             $newline = '';
         } else {
-            if (empty($str) || strpos( '[value]', $str) === false)
+            if (empty($str) || strpos('[value]', $str) === false)
                 $str .= '[value]';
 
             $newline = !empty($newline) ? $newline : '<br/>';
@@ -1563,7 +1572,7 @@ class FHtml extends FFrontend
             $module = FHtml::currentModule();
             $controller = FHtml::currentController();
 
-            $link_url = FHtml::createLink("$module/$controller/view-detail", ['id' => $value], BACKEND, $value, '', '' )   ;
+            $link_url = FHtml::createLink("$module/$controller/view-detail", ['id' => $value], BACKEND, $value, '', '');
             return $link_url;
         }
 
@@ -1573,7 +1582,7 @@ class FHtml extends FFrontend
         } else if ($column == 'category_id') {
             $showType = FHtml::SHOW_LABEL;
             $table = FHTml::TABLE_CATEGORIES;
-        }   else if (FHtml::isInArray($column, ['is_*'])) {
+        } else if (FHtml::isInArray($column, ['is_*'])) {
             $showType = FHtml::SHOW_BOOLEAN;
         }
 
@@ -1637,8 +1646,7 @@ class FHtml extends FFrontend
                     $result = $value;
                     if (strpos($value, "</p>") === false)
                         $result = str_replace("\n", '<br/>', $result);
-                }
-                else
+                } else
                     $result = '';
             }
 
@@ -1742,7 +1750,7 @@ class FHtml extends FFrontend
                                 $color = $color === false ? $color : "primary";
                                 $names = array_column($metaItem, 'name');
 
-                                foreach ($names as $name ) {
+                                foreach ($names as $name) {
                                     $html .= FHtml::showColor('primary', $name, $is_background) . ' ';
                                 }
                                 return $html;
@@ -1750,7 +1758,6 @@ class FHtml extends FFrontend
                                 $color = $color === false ? $color : "primary";
                                 $text = "";
                             }
-
                         } else {
                             $metaItem = !FHtml::isTableExisted(FHtml::TABLE_OBJECT_SETTING) ? null : FHtml::getModel(FHtml::TABLE_OBJECT_SETTING, '', ['object_type' => $table, 'meta_key' => $column, 'key' => $value], null, false);
                             if (isset($metaItem)) {
@@ -1823,7 +1830,7 @@ class FHtml extends FFrontend
         if (empty($label))
             $label = FHtml::t('common', "Yes");
 
-        $str = array (
+        $str = array(
             true => '<span class="label label-sm label-success">' . $label . '</span>',
             false => '<span class="label label-sm label-default">' . $empty_value . '</span>',
             1 => '<span class="label label-sm label-success">' . $label . '</span>',
@@ -1868,9 +1875,9 @@ class FHtml extends FFrontend
             return "$value";
 
         // long test with postgres sql
-	    if ($keyField == 'id' && $value == '') {
-	    	$value = 0;
-	    }
+        if ($keyField == 'id' && $value == '') {
+            $value = 0;
+        }
 
         $sql_select = '*';
         $sql_table = $table;
@@ -1982,8 +1989,7 @@ class FHtml extends FFrontend
             }
         }
 
-        if (strlen($format) <= 10 && $showTime)
-        {
+        if (strlen($format) <= 10 && $showTime) {
             $time_format = FConfig::settingTimeFormat();
             $format = $format . ' ' . $time_format; //m.d.Y H:ipm
         }
@@ -1994,8 +2000,7 @@ class FHtml extends FFrontend
                     $format = $format . ' g:i A';
 
                 return date($format, $date);
-            }
-            else
+            } else
                 return $date;
         } else {
             $timestamp = strtotime($date);
@@ -2005,13 +2010,13 @@ class FHtml extends FFrontend
 
         $valid = \DateTime::getLastErrors();
         if ($valid['warning_count'] == 0 and $valid['error_count'] == 0) {
-            return FHtml::strReplace(date($format, $timestamp), ['12:00 AM','00:00 AM', '00:00:00', '0000-00-00']);
+            return FHtml::strReplace(date($format, $timestamp), ['12:00 AM', '00:00 AM', '00:00:00', '0000-00-00']);
         }
 
         $f = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
         $valid = \DateTime::getLastErrors();
         if ($valid['warning_count'] == 0 and $valid['error_count'] == 0) {
-            return FHtml::strReplace(date($format, $timestamp), ['12:00 AM', '00:00 AM','00:00:00', '0000-00-00']);
+            return FHtml::strReplace(date($format, $timestamp), ['12:00 AM', '00:00 AM', '00:00:00', '0000-00-00']);
         }
 
         return FHtml::strReplace($date, ['12:00 AM', '00:00 AM', '00:00:00', '0000-00-00']);
@@ -2039,18 +2044,21 @@ class FHtml extends FFrontend
             return '';
     }
 
-    public static function showSeconds($seconds) {
+    public static function showSeconds($seconds)
+    {
         return gmdate("H:i:s", $seconds);
     }
 
 
     //HungHX: 20160801
-    public static function showTimeAgo($date, $html = true) {
+    public static function showTimeAgo($date, $html = true)
+    {
         $ago = self::timeAgo($date);
         return $html ? "<small style='color:grey'>$ago</small>" : $ago;
     }
 
-    public static function showDateTimeAgo($date, $format = '', $html = true) {
+    public static function showDateTimeAgo($date, $format = '', $html = true)
+    {
         return FHtml::showDateTime($date, $format) . '<br/>' . FHtml::showTimeAgo($date, $html);
     }
 
@@ -2061,64 +2069,63 @@ class FHtml extends FFrontend
 
         $cur_time   = time();
         $time_elapsed   = $cur_time - $time_ago;
-        $seconds    = $time_elapsed ;
-        $minutes    = round($time_elapsed / 60 );
+        $seconds    = $time_elapsed;
+        $minutes    = round($time_elapsed / 60);
         $hours      = round($time_elapsed / 3600);
-        $days       = round($time_elapsed / 86400 );
+        $days       = round($time_elapsed / 86400);
         $weeks      = round($time_elapsed / 604800);
-        $months     = round($time_elapsed / 2600640 );
-        $years      = round($time_elapsed / 31207680 );
+        $months     = round($time_elapsed / 2600640);
+        $years      = round($time_elapsed / 31207680);
         // Seconds
-        if($seconds <= 60){
-            return Fhtml::t('datetime','Just now') ;
+        if ($seconds <= 60) {
+            return Fhtml::t('datetime', 'Just now');
         }
         //Minutes
-        else if($minutes <=60){
-            if($minutes==1){
-                return FHtml::t('datetime','One minute ago');
-            }
-            else{
-                return $minutes . ' ' . FHtml::t('datetime','minutes ago');
+        else if ($minutes <= 60) {
+            if ($minutes == 1) {
+                return FHtml::t('datetime', 'One minute ago');
+            } else {
+                return $minutes . ' ' . FHtml::t('datetime', 'minutes ago');
             }
         }
         //Hours
-        else if($hours <=24){
-            if($hours==1){
-                return FHtml::t('datetime','An hour ago');
-            }else{
-                return $hours . ' ' . FHtml::t('datetime','hrs ago');
+        else if ($hours <= 24) {
+            if ($hours == 1) {
+                return FHtml::t('datetime', 'An hour ago');
+            } else {
+                return $hours . ' ' . FHtml::t('datetime', 'hrs ago');
             }
         }
         //Days
-        else if($days <= 7){
-            if($days==1){
-                return FHtml::t('datetime','Yesterday');
-            }else{
-                return $days .  ' ' . FHtml::t('datetime','days ago');
+        else if ($days <= 7) {
+            if ($days == 1) {
+                return FHtml::t('datetime', 'Yesterday');
+            } else {
+                return $days .  ' ' . FHtml::t('datetime', 'days ago');
             }
         }
         //Weeks
-        else if($weeks <= 4.3){
-            if($weeks==1){
-                return FHtml::t('datetime','A week ago');
-            }else{
-                return $weeks . ' ' . FHtml::t('datetime','weeks ago');
+        else if ($weeks <= 4.3) {
+            if ($weeks == 1) {
+                return FHtml::t('datetime', 'A week ago');
+            } else {
+                return $weeks . ' ' . FHtml::t('datetime', 'weeks ago');
             }
         }
         //Months
-        else if($months <=12){
-            if($months==1){
-                return FHtml::t('datetime','A month ago');
-            }else{
-                return $months . ' ' . FHtml::t('datetime','months ago');
+        else if ($months <= 12) {
+            if ($months == 1) {
+                return FHtml::t('datetime', 'A month ago');
+            } else {
+                return $months . ' ' . FHtml::t('datetime', 'months ago');
             }
         }
         //Years
-        else{
-            if($years==1){
+        else {
+            if ($years == 1) {
                 return FHtml::t('datetime', 'One year ago');
-            }else{
-                return $years . ' ' . FHtml::t('datetime','years ago');
+            } else {
+                return $years . ' ' . FHtml::t('datetime', 'years ago');
             }
         }
     }
@@ -2136,7 +2143,7 @@ class FHtml extends FFrontend
         $container_name = BaseInflector::camelize($container);
         if ($type == FHtml::EDIT_TYPE_INPUT) {
             $js = '$("body").on("change", ".editable-' . $field . '", function() {
-                saveChange("' . FHtml::createBaseAPIUrl('change') . '", $(this), "'. $container. '");
+                saveChange("' . FHtml::createBaseAPIUrl('change') . '", $(this), "' . $container . '");
             });';
 
             FHtml::currentView()->registerJs($js, View::POS_END);
@@ -2144,15 +2151,15 @@ class FHtml extends FFrontend
 
         } else if ($type == FHtml::EDIT_TYPE_INLINE) {
             $js = @'
-                function saveEditor' .$container_name . '($editorid) {
+                function saveEditor' . $container_name . '($editorid) {
                     saveEditor("' . FHtml::createBaseAPIUrl('change') . '", $editorid, "' . $container . '");
                 }
                 
-                function saveBoolean' .$container_name . '($editorid) {
+                function saveBoolean' . $container_name . '($editorid) {
                     saveBoolean("' . FHtml::createBaseAPIUrl('active') . '", $editorid, "' . $container . '");
                 }
                 
-                function saveChange' .$container_name . '($editorid) {
+                function saveChange' . $container_name . '($editorid) {
                     saveChange("' . FHtml::createBaseAPIUrl('change') . '", $editorid, "' . $container . '");
                 }
                ';
@@ -2162,7 +2169,8 @@ class FHtml extends FFrontend
         }
     }
 
-    public static function showSaveChangeButton($content, $value, $field, $id, $object_type = '', $canEdit = true, $pjax_container = '', $jsFunction = 'saveChange{container_id}') {
+    public static function showSaveChangeButton($content, $value, $field, $id, $object_type = '', $canEdit = true, $pjax_container = '', $jsFunction = 'saveChange{container_id}')
+    {
 
         if ($canEdit != true || (is_string($canEdit) && !FHtml::isAuthorized($canEdit, $object_type, $field)))
             return '';
@@ -2199,7 +2207,8 @@ class FHtml extends FFrontend
         return self::showSaveChangeButton($content, $value, $field, $id, $object_type, $canEdit, $pjax_container, 'saveBoolean{container_id}');
     }
 
-    public static function getInlineEditLabel($field) {
+    public static function getInlineEditLabel($field)
+    {
         return "<span class='hidden-print' style='color:lightgrey' title='" . FHtml::t('common', 'Click to edit') . " '>(" . $field . ")</span>";
     }
 
@@ -2242,17 +2251,24 @@ class FHtml extends FFrontend
             $value = FHtml::encode($value);
 
         $result = '';
-        $rand = $object_type;// rand(0, 100000);
+        $rand = $object_type; // rand(0, 100000);
 
         if ($canEdit == FHtml::EDIT_TYPE_INPUT) {
             if (in_array($editor, [FHtml::EDITOR_SELECT]) || (!empty($field) && FHtml::isInArray($field, FHtml::getFIELDS_GROUP(), $object_type)) || $editor == FHtml::SHOW_LABEL || key_exists($object_type . '.' . $field, FHtml::LOOKUP)) {
                 $data = FHtml::getComboArray('', $object_type, $field, true, 'id', 'name');
 
-                $result = Html::dropDownList("$object_type-$field", $value,
-                    $data, ['class' => 'form-control editable-' . $field, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field]);
+                $result = Html::dropDownList(
+                    "$object_type-$field",
+                    $value,
+                    $data,
+                    ['class' => 'form-control editable-' . $field, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field]
+                );
             } else {
-                $result = Html::textarea("$object_type-$field", $value,
-                    ['id' => $id, 'class' => 'form-control editable-' . $field, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field]);
+                $result = Html::textarea(
+                    "$object_type-$field",
+                    $value,
+                    ['id' => $id, 'class' => 'form-control editable-' . $field, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field]
+                );
 
                 if (in_array($field, ['content', 'overview', 'description', 'note']))
                     $result .= FHtml::showModalButtonHtmlEditor($id, true, '');
@@ -2266,11 +2282,11 @@ class FHtml extends FFrontend
             if ((empty($value) && is_string($value)) || $content === FHtml::NULL_VALUE)
                 $content = self::getInlineEditLabel($field_label);
 
-//            if ($showEditButton)
-//                $result .= $content . ' ' . self::showEditorButton($canEdit);
-//            else
-                $result = '<span  id = "{uid}-{id}-{field}-label" title="' . $field_label . '" onMouseOver="this.style.cursor=\'pointer\'" onclick="showEditor(\'{uid}-{id}-{field}\')">{content}</span>';
-                //$result .= '&nbsp;<i class="fa fa-pencil hidden-print" style="font-size:80%;color:#e0d4d4" aria-hidden="true"></i>';
+            //            if ($showEditButton)
+            //                $result .= $content . ' ' . self::showEditorButton($canEdit);
+            //            else
+            $result = '<span  id = "{uid}-{id}-{field}-label" title="' . $field_label . '" onMouseOver="this.style.cursor=\'pointer\'" onclick="showEditor(\'{uid}-{id}-{field}\')">{content}</span>';
+            //$result .= '&nbsp;<i class="fa fa-pencil hidden-print" style="font-size:80%;color:#e0d4d4" aria-hidden="true"></i>';
             $editor = self::showEditor($value, $field, $id, $object_type, 'editable-{field}', $editor, $model);
 
             $result .= '<div style="display:none" class="form-input input-append {css}" id="{uid}-{id}-{field}-form">'
@@ -2329,8 +2345,7 @@ class FHtml extends FFrontend
         if (empty($edit_type))
             $edit_type = self::getFieldValue($model, 'editor', 'textarea');
 
-        if (!empty($value) && $hide_input_when_have_data)
-        {
+        if (!empty($value) && $hide_input_when_have_data) {
             return self::showModelField($model, $field, '', self::LAYOUT_NO_LABEL, '', '', $object_type, $field, $pjax_container);
         }
 
@@ -2385,27 +2400,43 @@ class FHtml extends FFrontend
         $field_label = FHtml::getFieldLabel($object_type, $field);
 
         if ((!empty($data) && is_array($data))) {
-            $result = Html::dropDownList('{control_name}', $value,
-                $data, ['class' => 'form-control {css} ' . $css, 'value' => $value, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]);
+            $result = Html::dropDownList(
+                '{control_name}',
+                $value,
+                $data,
+                ['class' => 'form-control {css} ' . $css, 'value' => $value, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]
+            );
         } else if ($edit_type == FHtml::EDITOR_NUMERIC || $edit_type == FHtml::SHOW_NUMBER || $edit_type == 'numeric') {
-            $result = Html::textInput('{control_name}', $value,
-                ['class' => 'form-control {css} ' . $css, 'value' => $value, 'type' => 'number', 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]);
+            $result = Html::textInput(
+                '{control_name}',
+                $value,
+                ['class' => 'form-control {css} ' . $css, 'value' => $value, 'type' => 'number', 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]
+            );
         } else if ($edit_type == FHtml::EDITOR_DATE || $edit_type == FHtml::SHOW_DATE) {
-            $result = Html::textInput('{control_name}', $value,
-                ['class' => 'form-control {css} ' . $css, 'value' => $value, 'type' => 'date', 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]);
-
+            $result = Html::textInput(
+                '{control_name}',
+                $value,
+                ['class' => 'form-control {css} ' . $css, 'value' => $value, 'type' => 'date', 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]
+            );
         } else if ($edit_type == FHtml::EDITOR_BOOLEAN || $edit_type == 'checkbox' || $edit_type == FHtml::SHOW_BOOLEAN || $edit_type == FHtml::SHOW_ACTIVE) {
-            $result = self::checkbox('{control_name}', $value,
-                ['name' => '{control_name}', 'class' => 'form-control {css} ' . $css, 'value' => $value, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]);
+            $result = self::checkbox(
+                '{control_name}',
+                $value,
+                ['name' => '{control_name}', 'class' => 'form-control {css} ' . $css, 'value' => $value, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]
+            );
+        } else if ($edit_type == FHtml::EDITOR_FILE ||  $edit_type == 'file' || FHtml::isInArray($field, array_merge(FHtml::FIELDS_IMAGES, FHtml::FIELDS_FILES))) {
 
-        }
-        else if ($edit_type == FHtml::EDITOR_FILE ||  $edit_type == 'file' || FHtml::isInArray($field, array_merge(FHtml::FIELDS_IMAGES, FHtml::FIELDS_FILES))) {
-
-            $result = Html::textInput('{control_name}', $value,
-                ['type' => 'file', 'class' => 'form-control {css} ' . $css, 'value' => $value, 'rows' => 2, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]);
+            $result = Html::textInput(
+                '{control_name}',
+                $value,
+                ['type' => 'file', 'class' => 'form-control {css} ' . $css, 'value' => $value, 'rows' => 2, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]
+            );
         } else {
-            $result = Html::textarea('{control_name}', $value,
-                ['class' => 'form-control {css} ' . $css, 'value' => $value, 'rows' => 2, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]);
+            $result = Html::textarea(
+                '{control_name}',
+                $value,
+                ['class' => 'form-control {css} ' . $css, 'value' => $value, 'rows' => 2, 'object_type' => $object_type, 'model_id' => $id, 'model_field' => $field, 'id' => $field_id, 'placeholder' => $field_label]
+            );
 
             //$result .=  FHtml::showModalButton('html', FHtml::strReplace(FHtml::createUrl('site/editor', ['id' => "$field_id"]), ['%7B' => '{', '%7D' => '}']), $role = 'modal-remote', $css = 'btn btn-xs btn-default');
             $result .= FHtml::showModalButtonHtmlEditor($field_id, false, '');
@@ -2414,7 +2445,8 @@ class FHtml extends FFrontend
         return "<div style='dislplay:block'>$result</div>";
     }
 
-    public static function checkbox($name, $value = 0, $option = []) {
+    public static function checkbox($name, $value = 0, $option = [])
+    {
         $content = Html::checkbox($name, $value, $option);
         $result = "<div class='switch_box-wrapper'><div class='switch_box'>$content</div></div>";
         return $result;
@@ -2493,8 +2525,7 @@ class FHtml extends FFrontend
         } else if (is_array($field)) {
             $fieldArray = $field;
             $search_custom = false;
-        }
-        else
+        } else
             return '';
 
         $table = FHtml::getTableName($model);
@@ -2528,7 +2559,7 @@ class FHtml extends FFrontend
         } else if (is_array($id_field)) {
             $layout_fields = $id_field;
             $inlineEdit = $object_type_field;
-        }   else if (!empty($object_type_field)) {
+        } else if (!empty($object_type_field)) {
 
             $object_id = FHtml::getFieldValue($model, $id_field);
             $object_type = FHtml::getFieldValue($model, $object_type_field);
@@ -2541,14 +2572,13 @@ class FHtml extends FFrontend
         if (empty($layout_fields))
             $layout_fields = ['image' => ['image', 'thumbnail', 'avatar'], 'name' => ['name', 'title', 'username'], 'description' => ['description', 'overview'], 'status' => ['category_id', 'type', 'status', 'is_active']];
 
-//        $result = "<div class='row' style='padding-top:15px; padding-bottom:15px;border-bottom: 1px lightgray dashed'><div class='col-md-2 col-xs-3'>" . FHtml::showImage($model) . "</div><div class='col-md-9 col-xs-9'>" . FHtml::showModel($model, $layout_fields, [], FHtml::LAYOUT_TABLE, '', '') . "</div></div></div>";
-//        return $result;
-        
+        //        $result = "<div class='row' style='padding-top:15px; padding-bottom:15px;border-bottom: 1px lightgray dashed'><div class='col-md-2 col-xs-3'>" . FHtml::showImage($model) . "</div><div class='col-md-9 col-xs-9'>" . FHtml::showModel($model, $layout_fields, [], FHtml::LAYOUT_TABLE, '', '') . "</div></div></div>";
+        //        return $result;
+
         $arr = [];
         $layout1 = '<br/>';
         foreach ($layout_fields as $key => $key_fields) {
-            if (is_numeric($key) && is_string($key_fields))
-            {
+            if (is_numeric($key) && is_string($key_fields)) {
                 $key = $key_fields;
             }
             $value = '';
@@ -2564,8 +2594,7 @@ class FHtml extends FFrontend
 
         if (empty($layout)) {
             $layout = "<div class='row'><div class='col-md-2 col-xs-3'>{image}</div><div class='col-md-10 col-xs-9' style='padding-left:25px'><b style='font-size:120%'>{name}</b> <br/><div>{description}</div> $layout1 </div></div>";
-        }
-        else if (strpos($layout, ':') !== false) {
+        } else if (strpos($layout, ':') !== false) {
             $arr = explode(':', $layout);
             $idx1 = $arr[0];
             $idx2 = $arr[1];
@@ -2640,7 +2669,7 @@ class FHtml extends FFrontend
             $result .= '<tr>';
             foreach ($fields as $field1) {
                 //$result .= '<td>'. self::showField($model->attributeLabels()[$field1], $model[$field1], $showType, FHtml::LAYOUT_NO_LABEL, $css, $table, $column, $dbType, $model->id) . '</td>';
-                $result .= '<td>'. FHtml::getFieldValue($model, $field1) . '</td>';
+                $result .= '<td>' . FHtml::getFieldValue($model, $field1) . '</td>';
             }
             $result .= '</tr>';
         }
@@ -2683,7 +2712,8 @@ class FHtml extends FFrontend
         return implode($separator, $items);
     }
 
-    public static function getItemsArray($models, $itemTemplate = '{name}', $fields = ['name']) {
+    public static function getItemsArray($models, $itemTemplate = '{name}', $fields = ['name'])
+    {
         $arr = [];
         if (isset($models) & is_array($models)) {
             foreach ($models as $model) {
@@ -2712,7 +2742,7 @@ class FHtml extends FFrontend
             $model = self::getModel($table);
             $arr = isset($model) && method_exists($model, 'getLookupArray') ? $model::getLookupArray($column = '') : [];
             if (!empty($arr) && isset($arr[$value]))
-                return $text =  FHtml::getFieldLabel($model, $arr[$value]); ;
+                return $text =  FHtml::getFieldLabel($model, $arr[$value]);;
 
             if ($column == 'category_id') {
                 $metaItem = models\ObjectCategory::findOne(['object_type' => $table, 'id' => $value]);
@@ -2873,8 +2903,7 @@ class FHtml extends FFrontend
         if ($seperator === 'tab' || $seperator === 'horizontal' || $seperator === true) {
             $seperator = '';
             $css = 'tabs tab-normal';
-        }
-        else if ($seperator === 'list' || $seperator === 'vertical' || $seperator === false) {
+        } else if ($seperator === 'list' || $seperator === 'vertical' || $seperator === false) {
             $seperator = '<br/>';
             $css = 'tab-normal';
         }
@@ -2886,7 +2915,7 @@ class FHtml extends FFrontend
                         $result = $result . self::buildTabs("$table.$fielditem", $css, is_string($fieldid) ? $fieldid : $fielditem) . $seperator;
                     else if (strpos($fielditem, '.') !== false || strpos($fielditem, '@') !== false) {
                         $arr = FHtml::getArray($fielditem);
-                        $result = $result . self::buildTabs($arr, $css, str_replace('.', '_', is_string($fieldid) ? $fieldid : $fielditem )) . $seperator;
+                        $result = $result . self::buildTabs($arr, $css, str_replace('.', '_', is_string($fieldid) ? $fieldid : $fielditem)) . $seperator;
                     } else if (!in_array($fielditem, FHtml::FIELDS_STATUS)) {
                         $result = $result . self::buildTabs($table . '.' . $fielditem, $css, is_string($fieldid) ? $fieldid : $fielditem) . $seperator;
                     } else {
@@ -2905,16 +2934,17 @@ class FHtml extends FFrontend
                     $fielditemValue = $fielditem;
                     $fielditem = $fieldid;
                     if (in_array($fielditemValue, ['daterange', 'date_range', 'DateRangePicker', FDateRangePicker::className()])) {
-                        $result = $result . "<div class='col-md-3'>" . \common\widgets\FDateRangePicker::widget(['border' => false, 'name' => $fieldid,
-                                'value' => FHtml::getRequestParam($fieldid), 'options' => ['class' => 'auto-refresh-content-textbox']]) . "</div>" . $seperator;
+                        $result = $result . "<div class='col-md-3'>" . \common\widgets\FDateRangePicker::widget([
+                            'border' => false, 'name' => $fieldid,
+                            'value' => FHtml::getRequestParam($fieldid), 'options' => ['class' => 'auto-refresh-content-textbox']
+                        ]) . "</div>" . $seperator;
                     } else if (strpos($fielditemValue, ' ') !== false || strpos($fielditemValue, '<') !== false) {
-                        $result = $result . $fielditemValue. $seperator;
+                        $result = $result . $fielditemValue . $seperator;
                     } else {
                         $fielditemValue = FHtml::getComboArray($fielditemValue);
                         $result = $result . self::buildTabs($fielditemValue, $css, $fielditem) . $seperator;
                     }
                 } else {
-
                 }
             }
         }
@@ -2930,9 +2960,9 @@ class FHtml extends FFrontend
 
         $field_url = '';
         if (is_array($field)) {
-           foreach ($field as $field => $field_url) {
-               break;
-           }
+            foreach ($field as $field => $field_url) {
+                break;
+            }
         } else {
             $field_url = $field;
         }
@@ -2961,7 +2991,6 @@ class FHtml extends FFrontend
                     $items[] = ['id' => $id, 'name' => $name];
                 }
             }
-
         } else {
             if (strpos($key, '.') !== false) {
                 $arr = explode('.', $key);
@@ -3025,7 +3054,7 @@ class FHtml extends FFrontend
 
             foreach ($items as $id => $item) {
                 if (is_array($item['name'])) {
-                    FHtml::addError("Error at function buildArrayDisplay \$items['name'] can not be array: " );
+                    FHtml::addError("Error at function buildArrayDisplay \$items['name'] can not be array: ");
                     FHtml::var_dump($items);
                     return '';
                 }
@@ -3044,21 +3073,18 @@ class FHtml extends FFrontend
                         $li_css = 'tab-active active bold';
                         $tab_style = '';
                         $url1 = FHtml::createUrl($url, FHtml::mergeRequestParams(FHtml::RequestParams($field_url)));
-                    }
-                    else {
+                    } else {
                         $li_css = 'tab-normal';
                         $tab_style = '';
                         $url1 = FHtml::createUrl($url, FHtml::mergeRequestParams(FHtml::RequestParams(), [$field_url => $item['id']]));
                     }
-
                 } else {
 
                     if ($value == $item['id']) {
                         $li_css = StringHelper::startsWith($css, 'tabs') ? 'nav-active active bold' : 'nav-active active bold';
                         $tab_style = '';
                         $url1 = FHtml::createUrl($url, FHtml::mergeRequestParams(FHtml::RequestParams($field_url)));
-                    }
-                    else {
+                    } else {
                         $li_css = 'nav-normal';
                         $tab_style = '';
                         $url1 = FHtml::createUrl($url, FHtml::mergeRequestParams(FHtml::RequestParams(), [$field_url => $item['id']]));
@@ -3070,12 +3096,11 @@ class FHtml extends FFrontend
                 if (!$is_tab) {
                     $li_css .= '';
                     $tab_style .= " ";
-                }
-                else {
+                } else {
                     $tab_style = "";
                 }
 
-                $str .= '<li class="' . $li_css . '" style= "text-transform: uppercase; '. $tab_style . ' "><a class="auto-refresh-content-span" ' . $pjax . '" url="' . $url1 . '" field="' . $field_url . '" value="' . $item['id'] . '" title="' . $columnText . '" url="' . $url1 . '">' . FHtml::showLabelWithCounter($item['id'], $table, $field, $item['name'], $showCounter) . '</a></li>';
+                $str .= '<li class="' . $li_css . '" style= "text-transform: uppercase; ' . $tab_style . ' "><a class="auto-refresh-content-span" ' . $pjax . '" url="' . $url1 . '" field="' . $field_url . '" value="' . $item['id'] . '" title="' . $columnText . '" url="' . $url1 . '">' . FHtml::showLabelWithCounter($item['id'], $table, $field, $item['name'], $showCounter) . '</a></li>';
                 $combo .= '<option class="' . $li_css . '" url="' . $url1 . '" field="' . $field_url . '" value="' . $item['id'] . '"' . ($item['id'] == $value ? ' selected' : '') . '><a title="' . $columnText . '" href="' . $url1 . '">' . FHtml::showLabelWithCounter($item['id'], $table, $field, mb_strtoupper($item['name']), $showCounter) . '</a></option>';
             }
 
@@ -3089,7 +3114,6 @@ class FHtml extends FFrontend
             $content = $str;
 
         if (!empty($pjax_container)) {
-
         }
 
         return ['items' => $items, 'combo' => $combo, 'tabs' => $str, 'content' => $content];
@@ -3111,14 +3135,15 @@ class FHtml extends FFrontend
         return '';
     }
 
-    public static function showCategoryList($key, $field = 'id', $url = null, $value = null) {
+    public static function showCategoryList($key, $field = 'id', $url = null, $value = null)
+    {
         if (is_string($key))
             $items = FHtml::getComboArray($key);
         else if (is_array($key))
             $items = $key;
         else
             return '';
-       return \common\widgets\fcategory\FCategorySimple::widget(['items' => $items, 'field' => $field, 'link_url' => $url, 'active_id' => $value]);
+        return \common\widgets\fcategory\FCategorySimple::widget(['items' => $items, 'field' => $field, 'link_url' => $url, 'active_id' => $value]);
     }
 
     public static function showTabs($key, $field = 'id', $url = '', $value = '', $table = '', $column = '', $isCache = true, $showCounter = false)
@@ -3173,7 +3198,6 @@ class FHtml extends FFrontend
         if (FHtml::currentDevice()->isMobile()) {
             $field1 = self::buildGridFilters($table, ['category_id', 'status']);
             $result = "<div class='col-md-12 $css hidden-print'><div class='col-md-12 col-xs-12'>$field1</div></div>";
-
         } else {
             $field1 = self::buildGridFilters($table, $field);
             if (!empty($views) && ($items_count > 0))
@@ -3235,7 +3259,8 @@ class FHtml extends FFrontend
         return self::render($view, '', $params, FHtml::currentView(), true, true);
     }
 
-    public static function renderFile($view, $params = [], $context = null, $displayError = true, $is_widget = false) {
+    public static function renderFile($view, $params = [], $context = null, $displayError = true, $is_widget = false)
+    {
         return static::renderView($view, $params, $context, $displayError, $is_widget);
     }
 
@@ -3276,7 +3301,7 @@ class FHtml extends FFrontend
 
         if (!empty($viewType)) {
             if (StringHelper::startsWith($viewType, '_')) {
-                $viewType = substr($viewType, 1,strlen($viewType) - 1);
+                $viewType = substr($viewType, 1, strlen($viewType) - 1);
             }
             $viewFile = self::findViewFile($view . '_' . $viewType, $context);
             if (!empty($viewFile)) {
@@ -3287,75 +3312,77 @@ class FHtml extends FFrontend
         return self::renderView($view, $params, $context);
     }
 
-    public static function renderViewLayout($view, $viewType = '', $params = []) {
+    public static function renderViewLayout($view, $viewType = '', $params = [])
+    {
         return self::render($view, $viewType, $params, null, true, 'layout');
     }
 
-	/**
-	 * @param        $view
-	 * @param string $viewType
-	 * @param array  $params
-	 * @param null   $context
-	 * @param bool   $displayError
-	 * @param bool   $is_widget
-	 * @return bool|string
-	 * @throws \Exception
-	 * @throws \yii\base\InvalidConfigException
-	 */
-	public static function renderPartial($view, $viewType = '', $params = [], $context = null, $displayError = true, $is_widget = false) {
-		if (!isset($context)) {
-			$context = FHtml::currentControllerObject();
-		}
+    /**
+     * @param        $view
+     * @param string $viewType
+     * @param array  $params
+     * @param null   $context
+     * @param bool   $displayError
+     * @param bool   $is_widget
+     * @return bool|string
+     * @throws \Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public static function renderPartial($view, $viewType = '', $params = [], $context = null, $displayError = true, $is_widget = false)
+    {
+        if (!isset($context)) {
+            $context = FHtml::currentControllerObject();
+        }
 
-		if (empty($view)) {
-			return '';
-		}
+        if (empty($view)) {
+            return '';
+        }
 
-		if (is_array($viewType) && empty($params)) {
-			$params   = $viewType;
-			$viewType = '';
-		}
+        if (is_array($viewType) && empty($params)) {
+            $params   = $viewType;
+            $viewType = '';
+        }
 
-		$arr = self::getViews($view, $is_widget);
+        $arr = self::getViews($view, $is_widget);
 
-		//try to look into array of Views
-		if (is_array($arr)) {
-			foreach ($arr as $view1) {
-				$result = self::renderView($view1, $params, $context, false, $is_widget);
-				if ($result !== false) {
-					return $result;
-				}
-			}
-			if ($displayError) {
-				echo self::showErrorMessage(FHtml::t('messages', 'View not found') . implode('; ', $arr));
-			}
-		}
+        //try to look into array of Views
+        if (is_array($arr)) {
+            foreach ($arr as $view1) {
+                $result = self::renderView($view1, $params, $context, false, $is_widget);
+                if ($result !== false) {
+                    return $result;
+                }
+            }
+            if ($displayError) {
+                echo self::showErrorMessage(FHtml::t('messages', 'View not found') . implode('; ', $arr));
+            }
+        }
 
-		if (empty($viewType)) {
-			return self::renderView($view, $params, $context, $displayError, $is_widget);
-		}
+        if (empty($viewType)) {
+            return self::renderView($view, $params, $context, $displayError, $is_widget);
+        }
 
-		$viewFile = self::findViewFile($view . $viewType, $context);
-		if (empty($viewFile)) {
-			return self::renderView($view . $viewType, $params, $context, $displayError, $is_widget);
-		}
+        $viewFile = self::findViewFile($view . $viewType, $context);
+        if (empty($viewFile)) {
+            return self::renderView($view . $viewType, $params, $context, $displayError, $is_widget);
+        }
 
-		$viewFile = Yii::getAlias($viewFile);
+        $viewFile = Yii::getAlias($viewFile);
 
-		$page = self::currentView();
+        $page = self::currentView();
 
-		if ($page->theme !== null) {
-			$viewFile = $page->theme->applyTo($viewFile);
-		}
-		if (is_file($viewFile)) {
-			return self::renderView($view . $viewType, $params, $context);
-		}
-		else {
-			return self::renderView($view, $params, $context);
-		}
-	}
+        if ($page->theme !== null) {
+            $viewFile = $page->theme->applyTo($viewFile);
+        }
+        if (is_file($viewFile)) {
+            return self::renderView($view . $viewType, $params, $context);
+        } else {
+            return self::renderView($view, $params, $context);
+        }
+    }
 
-    public static function getViews($view, $type = 'widget') {
+    public static function getViews($view, $type = 'widget')
+    {
         $application_id = FHtml::currentApplicationFolder();
         $controller = FHtml::currentController();
         $page = self::currentView();
@@ -3404,8 +3431,7 @@ class FHtml extends FFrontend
 
                 if (strpos($view1, '/') !== false && $view1 != '/') {
                     $arr1[] = $view1;
-                }
-                else if (!empty($application_id)) {
+                } else if (!empty($application_id)) {
                     if ($is_layout) {
                         if (!empty($zone)) {
 
@@ -3415,7 +3441,6 @@ class FHtml extends FFrontend
                             } else if ($zone == FRONTEND && !empty($theme)) {
                                 $arr1[] = "@$zone/themes/$theme/layouts/$view1.php";
                             }
-
                         }
                     }
                     if (true) {
@@ -3440,7 +3465,6 @@ class FHtml extends FFrontend
                                 if (!empty($module))
                                     $arr1[] = "@applications/$theme/$zone/modules/$module/views/$controller/$view1.php";
                             }
-
                         }
 
                         if ($controller == 'site')
@@ -3464,7 +3488,6 @@ class FHtml extends FFrontend
                         }
                     }
                 }
-
             }
         }
 
@@ -3485,8 +3508,9 @@ class FHtml extends FFrontend
         return $result;
     }
 
-    public static function renderWidget($view, $params = [], $context = null, $displayError = true, $is_widget = true) {
-	    return static::renderView($view, $params, $context, $displayError, $is_widget);
+    public static function renderWidget($view, $params = [], $context = null, $displayError = true, $is_widget = true)
+    {
+        return static::renderView($view, $params, $context, $displayError, $is_widget);
     }
 
     public static function renderView($view, $params = [], $context = null, $displayError = true, $is_widget = false)
@@ -3527,7 +3551,8 @@ class FHtml extends FFrontend
         }
     }
 
-    public static function showIframe($url, $style = 'position: relative; height: 100%; min-height: 600px; width: 100%;') {
+    public static function showIframe($url, $style = 'position: relative; height: 100%; min-height: 600px; width: 100%;')
+    {
 
         return "<iframe src='$url' scrolling='auto' frameborder='0' style='$style'></iframe>";
     }
@@ -3602,8 +3627,7 @@ class FHtml extends FFrontend
 
         if ($return_empty_if_not_found) {
             return false;
-        }
-        else
+        } else
             return $view;
     }
 
@@ -3622,7 +3646,8 @@ class FHtml extends FFrontend
         return $result;
     }
 
-    public static function buttonCloseQuickAdd($model = null) {
+    public static function buttonCloseQuickAdd($model = null)
+    {
         return FHtml::a('<i class="fa fa-undo"></i> ' . FHtml::t('button', 'Close'), ['index', 'form_enabled' => 0], ['class' => 'btn btn-default', 'data-pjax' => 0]);
     }
 
@@ -3660,17 +3685,19 @@ class FHtml extends FFrontend
         return '<div class="hidden-print" style="border-top:1px dashed lightgrey; padding-top:20px">' . $result . '</div>';
     }
 
-    public static function getReturnUrl() {
+    public static function getReturnUrl()
+    {
         $return_url = FHtml::getRequestParam(['return_url', '__returnUrl']);
         $return_url1 = FHtml::Session('__returnUrl');
 
         return !empty($return_url) ? $return_url : (!empty($return_url1) ? $return_url1 : '');
     }
 
-    public static function setReturnUrl($return_url = '') {
-	    if (!empty($return_url))
-	        $return_url = FHtml::currentUrl();
-	    FHtml::Session('__returnUrl', $return_url);
+    public static function setReturnUrl($return_url = '')
+    {
+        if (!empty($return_url))
+            $return_url = FHtml::currentUrl();
+        FHtml::Session('__returnUrl', $return_url);
     }
 
     public static function showActionsButton($model, $canEdit = true, $canDelete = true, $template = '', $custom_buttons = [], $container = '', $is_popup = null)
@@ -3745,7 +3772,6 @@ class FHtml extends FFrontend
                         $deleteT = self::buttonDelete($model);
                     }
                     $cancelT = self::buttonCancel($model);
-
                 } else {
                     if (!$model->isNewRecord && $canDelete) {
                         $deleteT = self::buttonDelete($model);
@@ -3819,12 +3845,12 @@ class FHtml extends FFrontend
         return self::showFixedDiv($result . $appendText, !empty(FHtml::getRequestParam('form_enabled')) ? 'relative' : '', 'form-buttons');
     }
 
-    public static function showFixedDiv($content, $position = '', $css = '', $width = '100%', $height = 'auto', $left = '0px', $right = '0px', $padding = '15px') {
-	    if (empty($position))
-	        $position = FHtml::setting('form_buttons_style', 'fixed');
+    public static function showFixedDiv($content, $position = '', $css = '', $width = '100%', $height = 'auto', $left = '0px', $right = '0px', $padding = '15px')
+    {
+        if (empty($position))
+            $position = FHtml::setting('form_buttons_style', 'fixed');
 
         return "<div class='hidden-print form-label $css' style='padding:$padding; padding-bottom:0px; right:$right; left:$left; position: $position; height: $height;bottom: 0;width: $width; border-top:1px dashed lightgrey; z-index:2;'>$content</div>";
-
     }
 
     public static function buttonSaveBack($model = null)
@@ -3844,13 +3870,13 @@ class FHtml extends FFrontend
     public static function buttonDelete($model = null, $confirm = 'Are you sure')
     {
         return FHtml::a('<span class="glyphicon glyphicon-trash"></span>' . FHtml::t('button', 'Delete'), ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger pull-right',
-                'data' => [
-                    empty($confirm) ? null : 'confirm' => (FHtml::t('message', $confirm) . ' ?'),
-                    'method' => 'post'
+            'class' => 'btn btn-danger pull-right',
+            'data' => [
+                empty($confirm) ? null : 'confirm' => (FHtml::t('message', $confirm) . ' ?'),
+                'method' => 'post'
 
-                ],
-            ]) . '';
+            ],
+        ]) . '';
     }
 
     public static function buttonCancel($model = null, $excluded_params = ['id'])
@@ -3863,15 +3889,15 @@ class FHtml extends FFrontend
             $url = $return_url;
         else {
 
-	        $params = Yii::$app->request->getQueryParams();
+            $params = Yii::$app->request->getQueryParams();
 
-	        foreach ($params as $key => $param) {
-	        	if (!in_array($key, ['type', 'status'])) {
-	        		unset($params[$key]);
-		        }
-	        }
+            foreach ($params as $key => $param) {
+                if (!in_array($key, ['type', 'status'])) {
+                    unset($params[$key]);
+                }
+            }
 
-	        $url = ['index'] + $params;
+            $url = ['index'] + $params;
         }
 
         return FHtml::a('<i class="fa fa-undo"></i> ' . FHtml::t('button', 'Close'), $url, ['class' => 'btn btn-default', 'data-pjax' => 0], array_merge($excluded_params, ['id']));
@@ -3981,7 +4007,6 @@ class FHtml extends FFrontend
             if (empty($editor))
                 $editor = FHtml::getShowType($model, $attribute);
             $value = FHtml::getFieldValue($model, $attribute);
-
         } else {
             $name = $model;
             $value = $attribute;
@@ -4005,20 +4030,15 @@ class FHtml extends FFrontend
 
         if (in_array($editor, ['datetime', FHtml::EDITOR_DATETIME, FHtml::SHOW_DATETIME]) || (empty($editor) && FHtml::isInArray($attribute, FHtml::FIELDS_DATE))) {
             $result = DateTimePicker::widget(array_merge(['pluginOptions' => $options], ['type' => DateTimePicker::TYPE_INPUT, 'model' => $model, 'attribute' => $attribute, 'name' => $name]));
-
         } else if (in_array($editor, ['time', FHtml::EDITOR_TIME])) {
             $result = TimePicker::widget(array_merge(['pluginOptions' => $options], ['type' => DateTimePicker::TYPE_INPUT, 'model' => $model, 'attribute' => $attribute, 'name' => $name]));
-
         } else if (in_array($editor, ['date', FHtml::EDITOR_DATE,  FHtml::SHOW_DATE])) {
             //$result = MaskedInput::widget(array_merge([], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'value' => $value, 'clientOptions' => ['alias' => 'date', 'groupSeparator' => ',', 'autoGroup' => true, 'removeMaskOnSubmit' => false]]));
             $result = DatePicker::widget(array_merge(['pluginOptions' => $options], ['type' => DateTimePicker::TYPE_INPUT, 'model' => $model, 'attribute' => $attribute, 'name' => $name, 'value' => $value]));
-
         } else if (in_array($editor, ['file', 'upload', FHtml::EDITOR_FILE]) || FHtml::isInArray($attribute, FHtml::FIELDS_FILES)) {
             $result = FFileInput::widget(array_merge(['pluginOptions' => $options], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'pluginOptions' => ['maxFileSize' => FHtml::settingMaxFileSize(), 'options' => ['accept' => 'image/*', 'multiple' => false], 'showPreview' => true, 'showCaption' => false, 'showRemove' => true, 'showUpload' => true, 'pluginOptions' => ['browseLabel' => '', 'removeLabel' => '', 'previewFileType' => 'any', 'uploadUrl' => Url::to([FHtml::config('UPLOAD_FOLDER', '/site/file-upload')])]]]));
-
         } else if (in_array($editor, ['image', 'thumbnail', FHtml::EDITOR_FILE]) || FHtml::isInArray($attribute, FHtml::FIELDS_IMAGES)) {
             $result = FFileInput::widget(array_merge(['pluginOptions' => $options], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'pluginOptions' => ['model' => $model, 'form' => $form, 'attribute' => $attribute, 'name' => $name, 'maxFileSize' => FHtml::settingMaxFileSize(), 'options' => ['accept' => 'image/*', 'multiple' => false], 'showPreview' => true, 'showCaption' => false, 'showRemove' => true, 'showUpload' => true, 'pluginOptions' => ['browseLabel' => '', 'removeLabel' => '', 'previewFileType' => 'any', 'uploadUrl' => Url::to([FHtml::config('UPLOAD_FOLDER', '/site/file-upload')])]]]));
-
         } else if (in_array($editor, ['array', 'select', 'dropdown', FHtml::EDITOR_SELECT]) || FHtml::isInArray($attribute, FHtml::FIELDS_GROUP)) {
             if (is_object($model))
                 $result = Html::activeDropDownList($model, $attribute, $items, array_merge($options, ['class' => 'form-control', 'rows' => 3]));
@@ -4028,30 +4048,23 @@ class FHtml extends FFrontend
 
         } else if (in_array($editor, ['arraymany', 'selectmany', FHtml::EDITOR_SELECT])) {
             $result = \kartik\widgets\Select2::widget(array_merge(['pluginOptions' => $options], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'data' => $items, 'options' => ['multiple' => true], 'pluginOptions' => ['allowClear' => true, 'tags' => true]]));
-
         } else if (in_array($editor, ['bool', 'boolean', 'checkbox', FHtml::EDITOR_BOOLEAN]) || FHtml::isInArray($attribute, FHtml::FIELDS_BOOLEAN)) {
             //$result = \kartik\checkbox\CheckboxX::widget(array_merge(['pluginOptions' => $options], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'pluginOptions' => ['model' => $model, 'form' => $form, 'attribute' => $attribute, 'name' => $name, 'theme' => 'krajee-flatblue', 'size' => 'md', 'threeState' => false]]));
             $result = FCheckbox::widget(array_merge(['pluginOptions' => $options], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'value' => $value, 'pluginOptions' => ['model' => $model, 'form' => $form, 'attribute' => $attribute, 'name' => $name, 'theme' => 'krajee-flatblue', 'size' => 'md', 'threeState' => false]]));
-
         } else if (in_array($editor, ['text', 'input', 'textarea']) || FHtml::isInArray($attribute, FHtml::FIELDS_TEXTAREA)) {
             if (is_object($model))
                 $result = Html::activeTextarea($model, $attribute,  array_merge($options, ['class' => 'form-control', 'rows' => 3]));
             else
                 $result = Html::textarea($name, $value, array_merge($options, ['class' => 'form-control', 'rows' => 3]));
-
         } else if (in_array($editor, ['html', FHtml::EDITOR_HTML]) || FHtml::isInArray($attribute, FHtml::FIELDS_HTML)) {
             $result = FCKEditor::widget(array_merge(['clientOptions' => $options], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'options' => ['rows' => 5, 'disabled' => false], 'preset' => 'normal']));
-
         } else if (in_array($editor, ['numeric', 'currency', FHtml::EDITOR_NUMERIC]) || FHtml::isInArray($attribute, FHtml::FIELDS_PRICE)) {
             //$result = MaskedInput::widget(array_merge([], ['model' => $model, 'attribute' => $attribute, 'name' => $name,  'value' => $value, 'clientOptions' => ['alias' => 'decimal', 'groupSeparator' => ',', 'autoGroup' => true, 'removeMaskOnSubmit' => true]]));
             $result = FNumericInput::widget(array_merge([], ['model' => $model, 'attribute' => $attribute, 'name' => $name,  'value' => $value, 'clientOptions' => ['alias' => 'decimal', 'groupSeparator' => ',', 'autoGroup' => true, 'removeMaskOnSubmit' => true]]));
-
         } else if (in_array($editor, ['slide', FHtml::EDITOR_SLIDE])) {
             $result = Slider::widget(array_merge(['pluginOptions' => $options], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'sliderColor' => Slider::TYPE_GREY, 'handleColor' => Slider::TYPE_DANGER, 'pluginOptions' => ['min' => 0, 'max' => 100, 'step' => 1]]));
-
         } else if (in_array($editor, ['rate', FHtml::EDITOR_RATE])) {
             $result = StarRating::widget(array_merge(['pluginOptions' => $options], ['model' => $model, 'attribute' => $attribute, 'name' => $name, 'pluginOptions' => ['stars' => 5, 'min' => 0, 'max' => 5, 'step' => 1, 'showClear' => true, 'showCaption' => true, 'defaultCaption' => '{rating}', 'starCaptions' => [0 => '', 1 => 'Poor', 2 => 'OK', 3 => 'Good', 4 => 'Super', 5 => 'Extreme']]]));
-
         } else {
             if (is_object($model))
                 $result = Html::activeTextarea($model, $attribute,  array_merge(['pluginOptions' => $options], ['class' => 'form-control']));
@@ -4222,7 +4235,6 @@ class FHtml extends FFrontend
                 '<li><span class="color-' . $color . '">' . FHtml::t('estate', 'estate.baths') . ': </span><span class="' . $alignment . '">' . $item->status . ' ' . FHtml::t('estate', 'estate.items') . '</span></li>' .
                 '<li><span class="color-' . $color . '">' . FHtml::t('estate', 'estate.houseSize') . ': </span><span class="' . $alignment . '">' . $item->category_id . ' ' . FHtml::t('estate', 'estate.m2') . '</span></li>' .
                 '<li><span class="color-' . $color . '">' . FHtml::t('estate', 'estate.lotSize') . ': </span><span class="' . $alignment . '">' . $item->price . ' ' . FHtml::t('estate', 'estate.m2') . '</span></li>';
-
         } else
             return $item->overview;
     }
@@ -4278,11 +4290,11 @@ class FHtml extends FFrontend
     {
         FHtml::currentView()->registerJs($js, $pos);
         FHtml::currentView()->registerJs($js, FView::POS_AJAX_COMPLETE);
-
     }
 
     //HungHX: 20160801
-    public static function registerAutoRefreshWithTimerJS($id = 'page-content', $url = '', $inside_pjax = true, $time = 3000) {
+    public static function registerAutoRefreshWithTimerJS($id = 'page-content', $url = '', $inside_pjax = true, $time = 3000)
+    {
         if (empty($url))
             $url = FHtml::currentUrl();
 
@@ -4323,7 +4335,6 @@ JS;
 
         FHtml::registerJs($script, View::POS_READY);
         FHtml::registerJs($script, FView::POS_AJAX_COMPLETE);
-
     }
 
     public static function registerAutoRefreshJS($pjax_containter)
@@ -4333,8 +4344,9 @@ JS;
         FHtml::registerTextboxRefreshJS($pjax_containter, '.auto-refresh-content-textbox', 'change', '');
     }
 
-    public static function registerRefreshJS($pjax_containter = '', $refresh_element = '.auto-refresh-content', $action = 'change', $find_element = ':selected', $url = '') {
-	    if (empty($refresh_element)) { //all
+    public static function registerRefreshJS($pjax_containter = '', $refresh_element = '.auto-refresh-content', $action = 'change', $find_element = ':selected', $url = '')
+    {
+        if (empty($refresh_element)) { //all
             static::registerAutoRefreshJS($pjax_containter);
         }
 
@@ -4387,15 +4399,18 @@ JS;
     }
 
 
-    public static function registerTextboxRefreshJS($pjax_containter = '', $refresh_element = '.auto-refresh-content-textbox', $action = 'change', $find_element = '', $url = '') {
+    public static function registerTextboxRefreshJS($pjax_containter = '', $refresh_element = '.auto-refresh-content-textbox', $action = 'change', $find_element = '', $url = '')
+    {
         return static::registerRefreshJS($pjax_containter, $refresh_element, $action, $find_element, $url);
     }
 
-    public static function registerSpanRefreshJS($pjax_containter = '', $refresh_element = '.auto-refresh-content-span', $action = 'click', $find_element = '', $url = '') {
+    public static function registerSpanRefreshJS($pjax_containter = '', $refresh_element = '.auto-refresh-content-span', $action = 'click', $find_element = '', $url = '')
+    {
         return static::registerRefreshJS($pjax_containter, $refresh_element, $action, $find_element, $url);
     }
 
-    public static function getFunctionNameJS($model, $container = '', $function_name_extend = '') {
+    public static function getFunctionNameJS($model, $container = '', $function_name_extend = '')
+    {
         if (is_object($model))
             $model = FHtml::getTableName($model);
 
@@ -4457,7 +4472,7 @@ JS;
             } else {
                 $t .= $column . ': $("' . $field_id . '").value(), ';
 
-                $form = $form . "appendFormData(formData, '$column', " . 'getVal($("' . $field_id. '")));';
+                $form = $form . "appendFormData(formData, '$column', " . 'getVal($("' . $field_id . '")));';
                 //$form = $form . "console.log(" . 'getVal($("' . $field_id. '")));';
                 //$form = $form . "formData.append('$column', " . '$("' . $field_id. '").value());';
                 //$form = $form . '$("' . $field_id. '").val(null);';
@@ -4587,13 +4602,14 @@ JS;
         }
 
         $arr = self::getAppendFormDataJS($model, $columns, $field_name, $default_fields, $excluded_fields);
-        $form = $arr['POST']; $query = $arr['QUERY'];
+        $form = $arr['POST'];
+        $query = $arr['QUERY'];
 
         $js = '';
         //$js .= @'
-//            function search' . $function_name . '() {
-//                self.location = "' . str_replace('\\', '/', FHtml::createUrl(FHtml::currentUrlPath(), ArrayHelper::merge(['action' => 'filter'], FHtml::RequestParams($columns)))) . '&" + ' . $query . ';
-//            }';
+        //            function search' . $function_name . '() {
+        //                self.location = "' . str_replace('\\', '/', FHtml::createUrl(FHtml::currentUrlPath(), ArrayHelper::merge(['action' => 'filter'], FHtml::RequestParams($columns)))) . '&" + ' . $query . ';
+        //            }';
 
         $js .= @'
             function search' . $function_name . '() {
@@ -4729,7 +4745,8 @@ JS;
         FHtml::currentView()->registerJs($js, View::POS_END);
     }
 
-    public static function registerSortOrder($tableName,  $container = 'crud-datatable-pjax', $reload = false) {
+    public static function registerSortOrder($tableName,  $container = 'crud-datatable-pjax', $reload = false)
+    {
         $url = FHtml::createBaseAPIUrl('sort-order', [], FHtml::currentZone());
         $function_name = str_replace('-', '_', "sort_order_$container");
         if ($reload)
@@ -4773,7 +4790,8 @@ JS;
         FHtml::currentView()->registerJs($str, View::POS_END);
     }
 
-    public static function showSortOrderArrowsButton($value = '') {
+    public static function showSortOrderArrowsButton($value = '')
+    {
         $result = '<a href="javascript:void(0)" class="moveup icon-up-down"><span class="glyphicon glyphicon-arrow-up" ></span></a>&nbsp;' . $value . '&nbsp;<a href="javascript:void(0)" class="movedown icon-up-down"><span class="glyphicon glyphicon-arrow-down" ></span></a>';
 
         return $result;
@@ -4841,7 +4859,8 @@ JS;
             $populateFields = $changeFields; //execute local javascript function
         }
         $populateFields1 = str_replace('\'', '"', $populateFields);
-        return ["select2:close" => "function(e) { $tempIDs;
+        return [
+            "select2:close" => "function(e) { $tempIDs;
                                                      //console.log('URL : $urlDetail' + ' . Keys: ' + $(this).val());            
                                                      $.ajax({
                                                         url: '$urlDetail',
@@ -4867,7 +4886,8 @@ JS;
     }
 
 
-    public static function getPjaxContainerId($id, $type = 'gridview') {
+    public static function getPjaxContainerId($id, $type = 'gridview')
+    {
         if ($type == 'gridview')
             return $id . '-pjax';
         else if ($type == 'crud-datatable')
@@ -4899,7 +4919,8 @@ JS;
         return $result;
     }
 
-    public static function buttonSearchAjax($object_type, $container = '', $search_t = '') {
+    public static function buttonSearchAjax($object_type, $container = '', $search_t = '')
+    {
         if (empty($container))
             $container = FHtml::getRequestParam('pjax_container');
 
@@ -4911,22 +4932,26 @@ JS;
         return $result;
     }
 
-    public static function buttonCreateAjax($object_type, $is_column = false, $is_search = false, $container = '', $add_t = '', $search_t = '') {
+    public static function buttonCreateAjax($object_type, $is_column = false, $is_search = false, $container = '', $add_t = '', $search_t = '')
+    {
         return self::showPlusButton($object_type, $is_column, $is_search, $container, $add_t, $search_t);
     }
 
-    public static function buttonCreateModal($object_type,  $container = '', $form_fields = [], $default_fields = [], $form_field_template = '{object}[{column}]') {
+    public static function buttonCreateModal($object_type,  $container = '', $form_fields = [], $default_fields = [], $form_field_template = '{object}[{column}]')
+    {
         $create_url = isset($create_url) ? $create_url : FHtml::createModelUrl($object_type, 'create', ['pjax_container' => $container]);
         $result = FHtml::buttonModal('<i class="glyphicon glyphicon-plus"></i>',  $create_url, 'modal-remote', 'btn btn-success');
         FHtml::registerPlusJS($object_type, $form_fields, $container, $form_field_template, $default_fields, 'POST');
         return $result;
     }
 
-    public static function buttonAjax($object_type, $container = '',  $label = '', $css = 'btn-success', $action = 'plus', $function_name = '') {
+    public static function buttonAjax($object_type, $container = '',  $label = '', $css = 'btn-success', $action = 'plus', $function_name = '')
+    {
         return self::showJSButton($object_type, $container, $label, $css, $action, $function_name);
     }
 
-    public static function buttonCloseModal($action = 'Cancel') {
+    public static function buttonCloseModal($action = 'Cancel')
+    {
         return '<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">' . FHtml::t('button', $action) . '</button>';
     }
 
@@ -4971,7 +4996,7 @@ JS;
                 continue;
             $cells[] = $control;
         }
-        $r .= implode('', $cells);//implode('', $cells);
+        $r .= implode('', $cells); //implode('', $cells);
         $r .= '</tr>';
 
         return $r;
@@ -5008,7 +5033,8 @@ JS;
 
     public static function showPlusFormView($model, $columns = [], $container = 'crud-datatable-pjax', $view = '_form')
     {
-        $modelName = ''; $object_type = '';
+        $modelName = '';
+        $object_type = '';
         if (is_string($model)) {
             $modelName = BaseInflector::camelize($model);
             $object_type = $model;
@@ -5027,19 +5053,18 @@ JS;
         return $r;
     }
 
-    public static function getModelFormAttributes($model, $form, $fields = []) {
+    public static function getModelFormAttributes($model, $form, $fields = [])
+    {
         $settings = [];
         foreach ($fields as $column => $column_settings) {
-            if (self::is_numeric($column))
-            {
+            if (self::is_numeric($column)) {
                 $column = $column_settings;
                 $column_settings = '';
             }
             if (empty($column_settings)) {
-                $column_settings = ['value' => $form->fieldNoLabel($model, $column)->editor(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW];
-            }
-            else if (is_string($column_settings)) {
-                $column_settings = ['value' => $form->fieldNoLabel($model, $column)->editor($column_settings), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW];
+                $column_settings = ['value' => $form->fieldNoLabel($model, $column)->editor()];
+            } else if (is_string($column_settings)) {
+                $column_settings = ['value' => $form->fieldNoLabel($model, $column)->editor($column_settings)];
             }
 
             $settings = array_merge($settings, [$column => $column_settings]);
@@ -5047,22 +5072,21 @@ JS;
         return $settings;
     }
 
-    public static function getModelGridColumns($model, $fields = [], $table = '') {
+    public static function getModelGridColumns($model, $fields = [], $table = '')
+    {
         $settings = [];
         if (empty($table)) {
             $table = FHtml::getTableName($model);
         }
 
         foreach ($fields as $column => $column_settings) {
-            if (self::is_numeric($column))
-            {
+            if (self::is_numeric($column)) {
                 $column = $column_settings;
                 $column_settings = '';
             }
             if (empty($column_settings)) {
                 $column_settings = ['class' => FHtml::COLUMN_EDIT, 'format' => 'inline', 'attribute' => $column];
-            }
-            else if (is_string($column_settings)) {
+            } else if (is_string($column_settings)) {
                 $column_settings = ['class' => FHtml::COLUMN_EDIT, 'format' => 'inline', 'attribute' => $column];
             }
 
@@ -5071,7 +5095,8 @@ JS;
         return $settings;
     }
 
-    public static function showTags($tags, $url = '', $template = '<span class="label" style="font-size:120%; margin-right:10px; margin-bottom:15px; padding:5px; background-color: {color}"> {tag} </span>', $color = '#81C6B6') {
+    public static function showTags($tags, $url = '', $template = '<span class="label" style="font-size:120%; margin-right:10px; margin-bottom:15px; padding:5px; background-color: {color}"> {tag} </span>', $color = '#81C6B6')
+    {
         if (empty($tags))
             return '';
 
@@ -5082,7 +5107,7 @@ JS;
 
         $arr = [];
         foreach ($tags as $id => $tag) {
-            $url1= $url;
+            $url1 = $url;
             $tag = trim($tag);
             if (is_numeric($id))
                 $id = $tag;
@@ -5110,7 +5135,8 @@ JS;
 
     //2017/11/3
 
-    public static function saveModelAjax($controller, $model, $modelMeta = null, $controller_id = '') {
+    public static function saveModelAjax($controller, $model, $modelMeta = null, $controller_id = '')
+    {
         $request = Yii::$app->request;
         $id = FHtml::getFieldValue($model, ['id']);
 
@@ -5124,36 +5150,37 @@ JS;
         Yii::$app->response->format = Response::FORMAT_JSON;
         if ($request->isGet) {
             return [
-                'title'=> $title,
-                'content'=>$controller->renderAjax('update', [
+                'title' => $title,
+                'content' => $controller->renderAjax('update', [
                     'model' => $model, 'modelMeta' => $modelMeta,
                 ]),
-//                'footer'=> Html::button(FHtml::t('button', 'Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-//                    Html::button(FHtml::t('button','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                //                'footer'=> Html::button(FHtml::t('button', 'Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                //                    Html::button(FHtml::t('button','Save'),['class'=>'btn btn-primary','type'=>"submit"])
             ];
         } else if ($model->load($request->post()) && $model->save()) {
             return [
-                'forceReload'=>'#' . self::getPjaxContainerId($controller_id),
-                'title'=> $title,
-                'content'=>$controller->renderAjax('view', [
+                'forceReload' => '#' . self::getPjaxContainerId($controller_id),
+                'title' => $title,
+                'content' => $controller->renderAjax('view', [
                     'model' => $model, 'modelMeta' => $modelMeta,
                 ]),
-//                'footer'=> Html::button(FHtml::t('button','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-//                    Html::a(FHtml::t('button','Update'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                //                'footer'=> Html::button(FHtml::t('button','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                //                    Html::a(FHtml::t('button','Update'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
             ];
         } else {
             return [
-                'title'=> $title,
-                'content'=> $controller->renderAjax('update', [
+                'title' => $title,
+                'content' => $controller->renderAjax('update', [
                     'model' => $model, 'modelMeta' => $modelMeta
                 ]),
-//                'footer'=> Html::button(FHtml::t('button','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-//                    Html::button(FHtml::t('button','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                //                'footer'=> Html::button(FHtml::t('button','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                //                    Html::button(FHtml::t('button','Save'),['class'=>'btn btn-primary','type'=>"submit"])
             ];
         }
     }
 
-    public static function showObjectConfigLink($model, $name_fields = FHtml::FIELDS_NAME) {
+    public static function showObjectConfigLink($model, $name_fields = FHtml::FIELDS_NAME)
+    {
         $object_id = FHtml::getFieldValue($model, ['id']);
         $object_type = FHtml::getTableName($model);
         $name = FHtml::getFieldValue($model, $name_fields);
@@ -5179,7 +5206,8 @@ JS;
         return $html;
     }
 
-    public static function showArrayAsTable($arr, $layout_type = 'table', $translated = true, $key_value_seperator = ': ', $column_seperator = ', ', $row_seperator = '<br/> ', $background = '#fafbfc') {
+    public static function showArrayAsTable($arr, $layout_type = 'table', $translated = true, $key_value_seperator = ': ', $column_seperator = ', ', $row_seperator = '<br/> ', $background = '#fafbfc')
+    {
         $str = '';
         if (is_object($arr))
             return self::showObjectAsTable($arr);
@@ -5188,7 +5216,8 @@ JS;
             return trim($arr, ",;");
 
         if (ArrayHelper::isIndexed($arr) && $layout_type == 'table') {
-            $layout_type = ''; $row_seperator = '<br/>';
+            $layout_type = '';
+            $row_seperator = '<br/>';
         }
 
         if (is_array($layout_type)) {
@@ -5219,11 +5248,9 @@ JS;
                     $str .= "<td style='padding: 5px;border:1px dashed lightgray;'>$value</td>";
                 }
                 $str .= "</tr>";
-
             }
             $str .= "</tbody></table>";
-        }
-        else if ($layout_type == 'table') {
+        } else if ($layout_type == 'table') {
             $str = "<table class='table table-bordered table-condensed table-stripped' width='100%' border='0px' cellpadding='30' cellspacing='0' style=''><tbody>";
             foreach ($arr as $key => $val) {
                 if (is_object($val)) {
@@ -5253,12 +5280,12 @@ JS;
                 if (strpos($layout_type, "{") !== false) {
                     $str .= !empty($key) ? FHtml::strReplace($layout_type, ['{key}' => $key, '{value}' => $val]) : $val;
                 } else {
-                    $str .= (!empty($key) ? '<b>' . ucfirst($key) . '</b>' . $key_value_seperator : '' ) . $val;
+                    $str .= (!empty($key) ? '<b>' . ucfirst($key) . '</b>' . $key_value_seperator : '') . $val;
                 }
             }
             $str = trim($str, ",;");
             $str .= '</div>';
-        } else  {
+        } else {
             foreach ($arr as $key => $val) {
                 if (is_object($val)) {
                     if (!method_exists($val, 'asArray'))
@@ -5272,7 +5299,7 @@ JS;
                 if (strpos($layout_type, "{") !== false) {
                     $str .= (!empty($key) ? FHtml::strReplace($layout_type, ['{key}' => $key, '{value}' => $val]) : ($val));
                 } else {
-                    $str .= (!empty($key) ? '<b>' . ucfirst($key) . '</b>' . $key_value_seperator : '' ) . $val . '';
+                    $str .= (!empty($key) ? '<b>' . ucfirst($key) . '</b>' . $key_value_seperator : '') . $val . '';
                 }
                 //$str .= '</div>';
             }
@@ -5282,7 +5309,8 @@ JS;
         return trim($str, ",;");
     }
 
-    public static function showObjectAsTable($changedItems, $columns = [], $fieldName = ['name']) {
+    public static function showObjectAsTable($changedItems, $columns = [], $fieldName = ['name'])
+    {
         if (is_object($changedItems))
             $changedItems = FHtml::getFieldValue($changedItems, $fieldName);
 
@@ -5297,7 +5325,7 @@ JS;
             foreach ($columns as $column) {
                 $class = $i == 0 ? 'col-md-2' : '';
                 $result .= "<td class='$class' style='padding: 10px;'>$item[$i]</td>";
-                $i+= 1;
+                $i += 1;
             }
             $result .= "</tr>";
         }
@@ -5306,7 +5334,8 @@ JS;
         return $result;
     }
 
-    public static function showLangsMenu($showFlag = false, $color = '') {
+    public static function showLangsMenu($showFlag = false, $color = '')
+    {
         if (!FHtml::isLanguagesEnabled())
             return '';
 
@@ -5343,7 +5372,7 @@ JS;
             $lang_array = FHtml::applicationLangsArray();
             if (empty($lang_array))
                 return '';
-            $result='';
+            $result = '';
             if (count($lang_array) > 1) {
                 foreach ($lang_array as $lang_item => $lang_name) {
                     if (is_numeric($lang_item)) {
@@ -5358,7 +5387,8 @@ JS;
         }
     }
 
-    public static function showEmptyMessage($model = null, $text = 'Sorry, there is no data available or we could not find any matches', $action = true) {
+    public static function showEmptyMessage($model = null, $text = 'Sorry, there is no data available or we could not find any matches', $action = true)
+    {
         if (is_bool($model)) {
             $action = $model;
             if ($model == false)
@@ -5392,27 +5422,27 @@ JS;
         if ($icon === false) {
             $quick_add = false;
             $icon = '<i class="glyphicon glyphicon-plus"></i>';
-        }
-        else
+        } else
             $quick_add = true;
 
         $button = self::buttonAction($icon, $title, $action, $color, false, true, $style);
         $form_enabled = FHtml::getRequestParam('form_enabled');
-//        if ($quick_add) {
-//            $title = FHtml::t('button', 'Quick Create');
-//            if (!$form_enabled) {
-//                $url = Url::current(['form_enabled' => !$form_enabled]);
-//                $button .= "<a class='btn btn-success' title = '$title' style='float:left; margin-left:-9px' href='$url' data-pjax='0'><i class='glyphicon glyphicon-plus-sign'></i></a>";
-//            } else {
-//                $url = Url::current(['form_enabled' => !$form_enabled]);
-//                $button .= "<a class='btn btn-default' title = '$title'  style='float:left; margin-left:-9px' href='$url' data-pjax='0'><i class='glyphicon glyphicon-remove-sign'></i></a>";
-//            }
-//        }
+        //        if ($quick_add) {
+        //            $title = FHtml::t('button', 'Quick Create');
+        //            if (!$form_enabled) {
+        //                $url = Url::current(['form_enabled' => !$form_enabled]);
+        //                $button .= "<a class='btn btn-success' title = '$title' style='float:left; margin-left:-9px' href='$url' data-pjax='0'><i class='glyphicon glyphicon-plus-sign'></i></a>";
+        //            } else {
+        //                $url = Url::current(['form_enabled' => !$form_enabled]);
+        //                $button .= "<a class='btn btn-default' title = '$title'  style='float:left; margin-left:-9px' href='$url' data-pjax='0'><i class='glyphicon glyphicon-remove-sign'></i></a>";
+        //            }
+        //        }
 
         return $button;
     }
 
-    public static function showPageWidthScript() {
+    public static function showPageWidthScript()
+    {
         $zoom = FHtml::settingPageWidth();
         if (!empty($zoom) && !in_array($zoom, ['full', '100%']))
             FHtml::currentView()->registerJs("document.body.style.zoom='$zoom';");
@@ -5423,24 +5453,24 @@ JS;
      * @param $icon
      * @return string
      */
-    public static  function showIcon($icon) {
+    public static  function showIcon($icon)
+    {
         if (StringHelper::startsWith($icon, 'fa'))
-            return '<i class="fa '.$icon.'" aria-hidden="true"></i>';
+            return '<i class="fa ' . $icon . '" aria-hidden="true"></i>';
         if (StringHelper::startsWith($icon, 'glyphicon'))
-            return '<span class="glyphicon ' .$icon. '" aria-hidden="true"></span>';
+            return '<span class="glyphicon ' . $icon . '" aria-hidden="true"></span>';
     }
 
     public static function showModelFieldToogle($model, $attribute, $content = '', $show_content_if_not_empty = false, $edit_label = '', $edit_icon = '')
     {
         if (is_object($model)) {
             $title = FHtml::showModelFieldValue($model, $attribute, '', '', false);
-
         } else {
             $title = $model;
             $content = $attribute;
         }
 
-        if ( (!isset($title) || $title === 0 || $title === 1 || $title === false || $title === true) && (StringHelper::startsWith($attribute, 'is_') || StringHelper::endsWith($attribute, 'enabled'))) {
+        if ((!isset($title) || $title === 0 || $title === 1 || $title === false || $title === true) && (StringHelper::startsWith($attribute, 'is_') || StringHelper::endsWith($attribute, 'enabled'))) {
             return $content;
         }
 
@@ -5467,7 +5497,8 @@ JS;
         return $result;
     }
 
-    public static function showToogleContent($title, $content, $id = '', $title_css = '', $title_style = '', $content_css = '', $content_style = 'fone-size:80%; background-color: #eef1f5; color: black; padding: 10px; margin-top:10px;') {
+    public static function showToogleContent($title, $content, $id = '', $title_css = '', $title_style = '', $content_css = '', $content_style = 'fone-size:80%; background-color: #eef1f5; color: black; padding: 10px; margin-top:10px;')
+    {
         $id = empty($id) ? ('toogle-' . rand(1, 200)) : $id;
         if (!empty($content))
             $result = @"<div onclick=\"$('#content_$id').toggle();\" class='$title_css' style='cursor: pointer; $title_style'>$title</div>
@@ -5480,7 +5511,8 @@ JS;
         return $result;
     }
 
-    public static function showModalContent($title, $content, $id = '', $title_css = '', $title_style = '', $content_css = '', $content_style = 'fone-size:80%; background-color: #eef1f5; color: black; padding: 10px; margin-top:10px;') {
+    public static function showModalContent($title, $content, $id = '', $title_css = '', $title_style = '', $content_css = '', $content_style = 'fone-size:80%; background-color: #eef1f5; color: black; padding: 10px; margin-top:10px;')
+    {
         $id = empty($id) ? rand(0, 1000) . time() : $id;
         $content = self::strReplace($content, ["'" => "\'"]);
         $result = @"<div onclick=\"alert('$content');\" class='$title_css' style='cursor: pointer; $title_style'>$title</div>
@@ -5488,7 +5520,8 @@ JS;
         return $result;
     }
 
-    public static function showToogleHtmlControl($input_id1 = '', $input_id2 = '', $content, $input_container_id = '', $title = '', $title_css = '', $title_style = '', $content_css = '', $content_style = '') {
+    public static function showToogleHtmlControl($input_id1 = '', $input_id2 = '', $content, $input_container_id = '', $title = '', $title_css = '', $title_style = '', $content_css = '', $content_style = '')
+    {
         $id = empty($input_container_id) ? "$input_id1-container" : $input_container_id;
 
         if (empty($content)) {
@@ -5511,7 +5544,8 @@ JS;
         return $result;
     }
 
-    public static function getWidgetID($view, $postfix = '-widget') {
+    public static function getWidgetID($view, $postfix = '-widget')
+    {
         return str_replace(['/', ':', '.'], '', $view) . $postfix;
     }
 
@@ -5524,12 +5558,14 @@ JS;
         else
             $toggleButton = ['label' => $label, 'class' => $label_class];
 
-        $widget = FWidget::begin(['options' => [
-            'id' =>  self::getWidgetID($view),
-            'tabindex' => false // important for Select2 to work properly
-        ],
+        $widget = FWidget::begin([
+            'options' => [
+                'id' =>  self::getWidgetID($view),
+                'tabindex' => false // important for Select2 to work properly
+            ],
             'header' => $header, 'footer' => $footer, 'display_type' => $type,
-            'toggleButton' => $toggleButton]);
+            'toggleButton' => $toggleButton
+        ]);
 
         try {
             echo self::renderView($view, $params);
@@ -5541,13 +5577,14 @@ JS;
         return '';
     }
 
-    public static function buttonModal($label , $url, $role = 'modal-remote', $css = 'btn btn-default', $confirm_title = null, $confirm_message = null, $method = 'get')
+    public static function buttonModal($label, $url, $role = 'modal-remote', $css = 'btn btn-default', $confirm_title = null, $confirm_message = null, $method = 'get')
     {
         return self::showModalButton($label, $url, $role, $css, $confirm_title, $confirm_message, $method);
     }
 
-    public static function showModal1($url) {
-            $result = "<div class=\"modal inmodal\" id=\"modalCalendar\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">
+    public static function showModal1($url)
+    {
+        $result = "<div class=\"modal inmodal\" id=\"modalCalendar\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">
 			    <div class=\"modal-dialog\">
 			        <div class=\"modal-content animated fadeIn\">
 			            <div class=\"modal-header\">
@@ -5561,27 +5598,27 @@ JS;
 			    </div>
 			</div>";
 
-            $js = @"function clickModal() {
+        $js = @"function clickModal() {
                 $('#modalCalendar').modal('show');
                 //$(\"#modalCalendar\").find(\"#modalContent\").load(\"{$url}?id=\" + event.id);
                 $('#modalCalendar').find('#modalIframe').attr('src', '{$url}?layout=no');
             }
             ";
-            FHtml::registerJs($js);
-            return $result;
+        FHtml::registerJs($js);
+        return $result;
     }
 
-    public static function buttonLink($icon = '', $title = '', $action = '', $color = 'default', $data_pjax = false,  $target = '', $options = [], $style = 'float:left; margin-right:10px;') {
+    public static function buttonLink($icon = '', $title = '', $action = '', $color = 'default', $data_pjax = false,  $target = '', $options = [], $style = 'float:left; margin-right:10px;')
+    {
         $view = FHtml::currentView();
-        if (strpos( $action, "/") !== false)
-        {
+        if (strpos($action, "/") !== false) {
             $url = $action;
-        }
-        else
+        } else
             $url = [$action];
 
         if ($target == 'iframe') {
-            $button = Html::button($icon . (empty($title) ? '' : ('&nbsp;' . FHtml::t('button', $title))),
+            $button = Html::button(
+                $icon . (empty($title) ? '' : ('&nbsp;' . FHtml::t('button', $title))),
                 array_merge([
                     'data-pjax' => $data_pjax ? 1 : 0,
                     'title' => FHtml::t('message', $title),
@@ -5590,11 +5627,12 @@ JS;
                     'style' => $style,
                     'data-url' => $url,
                     //'target' => $target
-                ], $options));
-
+                ], $options)
+            );
         } else if ($target == 'modal' || $target == 'modal-remote') {
 
-            $button = Html::button($icon . (empty($title) ? '' : ('&nbsp;' . FHtml::t('button', $title))),
+            $button = Html::button(
+                $icon . (empty($title) ? '' : ('&nbsp;' . FHtml::t('button', $title))),
                 array_merge([
                     'data-pjax' => $data_pjax ? 1 : 0,
                     'title' => FHtml::t('message', $title),
@@ -5602,17 +5640,20 @@ JS;
                     'onclick' => "showModal(this)",
                     'style' => $style,
                     'data-url' => $url,
-                ], $options));
-
+                ], $options)
+            );
         } else {
-            $button = FHtml::a($icon . (empty($title) ? '' : ('&nbsp;' . FHtml::t('button', $title))), $url,
+            $button = FHtml::a(
+                $icon . (empty($title) ? '' : ('&nbsp;' . FHtml::t('button', $title))),
+                $url,
                 array_merge([
                     'data-pjax' => $data_pjax ? 1 : 0,
                     'title' => FHtml::t('message', $title),
                     'class' => 'hidden-print btn btn-' . $color,
                     'style' => $style,
                     'target' => $target
-                ], $options));
+                ], $options)
+            );
         }
 
         return $button;
@@ -5623,11 +5664,13 @@ JS;
         return FHtml::buttonLink('', $label, $url, $css, $data_pjax, $target);
     }
 
-    public static function showModalIframeButton($label , $url, $role = 'iframe', $css = 'btn btn-default', $confirm_title = null, $confirm_message = null, $method = 'get') {
+    public static function showModalIframeButton($label, $url, $role = 'iframe', $css = 'btn btn-default', $confirm_title = null, $confirm_message = null, $method = 'get')
+    {
         return self::showModalButton($label, $url, $role, $css, $confirm_title, $confirm_message, $method);
     }
 
-    public static function showModalButton($label , $url, $role = 'modal-remote', $css = 'btn btn-default', $confirm_title = null, $confirm_message = null, $method = 'get') {
+    public static function showModalButton($label, $url, $role = 'modal-remote', $css = 'btn btn-default', $confirm_title = null, $confirm_message = null, $method = 'get')
+    {
         $is_print = (FHtml::getRequestParam('view') == 'print');
         if (!empty($is_print))
             return $label;
@@ -5640,28 +5683,33 @@ JS;
             //return FHtml::renderModal($url, [], $label);
         }
         if (!in_array($role, ['modal-remote'])) {
-            return FHtml::a($label,
+            return FHtml::a(
+                $label,
                 $url,
                 [
                     'data-pjax' => 0,
                     "class" => $css . ' hidden-print',
                     'target' => $role
 
-                ]);
+                ]
+            );
         }
-        return FHtml::a("$label",
+        return FHtml::a(
+            "$label",
             $url,
             [
                 'role' => $role,
                 "class" => $css . ' hidden-print',
-                'data-confirm' => false, 'data-method' => false,// for overide yii data api
+                'data-confirm' => false, 'data-method' => false, // for overide yii data api
                 'data-request-method' => $method,
                 'data-confirm-title' => $confirm_title,
                 'data-confirm-message' => $confirm_message,
-            ]);
+            ]
+        );
     }
 
-    public static function showPanelContent($label, $content, $id = '', $title_css = '', $title_style = '', $content_css = '', $content_style = 'padding: 10px; margin-top:10px;') {
+    public static function showPanelContent($label, $content, $id = '', $title_css = '', $title_style = '', $content_css = '', $content_style = 'padding: 10px; margin-top:10px;')
+    {
         $header = '<div class="portlet light bordered">
                         <div class="portlet-title tabbable-line hidden-print ' . $title_css . '">
                             <div class="caption caption-md">
@@ -5707,28 +5755,31 @@ JS;
         return self::showToogleContent($label, $content, '', '', '', '', 'margin-top:20px; padding-top:10px; padding-bottom:20px;');
     }
 
-    public static function showWizard($id, $items = [],  $buttons = [], $start_step = 0, $complete_content = false) {
+    public static function showWizard($id, $items = [],  $buttons = [], $start_step = 0, $complete_content = false)
+    {
         if (empty($items))
             return '';
 
         if (is_string($buttons) && !empty($buttons)) {
             return FWizard::widget(['id' => $id, 'steps' => $items, 'start_step' => $start_step, 'complete_content' => $complete_content, 'saveButton' => $buttons]);
-        }
-        else
+        } else
             return FWizard::widget(['id' => $id, 'steps' => $items, 'start_step' => $start_step, 'complete_content' => $complete_content, 'buttons' => $buttons]);
     }
 
-    public static function showTabsFull($id, $items = []) {
+    public static function showTabsFull($id, $items = [])
+    {
         if (empty($items))
             return '';
         return FWizard::widget(['id' => $id, 'steps' => $items, 'buttons' => false]);
     }
 
-    public static function showNumberInFileSize($bytes) {
+    public static function showNumberInFileSize($bytes)
+    {
         return self::convertToKBytes($bytes);
     }
 
-    public static function saveRequestPost($post = null) {
+    public static function saveRequestPost($post = null)
+    {
         if (!isset($post))
             $post = self::getRequestPost();
 
@@ -5736,7 +5787,8 @@ JS;
             FHtml::Session('LastPost', $post);
     }
 
-    public static function getRequestPost() {
+    public static function getRequestPost()
+    {
         $post = FHtml::Session('LastPost');
 
         if (isset($post)) {
@@ -5747,7 +5799,8 @@ JS;
         return array_merge($_REQUEST, $_POST);
     }
 
-    public static function showToogleHtmlTextArea($input_id, $label = 'html', $class = '') {
+    public static function showToogleHtmlTextArea($input_id, $label = 'html', $class = '')
+    {
         $uploadPath = FHtml::getRootFolder() . '/applications/' . FHtml::currentApplicationId() . '/upload/editor';
         $js3 = @"function toogleHtml(name) { var editor = CKEDITOR.instances[name];
                 if (editor) { editor.destroy(); return; 
@@ -5767,7 +5820,8 @@ JS;
         return $result;
     }
 
-    public static function showToogleMarkdownTextArea($input_id, $label = 'markdown', $class = '') {
+    public static function showToogleMarkdownTextArea($input_id, $label = 'markdown', $class = '')
+    {
         if (empty($input_id))
             return '';
 
@@ -5813,7 +5867,7 @@ JS;
             FHtml::registerJs("$js3");
         } else {
             $result = '';
-            FHtml::registerReadyJs( "var " . str_replace('(name,', "('$input_id',", $js));
+            FHtml::registerReadyJs("var " . str_replace('(name,', "('$input_id',", $js));
         }
 
         FHtml::currentView()->registerCssFile($baseUrl . '/plugins/editor_md/css/editormd.css');
@@ -5822,11 +5876,13 @@ JS;
         return $result;
     }
 
-    public static function showModalButtonHtmlEditor($input_id, $url = true, $css = 'btn btn-xs btn-default', $label = 'html') {
+    public static function showModalButtonHtmlEditor($input_id, $url = true, $css = 'btn btn-xs btn-default', $label = 'html')
+    {
         CKEditorWidgetAsset::register(FHtml::currentView());
 
         if (is_string($url)) {
-            $url1 = $url; $url = true;
+            $url1 = $url;
+            $url = true;
         } else {
             $url1 = FHtml::createUrl('site/editor', ['id' => $input_id]);
         }
@@ -5837,74 +5893,74 @@ JS;
         return $result;
     }
 
-	/**
-	 * @param        $text
-	 * @param int    $number_word
-	 * @param string $character_end
-	 * @return string
-	 */
-	public static function showText($text, $number_word = 100, $character_end = "...") {
-		$words = preg_split("/\s/", $text);
-		$words = array_splice($words, 0, $number_word);
-		if (str_word_count($text) > $number_word) {
-			return implode(" ", $words) . $character_end;
-		}
-		else {
-			return $text;
-		}
-	}
+    /**
+     * @param        $text
+     * @param int    $number_word
+     * @param string $character_end
+     * @return string
+     */
+    public static function showText($text, $number_word = 100, $character_end = "...")
+    {
+        $words = preg_split("/\s/", $text);
+        $words = array_splice($words, 0, $number_word);
+        if (str_word_count($text) > $number_word) {
+            return implode(" ", $words) . $character_end;
+        } else {
+            return $text;
+        }
+    }
 
-	/**
-	 * @param        $str
-	 * @param string $demiliter
-	 * @param bool   $tolower
-	 * @return mixed|null|string|string[]
-	 */
-	public static function cleanStringVietnamese($str, $demiliter = '-', $tolower = false)
-	{
-		$unicode = array(
+    /**
+     * @param        $str
+     * @param string $demiliter
+     * @param bool   $tolower
+     * @return mixed|null|string|string[]
+     */
+    public static function cleanStringVietnamese($str, $demiliter = '-', $tolower = false)
+    {
+        $unicode = array(
 
-			'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+            'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
 
-			'd' => 'đ',
+            'd' => 'đ',
 
-			'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+            'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
 
-			'i' => 'í|ì|ỉ|ĩ|ị',
+            'i' => 'í|ì|ỉ|ĩ|ị',
 
-			'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+            'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
 
-			'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+            'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
 
-			'y' => 'ý|ỳ|ỷ|ỹ|ỵ',
+            'y' => 'ý|ỳ|ỷ|ỹ|ỵ',
 
-			'A' => 'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+            'A' => 'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
 
-			'D' => 'Đ',
+            'D' => 'Đ',
 
-			'E' => 'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+            'E' => 'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
 
-			'I' => 'Í|Ì|Ỉ|Ĩ|Ị',
+            'I' => 'Í|Ì|Ỉ|Ĩ|Ị',
 
-			'O' => 'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+            'O' => 'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
 
-			'U' => 'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+            'U' => 'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
 
-			'Y' => 'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+            'Y' => 'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
 
-		);
+        );
 
-		foreach ($unicode as $nonUnicode => $uni) {
-			$str = preg_replace("/($uni)/i", $nonUnicode, $str);
-		}
+        foreach ($unicode as $nonUnicode => $uni) {
+            $str = preg_replace("/($uni)/i", $nonUnicode, $str);
+        }
 
-		$str = str_replace(' ', $demiliter, $str);
+        $str = str_replace(' ', $demiliter, $str);
 
-		if ($tolower)
-			$str = strtolower($str);
+        if ($tolower)
+            $str = strtolower($str);
 
-		return $str;
-	}
+        return $str;
+    }
 
 
     /**
@@ -6100,7 +6156,7 @@ JS;
         if (empty($image_file))
             $image_file = self::settingCompanyLogo();
 
-        $result = FHtml::showImage($image_file, $image_folder, $width, $height, $css, FHtml::settingCompanyName() . ', ' . FHtml::settingCompanyDescription() . ', ' . FHtml::settingWebsiteKeyWords() , false, 'none');
+        $result = FHtml::showImage($image_file, $image_folder, $width, $height, $css, FHtml::settingCompanyName() . ', ' . FHtml::settingCompanyDescription() . ', ' . FHtml::settingWebsiteKeyWords(), false, 'none');
 
         if (!empty($link_url) && !empty($result))
             $result = '<a href="' . $link_url . '">' . $result . '</a>';
@@ -6114,13 +6170,14 @@ JS;
      * @param string $default_value
      * @return mixed|string
      */
-	public static function getRelationName($relation, $field = 'name', $default_value = '') {
-		if ($relation instanceof ActiveQuery) {
-			$relation = $relation->one();
-		}
+    public static function getRelationName($relation, $field = 'name', $default_value = '')
+    {
+        if ($relation instanceof ActiveQuery) {
+            $relation = $relation->one();
+        }
 
-		return isset($relation) ? $relation->{$field} : $default_value;
-	}
+        return isset($relation) ? $relation->{$field} : $default_value;
+    }
 
     /**
      * @param        $relation
@@ -6128,15 +6185,17 @@ JS;
      * @param string $default_value
      * @return mixed|string
      */
-	public static function getRelationNames($relation, $field = 'name', $default_value = '') {
-		if ($relation instanceof ActiveQuery) {
-			$relation = $relation->all();
-		}
+    public static function getRelationNames($relation, $field = 'name', $default_value = '')
+    {
+        if ($relation instanceof ActiveQuery) {
+            $relation = $relation->all();
+        }
 
-		return isset($relation) ? implode(array_column($relation, $field), ', ') : $default_value;
-	}
+        return isset($relation) ? implode(array_column($relation, $field), ', ') : $default_value;
+    }
 
-    public static function getTreeViewNodeName($model, $as_html = true, $has_tree_node = true) {
+    public static function getTreeViewNodeName($model, $as_html = true, $has_tree_node = true)
+    {
         $model_level = FHtml::getFieldValue($model, ['tree_level', 'level']);
         $model_index = FHtml::getFieldValue($model, ['tree_index', 'index']);
         $name = FHtml::getFieldValue($model, ['name', 'title']);
@@ -6162,8 +6221,7 @@ JS;
 
         if ($as_html) {
             return (empty($model_index) ? '' : ($level . $model_index . '. ')) . "<span style='$css'>" . $name . "</span>";
-        }
-        else
+        } else
             return str_repeat('__', $model_level) . $name;
     }
 }

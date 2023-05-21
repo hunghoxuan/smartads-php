@@ -1,9 +1,6 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
+
+/*This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
  */
 
 namespace common\components;
@@ -517,7 +514,6 @@ class FConfig extends FSecurity
      */
     public static function settingModel($table, $category, $default_value = null)
     {
-
     }
 
     public static function settingAdminBackground()
@@ -813,7 +809,7 @@ class FConfig extends FSecurity
      */
     public static function flushCache($key = '')
     {
-            self::Cache()->flush();
+        self::Cache()->flush();
     }
 
     /**
@@ -1755,7 +1751,6 @@ class FConfig extends FSecurity
                 if (FApplication::isNotEmptyApplication()) {
                     FFile::createFile($file_name, $content);
                 }
-
             }
 
             //try load
@@ -1803,7 +1798,6 @@ class FConfig extends FSecurity
 
     public static function syncTranslationsToDb()
     {
-
     }
 
     public static function getApplicationTranslations($lang = '', $isCached = true)
@@ -1884,9 +1878,9 @@ class FConfig extends FSecurity
 
         if (is_file($paramFile) && !is_writable($paramFile)) {
             return false;
-//            if (empty(self::Session('error'))) {
-//                return FHtml::addError("File" . $paramFile ." is not writeable. Please set permission for it");
-//            }
+            //            if (empty(self::Session('error'))) {
+            //                return FHtml::addError("File" . $paramFile ." is not writeable. Please set permission for it");
+            //            }
         }
 
         if (empty($params))
@@ -2007,90 +2001,90 @@ class FConfig extends FSecurity
     {
         return $default_value;
 
-//        if (empty($editor))
-//            $editor = 'textarea';
-//
-//        // 3. If not, get from Config table
-//        $cachedKey = FHtml::currentApplicationId() . '::SETTINGS';
-//        $settings = FHtml::getCachedData($cachedKey);
-//
-//        if (!isset($settings)) {
-//            $settingsModel = Settings::findAll([]);
-//            $settings = [];
-//            if (isset($settingsModel) && !empty($settingsModel)) {
-//                foreach ($settingsModel as $model) {
-//                    $settings = ArrayHelper::merge($settings, [$model->metaKey => $model->metaValue]);
-//                }
-//            }
-//
-//            FHtml::saveCachedData($settings, $cachedKey);
-//        }
-//
-//        if (is_array($settings) && key_exists($category, $settings)) {
-//            return $settings[$category];
-//        } else {
-//            // Not yet existed in Settings DB, save it into next time
-//            $model = Settings::findOne(['metaKey' => $category]);
-//
-//            if (isset($model)) {
-//                if (!empty($model->metaValue))
-//                    return $model->metaValue;
-//                else {
-//                    if ($override_if_empty) {
-//                        $model->metaValue = $default_value;
-//                        $model->save();
-//                    }
-//                }
-//            } else {
-//                $model = new Settings();
-//                $model->metaKey = $category;
-//                $model->metaValue = (!is_array($default_value) || !is_object($default_value)) ? $default_value : '';
-//
-//                if (isset($default_value) && (is_bool($default_value) || $default_value === 1 || $default_value === 0 || $default_value == 'on')) {
-//                    $model->editor = FHtml::EDITOR_BOOLEAN;
-//                } else if (is_numeric($default_value)) {
-//                    $model->editor = FHtml::EDITOR_NUMERIC;
-//                }
-//
-//                if (!empty($params)) {
-//                    $model->editor = FHtml::EDITOR_SELECT;
-//                    $model->lookup = FHtml::encode($params);
-//                }
-//
-//                if (!empty($editor))
-//                    $model->editor = $editor;
-//
-//                if (!empty($lookup))
-//                    $model->lookup = $lookup;
-//
-//                if ($category == FHtml::SETTINGS_FIELD_LAYOUT) {
-//                    $model->editor = FHtml::EDITOR_SELECT;
-//                    $group = 'Theme';
-//                    $model->lookup = 'field_layout';
-//                }
-//
-//                if (empty($lookup) && $model->editor == FHtml::EDITOR_SELECT)
-//                    $model->lookup = str_replace(' ', '_', strtolower($category));
-//
-//                if (strpos($category, 'Format') !== false)
-//                    $group = 'Format';
-//
-//                if (empty($group))
-//                    $group = 'Others';
-//
-//                if (!empty($group))
-//                    FHtml::setFieldValue($model, 'group', $group);
-//
-//                $model->application_id = FHtml::currentApplicationCode();
-//                $model->is_system = 0;
-//                $model->save();
-//                FHtml::deleteCachedSettings();
-//            }
-//        }
-//
-//
-//        //To be done: check if category setting already existed in Configuration table, if not then return $default_value
-//        return $default_value;
+        //        if (empty($editor))
+        //            $editor = 'textarea';
+        //
+        //        // 3. If not, get from Config table
+        //        $cachedKey = FHtml::currentApplicationId() . '::SETTINGS';
+        //        $settings = FHtml::getCachedData($cachedKey);
+        //
+        //        if (!isset($settings)) {
+        //            $settingsModel = Settings::findAll([]);
+        //            $settings = [];
+        //            if (isset($settingsModel) && !empty($settingsModel)) {
+        //                foreach ($settingsModel as $model) {
+        //                    $settings = ArrayHelper::merge($settings, [$model->metaKey => $model->metaValue]);
+        //                }
+        //            }
+        //
+        //            FHtml::saveCachedData($settings, $cachedKey);
+        //        }
+        //
+        //        if (is_array($settings) && key_exists($category, $settings)) {
+        //            return $settings[$category];
+        //        } else {
+        //            // Not yet existed in Settings DB, save it into next time
+        //            $model = Settings::findOne(['metaKey' => $category]);
+        //
+        //            if (isset($model)) {
+        //                if (!empty($model->metaValue))
+        //                    return $model->metaValue;
+        //                else {
+        //                    if ($override_if_empty) {
+        //                        $model->metaValue = $default_value;
+        //                        $model->save();
+        //                    }
+        //                }
+        //            } else {
+        //                $model = new Settings();
+        //                $model->metaKey = $category;
+        //                $model->metaValue = (!is_array($default_value) || !is_object($default_value)) ? $default_value : '';
+        //
+        //                if (isset($default_value) && (is_bool($default_value) || $default_value === 1 || $default_value === 0 || $default_value == 'on')) {
+        //                    $model->editor = FHtml::EDITOR_BOOLEAN;
+        //                } else if (is_numeric($default_value)) {
+        //                    $model->editor = FHtml::EDITOR_NUMERIC;
+        //                }
+        //
+        //                if (!empty($params)) {
+        //                    $model->editor = FHtml::EDITOR_SELECT;
+        //                    $model->lookup = FHtml::encode($params);
+        //                }
+        //
+        //                if (!empty($editor))
+        //                    $model->editor = $editor;
+        //
+        //                if (!empty($lookup))
+        //                    $model->lookup = $lookup;
+        //
+        //                if ($category == FHtml::SETTINGS_FIELD_LAYOUT) {
+        //                    $model->editor = FHtml::EDITOR_SELECT;
+        //                    $group = 'Theme';
+        //                    $model->lookup = 'field_layout';
+        //                }
+        //
+        //                if (empty($lookup) && $model->editor == FHtml::EDITOR_SELECT)
+        //                    $model->lookup = str_replace(' ', '_', strtolower($category));
+        //
+        //                if (strpos($category, 'Format') !== false)
+        //                    $group = 'Format';
+        //
+        //                if (empty($group))
+        //                    $group = 'Others';
+        //
+        //                if (!empty($group))
+        //                    FHtml::setFieldValue($model, 'group', $group);
+        //
+        //                $model->application_id = FHtml::currentApplicationCode();
+        //                $model->is_system = 0;
+        //                $model->save();
+        //                FHtml::deleteCachedSettings();
+        //            }
+        //        }
+        //
+        //
+        //        //To be done: check if category setting already existed in Configuration table, if not then return $default_value
+        //        return $default_value;
     }
 
     public static function settingLanguagesAutoSaved()
@@ -2455,15 +2449,15 @@ class FConfig extends FSecurity
 
     public static function currentFrontendBaseUrl($theme = '')
     {
-//	    $application_id = FHtml::currentApplicationId();
-//	    $theme = FHtml::currentFrontendTheme();
-//	    $root_folder = FHtml::getRootFolder();
+        //	    $application_id = FHtml::currentApplicationId();
+        //	    $theme = FHtml::currentFrontendTheme();
+        //	    $root_folder = FHtml::getRootFolder();
 
-//        if (is_dir($root_folder . "/frontend/themes/$theme/layouts"))
-//            return $root_folder . "/frontend/themes/$theme/layouts";
-//
-//	    if (is_dir($root_folder . "/applications/$application_id/frontend/layouts"))
-//	        return $root_folder . "/applications/$application_id/frontend/layouts";
+        //        if (is_dir($root_folder . "/frontend/themes/$theme/layouts"))
+        //            return $root_folder . "/frontend/themes/$theme/layouts";
+        //
+        //	    if (is_dir($root_folder . "/applications/$application_id/frontend/layouts"))
+        //	        return $root_folder . "/applications/$application_id/frontend/layouts";
 
         $baseUrl = FHtml::getBaseUrl();
         $root_folder = FHtml::getRootFolder();
@@ -2621,9 +2615,9 @@ class FConfig extends FSecurity
                 return $lang;
             }
 
-//            $lang = Yii::$app->language;
-//            if (!empty($lang))
-//                return $lang;
+            //            $lang = Yii::$app->language;
+            //            if (!empty($lang))
+            //                return $lang;
 
             if (isset(Yii::$app->request->cookies[FHtml::LANGUAGES_PARAM]->value)) //If there is language defined in cookie, use it
             {
@@ -2849,7 +2843,6 @@ class FConfig extends FSecurity
                 return FHtml::currentDb($dbName);
             else
                 return Yii::$app->db;
-
         } catch (Exception $e) {
             print_r($e->getMessage());
         }
@@ -2951,7 +2944,6 @@ class FConfig extends FSecurity
                 $configFile = FHtml::getRootFolder() . "/applications/$application_id/config/main.php";
             $config['vendorPath'] = "{dirname}";
             self::saveConfigFile($configFile, $config, true);
-
         }
 
         return $config;
@@ -3092,7 +3084,6 @@ class FConfig extends FSecurity
                 $paramFile = static::getApplicationConfigFile($application_id);
 
             self::saveConfigFile($paramFile, $config);
-
         }
 
         return $config;

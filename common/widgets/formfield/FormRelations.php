@@ -1,4 +1,5 @@
 <?php
+
 namespace common\widgets\formfield;
 
 use common\components\FHtml;
@@ -14,8 +15,7 @@ class FormRelations extends FormFieldWidget
         if (empty($this->_attribute))
             $this->_attribute = BaseInflector::camelize($this->object_type);
 
-        if (!empty($this->object_fields))
-        {
+        if (!empty($this->object_fields)) {
             $fields1 = [];
             $attributes1 = [];
 
@@ -26,17 +26,16 @@ class FormRelations extends FormFieldWidget
                             $key = $value;
                         } else if (is_array($value)) {
                             $key = FHtml::getFieldValue($value, 'attribute');
-                            //$value = ['value' => FHtml::getFieldValue($value, 'value'), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW];
+                            //$value = ['value' => FHtml::getFieldValue($value, 'value')];
                         }
                     } else {
                         if (is_array($value)) {
-                            //$value = ['value' => FHtml::getFieldValue($value, 'value'), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW];
-                        }
-                        else if (is_string($value)) {
-                           // $value = ['value' => $related_form->fieldNoLabel($related_model, $key)->editor($value), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW];
+                            //$value = ['value' => FHtml::getFieldValue($value, 'value')];
+                        } else if (is_string($value)) {
+                            // $value = ['value' => $related_form->fieldNoLabel($related_model, $key)->editor($value)];
 
                         } else {
-                            //$value = ['value' => $value, 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW];
+                            //$value = ['value' => $value];
                         }
                     }
                     $fields1[] = $key;
@@ -56,7 +55,7 @@ class FormRelations extends FormFieldWidget
 
     public function run()
     {
-       if (empty($this->view_path)) {
+        if (empty($this->view_path)) {
             if (empty($this->relation_type)) {
                 if (FHtml::field_exists($this->object_type, 'object_id')) {
                     $this->view_path = '_form_relations_one_many';
@@ -78,5 +77,3 @@ class FormRelations extends FormFieldWidget
         parent::prepareData();
     }
 }
-
-?>

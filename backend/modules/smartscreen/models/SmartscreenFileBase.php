@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "smartscreen_file".
  *
 
@@ -37,8 +36,8 @@ class SmartscreenFileBase extends BaseModel //\yii\db\ActiveRecord
 {
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'smartscreen_file';
 
     public static function tableName()
@@ -48,14 +47,14 @@ class SmartscreenFileBase extends BaseModel //\yii\db\ActiveRecord
 
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'object_id', 'object_type', 'command', 'title', 'file', 'description', 'file_kind', 'file_size', 'file_duration', 'is_active', 'sort_order', 'created_date', 'created_user', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['object_id'], 'required'],
             [['object_id', 'is_active', 'sort_order'], 'integer'],
             [['created_date'], 'safe'],
@@ -67,26 +66,26 @@ class SmartscreenFileBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('SmartscreenFile', 'ID'),
-                    'object_id' => FHtml::t('SmartscreenFile', 'Object ID'),
-                    'object_type' => FHtml::t('SmartscreenFile', 'Object Type'),
-                    'command' => FHtml::t('SmartscreenFile', 'Command'),
-                    'file' => FHtml::t('SmartscreenFile', 'File'),
-                    'description' => FHtml::t('SmartscreenFile', 'Description'),
-                    'file_kind' => FHtml::t('SmartscreenFile', 'File Kind'),
-                    'file_size' => FHtml::t('SmartscreenFile', 'File Size'),
-                    'file_duration' => FHtml::t('SmartscreenFile', 'File Duration'),
-                    'is_active' => FHtml::t('SmartscreenFile', 'Is Active'),
-                    'sort_order' => FHtml::t('SmartscreenFile', 'Sort Order'),
-                    'created_date' => FHtml::t('SmartscreenFile', 'Created Date'),
-                    'created_user' => FHtml::t('SmartscreenFile', 'Created User'),
-                    'application_id' => FHtml::t('SmartscreenFile', 'Application ID'),
-                ];
+            'id' => FHtml::t('SmartscreenFile', 'ID'),
+            'object_id' => FHtml::t('SmartscreenFile', 'Object ID'),
+            'object_type' => FHtml::t('SmartscreenFile', 'Object Type'),
+            'command' => FHtml::t('SmartscreenFile', 'Command'),
+            'file' => FHtml::t('SmartscreenFile', 'File'),
+            'description' => FHtml::t('SmartscreenFile', 'Description'),
+            'file_kind' => FHtml::t('SmartscreenFile', 'File Kind'),
+            'file_size' => FHtml::t('SmartscreenFile', 'File Size'),
+            'file_duration' => FHtml::t('SmartscreenFile', 'File Duration'),
+            'is_active' => FHtml::t('SmartscreenFile', 'Is Active'),
+            'sort_order' => FHtml::t('SmartscreenFile', 'Sort Order'),
+            'created_date' => FHtml::t('SmartscreenFile', 'Created Date'),
+            'created_user' => FHtml::t('SmartscreenFile', 'Created User'),
+            'application_id' => FHtml::t('SmartscreenFile', 'Application ID'),
+        ];
     }
 
     public function init()
@@ -106,8 +105,4 @@ class SmartscreenFileBase extends BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

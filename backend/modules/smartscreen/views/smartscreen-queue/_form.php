@@ -63,96 +63,95 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
     ]
 ]);
 ?>
-    <div class="form">
-        <div class="row">
-            <div class="col-md-<?= $col_size1 ?>">
-                <div class="portlet light">
-                    <div class="visible-print">
-                        <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
+<div class="form">
+    <div class="row">
+        <div class="col-md-<?= $col_size1 ?>">
+            <div class="portlet light">
+                <div class="visible-print">
+                    <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
+                </div>
+                <div class="portlet-title tabbable-line hidden-print">
+                    <div class="caption caption-md">
+                        <i class="icon-globe theme-font hide"></i>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) . ":" . FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?></span>
                     </div>
-                    <div class="portlet-title tabbable-line hidden-print">
-                        <div class="caption caption-md">
-                            <i class="icon-globe theme-font hide"></i>
-                            <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) . ":" . FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?></span>
-                        </div>
-                        <div class="tools pull-right">
-                            <a href="#" class="fullscreen"></a>
-                            <a href="#" class="collapse"></a>
-                        </div>
-                        <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
-                            </li>
-                            <li>
-                                <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads') ?></a>
-                            </li>
-                            <li>
-                                <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Attributes') ?></a>
-                            </li>
-                        </ul>
+                    <div class="tools pull-right">
+                        <a href="#" class="fullscreen"></a>
+                        <a href="#" class="collapse"></a>
                     </div>
-                    <div class="portlet-body form">
-                        <div class="form">
-                            <div class="form-body">
-                                <div class="tab-content">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
+                        </li>
+                        <li>
+                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads') ?></a>
+                        </li>
+                        <li>
+                            <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Attributes') ?></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form">
+                        <div class="form-body">
+                            <div class="tab-content">
 
-                                    <div class="tab-pane active row" id="tab_1_1">
-                                        <div class="col-md-12">
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                                'code' => ['value' => $form->fieldNoLabel($model, 'code')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'ticket' => ['value' => $form->fieldNoLabel($model, 'ticket')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'counter' => ['value' => $form->fieldNoLabel($model, 'counter')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                <div class="tab-pane active row" id="tab_1_1">
+                                    <div class="col-md-12">
+                                        <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
+                                            'code' => ['value' => $form->fieldNoLabel($model, 'code')->textInput()],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'ticket' => ['value' => $form->fieldNoLabel($model, 'ticket')->textInput()],
+                                            'counter' => ['value' => $form->fieldNoLabel($model, 'counter')->textInput()],
 
-                                                'service_id' => ['value' => $form->fieldNoLabel($model, 'service_id')->lookup('qms_services', [], ['service' => 'name']), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                //'service_id' => ['value' => $form->fieldNoLabel($model, 'service_id')->selectInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'service' => ['value' => $form->fieldNoLabel($model, 'service')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'note' => ['value' => $form->fieldNoLabel($model, 'note')->textarea(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'device_id' => ['value' => $form->fieldNoLabel($model, 'device_id')->select(\backend\modules\smartscreen\models\SmartscreenStation::findAllForCombo()), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('smartscreen_queue', 'smartscreen_queue', 'status', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'service_id' => ['value' => $form->fieldNoLabel($model, 'service_id')->lookup('qms_services', [], ['service' => 'name'])],
+                                            //'service_id' => ['value' => $form->fieldNoLabel($model, 'service_id')->selectInput()],
+                                            'service' => ['value' => $form->fieldNoLabel($model, 'service')->textInput()],
+                                            'note' => ['value' => $form->fieldNoLabel($model, 'note')->textarea()],
+                                            'device_id' => ['value' => $form->fieldNoLabel($model, 'device_id')->select(\backend\modules\smartscreen\models\SmartscreenStation::findAllForCombo())],
+                                            'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('smartscreen_queue', 'smartscreen_queue', 'status', true, 'id', 'name'))],
 
-                                            ]]); ?>
+                                        ]]); ?>
 
-                                        </div>
                                     </div>
-                                    <div class="tab-pane row" id="tab_1_2">
-                                        <div class="col-md-12">
-                                            <?= FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            ]]); ?>
-                                            <hr/>
-                                            <?= FormObjectFile::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); ?>
-                                        </div>
+                                </div>
+                                <div class="tab-pane row" id="tab_1_2">
+                                    <div class="col-md-12">
+                                        <?= FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => []]); ?>
+                                        <hr />
+                                        <?= FormObjectFile::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); ?>
                                     </div>
-                                    <div class="tab-pane row" id="tab_1_3">
-                                        <div class="col-md-12">
-                                            <?= FormObjectAttributes::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); ?>
-                                        </div>
+                                </div>
+                                <div class="tab-pane row" id="tab_1_3">
+                                    <div class="col-md-12">
+                                        <?= FormObjectAttributes::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); ?>
                                     </div>
-                                    <?php /*
+                                </div>
+                                <?php /*
                                     <div class="tab-pane row" id="tab_1_p">
                                         <div class="col-md-12">
                                         </div>
                                     </div>
                                      */ ?>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php $type = FHtml::getFieldValue($model, 'type');
-                if (isset($modelMeta) && !empty($type)) { ?>
-                    <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
-                <?php } ?>
-                <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
             </div>
-            <?php if ($col_size2 > 0) { ?>
-                <div class="profile-sidebar col-md-<?= $col_size2 ?> col-xs-12 hidden-print">
-                    <div class="portlet light">
-                        <?= FHtml::showModelPreview($model) ?>
-                    </div>
-                </div>
+            <?php $type = FHtml::getFieldValue($model, 'type');
+            if (isset($modelMeta) && !empty($type)) { ?>
+                <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
             <?php } ?>
+            <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
         </div>
+        <?php if ($col_size2 > 0) { ?>
+            <div class="profile-sidebar col-md-<?= $col_size2 ?> col-xs-12 hidden-print">
+                <div class="portlet light">
+                    <?= FHtml::showModelPreview($model) ?>
+                </div>
+            </div>
+        <?php } ?>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end(); ?>

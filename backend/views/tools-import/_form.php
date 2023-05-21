@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "ToolsImport".
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -91,7 +93,7 @@ $result = isset($result) ? $result : [];
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
                             <?= FHtml::t('common', $moduleTitle) ?>
-                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?>                        </span>
+                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -113,16 +115,17 @@ $result = isset($result) ? $result : [];
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
                                         <?php echo FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            'name' => ['label' => 'Import Name','value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'name' => ['label' => 'Import Name', 'value' => $form->fieldNoLabel($model, 'name')->textInput()],
                                             'object_type' => ['label' => 'Table', 'value' => $form->fieldNoLabel($model, 'object_type')->selectInput(FHtml::getApplicationObjectTypes())],
                                         ]]); ?>
 
-                                        <?php echo FFormTable::widget(['model' => $model, 'title' => 'File','open' => true, 'form' => $form, 'columns' => 1, 'attributes' => [
+                                        <?php echo FFormTable::widget(['model' => $model, 'title' => 'File', 'open' => true, 'form' => $form, 'columns' => 1, 'attributes' => [
                                             'file' => ['open' => true, 'value' => $form->fieldNoLabel($model, 'file')->file()],
 
                                             'file_type' => ['value' => $form->fieldNoLabel($model, 'file_type')->selectCondition(['excel', 'csv'], [], [
                                                 'excel' => 'file_type-excel',
-                                                'csv' => 'file_type-csv'])],
+                                                'csv' => 'file_type-csv'
+                                            ])],
                                         ]]); ?>
                                     </div>
                                     <div class="col-md-12">

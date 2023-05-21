@@ -12,9 +12,9 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "tools_import".
  */
 class ToolsImport extends BasePHPObject //\yii\db\ActiveRecord
@@ -36,7 +36,8 @@ class ToolsImport extends BasePHPObject //\yii\db\ActiveRecord
         return 'tools_import';
     }
 
-    public function fields() {
+    public function fields()
+    {
         return ['id', 'name', 'file', 'sheet_name', 'file_type', 'item_seperator', 'first_row', 'last_row', 'object_type', 'key_columns', 'columns', 'default_values', 'override_type', 'type', 'created_date', 'created_user', 'application_id'];
     }
 
@@ -51,9 +52,9 @@ class ToolsImport extends BasePHPObject //\yii\db\ActiveRecord
     const LOOKUP = [
         'override_type' => [
             ['id' => ToolsImport::OVERRIDE_TYPE_OVERRIDE, 'name' => 'override'],
-        ['id' => ToolsImport::OVERRIDE_TYPE_DELETE, 'name' => 'delete'],
-        ['id' => ToolsImport::OVERRIDE_TYPE_ADD, 'name' => 'add'],
-     ],
+            ['id' => ToolsImport::OVERRIDE_TYPE_DELETE, 'name' => 'delete'],
+            ['id' => ToolsImport::OVERRIDE_TYPE_ADD, 'name' => 'add'],
+        ],
     ];
 
     const FIELD_COLUMNS_KEYS = ['field', 'excel_column'];
@@ -68,13 +69,15 @@ class ToolsImport extends BasePHPObject //\yii\db\ActiveRecord
     const OBJECTS_META = [];
 
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
     }
 
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         $this->created_date = FHtml::Now();
         $this->created_user = FHtml::currentUserId();
 
@@ -88,7 +91,8 @@ class ToolsImport extends BasePHPObject //\yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public function afterFind() {
+    public function afterFind()
+    {
         $this->columns = FHtml::decode($this->columns, false, self::FIELD_COLUMNS_KEYS);
         $this->key_columns = FHtml::decode($this->key_columns, ',');
         $this->default_values = FHtml::decode($this->default_values, false, self::FIELD_DEFAULT_VALUES_KEYS);

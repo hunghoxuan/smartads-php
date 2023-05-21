@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "app_user_feedback".
  *
 
@@ -43,8 +42,8 @@ class AppUserFeedbackBase extends BaseModel //\yii\db\ActiveRecord
     const STATUS_CLOSED = 'Closed';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'app_user_feedback';
 
     public static function tableName()
@@ -61,25 +60,25 @@ class AppUserFeedbackBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => 'ID',
-                    'user_id' => 'User ID',
-                    'object_id' => 'Object ID',
-                    'object_type' => 'Object Type',
-                    'comment' => 'Comment',
-                    'response' => 'Response',
-                    'type' => 'Type',
-                    'status' => 'Status',
-                    'created_date' => 'Created Date',
-                    'created_user' => 'Created User',
-                    'modified_date' => 'Modified Date',
-                    'modified_user' => 'Modified User',
-                    'application_id' => 'Application ID',
-                ];
+            'id' => 'ID',
+            'user_id' => 'User ID',
+            'object_id' => 'Object ID',
+            'object_type' => 'Object Type',
+            'comment' => 'Comment',
+            'response' => 'Response',
+            'type' => 'Type',
+            'status' => 'Status',
+            'created_date' => 'Created Date',
+            'created_user' => 'Created User',
+            'modified_date' => 'Modified Date',
+            'modified_user' => 'Modified User',
+            'application_id' => 'Application ID',
+        ];
     }
 
     public static function tableSchema()
@@ -114,7 +113,4 @@ class AppUserFeedbackBase extends BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
 }

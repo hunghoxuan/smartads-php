@@ -48,7 +48,7 @@ if ($model->isNewRecord) {
 }
 
 if (empty($model->type)) {
-	$model->type = ($model->isNewRecord || $basic_mode) ? Smartscreen::SCHEDULE_TYPE_BASIC : Smartscreen::SCHEDULE_TYPE_ADVANCE;
+    $model->type = ($model->isNewRecord || $basic_mode) ? Smartscreen::SCHEDULE_TYPE_BASIC : Smartscreen::SCHEDULE_TYPE_ADVANCE;
 }
 $returnUrl = $model->getReturnUrl();
 $cancelButton = "<a data-pjax='0' class='btn btn-default' href='$returnUrl' />" . FHtml::t('Cancel') . "</a>";
@@ -67,39 +67,39 @@ $start_time = isset($start_time) ? $start_time : FHtml::getRequestParam('start_t
 ?>
 
 <?php if (!Yii::$app->request->isAjax) {
-	$this->title                    = FHtml::t($moduleTitle);
-	$this->params['mainIcon']       = 'fa fa-list';
-	$this->params['toolBarActions'] = array(
-		'linkButton' => array(),
-		'button'     => array(),
-		'dropdown'   => array(),
-	);
+    $this->title                    = FHtml::t($moduleTitle);
+    $this->params['mainIcon']       = 'fa fa-list';
+    $this->params['toolBarActions'] = array(
+        'linkButton' => array(),
+        'button'     => array(),
+        'dropdown'   => array(),
+    );
 } ?>
 
 <?php if ($ajax) Pjax::begin(['id' => 'crud-datatable']) ?>
 
 <?php $form = FActiveForm::begin([
-	'id'                     => 'smartscreen-schedules-form',
-	'type'                   => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
-	'formConfig'             => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
-	'staticOnly'             => false, // check the Role here
-	'readonly'               => !$canEdit, // check the Role here
-	'edit_type'              => $edit_type,
-	'display_type'           => $display_type,
-	'enableClientValidation' => true,
-	'enableAjaxValidation'   => false,
-	'options'                => [
-		//'class' => 'form-horizontal',
-		'enctype' => 'multipart/form-data'
-	]
+    'id'                     => 'smartscreen-schedules-form',
+    'type'                   => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
+    'formConfig'             => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
+    'staticOnly'             => false, // check the Role here
+    'readonly'               => !$canEdit, // check the Role here
+    'edit_type'              => $edit_type,
+    'display_type'           => $display_type,
+    'enableClientValidation' => true,
+    'enableAjaxValidation'   => false,
+    'options'                => [
+        //'class' => 'form-horizontal',
+        'enctype' => 'multipart/form-data'
+    ]
 ]);
 
 if (json_decode($model->channel_id, true) != null) {
-	$model->channel_id =  json_decode($model->channel_id, true);
+    $model->channel_id =  json_decode($model->channel_id, true);
 }
 
 if (json_decode($model->device_id, true) != null) {
-	$model->device_id =  json_decode($model->device_id, true);
+    $model->device_id =  json_decode($model->device_id, true);
 }
 
 $type = FHtml::getFieldValue($model, 'type');
@@ -108,7 +108,7 @@ $deleteUrl = !$model->isNewRecord ? FHtml::createUrl('/smartscreen/smartscreen-s
 $deleteButton = "<a data-pjax='0' href='$deleteUrl' class='btn btn-danger pull-right'>" . FHtml::t('Delete') . "</a>";
 
 $backToUpdate = (!$model->isNewRecord && empty($model->start_time));
-$cancelUrl = $backToUpdate ? FHtml::createUrl('/smartscreen/smartscreen-schedules/update', Smartscreen::getCurrentParams(['id' => $model->id, 'action' => 'cancel'] )) : FHtml::createUrl('/smartscreen/smartscreen-schedules/index',  Smartscreen::getCurrentParams([]));
+$cancelUrl = $backToUpdate ? FHtml::createUrl('/smartscreen/smartscreen-schedules/update', Smartscreen::getCurrentParams(['id' => $model->id, 'action' => 'cancel'])) : FHtml::createUrl('/smartscreen/smartscreen-schedules/index',  Smartscreen::getCurrentParams([]));
 $cancelButton = "<a data-pjax='0' href='$cancelUrl' class='btn btn-default'>" . FHtml::t('Cancel') . "</a>";
 $buttons = '{save}{delete}' . $cancelButton . $deleteButton;
 if (empty($model->name))
@@ -123,7 +123,7 @@ $model->_content_id = $model->content_id;
         <div class="col-md-12">
             <div class="portlet light">
                 <div class="visible-print">
-					<?= (FHtml::isViewAction($currentAction)) ? FHtml::showPrintHeader($moduleName) : '' ?>
+                    <?= (FHtml::isViewAction($currentAction)) ? FHtml::showPrintHeader($moduleName) : '' ?>
                 </div>
                 <div class="portlet-title tabbable-line hidden-print">
                     <div class="caption caption-md">
@@ -146,23 +146,23 @@ $model->_content_id = $model->content_id;
 
                                     <div class="col-md-9">
 
-										<?php echo FFormTable::widget([
+                                        <?php echo FFormTable::widget([
                                             'hide_field' => false,
-											'model'      => $model,
-											'form'       => $form,
-											'columns'    => 1,
+                                            'model'      => $model,
+                                            'form'       => $form,
+                                            'columns'    => 1,
                                             'attributes' => [
-                                                    '_times' => [
-                                                        'visible' => !$model->isNewRecord && $multipleTimes,
-													    'value'         => $form->fieldNoLabel($model, '_times')->widget(MultipleInput::className(), [
-														'addButtonPosition' => $model->isNewRecord ? null : MultipleInput::POS_HEADER,
-														//'max'               => 1,
+                                                '_times' => [
+                                                    'visible' => !$model->isNewRecord && $multipleTimes,
+                                                    'value'         => $form->fieldNoLabel($model, '_times')->widget(MultipleInput::className(), [
+                                                        'addButtonPosition' => $model->isNewRecord ? null : MultipleInput::POS_HEADER,
+                                                        //'max'               => 1,
                                                         'min'               => 1,
 
-														'columns' => [
-															[
-															        'title' => FHtml::t('Start Time'),
-																'name' => '_start_time',
+                                                        'columns' => [
+                                                            [
+                                                                'title' => FHtml::t('Start Time'),
+                                                                'name' => '_start_time',
                                                                 'type'    => \common\widgets\FTimeInput::className(),
 
                                                             ],
@@ -178,11 +178,11 @@ $model->_content_id = $model->content_id;
                                                                 'type'    => \common\widgets\FNumericInput::className(),
 
                                                             ],
-														]
-													]),
-													'columnOptions' => ['colspan' => 1],
-													'type'          => FHtml::INPUT_RAW
-												],
+                                                        ]
+                                                    ]),
+
+                                                    'type'          => FHtml::INPUT_RAW
+                                                ],
 
 
                                                 'type' => [
@@ -190,44 +190,44 @@ $model->_content_id = $model->content_id;
                                                     'required' => true,
                                                     'visible' => $model->isNewRecord,
                                                     'value'         => $form->fieldNoLabel($model, 'type')->select(['basic' => FHtml::t('Fullscreen & Upload new media files'), 'advance' => FHtml::t('Custom Layout & saved Content')]),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => $model->isNewRecord ? FHtml::INPUT_RAW : FHtml::INPUT_READONLY
                                                 ],
                                                 'start_time' => [
                                                     'visible' =>  !empty($start_time) || (!$model->isNewRecord && !$multipleTimes),
                                                     'value'         => $form->fieldNoLabel($model, 'start_time')->time(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'end_time' => [
                                                     'label' => FHtml::t('End Time'),
                                                     'visible' =>  !empty($start_time) || (!$model->isNewRecord && !$multipleTimes),
                                                     'value'         => $form->fieldNoLabel($model, 'end_time')->time(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'duration'   => [
                                                     'visible' => !$model->isNewRecord && !$multipleTimes,
                                                     'value'         => $form->fieldNoLabel($model, 'duration')->numeric()->hint('mins'),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'campaign_id' => [
                                                     'visible'  => $model->isNewRecord && !empty(FHtml::getRequestParam('campaign_id')),
                                                     'value'         => $form->fieldNoLabel($model, 'campaign_id')->dropDownList($list_campaigns),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'channel_id' => [
                                                     'visible'  => $model->isNewRecord && !empty(FHtml::getRequestParam('channel_id')),
                                                     'value'         => $form->fieldNoLabel($model, 'channel_id')->dropDownList($list_channels),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'is_active' => [
                                                     'visible'  => !$model->isNewRecord,
                                                     'value'         => $form->fieldNoLabel($model, 'is_active')->boolean(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
 
@@ -235,14 +235,14 @@ $model->_content_id = $model->content_id;
                                                     'label' => FHtml::t('Content'),
                                                     'visible'  => $basic_mode,
                                                     'value'         => $form->fieldNoLabel($model, '_content_id')->dropDownList(\backend\modules\smartscreen\models\SmartscreenContent::findAllForCombo()),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
-											]
-										]); ?>
+                                            ]
+                                        ]); ?>
 
                                         <?php echo FFormTable::widget([
-                                                'id' => 'content_widget',
+                                            'id' => 'content_widget',
                                             'hide_field' => false,
                                             'model'      => $model,
                                             'form'       => $form,
@@ -252,7 +252,7 @@ $model->_content_id = $model->content_id;
                                                     'label' => FHtml::t('Content') . ' (' . FHtml::t('Create') . ')',
                                                     'visible'  => $basic_mode && empty($model->content_id),
                                                     'value'         => $form->fieldNoLabel($model, 'name')->textInput()->hint(empty($model->content_id) ? 'Leave blank if you dont want to save files to content library' : ''),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 '_Content' => [
@@ -269,7 +269,7 @@ $model->_content_id = $model->content_id;
                                                                 'enableError'   => true,
                                                                 'title'         => FHtml::t('common', 'Type'),
                                                                 'items' =>  [
-                                                                        '' => FHtml::NULL_VALUE,
+                                                                    '' => FHtml::NULL_VALUE,
                                                                     'marquee' => FHtml::t('common', 'Scrolling Text'),
                                                                     'image' => FHtml::t('common', 'Image'),
                                                                     'video' => FHtml::t('common', 'Video'),
@@ -326,7 +326,7 @@ $model->_content_id = $model->content_id;
                                                                 ]
                                                             ],
                                                             [
-                                                                'value'         => function($data) {
+                                                                'value'         => function ($data) {
                                                                     return FHtml::showImage(FHtml::getFieldValue($data, 'file'), 'smartscreen-file', '80px', '50px', 'margin-top:-15px', 'btn btn-large', false, 'download');
                                                                 },
                                                                 'type'          => 'static',
@@ -420,7 +420,7 @@ $model->_content_id = $model->content_id;
 
                                         <?php if ($model->isNewRecord) {
 
-                                            ?>
+                                        ?>
                                             <button type="submit" class="btn btn-primary" onclick="submitForm(&quot;save&quot;)"><i class="fa fa-save"></i> Tiếp tục</button>
                                             <?= $cancelButton ?>
 
@@ -429,93 +429,93 @@ $model->_content_id = $model->content_id;
                                     </div>
 
                                     <?php if (!$model->isNewRecord) { ?>
-                                    <div class="col-md-3 form-label">
-                                        <?php
-                                        $disabled = false;
-                                        if ($currentAction == 'update' && empty($id)) {
-                                            $disabled = true;
-                                        }
-                                        ?>
-                                        <?php echo FFormTable::widget([
-	                                        'hide_field' => false,
-                                            'model'      => $model,
-                                            'form'       => $form,
-                                            //'title' => FHtml::t('common', 'Devices'),
-                                            'type'                   => ActiveForm::TYPE_VERTICAL,
+                                        <div class="col-md-3 form-label">
+                                            <?php
+                                            $disabled = false;
+                                            if ($currentAction == 'update' && empty($id)) {
+                                                $disabled = true;
+                                            }
+                                            ?>
+                                            <?php echo FFormTable::widget([
+                                                'hide_field' => false,
+                                                'model'      => $model,
+                                                'form'       => $form,
+                                                //'title' => FHtml::t('common', 'Devices'),
+                                                'type'                   => ActiveForm::TYPE_VERTICAL,
 
-                                            'columns'    => 1,
-                                            'attributes' => [
-                                                'campaign_id' => [
+                                                'columns'    => 1,
+                                                'attributes' => [
+                                                    'campaign_id' => [
                                                         'visible'  => !$model->isNewRecord,
-                                                    'readonly' => true,
-                                                    'value'         => $form->fieldNoLabel($model, 'campaign_id')->dropDownList($list_campaigns, ['disabled' => !empty(FHtml::getRequestParam('campaign_id'))]),
-                                                    'columnOptions' => ['colspan' => 1, 'readonly' => true],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                            ]
-                                        ]);
+                                                        'readonly' => true,
+                                                        'value'         => $form->fieldNoLabel($model, 'campaign_id')->dropDownList($list_campaigns, ['disabled' => !empty(FHtml::getRequestParam('campaign_id'))]),
+                                                        'columnOptions' => ['colspan' => 1, 'readonly' => true],
+                                                        'type'          => FHtml::INPUT_RAW
+                                                    ],
+                                                ]
+                                            ]);
 
-                                        echo FFormTable::widget([
+                                            echo FFormTable::widget([
                                                 'id' => 'campaign_widget',
-                                            'overview' => 'Ghi chú: Không nhập dữ liệu nếu muốn áp dụng cho tất cả trường hợp',
-                                            'title' => 'Phạm vi áp dụng',
-                                            'hide_field' => false,
-                                            'model'      => $model,
-                                            'form'       => $form,
-                                            //'title' => FHtml::t('common', 'Devices'),
-                                            'type'                   => ActiveForm::TYPE_VERTICAL,
+                                                'overview' => 'Ghi chú: Không nhập dữ liệu nếu muốn áp dụng cho tất cả trường hợp',
+                                                'title' => 'Phạm vi áp dụng',
+                                                'hide_field' => false,
+                                                'model'      => $model,
+                                                'form'       => $form,
+                                                //'title' => FHtml::t('common', 'Devices'),
+                                                'type'                   => ActiveForm::TYPE_VERTICAL,
 
-                                            'columns'    => 1,
-                                            'attributes' => [
-                                                'channel_id' => [
-                                                    'visible' => empty($model->campaign_id),
-                                                    'value'         => $form->fieldNoLabel($model, 'channel_id')->widget(Select2::classname(), [
-                                                        'data'    => $list_channels,
-                                                        'options' => ['placeholder' => 'Tất cả Nhóm thiết bị', 'multiple' => false, 'disabled' => $disabled]
-                                                    ]),
-                                                    'columnOptions' => ['colspan' => 1],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'device_id'  => [
-                                                    'visible' => empty($model->campaign_id),
+                                                'columns'    => 1,
+                                                'attributes' => [
+                                                    'channel_id' => [
+                                                        'visible' => empty($model->campaign_id),
+                                                        'value'         => $form->fieldNoLabel($model, 'channel_id')->widget(Select2::classname(), [
+                                                            'data'    => $list_channels,
+                                                            'options' => ['placeholder' => 'Tất cả Nhóm thiết bị', 'multiple' => false, 'disabled' => $disabled]
+                                                        ]),
 
-                                                    'value'         => $form->fieldNoLabel($model, 'device_id')->widget(Select2::classname(), [
-                                                        'data'          => $list_device,
-                                                        'options'       => ['placeholder' => 'Tất cả thiết bị', 'multiple' => true, 'disabled' => $disabled],
-                                                        'pluginOptions' => [
-                                                            'tags'            => true,
-                                                            'tokenSeparators' => [',', ' '],
-                                                        ],
-                                                    ]),
-                                                    'columnOptions' => ['colspan' => 1],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'date'     => [
-                                                    'visible' => empty($model->campaign_id),
+                                                        'type'          => FHtml::INPUT_RAW
+                                                    ],
+                                                    'device_id'  => [
+                                                        'visible' => empty($model->campaign_id),
 
-                                                    'value'         => $form->fieldNoLabel($model, 'date')->date(),
-                                                    'columnOptions' => ['colspan' => 1],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'date_end' => [
-                                                    'visible' => empty($model->campaign_id),
+                                                        'value'         => $form->fieldNoLabel($model, 'device_id')->widget(Select2::classname(), [
+                                                            'data'          => $list_device,
+                                                            'options'       => ['placeholder' => 'Tất cả thiết bị', 'multiple' => true, 'disabled' => $disabled],
+                                                            'pluginOptions' => [
+                                                                'tags'            => true,
+                                                                'tokenSeparators' => [',', ' '],
+                                                            ],
+                                                        ]),
 
-                                                    'value'         => $form->fieldNoLabel($model, 'date_end')->date(),
-                                                    'columnOptions' => ['colspan' => 1],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'days'     => [
-                                                    'visible' => empty($model->campaign_id),
-                                                    'value'         => $form->fieldNoLabel($model, 'days')->checkBoxList(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']),
-                                                    'columnOptions' => ['colspan' => 3],
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                            ]
-                                        ]);
-                                        if (!empty($model->campaign_id))
-                                            echo $model->showPreview(true);
-                                        ?>
-                                    </div>
+                                                        'type'          => FHtml::INPUT_RAW
+                                                    ],
+                                                    'date'     => [
+                                                        'visible' => empty($model->campaign_id),
+
+                                                        'value'         => $form->fieldNoLabel($model, 'date')->date(),
+
+                                                        'type'          => FHtml::INPUT_RAW
+                                                    ],
+                                                    'date_end' => [
+                                                        'visible' => empty($model->campaign_id),
+
+                                                        'value'         => $form->fieldNoLabel($model, 'date_end')->date(),
+
+                                                        'type'          => FHtml::INPUT_RAW
+                                                    ],
+                                                    'days'     => [
+                                                        'visible' => empty($model->campaign_id),
+                                                        'value'         => $form->fieldNoLabel($model, 'days')->checkBoxList(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']),
+                                                        'columnOptions' => ['colspan' => 3],
+                                                        'type'          => FHtml::INPUT_RAW
+                                                    ],
+                                                ]
+                                            ]);
+                                            if (!empty($model->campaign_id))
+                                                echo $model->showPreview(true);
+                                            ?>
+                                        </div>
                                     <?php } ?>
                                 </div>
 
@@ -527,13 +527,13 @@ $model->_content_id = $model->content_id;
             </div>
 
 
-			<?= $model->isNewRecord ?  '' : ((FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete, $buttons)) ?>
+            <?= $model->isNewRecord ?  '' : ((FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete, $buttons)) ?>
         </div>
     </div>
 </div>
 <?php if (!$model->isNewRecord  && empty(FHtml::getRequestParam('layout'))) {
     $device_id = Smartscreen::getCurrentDeviceId($model);
-    ?>
+?>
     <div style="width: 100%; height: 700px; margin-bottom: 50px; background-color: #fefefe">
         <div style="margin-right: 10px; float:right"><a data-pjax="0" target="_blank" href="<?= FHtml::createUrl('/smartscreen/schedules', ['id' => $model->id, 'device_id' => $device_id, 'layout' => 'no', 'auto_refresh' => 0]) ?>">Full screen</a> </div>
         <iframe frameborder="0" src="<?= FHtml::createUrl('/smartscreen/schedules', ['id' => $model->id, 'device_id' => $device_id, 'layout' => 'no', 'auto_refresh' => 0]) ?>" width="100%" height="100%" />

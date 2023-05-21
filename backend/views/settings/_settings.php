@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "Settings".
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -90,7 +92,10 @@ FHtml::showCurrentMessages();
             <div class="portlet light">
                 <div class="portlet-title tabbable-line">
                     <div class="caption-title font-blue-madison bold uppercase">
-                        <div class="row"><div class="col-md-12 caption-title font-blue-madison bold uppercase"><h3 style="margin-top:-5px"> <?= FHtml::t('common', $moduleTitle) ?></h3></div>
+                        <div class="row">
+                            <div class="col-md-12 caption-title font-blue-madison bold uppercase">
+                                <h3 style="margin-top:-5px"> <?= FHtml::t('common', $moduleTitle) ?></h3>
+                            </div>
                         </div>
                     </div>
 
@@ -128,9 +133,9 @@ FHtml::showCurrentMessages();
                         </li>
                         -->
                         <?php foreach ($modules as $module => $name) { ?>
-                        <li>
-                            <a href="#tab_<?= $module ?>" data-toggle="tab"><?= $name ?></a>
-                        </li>
+                            <li>
+                                <a href="#tab_<?= $module ?>" data-toggle="tab"><?= $name ?></a>
+                            </li>
                         <?php } ?>
 
                     </ul>
@@ -150,31 +155,32 @@ FHtml::showCurrentMessages();
                                                 'name' => [
                                                     'value'         => $form->fieldNoLabel($model, 'name')
                                                         ->textInput(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'description'   => [
                                                     'value'         => $form->fieldNoLabel($model, 'description')->textarea(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'slogan'   => [
                                                     'value'         => $form->fieldNoLabel($model, 'slogan')->textarea(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'copyright'   => [
                                                     'value'         => $form->fieldNoLabel($model, 'copyright')->textarea(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'bottom_running_text'   => [
                                                     'value'         => $form->fieldNoLabel($model, 'bottom_running_text')->textarea(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
 
-                                        ]]); ?>
+                                            ]
+                                        ]); ?>
 
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
@@ -185,19 +191,20 @@ FHtml::showCurrentMessages();
 
                                                 'logo' => [
                                                     'value'         => $form->fieldNoLabel($model, 'logo')
-                                                            ->image() . '<br/>&nbsp;' . FHtml::showCurrentLogo(),
-                                                    'columnOptions' => ['colspan' => 1],
+                                                        ->image() . '<br/>&nbsp;' . FHtml::showCurrentLogo(),
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'favicon' => [
                                                     'value'         => $form->fieldNoLabel($model, 'favicon')
-                                                            ->image() . '<br/>&nbsp;' . FHtml::showImage($model->favicon, 'www', '50px', '50px'),
-                                                    'columnOptions' => ['colspan' => 1],
+                                                        ->image() . '<br/>&nbsp;' . FHtml::showImage($model->favicon, 'www', '50px', '50px'),
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'main_color'  => $form->fieldNoLabel($model, 'main_color')->color(),
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
 
 
                                     </div>
@@ -215,35 +222,36 @@ FHtml::showCurrentMessages();
                                                 'phone' => [
                                                     'value'         => $form->fieldNoLabel($model, 'phone')
                                                         ->textInput(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'email' => [
                                                     'value'         => $form->fieldNoLabel($model, 'email')
                                                         ->textInput(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'website' => [
                                                     'value'         => $form->fieldNoLabel($model, 'website')
                                                         ->textInput(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'facebook' => [
                                                     'value'         => $form->fieldNoLabel($model, 'facebook')
                                                         ->textInput(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'skype',
                                                 'address'   => [
                                                     'value'         => $form->fieldNoLabel($model, 'address')->textarea(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                     </div>
                                 </div>
                                 <div class="tab-pane row" id="tab_1_3">
@@ -256,21 +264,22 @@ FHtml::showCurrentMessages();
                                             'attributes' => [
                                                 'languages_enabled'      => [
                                                     'value'         => $form->fieldNoLabel($model, 'languages_enabled')->checkbox(),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'lang'      => $form->fieldNoLabel($model, 'lang')->select(FHtml::getLanguagesArray()),
 
                                                 'languages'      => [
                                                     'value'         => $form->fieldNoLabel($model, 'languages')->checkboxList(FHtml::getLanguagesArray()),
-                                                    'columnOptions' => ['colspan' => 1],
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
                                                 'db_languages_enabled'      => $form->fieldNoLabel($model, 'db_languages_enabled')->checkbox(),
 
                                                 'languages_auto_saved'      => ['value' => $form->fieldNoLabel($model, 'languages_auto_saved')->checkbox(), 'required' => true],
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?php if (FHtml::isRoleAdmin()) { ?>
 
                                         <?php } ?>
@@ -295,7 +304,8 @@ FHtml::showCurrentMessages();
                                                 'form_control_border'      => $form->fieldNoLabel($model, 'form_control_border')->select(FHtml::ARRAY_FORM_CONTROL_STYLE),
                                                 'backend_main_color'      => $form->fieldNoLabel($model, 'backend_main_color')->color(),
                                                 'backend_font_size'      => $form->fieldNoLabel($model, 'backend_font_size')->select(FHtml::ARRAY_FONT_SIZE),
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
 
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
@@ -308,11 +318,12 @@ FHtml::showCurrentMessages();
                                                 'backend_login_position' => $form->fieldNoLabel($model, 'backend_login_position')->select(FHtml::ARRAY_ALIGNMENT),
                                                 'backend_background' => [
                                                     'value'         => $form->fieldNoLabel($model, 'backend_background')
-                                                            ->image() . '<br/>&nbsp;' . FHtml::showImage($model->backend_background, 'www', '', '200px'),
-                                                    'columnOptions' => ['colspan' => 1],
+                                                        ->image() . '<br/>&nbsp;' . FHtml::showImage($model->backend_background, 'www', '', '200px'),
+
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
                                             'title'      => FHtml::t('common', 'List View'),
@@ -327,13 +338,14 @@ FHtml::showCurrentMessages();
                                                 'table_header_color'      => $form->fieldNoLabel($model, 'table_header_color')->color(),
                                                 'table_strip_light_color'      => $form->fieldNoLabel($model, 'table_strip_light_color')->color(),
                                                 'table_strip_dark_color'      => $form->fieldNoLabel($model, 'table_strip_dark_color')->color(),
-//                                                'show_preview_column'      => [
-//                                                    'value'         => $form->fieldNoLabel($model, 'show_preview_column')->checkbox(),
-//                                                ],
+                                                //                                                'show_preview_column'      => [
+                                                //                                                    'value'         => $form->fieldNoLabel($model, 'show_preview_column')->checkbox(),
+                                                //                                                ],
                                                 'admin_inline_edit'      => $form->fieldNoLabel($model, 'admin_inline_edit')->checkbox(),
                                                 'admin_grid_show_views'      => $form->fieldNoLabel($model, 'admin_grid_show_views')->checkbox(),
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
 
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
@@ -348,7 +360,7 @@ FHtml::showCurrentMessages();
                                                 'form_width'      => $form->fieldNoLabel($model, 'form_width')->select(FHtml::ARRAY_FORM_WIDTH_TYPE),
                                                 'form_background'      => $form->fieldNoLabel($model, 'form_background')->color(),
 
-                                                    'form_label_color'      => $form->fieldNoLabel($model, 'form_label_color')->color(),
+                                                'form_label_color'      => $form->fieldNoLabel($model, 'form_label_color')->color(),
                                                 'form_label_spacing'      => $form->fieldNoLabel($model, 'form_label_spacing')->checkbox(),
                                                 'form_label_border'      => $form->fieldNoLabel($model, 'form_label_border')->select(FHtml::ARRAY_BORDER_TYPE),
 
@@ -357,7 +369,8 @@ FHtml::showCurrentMessages();
                                                 'form_buttons_style'      => $form->fieldNoLabel($model, 'form_buttons_style')->select(FHtml::ARRAY_BUTTONS_POSITION_TYPE),
                                                 'thumbnail_size'      => $form->fieldNoLabel($model, 'thumbnail_size')->numeric(),
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
 
 
                                         <?= \common\widgets\FFormTable::widget([
@@ -376,7 +389,8 @@ FHtml::showCurrentMessages();
                                                 'backend_footer_style'      => $form->fieldNoLabel($model, 'backend_footer_style')->select(FHtml::ARRAY_FOOTER_STYLE),
 
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
 
 
                                         <?php if (FHtml::isRoleAdmin()) { ?>
@@ -401,7 +415,8 @@ FHtml::showCurrentMessages();
                                                 'cart_enabled'  => $form->fieldNoLabel($model, 'cart_enabled')->checkbox(),
                                                 'fonts'  => $form->fieldNoLabel($model, 'fonts')->textInput(),
                                                 'page_width' => $form->fieldNoLabel($model, 'page_width')->textInput(),
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
 
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
@@ -411,7 +426,8 @@ FHtml::showCurrentMessages();
                                             'attributes' => [
                                                 'show_as_footer'      => $form->fieldNoLabel($model, 'show_as_footer')->checkbox(),
                                                 'show_as_buttons'      => $form->fieldNoLabel($model, 'show_as_buttons')->checkbox(),
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
                                             'title'      => 'LiveZilla Chat',
@@ -421,7 +437,8 @@ FHtml::showCurrentMessages();
                                                 'livezilla_chat_enabled'      => $form->fieldNoLabel($model, 'livezilla_chat_enabled')->checkbox(),
                                                 'livezilla_chat_url'      => $form->fieldNoLabel($model, 'livezilla_chat_url')->textbox(),
                                                 'livezilla_chat_id'      => $form->fieldNoLabel($model, 'livezilla_chat_id')->textbox(),
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
                                             'title'      => 'Tidio Chat',
@@ -430,7 +447,8 @@ FHtml::showCurrentMessages();
                                             'attributes' => [
                                                 'tidio_chat_enabled'      => $form->fieldNoLabel($model, 'tidio_chat_enabled')->checkbox(),
                                                 'tidio_chat_url'      => $form->fieldNoLabel($model, 'tidio_chat_url')->textbox(),
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
                                             'title'      => 'Facebook Chat',
@@ -439,7 +457,8 @@ FHtml::showCurrentMessages();
                                             'attributes' => [
                                                 'facebook_chat_enabled'      => $form->fieldNoLabel($model, 'facebook_chat_enabled')->checkbox(),
                                                 'facebook_page_id'      => $form->fieldNoLabel($model, 'facebook_page_id')->textbox(),
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?php if (FHtml::isRoleAdmin()) { ?>
 
                                         <?php } ?>
@@ -455,12 +474,13 @@ FHtml::showCurrentMessages();
                                             'columns'    => 1,
                                             'attributes' => [
                                                 'keywords'  => $form->fieldNoLabel($model, 'keywords')->textarea(),
-//                                                'description'   => [
-//                                                    'value'         => $form->fieldNoLabel($model, 'description')->textarea(),
-//                                                    'columnOptions' => ['colspan' => 1],
-//                                                    'type'          => FHtml::INPUT_RAW
-//                                                ],
-                                            ]]); ?>
+                                                //                                                'description'   => [
+                                                //                                                    'value'         => $form->fieldNoLabel($model, 'description')->textarea(),
+                                                //                                                    
+                                                //                                                    'type'          => FHtml::INPUT_RAW
+                                                //                                                ],
+                                            ]
+                                        ]); ?>
 
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
@@ -474,7 +494,8 @@ FHtml::showCurrentMessages();
                                                 'website_scripts'  => $form->fieldNoLabel($model, 'website_scripts')->textarea(['rows' => 10]),
                                                 'website_stylesheets'  => $form->fieldNoLabel($model, 'website_stylesheets')->textarea(['rows' => 10]),
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?php if (FHtml::isRoleAdmin()) { ?>
 
                                         <?php } ?>
@@ -494,7 +515,8 @@ FHtml::showCurrentMessages();
                                                 'api.token.allowed'  => $form->fieldNoLabel($model, 'api_token_allowed')->textarea(),
                                                 'default_username'  => $form->fieldNoLabel($model, 'api_default_username')->textInput(),
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?= \common\widgets\FFormTable::widget([
                                             'model'      => $model,
                                             'title'      => 'GOOGLE KEYS',
@@ -504,7 +526,8 @@ FHtml::showCurrentMessages();
                                                 'GOOGLE_API_KEY'  => $form->fieldNoLabel($model, 'GOOGLE_API_KEY')->textarea(),
                                                 'google_map_api_key'  => $form->fieldNoLabel($model, 'google_map_api_key')->textarea(),
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
 
                                     </div>
                                 </div>
@@ -529,7 +552,8 @@ FHtml::showCurrentMessages();
 
                                                 'page_size'  => $form->fieldNoLabel($model, 'page_size')->numeric(),
 
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
                                         <?php if (FHtml::isRoleAdmin()) { ?>
                                             <?= \common\widgets\FFormTable::widget([
                                                 'model'      => $model,
@@ -540,7 +564,8 @@ FHtml::showCurrentMessages();
                                                     'upload_accepted_type'  => $form->fieldNoLabel($model, 'upload_accepted_type')->textarea(),
                                                     'upload_max_size'  => $form->fieldNoLabel($model, 'upload_max_size')->numeric(),
 
-                                                ]]); ?>
+                                                ]
+                                            ]); ?>
                                             <?= \common\widgets\FFormTable::widget([
                                                 'model'      => $model,
                                                 'title'      => FHtml::t('common', 'System'),
@@ -557,18 +582,19 @@ FHtml::showCurrentMessages();
 
                                                     'widgets_enabled'      => $form->fieldNoLabel($model, 'widgets_enabled')->checkbox(),
 
-                                                ]]); ?>
+                                                ]
+                                            ]); ?>
                                         <?php } ?>
                                     </div>
                                 </div>
 
                                 <?php foreach ($modules as $module => $name) { ?>
 
-                                <div class="tab-pane row" id="tab_<?= $module ?>">
-                                    <div class="col-md-12">
-                                        <?= FHtml::renderFile( FHtml::getRootFolder() . "/backend/modules/$module/views/settings/_settings.php", ['model' => $model, 'form' => $form]) ?>
+                                    <div class="tab-pane row" id="tab_<?= $module ?>">
+                                        <div class="col-md-12">
+                                            <?= FHtml::renderFile(FHtml::getRootFolder() . "/backend/modules/$module/views/settings/_settings.php", ['model' => $model, 'form' => $form]) ?>
+                                        </div>
                                     </div>
-                                </div>
                                 <?php } ?>
 
                             </div>
@@ -604,7 +630,3 @@ FHtml::showCurrentMessages();
     </div>
 </div>
 <?php \common\widgets\FActiveForm::end(); ?>
-
-
-
-

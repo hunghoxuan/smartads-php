@@ -10,11 +10,7 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 
-/**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the model class for table "user".
+/*This is the model class for table "user".
  *
 
  * @property integer $id
@@ -52,15 +48,19 @@ use yii\helpers\ArrayHelper;
  * @property integer $updated_at
  * @property string $application_id
  */
+
 class UserBase extends \common\models\User //\yii\db\ActiveRecord
 {
-    const ROLE_ADMIN = 'ADMIN';
+    const ROLE_ADMIN = FHtml::ROLE_ADMIN; // 'ADMIN';
+    const ROLE_USER = FHtml::ROLE_USER; // 'USER';
+    const ROLE_MANAGER = FHtml::ROLE_MODERATOR; //'MANAGER';
+
     const STATUS_DISABLED = FHtml::STATUS_INACTIVE;
     const STATUS_ACTIVE = FHtml::STATUS_ACTIVE;
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'user';
 
     public static function tableName()
@@ -69,46 +69,46 @@ class UserBase extends \common\models\User //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => 'ID',
-                    'code' => 'Code',
-                    'name' => 'Name',
-                    'username' => 'Username',
-                    'image' => 'Image',
-                    'overview' => 'Overview',
-                    'content' => 'Content',
-                    'auth_key' => 'Auth Key',
-                    'password_hash' => 'Password Hash',
-                    'password_reset_token' => 'Password Reset Token',
-                    'birth_date' => 'Birth Date',
-                    'birth_place' => 'Birth Place',
-                    'gender' => 'Gender',
-                    'identity_card' => 'Identity Card',
-                    'email' => 'Email',
-                    'phone' => 'Phone',
-                    'skype' => 'Skype',
-                    'address' => 'Address',
-                    'country' => 'Country',
-                    'city' => 'City',
-                    'organization' => 'Organization',
-                    'department' => 'Department',
-                    'position' => 'Position',
-                    'start_date' => 'Start Date',
-                    'end_date' => 'End Date',
-                    'role' => 'Role',
-                    'type' => 'Type',
-                    'status' => 'Status',
-                    'is_online' => 'Is Online',
-                    'last_login' => 'Last Login',
-                    'last_logout' => 'Last Logout',
-                    'created_at' => 'Created At',
-                    'updated_at' => 'Updated At',
-                    'application_id' => 'Application ID',
-                ];
+            'id' => 'ID',
+            'code' => 'Code',
+            'name' => 'Name',
+            'username' => 'Username',
+            'image' => 'Image',
+            'overview' => 'Overview',
+            'content' => 'Content',
+            'auth_key' => 'Auth Key',
+            'password_hash' => 'Password Hash',
+            'password_reset_token' => 'Password Reset Token',
+            'birth_date' => 'Birth Date',
+            'birth_place' => 'Birth Place',
+            'gender' => 'Gender',
+            'identity_card' => 'Identity Card',
+            'email' => 'Email',
+            'phone' => 'Phone',
+            'skype' => 'Skype',
+            'address' => 'Address',
+            'country' => 'Country',
+            'city' => 'City',
+            'organization' => 'Organization',
+            'department' => 'Department',
+            'position' => 'Position',
+            'start_date' => 'Start Date',
+            'end_date' => 'End Date',
+            'role' => 'Role',
+            'type' => 'Type',
+            'status' => 'Status',
+            'is_online' => 'Is Online',
+            'last_login' => 'Last Login',
+            'last_logout' => 'Last Logout',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'application_id' => 'Application ID',
+        ];
     }
 
     public static function tableSchema()
@@ -143,7 +143,4 @@ class UserBase extends \common\models\User //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
 }

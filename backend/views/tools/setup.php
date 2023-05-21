@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "Book".
  */
+
 use common\components\FHtml;
 use common\widgets\FActiveForm;
 use common\widgets\FFormTable;
@@ -39,9 +41,9 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
     $this->title = FHtml::t($moduleTitle);
     $this->params['mainIcon'] = 'fa fa-list';
     $this->params['toolBarActions'] = array(
-        'linkButton'=>array(),
-        'button'=>array(),
-        'dropdown'=>array(),
+        'linkButton' => array(),
+        'button' => array(),
+        'dropdown' => array(),
     );
 } ?>
 
@@ -101,10 +103,12 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                             'app_website',
                                             'admin_phone'
                                         ]]); ?>
-                                        <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'title' => 'Admin Username: <b>admin</b>' ,
+                                        <?php echo FFormTable::widget([
+                                            'model' => $model, 'form' => $form, 'columns' => 2, 'title' => 'Admin Username: <b>admin</b>',
                                             'attributes' => [
                                                 'admin_password', 'admin_email'
-                                            ]]); ?>
+                                            ]
+                                        ]); ?>
 
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'title' => 'Database', 'attributes' => [
                                             'db_name',
@@ -127,8 +131,8 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
 
                                 <?php if ($canEdit) { ?>
                                     <button class="btn btn-primary">SETUP</button>
-                                <?php } else {?>
-                                    <a href="<?=    FHtml::createUrl('site/index') ?>" class="btn btn-default">Continue</a>
+                                <?php } else { ?>
+                                    <a href="<?= FHtml::createUrl('site/index') ?>" class="btn btn-default">Continue</a>
                                 <?php } ?>
 
                             </div>

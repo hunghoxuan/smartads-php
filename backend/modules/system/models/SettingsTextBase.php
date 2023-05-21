@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "settings_text".
  *
 
@@ -29,8 +28,8 @@ class SettingsTextBase extends BaseModel //\yii\db\ActiveRecord
 {
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'settings_text';
 
     public static function tableName()
@@ -47,30 +46,30 @@ class SettingsTextBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
             [['id', 'name', 'lang',  'application_id'], 'filter', 'filter' => 'trim'],
             [['name'], 'required'],
-            [[ 'name', 'lang'], 'string', 'max' => 255],
+            [['name', 'lang'], 'string', 'max' => 255],
             [['application_id'], 'string', 'max' => 100],
         ];
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('SettingsText', 'ID'),
-                    'name' => FHtml::t('SettingsText', 'Name'),
-                    'lang' => FHtml::t('SettingsText', 'Lang'),
-                    'content' => FHtml::t('SettingsText', 'Content'),
-                    'application_id' => FHtml::t('SettingsText', 'Application ID'),
-                ];
+            'id' => FHtml::t('SettingsText', 'ID'),
+            'name' => FHtml::t('SettingsText', 'Name'),
+            'lang' => FHtml::t('SettingsText', 'Lang'),
+            'content' => FHtml::t('SettingsText', 'Content'),
+            'application_id' => FHtml::t('SettingsText', 'Application ID'),
+        ];
     }
 
     public static function tableSchema()
@@ -105,8 +104,4 @@ class SettingsTextBase extends BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "Settings".
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -72,8 +74,7 @@ $canDelete = FHtml::isInRole('', 'delete', $currentRole);
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
-                        <span
-                            class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) ?></span>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) ?></span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -161,7 +162,8 @@ $canDelete = FHtml::isInRole('', 'delete', $currentRole);
         </div>
         <div class="col-md-2">
             <div class="">
-                <?php echo '';// FHtml::buildTabs(['Config', 'Website', 'Theme', 'Backend', 'Frontend', 'All'], 'nav', 'group'); ?>
+                <?php echo ''; // FHtml::buildTabs(['Config', 'Website', 'Theme', 'Backend', 'Frontend', 'All'], 'nav', 'group'); 
+                ?>
                 <?php echo FHtml::buildTabs('settings#group', 'nav', 'group'); ?>
 
             </div>
@@ -169,7 +171,3 @@ $canDelete = FHtml::isInRole('', 'delete', $currentRole);
     </div>
 </div>
 <?php \common\widgets\FActiveForm::end(); ?>
-
-
-
-

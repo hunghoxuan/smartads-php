@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "AppUserDevice".
-*/
+ *
+ * **
+ * This is the customized model class for table "AppUserDevice".
+ */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -44,33 +45,33 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
 ?>
 
 <?php if (!Yii::$app->request->isAjax) {
-$this->title = FHtml::t($moduleTitle);
-$this->params['mainIcon'] = 'fa fa-list';
-$this->params['toolBarActions'] = array(
-'linkButton'=>array(),
-'button'=>array(),
-'dropdown'=>array(),
-);
+    $this->title = FHtml::t($moduleTitle);
+    $this->params['mainIcon'] = 'fa fa-list';
+    $this->params['toolBarActions'] = array(
+        'linkButton' => array(),
+        'button' => array(),
+        'dropdown' => array(),
+    );
 } ?>
 
 <?php if ($ajax) Pjax::begin(['id' => 'crud-datatable'])  ?>
 
 <?php $form = FActiveForm::begin([
-'id' => 'app-user-device-form',
-'type' => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
-'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
-'staticOnly' => false, // check the Role here
-'readonly' => !$canEdit, // check the Role here
-'edit_type' => $edit_type,
-'display_type' => $display_type,
-'enableClientValidation' => true,
-'enableAjaxValidation' => false,
-'options' => [
-    //'class' => 'form-horizontal',
-    'enctype' => 'multipart/form-data'
-]
+    'id' => 'app-user-device-form',
+    'type' => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
+    'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
+    'staticOnly' => false, // check the Role here
+    'readonly' => !$canEdit, // check the Role here
+    'edit_type' => $edit_type,
+    'display_type' => $display_type,
+    'enableClientValidation' => true,
+    'enableAjaxValidation' => false,
+    'options' => [
+        //'class' => 'form-horizontal',
+        'enctype' => 'multipart/form-data'
+    ]
 ]);
- ?>
+?>
 
 
 <div class="form">
@@ -85,7 +86,7 @@ $this->params['toolBarActions'] = array(
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
-                            <?= FHtml::t('common', $moduleTitle) ?> : <?= FHtml::showObjectConfigLink($model) ?>                        </span>
+                            <?= FHtml::t('common', $moduleTitle) ?> : <?= FHtml::showObjectConfigLink($model) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -93,12 +94,12 @@ $this->params['toolBarActions'] = array(
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info')?></a>
+                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
                         </li>
                         <li>
-                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads')?></a>
+                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads') ?></a>
                         </li>
-                                                </ul>
+                    </ul>
                 </div>
                 <div class="portlet-body form">
                     <div class="form">
@@ -106,13 +107,13 @@ $this->params['toolBarActions'] = array(
                             <div class="tab-content">
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
-                                               <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [ 
-                                        'user_id' => ['value' => $form->fieldNoLabel($model, 'user_id')->select(FHtml::getComboArray('@user', 'user', 'user_id', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-'ime' => ['value' => $form->fieldNoLabel($model, 'ime')->textarea(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-'gcm_id' => ['value' => $form->fieldNoLabel($model, 'gcm_id')->textarea(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                        <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
+                                            'user_id' => ['value' => $form->fieldNoLabel($model, 'user_id')->select(FHtml::getComboArray('@user', 'user', 'user_id', true, 'id', 'name'))],
+                                            'ime' => ['value' => $form->fieldNoLabel($model, 'ime')->textarea()],
+                                            'gcm_id' => ['value' => $form->fieldNoLabel($model, 'gcm_id')->textarea()],
 
 
-                                              ]]); ?>
+                                        ]]); ?>
 
 
                                         <!--
@@ -120,33 +121,30 @@ $this->params['toolBarActions'] = array(
                                         -->
 
 
-                                               <?php echo FFormTable::widget(['model' => $model, 'title' => 'Group', 'form' => $form, 'columns' => 2, 'attributes' => [ 
+                                        <?php echo FFormTable::widget(['model' => $model, 'title' => 'Group', 'form' => $form, 'columns' => 2, 'attributes' => [
 
-                                            'type' => ['value' => $form->fieldNoLabel($model, 'type')->checkbox() , 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-'status' => ['value' => $form->fieldNoLabel($model, 'status')->checkbox() , 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-
-                                                
-                                              ]]); ?>
+                                            'type' => ['value' => $form->fieldNoLabel($model, 'type')->checkbox()],
+                                            'status' => ['value' => $form->fieldNoLabel($model, 'status')->checkbox()],
 
 
+                                        ]]); ?>
 
-                                        
+
+
+
                                     </div>
                                 </div>
 
                                 <div class="tab-pane row" id="tab_1_2">
                                     <div class="col-md-12">
-                                               <?php echo FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => [ 
-
-                                        
-                                              ]]); ?>
+                                        <?php echo FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => []]); ?>
 
 
 
                                     </div>
                                 </div>
 
-                                
+
                                 <!--<div class="tab-pane row" id="tab_1_p">
                                     <div class="col-md-12">
                                                                             </div>
@@ -160,11 +158,11 @@ $this->params['toolBarActions'] = array(
                 </div>
             </div>
 
-            
-            <?php            $type = FHtml::getFieldValue($model, 'type');
+
+            <?php $type = FHtml::getFieldValue($model, 'type');
             if (isset($modelMeta) && !empty($type))
                 echo FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]);
-              ?>
+            ?>
             <?= (FHtml::isViewAction($currentAction)) ?  FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete)  ?>
 
         </div>
@@ -175,5 +173,5 @@ $this->params['toolBarActions'] = array(
         </div>
     </div>
 </div>
-   <?php FActiveForm::end(); ?>
+<?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end()  ?>

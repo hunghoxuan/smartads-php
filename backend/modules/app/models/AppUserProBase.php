@@ -9,9 +9,8 @@ use common\models\BaseModel;
 use frontend\models\ViewModel;
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "app_user_pro".
  *
 
@@ -31,7 +30,7 @@ use frontend\models\ViewModel;
 class AppUserProBase extends BaseModel //\yii\db\ActiveRecord
 {
 
-// user_id, rate, rate_count, description, business_name, business_email, business_address, business_website, business_phone, is_active, created_date, modified_date
+    // user_id, rate, rate_count, description, business_name, business_email, business_address, business_website, business_phone, is_active, created_date, modified_date
     const COLUMN_USER_ID = 'user_id';
     const COLUMN_RATE = 'rate';
     const COLUMN_RATE_COUNT = 'rate_count';
@@ -46,8 +45,8 @@ class AppUserProBase extends BaseModel //\yii\db\ActiveRecord
     const COLUMN_MODIFIED_DATE = 'modified_date';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'app_user_pro';
 
     public static function tableName()

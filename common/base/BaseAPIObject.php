@@ -33,21 +33,10 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\BaseInflector;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+use backend\models\AuthPermission;
 
 class BaseAPIObject extends BaseViewObject
 {
-    const COLUMNS_API = [];
-    const COLUMNS_UPLOAD = [];
-
-    const COLUMNS_ATTRIBUTES = [];
-    const COLUMNS_UPLOADS = [];
-    const OBJECTS_RELATED = [];
-    const COLUMNS_ARRAY = [];
-    const LOOKUP          = [];
-    const STATUS_OLD = 0;
-    const STATUS_NORMAL = 1;
-    const DISCOUNT_TYPE_MONEY = 0;
-
     protected $category_id_array;
     protected $columnsMode = '';
     protected $uniqueColumns;
@@ -74,11 +63,13 @@ class BaseAPIObject extends BaseViewObject
         return ['code', 'sku', 'id', 'application_id', 'created_date', 'created_user', 'modified_user', 'modified_date', 'type', 'status', 'is_default', "category_id", "is_active", 'is_feature', 'is_hot', 'is_new', 'is_top', 'image', 'view_count', 'rate_count', 'attachment'];
     }
 
-    public function getUploadFields() {
+    public function getUploadFields()
+    {
         return static::COLUMNS_UPLOAD;
     }
 
-    public function getJsonFields() {
+    public function getJsonFields()
+    {
         return [];
     }
 
@@ -99,11 +90,13 @@ class BaseAPIObject extends BaseViewObject
     }
 
     /** @return array .method return field not translate when update data*/
-    public function getNotTranslatedFields() {
+    public function getNotTranslatedFields()
+    {
         return ['id', 'application_id', 'code', 'created_user', 'created_date', 'modified_user', 'modified_date'];
     }
 
-    public function getUniqueFields() {
+    public function getUniqueFields()
+    {
         if (!isset($this->uniqueColumns)) {
             $arr = ['sku'];
             $this->uniqueColumns = $this->field_exists($arr);
@@ -111,11 +104,13 @@ class BaseAPIObject extends BaseViewObject
         return $this->uniqueColumns;
     }
 
-    public function getUniqueFieldsExcludedValues() {
+    public function getUniqueFieldsExcludedValues()
+    {
         return FHtml::EXCLUDED_UNIQUE_CODES;
     }
 
-    public function getUniqueBooleanFields() {
+    public function getUniqueBooleanFields()
+    {
         if (!isset($this->uniqueBooleanColumns)) {
             $arr = ['is_default', 'is_unique'];
             $this->uniqueBooleanColumns = $this->field_exists($arr);
@@ -123,23 +118,27 @@ class BaseAPIObject extends BaseViewObject
         return $this->uniqueBooleanColumns;
     }
 
-    public function getUniqueBooleanFieldsCondition() {
+    public function getUniqueBooleanFieldsCondition()
+    {
         if (FHtml::field_exists($this, 'object_type')) {
             return ['object_type' => $this->object_type];
         }
         return [];
     }
 
-    public function getTranslatedContent($lang = '') {
+    public function getTranslatedContent($lang = '')
+    {
         $model = $this->getTranslatedModel($lang);
         return isset($model) ? $model->content : '';
     }
 
-    public function getTranslatedContentArray($lang = '') {
+    public function getTranslatedContentArray($lang = '')
+    {
         return FHtml::decode($this->getTranslatedContent($lang));
     }
 
-    public function isDBLanguagesEnabled() {
+    public function isDBLanguagesEnabled()
+    {
         $table1 = $this->getTableName();
         if (!empty($table1) && FHtml::isInArray($table1, FHtml::EXCLUDED_TABLES_AS_MULTILANGS))
             return false;
@@ -153,19 +152,23 @@ class BaseAPIObject extends BaseViewObject
         return $arr;
     }
 
-    public function getModelRelatedObjects() {
+    public function getModelRelatedObjects()
+    {
         return self::getRelatedObjects();
     }
 
-    public function getIsLocked() {
+    public function getIsLocked()
+    {
         return false;
     }
 
-    public function getIsReadOnly() {
+    public function getIsReadOnly()
+    {
         return false;
     }
 
-    public function isWorkflowEnabled() {
+    public function isWorkflowEnabled()
+    {
         return false;
     }
 
@@ -183,8 +186,7 @@ class BaseAPIObject extends BaseViewObject
             $key = "$table.$column";
         }
 
-        if (StringHelper::startsWith($column, '#'))
-        {
+        if (StringHelper::startsWith($column, '#')) {
             $key = '#';
             $column = substr($column, 1);
         }
@@ -196,7 +198,8 @@ class BaseAPIObject extends BaseViewObject
         return [];
     }
 
-    public static function getLookupCategoryArray() {
+    public static function getLookupCategoryArray()
+    {
         return static::getLookupArray('category_id');
     }
 
@@ -297,7 +300,8 @@ class BaseAPIObject extends BaseViewObject
         }
     }
 
-    public static function getTableAttributes($db = null) {
+    public static function getTableAttributes($db = null)
+    {
         $schema = static::getTableSchema($db);
 
         if (isset($schema))
@@ -344,7 +348,8 @@ class BaseAPIObject extends BaseViewObject
         return $result;
     }
 
-    public static function settingDynamicFieldEnabled() {
+    public static function settingDynamicFieldEnabled()
+    {
         return true && FHtml::settingDynamicFieldEnabled();
     }
 
@@ -412,8 +417,7 @@ class BaseAPIObject extends BaseViewObject
         if (isset($model)) {
             if (is_numeric($condition)) {
                 $result = $model::find()->where([$model->getPrimaryKey() => $condition])->one();
-            }
-            else {
+            } else {
                 //FHtml::var_dump($model);
                 $result = $model::find()->where($condition)->one();
             }
@@ -513,7 +517,8 @@ class BaseAPIObject extends BaseViewObject
         return $arr;
     }
 
-    public static function findAllForCSV($condition = [], $order_by = [], $page_size = -1, $page = 1, $hasHeader = true, $display_fields = [], $asArray = true, $load_activeonly = true) {
+    public static function findAllForCSV($condition = [], $order_by = [], $page_size = -1, $page = 1, $hasHeader = true, $display_fields = [], $asArray = true, $load_activeonly = true)
+    {
         $models = static::findArray($condition, $order_by, $page_size, $page, false, $display_fields, $asArray, $load_activeonly);
         if (empty($display_fields))
             $display_fields = static::getTableAttributes();
@@ -527,7 +532,8 @@ class BaseAPIObject extends BaseViewObject
         return $result;
     }
 
-    public static function findAllForCSVWithFields($display_fields = [], $condition = [], $order_by = [], $page_size = -1, $page = 1, $hasHeader = true, $asArray = true, $load_activeonly = true) {
+    public static function findAllForCSVWithFields($display_fields = [], $condition = [], $order_by = [], $page_size = -1, $page = 1, $hasHeader = true, $asArray = true, $load_activeonly = true)
+    {
         return static::findAllForCSV($condition, $order_by, $page_size, $page, $hasHeader, $display_fields, $asArray, $load_activeonly);
     }
 
@@ -697,7 +703,8 @@ class BaseAPIObject extends BaseViewObject
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function getApiFields() {
+    public function getApiFields()
+    {
         $schema = static::getTableSchema();
         if (isset($schema))
             return array_keys($schema->columns);
@@ -706,7 +713,8 @@ class BaseAPIObject extends BaseViewObject
         }
     }
 
-    public function setApiFields($fields) {
+    public function setApiFields($fields)
+    {
         $this->setFields($fields);
     }
 
@@ -770,11 +778,13 @@ class BaseAPIObject extends BaseViewObject
         return $this->objectCategories;
     }
 
-    public static function getModelCategories($object_type = '') {
+    public static function getModelCategories($object_type = '')
+    {
         return static::findAllCategories($object_type);
     }
 
-    public function getCategoriesModels() {
+    public function getCategoriesModels()
+    {
         return $this->getObjectCategories();
     }
 
@@ -790,13 +800,13 @@ class BaseAPIObject extends BaseViewObject
         return $result;
     }
 
-//    public function getCategory()
-//    {
-//        $arr = static::getCategoriesModels();
-//        if (count($arr) > 0)
-//            return $arr[0];
-//        return new ObjectCategory();
-//    }
+    //    public function getCategory()
+    //    {
+    //        $arr = static::getCategoriesModels();
+    //        if (count($arr) > 0)
+    //            return $arr[0];
+    //        return new ObjectCategory();
+    //    }
 
     public function getCategory_id_array()
     {
@@ -806,7 +816,8 @@ class BaseAPIObject extends BaseViewObject
         return $this->category_id_array;
     }
 
-    public function getCategoryIdArray() {
+    public function getCategoryIdArray()
+    {
         return $this->getCategory_id_array();
     }
 
@@ -827,7 +838,8 @@ class BaseAPIObject extends BaseViewObject
         return $this->objectContent;
     }
 
-    public function getContents() {
+    public function getContents()
+    {
         $contents = $this->getObjectContent();
         $result = [];
         if (is_array($contents)) {
@@ -850,7 +862,8 @@ class BaseAPIObject extends BaseViewObject
         return $this->objectFile;
     }
 
-    public function getFilesArray() {
+    public function getFilesArray()
+    {
         return $this->getFiles();
     }
 
@@ -864,7 +877,8 @@ class BaseAPIObject extends BaseViewObject
         $this->objectFile = $value;
     }
 
-    public function getFiles() {
+    public function getFiles()
+    {
         $files = $this->getObjectFiles();
         $result = [];
         if (is_array($files)) {
@@ -874,7 +888,6 @@ class BaseAPIObject extends BaseViewObject
             }
         }
         return $result;
-
     }
 
     //Files - End
@@ -888,10 +901,10 @@ class BaseAPIObject extends BaseViewObject
         return $order_by;
     }
 
-    public function loadFieldValue($fieldname, $params = []) {
+    public function loadFieldValue($fieldname, $params = [])
+    {
         $a = BaseInflector::camelize($this->getTableName());
-        if (empty($params))
-        {
+        if (empty($params)) {
             $params = $_POST;
         }
 
@@ -928,7 +941,8 @@ class BaseAPIObject extends BaseViewObject
             return null;
 
         $query = $this->hasOne(ObjectTranslation::className(), ['object_id' => 'id'])
-            ->andOnCondition(['AND',
+            ->andOnCondition([
+                'AND',
                 ['object_type' => $this->tableName],
                 ['lang' => $lang]
             ]);
@@ -1113,6 +1127,17 @@ class BaseAPIObject extends BaseViewObject
 
     public function getCustomAttribute($meta_key, $default_value = null)
     {
+        // find by custom get Attribute first
+        $arr = [];
+        $arr[] = preg_replace('#[\s]+#', '', ucwords(str_replace('_', ' ', $meta_key)));
+        $arr[] = preg_replace('#[\s]+#', '', ucwords(str_replace('_', '', $meta_key)));
+        foreach ($arr as $str) {
+            if (method_exists($this, 'get' . $str)) {
+                $value = $this->{'get' . $str}();
+                return $value;
+            }
+        }
+
         //2
         $attributes = $this->getObjectAttributesArray();
         if (is_array($attributes) && key_exists($meta_key, $attributes)) {
@@ -1130,7 +1155,9 @@ class BaseAPIObject extends BaseViewObject
 
         //3. START - Auto get Model or Array. Ex: $model->modelMusic
         $prefixs = ['array', 'list', 'model'];
-        $meta_key1 = ''; $meta_key1_prefix = ''; $meta_key1_value = null;
+        $meta_key1 = '';
+        $meta_key1_prefix = '';
+        $meta_key1_value = null;
         foreach ($prefixs as $prefix) {
             if (StringHelper::startsWith($meta_key, $prefix)) {
                 $meta_key1 = substr($meta_key, strlen($prefix));
@@ -1142,8 +1169,7 @@ class BaseAPIObject extends BaseViewObject
 
         if (!empty($meta_key1) && FHtml::field_exists($this, strtolower($meta_key1))) {
             $meta_key1_value = $this->getFieldValue(strtolower($meta_key1));
-            if (is_string($meta_key1_value))
-            {
+            if (is_string($meta_key1_value)) {
                 $meta_key1 = $meta_key1_value;
             }
         }
@@ -1452,7 +1478,6 @@ class BaseAPIObject extends BaseViewObject
 
             if (!empty($value) && !is_array($value) && in_array($key, $this->getArrayFields())) {
                 $query = $query->andFilterWhere(['OR', [$key => $value], ['like', $key, ",$value,"]]);
-
             } else if (is_numeric($value))
                 $query = $query->andFilterWhere([$key => $value]);
             else
@@ -1495,8 +1520,7 @@ class BaseAPIObject extends BaseViewObject
         if (isset($relation))
             return $relation;
 
-        if (FHtml::isTableExisted($name))
-        {
+        if (FHtml::isTableExisted($name)) {
             $model = FHtml::createModel($name);
             if (isset($model)) {
                 if (!is_array($condition)) {
@@ -1508,8 +1532,7 @@ class BaseAPIObject extends BaseViewObject
                     if (FHtml::field_exists($this, $field)) {
                         $condition = [$model->primaryKeyField() => $field];
                         return !empty($condition) ? $this->hasOne($model::className(), $condition) : null;
-                    }
-                    else
+                    } else
                         $condition = [];
                 }
 
@@ -1528,19 +1551,21 @@ class BaseAPIObject extends BaseViewObject
         return parent::hasOne($class, $link);
     }
 
-//    public function hasMany($class, $link)
-//    {
-//        $class = FHtml::getClassName($class);
-//        if (is_string($link))
-//            $link = [$link => $this->primaryKeyField()];
-//        return parent::hasMany($class, $link);
-//    }
+    //    public function hasMany($class, $link)
+    //    {
+    //        $class = FHtml::getClassName($class);
+    //        if (is_string($link))
+    //            $link = [$link => $this->primaryKeyField()];
+    //        return parent::hasMany($class, $link);
+    //    }
 
-    public function getPermissions() {
+    public function getPermissions()
+    {
         return [];
     }
 
-    public function checkPermission($user = null, $action = '') {
+    public function checkPermission($user = null, $action = '')
+    {
         if (empty($action))
             $action = FHtml::currentAction();
         if (empty($user))
@@ -1551,7 +1576,8 @@ class BaseAPIObject extends BaseViewObject
         return true;
     }
 
-    public function field_exists($fields = []) {
+    public function field_exists($fields = [])
+    {
         $result = [];
         if (is_string($fields))
             $fields = [$fields];
@@ -1571,7 +1597,8 @@ class BaseAPIObject extends BaseViewObject
     }
 
 
-    public function getRequestFields() {
+    public function getRequestFields()
+    {
         $fields = FHtml::getRequestParam([static::tableName() . '_fields', 'fields']);
         if (!empty($fields)) {
             $fields = explode(',', $fields);
@@ -1582,10 +1609,50 @@ class BaseAPIObject extends BaseViewObject
         return [];
     }
 
-    public function beforeSave($insert) {
-        if ($this->field_exists('application_id'))
-            $this->application_id = FHtml::currentApplicationCode();
+    public function getManyIdArrays($object_type)
+    {
+        $arr = AuthPermission::findAll([
+            'object_type' => $this->getTableName(),
+            'object_id' => $this->getId(),
+            'object2_type' => $object_type,
+            'relation_type' => $object_type,
+            'is_active' => FHtml::STATUS_ACTIVE,
+        ]);
 
+        return ArrayHelper::getColumn($arr, 'object2_id');
+    }
+
+    public function saveMany($object_type, $id_arrays)
+    {
+        $id = $this->getId();
+        if (empty($object_type) || empty($id))
+            return false;
+        if (!is_array($id_arrays))
+            $id_arrays = [$id_arrays];
+
+        AuthPermission::deleteAll("relation_type = '$object_type' AND object_id = $id AND object_type = '" . $this->getTableName() . "'");
+        $i = 0;
+        foreach ($id_arrays as $id2) {
+            $i++;
+            $tmp = new AuthPermission();
+            $tmp->object_id = $id;
+            $tmp->object_type = $this->getTableName();
+            $tmp->relation_type = $object_type;
+            $tmp->object2_type = $object_type;
+            $tmp->object2_id = $id2;
+            $tmp->is_active = FHtml::STATUS_ACTIVE;
+            $tmp->sort_order = $i;
+            $tmp->created_date = FHtml::Today();
+            $tmp->save();
+            // if (!$tmp->save()) {
+            //     FHTml::addError($tmp->errors);
+            // }
+        }
+    }
+
+
+    public function beforeSave($insert)
+    {
         return parent::beforeSave($insert);
     }
 
@@ -1594,12 +1661,14 @@ class BaseAPIObject extends BaseViewObject
         return $display_fields;
     }
 
-    public static function getTotalRecord($params = []) {
+    public static function getTotalRecord($params = [])
+    {
         $a = static::find()->where($params)->count();
         return $a;
     }
 
-    public static function makeTreeViewModels($models) {
+    public static function makeTreeViewModels($models)
+    {
         $models_array = [];
         if (!is_array($models))
             return $models;

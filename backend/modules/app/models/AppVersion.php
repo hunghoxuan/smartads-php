@@ -12,7 +12,7 @@ use yii\helpers\Json;
 class AppVersion extends AppVersionBase
 {
     const LOOKUP = [
-        'platform' => ['android', 'ios', 'windows', 'linux']
+        'platform' => ['android', 'apps']
     ];
 
     const COLUMNS_UPLOAD = ['file'];

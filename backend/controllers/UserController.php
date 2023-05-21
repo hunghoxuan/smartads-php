@@ -1,10 +1,8 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "User".
+
+/*This is the customized model class for table "User".
  */
+
 namespace backend\controllers;
 
 use backend\models\User;
@@ -90,7 +88,7 @@ class UserController extends AdminController
                         'actions' => ['profile'],
                         'allow' => true,
                         'roles' => [
-                            User::ROLE_ADMIN,FHtml::ROLE_ADMIN,
+                            User::ROLE_ADMIN, FHtml::ROLE_ADMIN,
                             FHtml::ROLE_USER,
 
                         ],
@@ -151,7 +149,7 @@ class UserController extends AdminController
         $model = $this->findModel($id);
         $type = FHtml::getFieldValue($model, 'type');
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
                 'title' => FHtml::t($this->moduleName) . " #" . $id,
@@ -161,7 +159,7 @@ class UserController extends AdminController
                 'footer' => Html::a(FHtml::t('Update'), ['update', 'id' => $id], ['class' => 'btn btn-primary pull-left', 'role' => $this->view->params['displayType']]) .
                     Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
             ];
-        }else{
+        } else {
             return $this->render('view', ['model' => $model]);
         }
     }
@@ -196,9 +194,9 @@ class UserController extends AdminController
 
         $model = $this->createModel($this->object_type, '', ['type' => $type]);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
-        }else{
+        } else {
             /*
             *   Process for non-ajax request
             */
@@ -208,14 +206,11 @@ class UserController extends AdminController
                 if ($model->save()) {
                     $id = $model->id;
 
-                    if ($this->saveType() == 'clone')
-                    {
+                    if ($this->saveType() == 'clone') {
                         return $this->redirect(['create', 'id' => $id]);
-                    } else if ($this->saveType() == 'add')
-                    {
+                    } else if ($this->saveType() == 'add') {
                         return $this->redirect(['create']);
-                    } else if ($this->saveType() == 'save')
-                    {
+                    } else if ($this->saveType() == 'save') {
                         return $this->redirect(['update', 'id' => $id]);
                     }
                     return $this->redirect(['index']);
@@ -233,7 +228,8 @@ class UserController extends AdminController
         return $model;
     }
 
-    public function actionProfile() {
+    public function actionProfile()
+    {
         $id = FHtml::currentUserId();
         return self::actionUpdate($id);
     }
@@ -264,14 +260,11 @@ class UserController extends AdminController
             */
             if ($model->load($request->post())) {
                 if ($model->save()) {
-                    if ($this->saveType() == 'clone')
-                    {
+                    if ($this->saveType() == 'clone') {
                         return $this->redirect(['create', 'id' => $model->id]);
-                    }  else if ($this->saveType() == 'add')
-                    {
+                    } else if ($this->saveType() == 'add') {
                         return $this->redirect(['create']);
-                    } else if ($this->saveType() == 'save')
-                    {
+                    } else if ($this->saveType() == 'save') {
                         return $this->redirect(['update', 'id' => $model->id]);
                     }
                     return $this->redirect(['index']);
@@ -300,11 +293,11 @@ class UserController extends AdminController
 
         $this->findModel($id)->delete();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=> '#' . $this->getPjaxContainerId()];
-        }else{
-            return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+            return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
+        } else {
+            return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
         }
     }
 
@@ -328,11 +321,11 @@ class UserController extends AdminController
             }
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-        }else{
-            return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+        } else {
+            return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
         }
     }
 
@@ -352,11 +345,11 @@ class UserController extends AdminController
             }
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
         } else {
-            return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+            return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
         }
     }
 }

@@ -10,22 +10,23 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "app_notification".
  */
 class AppNotification extends AppNotificationBase //\yii\db\ActiveRecord
 {
     public $is_sent;
 
-    const LOOKUP = ['sent_type' => [
-        ['id' => AppNotification::SENT_TYPE_SMS, 'name' => 'sms'],
-        ['id' => AppNotification::SENT_TYPE_APP, 'name' => 'app'],
-        ['id' => AppNotification::SENT_TYPE_EMAIL, 'name' => 'email'],
-        ['id' => AppNotification::SENT_TYPE_MESSAGE, 'name' => 'message'],
-        ['id' => AppNotification::SENT_TYPE_ALL, 'name' => 'all'],
-    ],
+    const LOOKUP = [
+        'sent_type' => [
+            ['id' => AppNotification::SENT_TYPE_SMS, 'name' => 'sms'],
+            ['id' => AppNotification::SENT_TYPE_APP, 'name' => 'app'],
+            ['id' => AppNotification::SENT_TYPE_EMAIL, 'name' => 'email'],
+            ['id' => AppNotification::SENT_TYPE_MESSAGE, 'name' => 'message'],
+            ['id' => AppNotification::SENT_TYPE_ALL, 'name' => 'all'],
+        ],
     ];
 
     const COLUMNS_UPLOAD = [];

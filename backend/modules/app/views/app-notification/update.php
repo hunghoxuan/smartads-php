@@ -1,10 +1,10 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "AppNotification".
-*/
+ *
+ * **
+ * This is the customized model class for table "AppNotification".
+ */
 
 use common\components\FHtml;
 
@@ -22,12 +22,9 @@ $this->params['breadcrumbs'][] = FHtml::t('common', 'Update');
 $controlName = '';
 $currentRole = FHtml::getCurrentRole();
 
-if (FHtml::isInRole('', 'update', $currentRole))
-{
+if (FHtml::isInRole('', 'update', $currentRole)) {
     $controlName = FHtml::settingPageView('_form', 'Form');
-}
-else
-{
+} else {
     $controlName = FHtml::settingPageView('_view', 'Detail');
 }
 
@@ -38,7 +35,6 @@ $folder = Fhtml::getRequestParam(['form_type', 'type', 'status']);
 ?>
 <div class="app-notification-update">
     <?= FHtml::render($controlName, $folder, [
-    'model' => $model, 'modelMeta' => $modelMeta, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath, 'object_type' => $object_type
+        'model' => $model, 'modelMeta' => $modelMeta, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath, 'object_type' => $object_type
     ]) ?>
 </div>
-

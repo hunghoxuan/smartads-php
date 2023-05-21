@@ -1,8 +1,9 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
  */
 
@@ -122,7 +123,8 @@ class BaseConfig extends FSecurity
     /**
      * @return string
      */
-    public static function frameworkVersion() {
+    public static function frameworkVersion()
+    {
         return 'framework';
     }
 
@@ -178,7 +180,6 @@ class BaseConfig extends FSecurity
                 return false;
 
             $result = FHtml::isInArray($table, FHtml::INCLUDED_TABLES_AS_MULTILANGS);
-
         }
         return $result;
     }
@@ -310,7 +311,8 @@ class BaseConfig extends FSecurity
     /**
      * @return string
      */
-    public static function getCurrentPageURL() {
+    public static function getCurrentPageURL()
+    {
         $pageURL = 'http';
 
         if (!empty($_SERVER['HTTPS'])) {
@@ -352,7 +354,8 @@ class BaseConfig extends FSecurity
      * @param $domain
      * @return bool
      */
-    public static function is_ipaddress($domain) {
+    public static function is_ipaddress($domain)
+    {
         return is_ipaddress($domain);
     }
 
@@ -369,7 +372,8 @@ class BaseConfig extends FSecurity
     /**
      * @return string
      */
-    public static function getCurrentSubdomain() {
+    public static function getCurrentSubdomain()
+    {
         $domain = $_SERVER["SERVER_NAME"];
         if (self::is_ipaddress($domain))
             return '';
@@ -547,8 +551,7 @@ class BaseConfig extends FSecurity
 
         if (!isset($item)) {
             $folder = FHtml::getRootFolder() . "/applications/$id";
-            if (is_dir($folder))
-            {
+            if (is_dir($folder)) {
                 $item = new FApplication();
                 $item->code = $id;
             }
@@ -773,7 +776,8 @@ class BaseConfig extends FSecurity
     /**
      * @return string
      */
-    public static function currentDomainWithoutExtension() {
+    public static function currentDomainWithoutExtension()
+    {
         $domain = $_SERVER["SERVER_NAME"];
         if (self::is_ipaddress($domain))
             return '';
@@ -790,14 +794,16 @@ class BaseConfig extends FSecurity
     /**
      * @return string
      */
-    public static function currentProtocol() {
-        if (isset($_SERVER['HTTPS']) &&
+    public static function currentProtocol()
+    {
+        if (
+            isset($_SERVER['HTTPS']) &&
             ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
             isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-            $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'
+        ) {
             $protocol = 'https://';
-        }
-        else {
+        } else {
             $protocol = 'http://';
         }
 
@@ -807,7 +813,8 @@ class BaseConfig extends FSecurity
     /**
      * @return string
      */
-    public static function currentRootUrl() {
+    public static function currentRootUrl()
+    {
         return self::currentHost();
     }
 
@@ -876,8 +883,8 @@ class BaseConfig extends FSecurity
      * @param $category
      * @param null $default_value
      */
-    public static function settingModel($table, $category, $default_value = null) {
-
+    public static function settingModel($table, $category, $default_value = null)
+    {
     }
 
     public static function settingAdminBackground()
@@ -885,7 +892,8 @@ class BaseConfig extends FSecurity
         return "background.png";
     }
 
-    public static function getAdminLoginBackgroudUrl() {
+    public static function getAdminLoginBackgroudUrl()
+    {
         $files = ['background.png', 'background.jpg'];
         foreach ($files as $file) {
             $file1 = FHtml::getFilePath($file, 'www');
@@ -1119,7 +1127,7 @@ class BaseConfig extends FSecurity
         if (empty($image_file))
             $image_file = self::settingCompanyLogo();
 
-        $result = FHtml::showImage($image_file, $image_folder, $width, $height, $css, FHtml::settingCompanyName() . ', ' . FHtml::settingCompanyDescription() . ', ' . FHtml::settingWebsiteKeyWords() , false, 'none');
+        $result = FHtml::showImage($image_file, $image_folder, $width, $height, $css, FHtml::settingCompanyName() . ', ' . FHtml::settingCompanyDescription() . ', ' . FHtml::settingWebsiteKeyWords(), false, 'none');
 
         if (!empty($link_url) && !empty($result))
             $result = '<a href="' . $link_url . '">' . $result . '</a>';
@@ -1231,7 +1239,8 @@ class BaseConfig extends FSecurity
      * @param null $user
      * @return array
      */
-    public static function getUserApplications($user = null) {
+    public static function getUserApplications($user = null)
+    {
         $ids1 = [];
         $ids1[] = FHtml::currentApplicationId();
 
@@ -1239,8 +1248,7 @@ class BaseConfig extends FSecurity
             $user = FHtml::currentBackendUser();
             $username = FHtml::currentUsername();
             $application_id = FHtml::getFieldValue($user, 'application_id');
-        }
-        else if (is_object($user)) {
+        } else if (is_object($user)) {
             $username = FHtml::getFieldValue($user, 'username');
 
             $application_id = FHtml::getFieldValue($user, 'application_id');
@@ -1350,7 +1358,8 @@ class BaseConfig extends FSecurity
         return !self::isEmpty($result) ? $result : $defaultvalue;
     }
 
-    public static function isEmpty($result) {
+    public static function isEmpty($result)
+    {
         return !isset($result) || (is_string($result) && trim($result) == '');
     }
 
@@ -1586,9 +1595,7 @@ class BaseConfig extends FSecurity
         $result = FConfig::settingPage('image', $description, [], 'Style', FHtml::EDITOR_TEXT);
 
         if (isset($result) && !empty($result)) {
-
-        }
-        else
+        } else
             $result = $description;
 
         if (!empty($result))
@@ -2024,7 +2031,8 @@ class BaseConfig extends FSecurity
         self::saveParamsFile($params,  $paramFile, true);
     }
 
-    public static function getSettingParams($key = '', $isCached = false) {
+    public static function getSettingParams($key = '', $isCached = false)
+    {
         $cachedKey = "getSettingParams";
         $params = [];
         if ($isCached) {
@@ -2040,8 +2048,7 @@ class BaseConfig extends FSecurity
         if ($isCached)
             self::Cache($cachedKey, $params);
 
-        if (!empty($key))
-        {
+        if (!empty($key)) {
             if (key_exists($key, $params))
                 return $params[$key];
             else
@@ -2051,14 +2058,16 @@ class BaseConfig extends FSecurity
         return $params;
     }
 
-    public static function saveSettingParams($params = []) {
+    public static function saveSettingParams($params = [])
+    {
         $params1 = self::getSettingParams(false);
         $params1 = array_merge($params1, $params);
         self::saveParamsFile($params1, "common/config/params_setting.php", true);
         return $params;
     }
 
-    public static function isRefreshCached() {
+    public static function isRefreshCached()
+    {
         return !empty(FHtml::getRequestParam('refresh'));
     }
 
@@ -2069,7 +2078,8 @@ class BaseConfig extends FSecurity
      * @param bool $isCached
      * @return array|mixed|null
      */
-    public static function getApplicationParams($application_config = true, $global = true, $application_settings = false, $isCached = true) {
+    public static function getApplicationParams($application_config = true, $global = true, $application_settings = false, $isCached = true)
+    {
         $application_id = FHtml::currentApplicationId();
 
         //if read content directly from file, very slow -> read via Cache
@@ -2087,17 +2097,16 @@ class BaseConfig extends FSecurity
 
             if (!is_file($file_name)) {
                 $folder = FHtml::getRootFolder() . "/applications/$application_id/config/";
-	            if (!is_dir($folder) && FApplication::isNotEmptyApplication()) {
-		            FFile::createDir($folder);
-	            }
-	            $content = "
+                if (!is_dir($folder) && FApplication::isNotEmptyApplication()) {
+                    FFile::createDir($folder);
+                }
+                $content = "
                    <?php
                         return [];
                 ";
-	            if (FApplication::isNotEmptyApplication()) {
-		            FFile::createFile($file_name, $content);
-	            }
-
+                if (FApplication::isNotEmptyApplication()) {
+                    FFile::createFile($file_name, $content);
+                }
             }
 
             if (!empty($application_id) && is_file($file_name)) {
@@ -2124,7 +2133,8 @@ class BaseConfig extends FSecurity
         return $params;
     }
 
-    public static function syncApplicationParamsToDb() {
+    public static function syncApplicationParamsToDb()
+    {
         if (!FHtml::isTableExisted('settings'))
             return;
 
@@ -2132,8 +2142,7 @@ class BaseConfig extends FSecurity
         foreach ($params as $key => $value) {
             $model = Settings::findOne(['metaKey' => $key]);
             $params = FConfig::getSettingParams($key);
-            if (!isset($model))
-            {
+            if (!isset($model)) {
                 $model = new Settings();
                 $model->metaKey = $key;
                 $model->is_active = 1;
@@ -2148,8 +2157,8 @@ class BaseConfig extends FSecurity
         }
     }
 
-    public static function syncTranslationsToDb() {
-
+    public static function syncTranslationsToDb()
+    {
     }
 
     public static function getApplicationTranslations($lang = '', $isCached = true)
@@ -2185,7 +2194,8 @@ class BaseConfig extends FSecurity
         return $arr;
     }
 
-    public static function getApplicationTranslationsGroups($lang = '') {
+    public static function getApplicationTranslationsGroups($lang = '')
+    {
         $params = self::getApplicationTranslations($lang);
         $result = [];
         foreach ($params as $key => $value) {
@@ -2211,9 +2221,9 @@ class BaseConfig extends FSecurity
 
         if (is_file($paramFile) && !is_writable($paramFile)) {
             return false;
-//            if (empty(self::Session('error'))) {
-//                return FHtml::addError("File" . $paramFile ." is not writeable. Please set permission for it");
-//            }
+            //            if (empty(self::Session('error'))) {
+            //                return FHtml::addError("File" . $paramFile ." is not writeable. Please set permission for it");
+            //            }
         }
 
         if (empty($params))
@@ -2223,7 +2233,8 @@ class BaseConfig extends FSecurity
         self::addParamsFile($config, $params,  $paramFile);
     }
 
-    public static function deleteApplicationTranslations($keys = [], $params = [], $lang = '', $paramFile = '') {
+    public static function deleteApplicationTranslations($keys = [], $params = [], $lang = '', $paramFile = '')
+    {
         $application_id = FHtml::currentApplicationId();
         if (empty($lang))
             $lang = FHtml::currentLang();
@@ -2234,7 +2245,8 @@ class BaseConfig extends FSecurity
         return self::deleteParamsFile($keys, $params, $paramFile);
     }
 
-    public static function addParamsFile($config = [], $params = [], $paramFile = '') {
+    public static function addParamsFile($config = [], $params = [], $paramFile = '')
+    {
         if (empty($paramFile))
             return false;
 
@@ -2248,7 +2260,8 @@ class BaseConfig extends FSecurity
         self::saveParamsFile($params,  $paramFile, true);
     }
 
-    public static function deleteParamsFile($keys = [], $params = [], $paramFile = '') {
+    public static function deleteParamsFile($keys = [], $params = [], $paramFile = '')
+    {
         if (empty($paramFile))
             return false;
 
@@ -2482,7 +2495,6 @@ class BaseConfig extends FSecurity
             $messages[] = $category . '.' . $message;
             $messages[] = str_replace('-', '_', BaseInflector::camel2id($category)) . '.' . $message;
             $messages[] = str_replace(' ', '', BaseInflector::camel2words($category)) . '.' . $message;
-
         }
         $messages = array_unique($messages);
 
@@ -2520,7 +2532,8 @@ class BaseConfig extends FSecurity
     /**
      * @return null
      */
-    public static function defaultLang() {
+    public static function defaultLang()
+    {
         return FConfig::settingApplicationLang(DEFAULT_LANG);
     }
 
@@ -2605,14 +2618,16 @@ class BaseConfig extends FSecurity
     /**
      *
      */
-    public static function RefreshAllSystem() {
+    public static function RefreshAllSystem()
+    {
         FHtml::clearMessages();
         FHtml::clearLog();
         FHtml::Cache()->flush();
         FHtml::Session()->destroy();
     }
 
-    public static function refreshPage() {
+    public static function refreshPage()
+    {
         $controller = self::currentControllerObject();
         if (isset($controller) && method_exists($controller, 'refreshPage'))
             $controller->refreshPage();
@@ -2621,14 +2636,16 @@ class BaseConfig extends FSecurity
     /**
      *
      */
-    public static function RefreshCache() {
+    public static function RefreshCache()
+    {
         FHtml::Cache()->flush();
     }
 
     /**
      *
      */
-    public static function DestroySession($key = '') {
+    public static function DestroySession($key = '')
+    {
         if (empty($key))
             FHtml::Session()->destroy();
         else {
@@ -2791,21 +2808,24 @@ class BaseConfig extends FSecurity
     /**
      * @return \League\Flysystem\Config|null|string
      */
-    public static function settingThemeColor() {
+    public static function settingThemeColor()
+    {
         return FConfig::setting(FHtml::SETTINGS_ADMIN_MAIN_COLOR, FHtml::WIDGET_COLOR_DEFAULT, FHtml::ARRAY_ADMIN_THEME, 'Backend', FHtml::EDITOR_SELECT);
     }
 
     /**
      * @return \League\Flysystem\Config|null|string
      */
-    public static function settingThemePortletStyle() {
+    public static function settingThemePortletStyle()
+    {
         return FConfig::setting(FHtml::SETTINGS_PORTLET_STYLE, 'box', FHtml::ARRAY_PORTLET_STYLE, 'Backend', FHtml::EDITOR_SELECT);
     }
 
     /**
      * @return \League\Flysystem\Config|null|string
      */
-    public static function settingThemeBorderStyle() {
+    public static function settingThemeBorderStyle()
+    {
         return FConfig::setting(FHtml::SETTINGS_BORDER_STYLE, 'box', FHtml::ARRAY_PORTLET_STYLE, 'Backend', FHtml::EDITOR_SELECT);
     }
 
@@ -2822,7 +2842,6 @@ class BaseConfig extends FSecurity
                 return FHtml::currentDb($dbName);
             else
                 return Yii::$app->db;
-
         } catch (Exception $e) {
             print_r($e->getMessage());
         }
@@ -2883,7 +2902,7 @@ class BaseConfig extends FSecurity
      */
     public static function getConfigValue($key, $default_value = '', $seperator = '/')
     {
-        return self::getParamValue($key, $default_value, self::getConfigFileContent(), $seperator );
+        return self::getParamValue($key, $default_value, self::getConfigFileContent(), $seperator);
     }
 
     /**
@@ -2924,7 +2943,6 @@ class BaseConfig extends FSecurity
                 $configFile = FHtml::getRootFolder() . "/applications/$application_id/config/main.php";
             $config['vendorPath'] = "{dirname}";
             self::saveConfigFile($configFile, $config, true);
-
         }
 
         return $config;
@@ -2934,7 +2952,8 @@ class BaseConfig extends FSecurity
      * @param $configFile
      * @param array $config
      */
-    public static function saveConfigFile($configFile, $config = [], $header = true, $footer = false) {
+    public static function saveConfigFile($configFile, $config = [], $header = true, $footer = false)
+    {
         if ($header === true) {
             $header = "<?php \n return \n";
             $footer = "; ?>";
@@ -2948,9 +2967,9 @@ class BaseConfig extends FSecurity
 
         $configFile = FHtml::getFullFileName($configFile);
 
-	    if (FApplication::isNotEmptyApplication()) {
-		    FFile::createFile($configFile, $content);
-	    }
+        if (FApplication::isNotEmptyApplication()) {
+            FFile::createFile($configFile, $content);
+        }
 
         //refresh Session
         FFile::clearCache($configFile);
@@ -2959,7 +2978,8 @@ class BaseConfig extends FSecurity
     /**
      * @return mixed|string
      */
-    public static function getConfigFile() {
+    public static function getConfigFile()
+    {
         $paramFile = [];
         $config = [];
 
@@ -2976,7 +2996,8 @@ class BaseConfig extends FSecurity
         return '';
     }
 
-    public static function clearCacheFileContent($file = '') {
+    public static function clearCacheFileContent($file = '')
+    {
         if (empty($file))
             $file = FHtml::getRootFolder() . "/applications/" . FHtml::currentApplicationId() . "/messages/" . FHtml::currentLang() . "/common.php";
         if (function_exists('opcache_reset')) {
@@ -2985,14 +3006,16 @@ class BaseConfig extends FSecurity
         FHtml::clearCache($file);
     }
 
-    public static function clearCacheLanguageFileContent($file = '') {
+    public static function clearCacheLanguageFileContent($file = '')
+    {
         return self::clearCacheFileContent();
     }
 
     /**
      * @return mixed|string
      */
-    public static function getParamFile() {
+    public static function getParamFile()
+    {
         $paramFile = [];
         $param = [];
 
@@ -3009,7 +3032,8 @@ class BaseConfig extends FSecurity
         return '';
     }
 
-    public static function saveParamsFile($params, $paramFile, $header = "", $footer = "") {
+    public static function saveParamsFile($params, $paramFile, $header = "", $footer = "")
+    {
         return self::saveConfigFile($paramFile, $params, $header, $footer);
     }
 
@@ -3050,7 +3074,6 @@ class BaseConfig extends FSecurity
                 $paramFile = FHtml::getRootFolder() . "/applications/$application_id/config/params.php";
 
             self::saveConfigFile($paramFile, $config);
-
         }
 
         return $config;
@@ -3113,14 +3136,16 @@ class BaseConfig extends FSecurity
     /**
      * @return \League\Flysystem\Config|null|string
      */
-    public static function settingBackendMenuStyle($default = 'open') {
+    public static function settingBackendMenuStyle($default = 'open')
+    {
         return FConfig::setting('backend_menu_style', $default, ['open', 'closed'], 'Theme', FHtml::EDITOR_SELECT);
     }
 
     /**
      * @return string
      */
-    public static function settingBackendBodyStyle($default = 'open') {
+    public static function settingBackendBodyStyle($default = 'open')
+    {
         $menu_style = self::settingBackendMenuStyle($default);
 
         if ($menu_style === 'closed') {
@@ -3133,7 +3158,8 @@ class BaseConfig extends FSecurity
     /**
      * @return string
      */
-    public static function settingBackendSidebarStyle($default = 'open') {
+    public static function settingBackendSidebarStyle($default = 'open')
+    {
         $menu_style = self::settingBackendMenuStyle($default);
         if ($menu_style === 'closed') {
             return 'page-sidebar-menu page-header-fixed page-sidebar-menu-closed';
@@ -3145,23 +3171,28 @@ class BaseConfig extends FSecurity
     /**
      * @return \League\Flysystem\Config|null|string
      */
-    public static function settingBackendFontSize($default = '14px') {
+    public static function settingBackendFontSize($default = '14px')
+    {
         return FHtml::getApplicationConfig('backend_font_size', $default, ['9px', '10px', '11px', '12px', '13px', '14px'], 'Theme', FHtml::EDITOR_SELECT);
     }
 
-    public static function settingBackendSocialLogin($default = 'google, facebook, git, twitter' ) {
+    public static function settingBackendSocialLogin($default = 'google, facebook, git, twitter')
+    {
         return FConfig::setting('backend_social_login', $default, ['google', 'facebook', 'twitter', 'linkedin', 'git'], 'Security', FHtml::EDITOR_SELECT);
     }
 
-    public static function settingBackendLoginPosition($default = 'center') {
+    public static function settingBackendLoginPosition($default = 'center')
+    {
         return FConfig::setting('backend_login_position', $default, ['center', 'left', 'right'], 'Theme', FHtml::EDITOR_SELECT);
     }
 
-    public static function settingSocialLogin($default = '') {
+    public static function settingSocialLogin($default = '')
+    {
         return FConfig::setting('social_login', $default, ['google', 'facebook', 'twitter', 'linkedin', 'git'], 'Security', FHtml::EDITOR_SELECT);
     }
 
-    public static function getCountrySettings($code = '') {
+    public static function getCountrySettings($code = '')
+    {
         $file = 'common/config/country_setting.php';
 
         $arr = self::includeFile($file, []);
@@ -3172,7 +3203,8 @@ class BaseConfig extends FSecurity
             return $arr;
     }
 
-    public static function getCountrySetting($code, $param, $default_value = '') {
+    public static function getCountrySetting($code, $param, $default_value = '')
+    {
         $array = self::getCountrySettings($code);
 
         if (!empty($array) && key_exists($param, $array))
@@ -3197,7 +3229,8 @@ class BaseConfig extends FSecurity
         return $symbol;
     }
 
-    public static function getCurrencySettings($code = '') {
+    public static function getCurrencySettings($code = '')
+    {
         $file = 'common/config/currency_setting.php';
 
         $arr = self::includeFile($file, []);
@@ -3233,24 +3266,28 @@ class BaseConfig extends FSecurity
         return self::getCurrencySetting($currency, 'rounding', false);
     }
 
-    public static function getCurrenciesCodeArray() {
+    public static function getCurrenciesCodeArray()
+    {
         return ['USD' => '$', 'VND' => 'đ'];
     }
 
-    public static function getConfigDsn($db_name = 'db') {
+    public static function getConfigDsn($db_name = 'db')
+    {
         if (empty($db_name))
             $db_name = FHtml::currentDbName();
 
         return FConfig::getConfigValue('components/' . $db_name . '/dsn');
     }
 
-    public static function getApplications() {
+    public static function getApplications()
+    {
         $folfer = FHtml::getRootFolder() . '/applications';
         $arr = FFile::listFolders($folfer, false);
         return $arr;
     }
 
-    public static function getApplicationTables() {
+    public static function getApplicationTables()
+    {
         $sql = 'SHOW TABLES';
         $cmd = FHtml::currentDb()->createCommand($sql);
         $tables = $cmd->queryColumn();
@@ -3258,7 +3295,8 @@ class BaseConfig extends FSecurity
     }
 
     const SETTINGS_NODEJS_ENABLED = 'nodejs.enabled';
-    public static function isNodeJsEnabled() {
+    public static function isNodeJsEnabled()
+    {
         return self::config(self::SETTINGS_NODEJS_ENABLED, true) &&  file_exists(FHtml::getRootFolder() . '/node/node.php');
     }
 
@@ -3273,7 +3311,8 @@ class BaseConfig extends FSecurity
         return $base_url;
     }
 
-    public static function getRootUrl() {
+    public static function getRootUrl()
+    {
         return self::currentBaseURL();
     }
 }

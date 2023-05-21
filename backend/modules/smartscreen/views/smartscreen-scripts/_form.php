@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ * 
+
+ * 
  * This is the customized model class for table "SmartscreenScripts".
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -70,8 +72,7 @@ $canDelete = FHtml::isInRole($moduleName, 'delete', $currentRole);
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
-                        <span
-                            class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) ?></span>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) ?></span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>

@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "object_file".
  *
 
@@ -41,8 +40,8 @@ class ObjectFileBase extends \common\models\BaseModel //\yii\db\ActiveRecord
 {
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'object_file';
 
     public static function tableName()
@@ -59,14 +58,14 @@ class ObjectFileBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'object_id', 'object_type', 'thumbnail', 'name', 'description', 'type', 'file', 'file_type', 'status', 'is_active', 'file_size', 'file_duration', 'sort_order', 'created_date', 'created_user', 'modified_date', 'modified_user', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['object_id', 'object_type', 'type', 'file'], 'required'],
             [['object_id', 'is_active', 'sort_order'], 'integer'],
             [['object_type', 'type', 'status', 'created_date', 'modified_date'], 'string', 'max' => 20],
@@ -77,31 +76,31 @@ class ObjectFileBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('ObjectFile', 'ID'),
-                    'object_id' => FHtml::t('ObjectFile', 'Object ID'),
-                    'object_type' => FHtml::t('ObjectFile', 'Object Type'),
-                    'thumbnail' => FHtml::t('ObjectFile', 'Thumbnail'),
-                    'name' => FHtml::t('ObjectFile', 'Name'),
-                    'description' => FHtml::t('ObjectFile', 'Description'),
-                    'type' => FHtml::t('ObjectFile', 'Type'),
-                    'file' => FHtml::t('ObjectFile', 'File'),
-                    'file_type' => FHtml::t('ObjectFile', 'File Type'),
-                    'status' => FHtml::t('ObjectFile', 'Status'),
-                    'is_active' => FHtml::t('ObjectFile', 'Is Active'),
-                    'file_size' => FHtml::t('ObjectFile', 'File Size'),
-                    'file_duration' => FHtml::t('ObjectFile', 'File Duration'),
-                    'sort_order' => FHtml::t('ObjectFile', 'Sort Order'),
-                    'created_date' => FHtml::t('ObjectFile', 'Created Date'),
-                    'created_user' => FHtml::t('ObjectFile', 'Created User'),
-                    'modified_date' => FHtml::t('ObjectFile', 'Modified Date'),
-                    'modified_user' => FHtml::t('ObjectFile', 'Modified User'),
-                    'application_id' => FHtml::t('ObjectFile', 'Application ID'),
-                ];
+            'id' => FHtml::t('ObjectFile', 'ID'),
+            'object_id' => FHtml::t('ObjectFile', 'Object ID'),
+            'object_type' => FHtml::t('ObjectFile', 'Object Type'),
+            'thumbnail' => FHtml::t('ObjectFile', 'Thumbnail'),
+            'name' => FHtml::t('ObjectFile', 'Name'),
+            'description' => FHtml::t('ObjectFile', 'Description'),
+            'type' => FHtml::t('ObjectFile', 'Type'),
+            'file' => FHtml::t('ObjectFile', 'File'),
+            'file_type' => FHtml::t('ObjectFile', 'File Type'),
+            'status' => FHtml::t('ObjectFile', 'Status'),
+            'is_active' => FHtml::t('ObjectFile', 'Is Active'),
+            'file_size' => FHtml::t('ObjectFile', 'File Size'),
+            'file_duration' => FHtml::t('ObjectFile', 'File Duration'),
+            'sort_order' => FHtml::t('ObjectFile', 'Sort Order'),
+            'created_date' => FHtml::t('ObjectFile', 'Created Date'),
+            'created_user' => FHtml::t('ObjectFile', 'Created User'),
+            'modified_date' => FHtml::t('ObjectFile', 'Modified Date'),
+            'modified_user' => FHtml::t('ObjectFile', 'Modified User'),
+            'application_id' => FHtml::t('ObjectFile', 'Application ID'),
+        ];
     }
 
     public function init()
@@ -121,8 +120,4 @@ class ObjectFileBase extends \common\models\BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

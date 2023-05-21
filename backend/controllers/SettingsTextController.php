@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "SettingsText".
-*/
+ *
+ ***
+ * This is the customized model class for table "SettingsText".
+ */
+
 namespace backend\controllers;
 
 use Yii;
@@ -37,7 +38,7 @@ class SettingsTextController extends AdminController
     protected $moduleKey = 'settings_text';
     protected $object_type = 'settings_text';
 
-/**
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -101,7 +102,7 @@ class SettingsTextController extends AdminController
 
         $model = new SettingsText();
 
-        if($request->isAjax) {
+        if ($request->isAjax) {
             if (!empty($_POST))
                 return FHtml::saveModelAjax($this, $model, null);
         } else {
@@ -116,7 +117,6 @@ class SettingsTextController extends AdminController
 
         $dataProvider = $searchModel->search($params);
         return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'canEdit' => $canEdit]);
-
     }
 
     /**
@@ -132,7 +132,7 @@ class SettingsTextController extends AdminController
 
         $model = $this->findModel($id);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
         } else {
             if ($model->load($request->post())) {
@@ -141,7 +141,7 @@ class SettingsTextController extends AdminController
 
                     if ($this->saveType() == 'clone') {
                         return $this->redirect(['create', 'id' => $model->id]);
-                    }  else if ($this->saveType() == 'add') {
+                    } else if ($this->saveType() == 'add') {
                         return $this->redirect(['create']);
                     } else if ($this->saveType() == 'save') {
                         return $this->redirect(['update', 'id' => $model->id]);
@@ -168,9 +168,9 @@ class SettingsTextController extends AdminController
 
         $model = $this->createModel($this->object_type);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
-        }else{
+        } else {
             if ($model->load($request->post())) {
                 $model->id = null;
 
@@ -225,5 +225,4 @@ class SettingsTextController extends AdminController
             return $this->redirect(['index']);
         }
     }
-
 }

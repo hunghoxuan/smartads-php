@@ -16,9 +16,9 @@ use backend\modules\smartscreen\models\SmartscreenQueueAPI;
 use common\actions\BaseApiAction;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "smartscreen_queue".
  */
 class SmartscreenHisUpdateAction extends BaseApiAction
@@ -67,6 +67,6 @@ class SmartscreenHisUpdateAction extends BaseApiAction
             $result[] = $model;
         }
 
-         return FApi::getOutputForAPI($result, FConstant::SUCCESS, 'OK', ['code' => 200]);
+        return FApi::getOutputForAPI($result, FConstant::SUCCESS, 'OK', ['code' => 200]);
     }
 }

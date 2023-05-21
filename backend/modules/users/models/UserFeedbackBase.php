@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "user_feedback".
  *
 
@@ -46,8 +45,8 @@ class UserFeedbackBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     const STATUS_CLOSED = 'Closed';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'user_feedback';
 
     public static function tableName()
@@ -64,14 +63,14 @@ class UserFeedbackBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'user_id', 'object_id', 'object_type', 'name', 'email', 'comment', 'is_active', 'response', 'type', 'status', 'created_date', 'created_user', 'modified_date', 'modified_user', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['user_id', 'name', 'email', 'comment'], 'required'],
             [['is_active'], 'integer'],
             [['response'], 'string'],
@@ -83,28 +82,28 @@ class UserFeedbackBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('UserFeedback', 'ID'),
-                    'user_id' => FHtml::t('UserFeedback', 'User ID'),
-                    'object_id' => FHtml::t('UserFeedback', 'Object ID'),
-                    'object_type' => FHtml::t('UserFeedback', 'Object Type'),
-                    'name' => FHtml::t('UserFeedback', 'Name'),
-                    'email' => FHtml::t('UserFeedback', 'Email'),
-                    'comment' => FHtml::t('UserFeedback', 'Comment'),
-                    'is_active' => FHtml::t('UserFeedback', 'Is Active'),
-                    'response' => FHtml::t('UserFeedback', 'Response'),
-                    'type' => FHtml::t('UserFeedback', 'Type'),
-                    'status' => FHtml::t('UserFeedback', 'Status'),
-                    'created_date' => FHtml::t('UserFeedback', 'Created Date'),
-                    'created_user' => FHtml::t('UserFeedback', 'Created User'),
-                    'modified_date' => FHtml::t('UserFeedback', 'Modified Date'),
-                    'modified_user' => FHtml::t('UserFeedback', 'Modified User'),
-                    'application_id' => FHtml::t('UserFeedback', 'Application ID'),
-                ];
+            'id' => FHtml::t('UserFeedback', 'ID'),
+            'user_id' => FHtml::t('UserFeedback', 'User ID'),
+            'object_id' => FHtml::t('UserFeedback', 'Object ID'),
+            'object_type' => FHtml::t('UserFeedback', 'Object Type'),
+            'name' => FHtml::t('UserFeedback', 'Name'),
+            'email' => FHtml::t('UserFeedback', 'Email'),
+            'comment' => FHtml::t('UserFeedback', 'Comment'),
+            'is_active' => FHtml::t('UserFeedback', 'Is Active'),
+            'response' => FHtml::t('UserFeedback', 'Response'),
+            'type' => FHtml::t('UserFeedback', 'Type'),
+            'status' => FHtml::t('UserFeedback', 'Status'),
+            'created_date' => FHtml::t('UserFeedback', 'Created Date'),
+            'created_user' => FHtml::t('UserFeedback', 'Created User'),
+            'modified_date' => FHtml::t('UserFeedback', 'Modified Date'),
+            'modified_user' => FHtml::t('UserFeedback', 'Modified User'),
+            'application_id' => FHtml::t('UserFeedback', 'Application ID'),
+        ];
     }
 
     public static function tableSchema()
@@ -139,8 +138,4 @@ class UserFeedbackBase extends \common\models\BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "SmartscreenLayouts".
  */
+
 namespace backend\modules\smartscreen\controllers;
 
 use backend\modules\smartscreen\models\SmartscreenFrame;
@@ -205,10 +207,10 @@ class SmartscreenLayoutsController extends AdminController
 
             $frames_params[] = array(
                 'frame' => $frame->id,
-                'percentWidth' => $frame->percentWidth,
-                'percentHeight' => $frame->percentHeight,
                 'marginLeft' => $frame->marginLeft,
                 'marginTop' => $frame->marginTop,
+                'percentWidth' => $frame->percentWidth,
+                'percentHeight' => $frame->percentHeight,
                 'backgroundColor' => $frame->backgroundColor,
             );
         }
@@ -272,7 +274,6 @@ class SmartscreenLayoutsController extends AdminController
         }
 
         \Yii::$app->db->createCommand()->batchInsert('smartscreen_layouts_frame', ['layout_id', 'frame_id', 'sort_order'], $my_array)->execute();
-
     }
 
     /**
@@ -384,7 +385,7 @@ class SmartscreenLayoutsController extends AdminController
                     $backgroundColor = self::random_color();
                 }
 
-//                json
+                //                json
                 $backgroundColor = '#ffffff';
                 $frame_params = array($frame->percentWidth, $frame->percentHeight, $frame->marginTop, $frame->marginLeft);
                 echo json_encode($frame_params);
@@ -405,7 +406,7 @@ class SmartscreenLayoutsController extends AdminController
 
     public static function random_color()
     {
-        return '#'.self::random_color_part() . self::random_color_part() . self::random_color_part();
+        return '#' . self::random_color_part() . self::random_color_part() . self::random_color_part();
     }
 
     public function excuteFrame($model_id, $frames)
@@ -427,7 +428,6 @@ class SmartscreenLayoutsController extends AdminController
                         $frame->marginLeft = $item['marginLeft'];
                         $frame->save();
                     }
-
                 } else {
                     $frame = new SmartscreenFrame();
                     $frame->name = $item['frame'] . '_' . $model_id;
@@ -474,10 +474,9 @@ class SmartscreenLayoutsController extends AdminController
                 return $this->render('get-content', ['layout' => $layout, 'selectId' => $selectId, 'content_json' => $content_json]);
             }
 
-//                $orderBy = new \yii\db\Expression('FIELD (id, ' . implode(',', array_values($layout->frame)) . ')');
+            //                $orderBy = new \yii\db\Expression('FIELD (id, ' . implode(',', array_values($layout->frame)) . ')');
         }
 
         return false;
     }
-
 }

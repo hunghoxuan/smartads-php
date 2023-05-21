@@ -10,18 +10,19 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "object_comment".
  */
 class ObjectComment extends ObjectCommentBase //\yii\db\ActiveRecord
 {
-    const LOOKUP = [        'user_type' => [
-		['id' => ObjectComment::USER_TYPE_APP_USER, 'name' => 'app_user'],
- 	['id' => ObjectComment::USER_TYPE_USER, 'name' => 'user'],
- ],
-];
+    const LOOKUP = [
+        'user_type' => [
+            ['id' => ObjectComment::USER_TYPE_APP_USER, 'name' => 'app_user'],
+            ['id' => ObjectComment::USER_TYPE_USER, 'name' => 'user'],
+        ],
+    ];
 
     const COLUMNS_UPLOAD = [];
 
@@ -31,14 +32,14 @@ class ObjectComment extends ObjectCommentBase //\yii\db\ActiveRecord
     const OBJECTS_META = [];
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'object_id', 'object_type', 'parent_id', 'comment', 'app_user_id', 'user_id', 'user_type', 'created_date', 'created_user', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['object_id'], 'required'],
             [['parent_id'], 'integer'],
             [['created_date'], 'safe'],
@@ -49,53 +50,58 @@ class ObjectComment extends ObjectCommentBase //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('ObjectComment', 'ID'),
-                    'object_id' => FHtml::t('ObjectComment', 'Object ID'),
-                    'object_type' => FHtml::t('ObjectComment', 'Object Type'),
-                    'parent_id' => FHtml::t('ObjectComment', 'Parent ID'),
-                    'comment' => FHtml::t('ObjectComment', 'Comment'),
-                    'app_user_id' => FHtml::t('ObjectComment', 'App User ID'),
-                    'user_id' => FHtml::t('ObjectComment', 'User ID'),
-                    'user_type' => FHtml::t('ObjectComment', 'User Type'),
-                    'created_date' => FHtml::t('ObjectComment', 'Created Date'),
-                    'created_user' => FHtml::t('ObjectComment', 'Created User'),
-                    'application_id' => FHtml::t('ObjectComment', 'Application ID'),
-                ];
+            'id' => FHtml::t('ObjectComment', 'ID'),
+            'object_id' => FHtml::t('ObjectComment', 'Object ID'),
+            'object_type' => FHtml::t('ObjectComment', 'Object Type'),
+            'parent_id' => FHtml::t('ObjectComment', 'Parent ID'),
+            'comment' => FHtml::t('ObjectComment', 'Comment'),
+            'app_user_id' => FHtml::t('ObjectComment', 'App User ID'),
+            'user_id' => FHtml::t('ObjectComment', 'User ID'),
+            'user_type' => FHtml::t('ObjectComment', 'User Type'),
+            'created_date' => FHtml::t('ObjectComment', 'Created Date'),
+            'created_user' => FHtml::t('ObjectComment', 'Created User'),
+            'application_id' => FHtml::t('ObjectComment', 'Application ID'),
+        ];
     }
 
 
 
     // Lookup Object: app_user\n
     public $app_user;
-    public function getAppUser() {
+    public function getAppUser()
+    {
         if (!isset($this->app_user))
-        $this->app_user = FHtml::getModel('app_user', '', $this->app_user_id, '', false);
+            $this->app_user = FHtml::getModel('app_user', '', $this->app_user_id, '', false);
 
         return $this->app_user;
     }
-    public function setAppUser($value) {
+    public function setAppUser($value)
+    {
         $this->app_user = $value;
     }
 
     // Lookup Object: user\n
     public $user;
-    public function getUser() {
+    public function getUser()
+    {
         if (!isset($this->user))
-        $this->user = FHtml::getModel('user', '', $this->user_id, '', false);
+            $this->user = FHtml::getModel('user', '', $this->user_id, '', false);
 
         return $this->user;
     }
-    public function setUser($value) {
+    public function setUser($value)
+    {
         $this->user = $value;
     }
 
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
 
         $this->app_user = self::getAppUser();
@@ -109,17 +115,20 @@ class ObjectComment extends ObjectCommentBase //\yii\db\ActiveRecord
         return $fields;
     }
 
-    public static function getLookupArray($column) {
+    public static function getLookupArray($column)
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
     }
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 
@@ -157,19 +166,20 @@ class ObjectComment extends ObjectCommentBase //\yii\db\ActiveRecord
         ];
     }
 
-    public function toViewModel() {
-    $model = new ViewModel();
-            FHtml::setFieldValue($model, ['id'], $this->id);
-            FHtml::setFieldValue($model, ['object_id'], $this->object_id);
-            FHtml::setFieldValue($model, ['object_type'], $this->object_type);
-            FHtml::setFieldValue($model, ['parent_id'], $this->parent_id);
-            FHtml::setFieldValue($model, ['comment'], $this->comment);
-            FHtml::setFieldValue($model, ['app_user_id'], $this->app_user_id);
-            FHtml::setFieldValue($model, ['user_id'], $this->user_id);
-            FHtml::setFieldValue($model, ['user_type'], $this->user_type);
-            FHtml::setFieldValue($model, ['created_date'], $this->created_date);
-            FHtml::setFieldValue($model, ['created_user'], $this->created_user);
-            FHtml::setFieldValue($model, ['application_id'], $this->application_id);
+    public function toViewModel()
+    {
+        $model = new ViewModel();
+        FHtml::setFieldValue($model, ['id'], $this->id);
+        FHtml::setFieldValue($model, ['object_id'], $this->object_id);
+        FHtml::setFieldValue($model, ['object_type'], $this->object_type);
+        FHtml::setFieldValue($model, ['parent_id'], $this->parent_id);
+        FHtml::setFieldValue($model, ['comment'], $this->comment);
+        FHtml::setFieldValue($model, ['app_user_id'], $this->app_user_id);
+        FHtml::setFieldValue($model, ['user_id'], $this->user_id);
+        FHtml::setFieldValue($model, ['user_type'], $this->user_type);
+        FHtml::setFieldValue($model, ['created_date'], $this->created_date);
+        FHtml::setFieldValue($model, ['created_user'], $this->created_user);
+        FHtml::setFieldValue($model, ['application_id'], $this->application_id);
         return $model;
     }
 }

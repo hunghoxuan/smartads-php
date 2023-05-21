@@ -63,66 +63,66 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
     ]
 ]);
 ?>
-    <div class="form">
-        <div class="row">
-            <div class="col-md-<?= $col_size1 ?>">
-                <div class="portlet light">
-                    <div class="visible-print">
-                        <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
+<div class="form">
+    <div class="row">
+        <div class="col-md-<?= $col_size1 ?>">
+            <div class="portlet light">
+                <div class="visible-print">
+                    <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
+                </div>
+                <div class="portlet-title tabbable-line hidden-print">
+                    <div class="caption caption-md">
+                        <i class="icon-globe theme-font hide"></i>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) . ":" . FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?></span>
                     </div>
-                    <div class="portlet-title tabbable-line hidden-print">
-                        <div class="caption caption-md">
-                            <i class="icon-globe theme-font hide"></i>
-                            <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) . ":" . FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?></span>
-                        </div>
-                        <div class="tools pull-right">
-                            <a href="#" class="fullscreen"></a>
-                            <a href="#" class="collapse"></a>
-                        </div>
-                        <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
-                            </li>
-
-                        </ul>
+                    <div class="tools pull-right">
+                        <a href="#" class="fullscreen"></a>
+                        <a href="#" class="collapse"></a>
                     </div>
-                    <div class="portlet-body form">
-                        <div class="form">
-                            <div class="form-body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active row" id="tab_1_1">
-                                        <div class="col-md-12">
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                                //'user_id' => ['value' => $form->fieldNoLabel($model, 'user_id')->select(FHtml::getComboArray('app_file', 'app_file', 'user_id', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'file_name' => ['value' => $form->fieldNoLabel($model, 'file_name')->textarea(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
+                        </li>
 
-                                                'ime' => ['value' => $form->fieldNoLabel($model, 'ime')->textarea(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'download_time' => ['value' => $form->fieldNoLabel($model, 'download_time')->date(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('app_file', 'app_file', 'status', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                    </ul>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form">
+                        <div class="form-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active row" id="tab_1_1">
+                                    <div class="col-md-12">
+                                        <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
+                                            //'user_id' => ['value' => $form->fieldNoLabel($model, 'user_id')->select(FHtml::getComboArray('app_file', 'app_file', 'user_id', true, 'id', 'name'))],
+                                            'file_name' => ['value' => $form->fieldNoLabel($model, 'file_name')->textarea()],
 
-                                            ]]);  ?>
-                                        </div>
+                                            'ime' => ['value' => $form->fieldNoLabel($model, 'ime')->textarea()],
+                                            'download_time' => ['value' => $form->fieldNoLabel($model, 'download_time')->date()],
+                                            'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('app_file', 'app_file', 'status', true, 'id', 'name'))],
+
+                                        ]]);  ?>
                                     </div>
-
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php $type = FHtml::getFieldValue($model, 'type');
-                if (isset($modelMeta) && !empty($type)) { ?>
-                    <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
-                <?php } ?>
-                <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
             </div>
-            <?php if ($col_size2 > 0) { ?>
-                <div class="profile-sidebar col-md-<?= $col_size2 ?> col-xs-12 hidden-print">
-                    <div class="portlet light">
-                        <?= FHtml::showModelPreview($model) ?>
-                    </div>
-                </div>
+            <?php $type = FHtml::getFieldValue($model, 'type');
+            if (isset($modelMeta) && !empty($type)) { ?>
+                <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
             <?php } ?>
+            <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
         </div>
+        <?php if ($col_size2 > 0) { ?>
+            <div class="profile-sidebar col-md-<?= $col_size2 ?> col-xs-12 hidden-print">
+                <div class="portlet light">
+                    <?= FHtml::showModelPreview($model) ?>
+                </div>
+            </div>
+        <?php } ?>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end(); ?>

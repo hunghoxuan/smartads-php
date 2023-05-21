@@ -11,9 +11,9 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "auth_group".
  */
 class AuthGroup extends AuthGroupBase //\yii\db\ActiveRecord
@@ -27,7 +27,8 @@ class AuthGroup extends AuthGroupBase //\yii\db\ActiveRecord
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
@@ -36,15 +37,18 @@ class AuthGroup extends AuthGroupBase //\yii\db\ActiveRecord
     public $rights;
     public $users;
 
-    public function getRights() {
+    public function getRights()
+    {
         return $this->getRolesArray();
     }
 
-    public function getRolesModels() {
+    public function getRolesModels()
+    {
         return FSecurity::getGroupRoleModels($this);
     }
 
-    public function getUsers() {
+    public function getUsers()
+    {
         return $this->getMembersArray();
     }
 
@@ -54,7 +58,8 @@ class AuthGroup extends AuthGroupBase //\yii\db\ActiveRecord
     public function getRoles()
     {
         return $this->hasMany(AuthPermission::className(), ['object_id' => 'id'])
-            ->andOnCondition(['AND',
+            ->andOnCondition([
+                'AND',
                 ['relation_type' => 'group-role'],
                 ['object2_type' => 'auth_role'],
                 ['object_type' => 'auth_group']
@@ -64,30 +69,33 @@ class AuthGroup extends AuthGroupBase //\yii\db\ActiveRecord
     public function getMembers()
     {
         return $this->hasMany(AuthPermission::className(), ['object_id' => 'id'])
-            ->andOnCondition(['AND',
+            ->andOnCondition([
+                'AND',
                 ['relation_type' => 'group-user'],
                 ['object2_type' => 'user'],
                 ['object_type' => 'auth_group']
             ]);
     }
 
-    public function getMembersArray() {
+    public function getMembersArray()
+    {
         return ArrayHelper::getColumn($this->members, 'object2_id');
     }
 
-    public function getRolesArray() {
+    public function getRolesArray()
+    {
         return ArrayHelper::getColumn($this->roles, 'object2_id');
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'name', 'is_active', 'created_date', 'modified_date', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['name', 'is_active'], 'required'],
             [['is_active'], 'integer'],
             [['created_date', 'modified_date'], 'safe'],
@@ -96,15 +104,18 @@ class AuthGroup extends AuthGroupBase //\yii\db\ActiveRecord
         ];
     }
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
     }
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 

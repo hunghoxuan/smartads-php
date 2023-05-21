@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "object_translation".
  *
 
@@ -30,8 +29,8 @@ class ObjectTranslationBase extends \common\models\BaseModel //\yii\db\ActiveRec
 {
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'object_translation';
 
     public static function tableName()
@@ -48,20 +47,20 @@ class ObjectTranslationBase extends \common\models\BaseModel //\yii\db\ActiveRec
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => 'ID',
-                    'object_id' => 'Object ID',
-                    'object_type' => 'Object Type',
-                    'lang' => 'Lang',
-                    'content' => 'Content',
-                    'created_date' => 'Created Date',
-                    'created_user' => 'Created User',
-                    'application_id' => 'Application ID',
-                ];
+            'id' => 'ID',
+            'object_id' => 'Object ID',
+            'object_type' => 'Object Type',
+            'lang' => 'Lang',
+            'content' => 'Content',
+            'created_date' => 'Created Date',
+            'created_user' => 'Created User',
+            'application_id' => 'Application ID',
+        ];
     }
 
     public static function tableSchema()
@@ -96,7 +95,4 @@ class ObjectTranslationBase extends \common\models\BaseModel //\yii\db\ActiveRec
             ],
         ];
     }
-
-
-
 }

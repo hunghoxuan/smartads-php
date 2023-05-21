@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models;
 
 use backend\models\AuthPermission;
@@ -68,31 +69,41 @@ class AppUser extends User
 
     public function getGroups()
     {
+        if (!FHTml::isDBSecurityEnabled() || !FHtml::isTableExisted(AuthPermission::tableName()))
+            return null;
         $models = $this->hasMany(AuthPermission::className(), ['object2_id' => 'id'])
-            ->andOnCondition(['AND',
+            ->andOnCondition([
+                'AND',
                 ['relation_type' => 'group-user'],
                 ['object2_type' => 'app_user'],
-                ['object_type' => 'auth_group']]);
+                ['object_type' => 'auth_group']
+            ]);
 
         return $models;
     }
 
-    public function getGroupsArray() {
+    public function getGroupsArray()
+    {
         return ArrayHelper::getColumn($this->groups, 'object_id');
     }
 
     public function getRights()
     {
+        if (!FHTml::isDBSecurityEnabled() || !FHtml::isTableExisted(AuthPermission::tableName()))
+            return null;
         $models = $this->hasMany(AuthPermission::className(), ['object_id' => 'id'])
-            ->andOnCondition(['AND',
+            ->andOnCondition([
+                'AND',
                 ['relation_type' => 'user-role'],
                 ['object2_type' => 'auth_role'],
-                ['object_type' => 'app_user']]);
+                ['object_type' => 'app_user']
+            ]);
 
         return $models;
     }
 
-    public function getRightsArray() {
+    public function getRightsArray()
+    {
         return ArrayHelper::getColumn($this->rights, 'object2_id');
     }
 

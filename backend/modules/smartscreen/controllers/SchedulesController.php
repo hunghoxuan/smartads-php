@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "SmartscreenContent".
  */
+
 namespace backend\modules\smartscreen\controllers;
 
 use backend\modules\smartscreen\models\SmartscreenFile;
@@ -38,7 +40,7 @@ use yii\helpers\ArrayHelper;
  */
 class SchedulesController extends AdminController
 {
-   /**
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -77,7 +79,8 @@ class SchedulesController extends AdminController
         ]);
     }
 
-    public function isAuthorized() {
+    public function isAuthorized()
+    {
         return true;
     }
 
@@ -105,8 +108,7 @@ class SchedulesController extends AdminController
         if (empty($start_time)) {
             $start_time = date('H:i');
         }
-        if (empty($ime) && !empty($device_id))
-        {
+        if (empty($ime) && !empty($device_id)) {
             $device = SmartscreenStation::findOne($device_id);
             if (empty($ime) && isset($device))
                 $ime = $device->ime;
@@ -120,5 +122,4 @@ class SchedulesController extends AdminController
 
         return $this->render('index', $result);
     }
-
 }

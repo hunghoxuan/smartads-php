@@ -9,9 +9,8 @@ use common\models\BaseDataObject;
 use frontend\models\ViewModel;
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "settings_lookup".
  *
 
@@ -33,7 +32,7 @@ use frontend\models\ViewModel;
 class SettingsLookupBase extends \common\models\BaseModel //\yii\db\ActiveRecord
 {
 
-// id, name, object_type, params, fields, orderby, limit, sql, is_cached, is_active, sort_order, created_user, created_date, application_id
+    // id, name, object_type, params, fields, orderby, limit, sql, is_cached, is_active, sort_order, created_user, created_date, application_id
     const COLUMN_ID = 'id';
     const COLUMN_NAME = 'name';
     const COLUMN_OBJECT_TYPE = 'object_type';
@@ -50,8 +49,8 @@ class SettingsLookupBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     const COLUMN_APPLICATION_ID = 'application_id';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'settings_lookup';
 
     public static function tableName()

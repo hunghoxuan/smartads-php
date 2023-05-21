@@ -11,11 +11,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\ObjectCollectionAPI;
 use common\actions\BaseApiAction;
 
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "object_collection".
+/*This is the customized model class for table "object_collection".
  */
 class ObjectCollectionAction extends BaseApiAction
 {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   yii2-builder
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
@@ -97,12 +98,12 @@ class FFormTable extends Widget
 
 	public $hide_field = false;
 
-    /**
-     * field show hide fieldset.
-     * default is false
-     * @var bool
-     */
-    public $open = true;
+	/**
+	 * field show hide fieldset.
+	 * default is false
+	 * @var bool
+	 */
+	public $open = true;
 
 	/**
 	 * @var integer, the number of columns in which to split the fields horizontally. If not set, defaults to 1 column.
@@ -224,7 +225,8 @@ class FFormTable extends Widget
 	 * Initializes the widget
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	public function init() {
+	public function init()
+	{
 
 		if (empty($this->attributes)) {
 			return;
@@ -259,8 +261,9 @@ class FFormTable extends Widget
 		echo Html::beginTag($this->_tag, $this->options) . "\n";
 	}
 
-	protected function normalizeAttributes() {
-	    $currentAction = FHtml::currentAction();
+	protected function normalizeAttributes()
+	{
+		$currentAction = FHtml::currentAction();
 
 		//normalize attributes
 		$arr = [];
@@ -268,20 +271,18 @@ class FFormTable extends Widget
 			if (is_numeric($attribute)) {
 
 				$arr = array_merge($arr, [$value => ['type' => FHtml::INPUT_TEXT, 'attribute' => $value]]);
-			}
-			else {
-                if ($value instanceof \Closure) {
-                    $result = call_user_func($value, $this->model, $attribute);
-                    $arr = array_merge($arr, [$attribute => ['value' => $result, 'type' => FHtml::INPUT_RAW]]);
-                } else if (is_object($value)) {
-                    $arr = array_merge($arr, [$attribute => ['value' => $value, 'type' => FHtml::INPUT_RAW]]);
-                }
-                else {
-                    if (is_array($value) && !key_exists('type', $value)) {
-                        $value = array_merge($value, ['type' => FHtml::INPUT_RAW]);
-                    }
-                    $arr = array_merge($arr, [$attribute => $value]);
-                }
+			} else {
+				if ($value instanceof \Closure) {
+					$result = call_user_func($value, $this->model, $attribute);
+					$arr = array_merge($arr, [$attribute => ['value' => $result]]);
+				} else if (is_object($value)) {
+					$arr = array_merge($arr, [$attribute => ['value' => $value]]);
+				} else {
+					if (is_array($value) && !key_exists('type', $value)) {
+						$value = array_merge($value, ['type' => FHtml::INPUT_RAW]);
+					}
+					$arr = array_merge($arr, [$attribute => $value]);
+				}
 			}
 		}
 
@@ -294,15 +295,23 @@ class FFormTable extends Widget
 				unset($arr[$attribute]);
 			}
 
+			if (key_exists('visible', $settings) && $settings['visible'] == false) {
+				unset($arr[$attribute]);
+			}
+
+			if ($this->model->getPermission($attribute) == false) {
+				$arr[$attribute]['type'] = FHtml::INPUT_READONLY;
+			}
+
 			if (key_exists('readonly', $settings) && $settings['readonly'] == true) {
 				$arr[$attribute]['type'] = FHtml::INPUT_READONLY;
 			}
 
-            if (key_exists('view_value', $settings) && $currentAction == 'view') {
-                $arr[$attribute]['value'] = $settings['view_value'];
-            } else if (key_exists('view', $settings) && $currentAction == 'view') {
-                $arr[$attribute]['value'] = $settings['view'];
-            }
+			if (key_exists('view_value', $settings) && $currentAction == 'view') {
+				$arr[$attribute]['value'] = $settings['view_value'];
+			} else if (key_exists('view', $settings) && $currentAction == 'view') {
+				$arr[$attribute]['value'] = $settings['view'];
+			}
 		}
 
 		$this->attributes = $arr;
@@ -311,7 +320,8 @@ class FFormTable extends Widget
 	/**
 	 * Initializes the widget options
 	 */
-	protected function initOptions() {
+	protected function initOptions()
+	{
 		$this->_tag = ArrayHelper::remove($this->options, 'tag', 'fieldset');
 		if (empty($this->options['id'])) {
 			$this->options['id'] = $this->getId();
@@ -321,13 +331,15 @@ class FFormTable extends Widget
 	/**
 	 * Registers widget assets
 	 */
-	protected function registerAssets() {
+	protected function registerAssets()
+	{
 		$view = $this->getView();
 		//FormAsset::register($view);
 		//$view->registerJs('jQuery("#' . $this->options['id'] . '").kvFormBuilder({});');
 	}
 
-	protected function isTableLayout() {
+	protected function isTableLayout()
+	{
 		return $this->display_type == FHtml::DISPLAY_TYPE_GRID || $this->display_type == FHtml::DISPLAY_TYPE_TABLE;
 	}
 
@@ -335,45 +347,42 @@ class FFormTable extends Widget
 	/**
 	 * @inheritdoc
 	 */
-	public function run() {
+	public function run()
+	{
 		if (empty($this->attributes) || empty($this->visible)) {
 			return;
 		}
 
 		if (!isset($this->open))
-		    $this->open = FHtml::setting('form_table.default_opened', false);
+			$this->open = FHtml::setting('form_table.default_opened', false);
 
-        if (!isset($this->hide_field))
-            $this->hide_field = FHtml::setting('form_field.default_hided', true);
+		if (!isset($this->hide_field))
+			$this->hide_field = FHtml::setting('form_field.default_hided', true);
 
 
-        $action = FHtml::currentAction();
+		$action = FHtml::currentAction();
 
 		if (FHtml::currentDevice()->isMobile()) {
 			$this->_orientation = FActiveForm::TYPE_HORIZONTAL;
 			$this->display_type = FHtml::DISPLAY_TYPE_DEFAULT;
 			$this->edit_type    = FHtml::EDIT_TYPE_DEFAULT;
 			$this->columns      = 1;
-		}
-		else {
+		} else {
 			if (isset($this->form) && empty($this->type)) {
 				$this->_orientation = $this->form->type;
-			}
-			else {
+			} else {
 				$this->_orientation = $this->type;
 			}
 
 			if (isset($this->form) && empty($this->edit_type)) {
 				$this->edit_type = $this->form->edit_type;
-			}
-			else {
+			} else {
 				$this->edit_type = FHtml::EDIT_TYPE_INLINE;
 			}
 
 			if (isset($this->form) && empty($this->display_type)) {
 				$this->display_type = $this->form->display_type;
-			}
-			else {
+			} else {
 				$this->display_type = FHtml::DISPLAY_TYPE_TABLE;
 			}
 		}
@@ -385,12 +394,10 @@ class FFormTable extends Widget
 
 			if (FHtml::isViewAction($action) || $this->edit_type == FHtml::EDIT_TYPE_INLINE) {
 				$this->formCSS = ' table-bordered table-responsive';
-			}
-			else {
+			} else {
 				$this->formCSS = ' table-responsive';
 			}
-		}
-		else {
+		} else {
 			$this->formTag  = !empty($this->formTag) ? $this->formTag : 'div';
 			$this->rowTag   = !empty($this->rowTag) ? $this->rowTag : 'div';
 			$this->fieldTag = !empty($this->fieldTag) ? $this->fieldTag : 'div';
@@ -398,68 +405,68 @@ class FFormTable extends Widget
 		}
 
 		if (empty($this->title))
-		    $this->open = null;
+			$this->open = null;
 		else if (in_array(strtolower($this->title), ['group']))
-		    $this->open = true;
+			$this->open = true;
 
 		if (isset($this->open)) {
 
-            $html = '<br/><div class="row">';
-            $html .= '		<div class="col-md-12">';
-            $html .= '			<div class="portlet light" style="box-shadow: none !important">';
-            $html .= '				<div class="portlet-title tabbable-line hidden-print">';
-            $html .= '					<div class="caption caption-md">';
-            $html .= '						<i class="icon-globe theme-font hide"></i>';
-            $html .= '						<span class="font-blue-madison bold uppercase" >';
+			$html = '<br/><div class="row">';
+			$html .= '		<div class="col-md-12">';
+			$html .= '			<div class="portlet light" style="box-shadow: none !important">';
+			$html .= '				<div class="portlet-title tabbable-line hidden-print">';
+			$html .= '					<div class="caption caption-md">';
+			$html .= '						<i class="icon-globe theme-font hide"></i>';
+			$html .= '						<span class="font-blue-madison bold uppercase" >';
 
-            if (!empty($this->title)) {
-                $html .= FHtml::t('common', $this->title);
-            }
+			if (!empty($this->title)) {
+				$html .= FHtml::t('common', $this->title);
+			}
 
-            $html .= '						</span>';
-            $html .= '					</div>';
-            $html .= '					<div class="tools pull-right">';
-            $html .= '					    <span style="color:lightgrey"> ' . ($this->open ? '' :  ' +' .count($this->attributes) . ' ' . FHtml::t('common', 'items')) . '  </span>&nbsp;<a href=".collapse' . $this->options['id'] . '" data-toggle="collapse" class=" panel-collapse ' . ($this->open ? 'collapse' : 'expand') . ' " aria-expanded="true"></a>';
-            $html .= '					</div>';
-            $html .= '				</div>';
-            $html .= '			</div>';
-            $html .= '			<div style="' . ($this->open ? 'height:0px' : '') . '" class="portlet-body form ' . (!$this->open ? 'collapse' : 'collapsed') . ' collapse' . $this->options['id'] . '" aria-expanded="true" id="collapse' . $this->options['id'] . '">';
-            $html .= '				<div class="form">';
-            $html .= '					<div class="form-body">';
-            $html .= '						<div class="tab-content">';
-            $html .= '							<div class="tab-pane active">';
+			$html .= '						</span>';
+			$html .= '					</div>';
+			$html .= '					<div class="tools pull-right">';
+			$html .= '					    <span style="color:lightgrey"> ' . ($this->open ? '' :  ' +' . count($this->attributes) . ' ' . FHtml::t('common', 'items')) . '  </span>&nbsp;<a href=".collapse' . $this->options['id'] . '" data-toggle="collapse" class=" panel-collapse ' . ($this->open ? 'collapse' : 'expand') . ' " aria-expanded="true"></a>';
+			$html .= '					</div>';
+			$html .= '				</div>';
+			$html .= '			</div>';
+			$html .= '			<div style="' . ($this->open ? 'height:0px' : '') . '" class="portlet-body form ' . (!$this->open ? 'collapse' : 'collapsed') . ' collapse' . $this->options['id'] . '" aria-expanded="true" id="collapse' . $this->options['id'] . '">';
+			$html .= '				<div class="form">';
+			$html .= '					<div class="form-body">';
+			$html .= '						<div class="tab-content">';
+			$html .= '							<div class="tab-pane active">';
 
-            $html .= $this->header;
-            if (!empty($this->overview)) {
-                $html .= "<div class='hint-block'>$this->overview</div>";;
-            }
-            $html .= $this->renderFieldSet();
+			$html .= $this->header;
+			if (!empty($this->overview)) {
+				$html .= "<div class='hint-block'>$this->overview</div>";;
+			}
+			$html .= $this->renderFieldSet();
 
-            $html .= $this->footer;
+			$html .= $this->footer;
 
-            $html .= '							</div>';
-            $html .= '						</div>';
-            $html .= '					</div>';
-            $html .= '				</div>';
-            $html .= '			</div>';
-            $html .= '		</div>';
-            $html .= '</div>';
+			$html .= '							</div>';
+			$html .= '						</div>';
+			$html .= '					</div>';
+			$html .= '				</div>';
+			$html .= '			</div>';
+			$html .= '		</div>';
+			$html .= '</div>';
 
-            $html .= Html::endTag($this->_tag);
-            echo $html;
-        } else {
+			$html .= Html::endTag($this->_tag);
+			echo $html;
+		} else {
 
-            if (!empty($this->title))
-                echo FHtml::showGroupHeader($this->title);
+			if (!empty($this->title))
+				echo FHtml::showGroupHeader($this->title);
 
-            echo $this->header;
-            if (!empty($this->overview)) {
-                echo "<div class='hint-block'>$this->overview</div>";
-            }
-            echo $this->renderFieldSet();
-            echo Html::endTag($this->_tag);
-            echo $this->footer;
-        }
+			echo $this->header;
+			if (!empty($this->overview)) {
+				echo "<div class='hint-block'>$this->overview</div>";
+			}
+			echo $this->renderFieldSet();
+			echo Html::endTag($this->_tag);
+			echo $this->footer;
+		}
 
 		parent::run();
 	}
@@ -468,7 +475,8 @@ class FFormTable extends Widget
 	 * Renders the field set
 	 * @return string
 	 */
-	protected function renderFieldSet() {
+	protected function renderFieldSet()
+	{
 		$content = '';
 		$cols    = (is_int($this->columns) && $this->columns >= 1) ? $this->columns : 1;
 
@@ -490,20 +498,15 @@ class FFormTable extends Widget
 
 		if ($cols == 1) {
 			$labelWidth = $this->labelWidth;
-		}
-		elseif ($cols == 2) {
+		} elseif ($cols == 2) {
 			$labelWidth = $this->labelWidth;
-		}
-		elseif ($cols == 3) {
+		} elseif ($cols == 3) {
 			$labelWidth = $this->labelWidth;
-		}
-		elseif ($cols == 4) {
+		} elseif ($cols == 4) {
 			$labelWidth = $this->labelWidth;
-		}
-		elseif ($cols == 12) {
+		} elseif ($cols == 12) {
 			$labelWidth = 0;
-		}
-		else {
+		} else {
 			$labelWidth = 0;
 		}
 
@@ -511,7 +514,7 @@ class FFormTable extends Widget
 			$labelWidth = 0;
 		}
 
-        //        Html::addCssClass($this->rowOptions, ($attrCount < $cols ? 'pull-left' : 'row') );
+		//        Html::addCssClass($this->rowOptions, ($attrCount < $cols ? 'pull-left' : 'row') );
 		//Html::addCssClass($this->rowOptions, ($attrCount < $cols ? 'row' : 'row') );
 
 		$content .= $this->beginTag($form_tag, ['class' => 'col-md-12 col-xs-12' . $form_css]);
@@ -530,7 +533,7 @@ class FFormTable extends Widget
 
 				if (!is_array($settings)) {
 					$b        = $settings;
-					$settings = ['value' => $b, 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW];
+					$settings = ['value' => $b];
 				}
 
 				if (!key_exists('value', $settings)) {
@@ -550,18 +553,14 @@ class FFormTable extends Widget
 				if ($this->isTableLayout()) {
 					$colWidth        = $colSpan * $colWidth;
 					$rowCurrentWidth = $rowCurrentWidth + $labelWidth + $colWidth;
-				}
-				else {
+				} else {
 					if ($colSpan == 2) {
 						$colWidth = $colWidth + $labelWidth;
-					}
-					elseif ($colSpan == 3) {
+					} elseif ($colSpan == 3) {
 						$colWidth = $colWidth + $labelWidth + $colWidth;
-					}
-					elseif ($colSpan == 4) {
+					} elseif ($colSpan == 4) {
 						$colWidth = $colWidth + $labelWidth + $colWidth + $labelWidth;
-					}
-					elseif ($colSpan > 1) {
+					} elseif ($colSpan > 1) {
 						$colWidth = 10;
 					}
 					$rowCurrentWidth = $rowCurrentWidth + $labelWidth + $colWidth;
@@ -570,8 +569,7 @@ class FFormTable extends Widget
 				if ($this->readonly || FHtml::isViewAction()) {
 					$labelwidth_xs = $labelWidth;
 					$colWidth_xs   = $colWidth;
-				}
-				else {
+				} else {
 					$labelwidth_xs = 12;
 					$colWidth_xs   = 12;
 				}
@@ -581,8 +579,7 @@ class FFormTable extends Widget
 
 					$content .= "\t" . $this->beginTag($field_tag, ['class' => "col-$this->columnSize-$labelWidth col-xs-$labelwidth_xs", 'style' => 'padding:15px'], $skip) . "\n";
 					$content .= "\t" . $this->endTag($field_tag, $skip) . "\n";
-				}
-				else {
+				} else {
 					if (is_array($value1)) {
 						$value1 = implode('<br/>', $value1);
 					}
@@ -592,11 +589,10 @@ class FFormTable extends Widget
 					if ($labelWidth > 0 && $this->_orientation != FActiveForm::TYPE_INLINE) { // has Label
 						if ($this->_orientation == FActiveForm::TYPE_HORIZONTAL) {
 							$content .= "\t" . $this->beginTag($field_tag, [
-									'class' => "col-$this->columnSize-$labelWidth col-xs-$labelwidth_xs form-label",
-									'style' => 'padding:15px'
-								], $skip) . "\n";
-						}
-						elseif ($this->_orientation == FActiveForm::TYPE_VERTICAL) {
+								'class' => "col-$this->columnSize-$labelWidth col-xs-$labelwidth_xs form-label",
+								'style' => 'padding:15px'
+							], $skip) . "\n";
+						} elseif ($this->_orientation == FActiveForm::TYPE_VERTICAL) {
 							$content .= "\t" . $this->beginTag($field_tag, ['class' => "col-$this->columnSize-$labelWidth col-xs-$labelwidth_xs", 'style' => 'padding:5px'], $skip) . "\n";
 						}
 
@@ -613,8 +609,7 @@ class FFormTable extends Widget
 				if ($labelWidth == 0) {
 					if ($this->_orientation == FActiveForm::TYPE_HORIZONTAL) {
 						$content .= '<div class="form-label" style="padding:15px">' . (key_exists('label', $settings) ? FHtml::t('common', $settings['label']) : FHtml::getFieldLabel($this->model, $attribute, true)) . '</div>';
-					}
-					elseif ($this->_orientation == FActiveForm::TYPE_VERTICAL) {
+					} elseif ($this->_orientation == FActiveForm::TYPE_VERTICAL) {
 						$content .= '<div class="bold" style="margin-top:10px; padding:5px">' . (key_exists('label', $settings) ? FHtml::t('common', $settings['label']) : FHtml::getFieldLabel($this->model, $attribute, true)) . '</div>';
 					}
 				}
@@ -622,8 +617,8 @@ class FFormTable extends Widget
 				if (!empty($settings['attributes'])) {
 					$content .= $this->renderSubAttributes($attribute, $settings, $index);
 				} else {
-                    $content .= "\t\t" . $this->parseInput($attribute, $settings, $index) . "\n";
-                }
+					$content .= "\t\t" . $this->parseInput($attribute, $settings, $index) . "\n";
+				}
 
 				//$content .= $rowCurrentWidth;
 				$content .= "\t" . $this->endTag($field_tag, $skip) . "\n";
@@ -640,7 +635,8 @@ class FFormTable extends Widget
 	 * Render sub attributes
 	 * @return string
 	 */
-	protected function renderSubAttributes($attribute, $settings, $index) {
+	protected function renderSubAttributes($attribute, $settings, $index)
+	{
 		$label_tag   = 'div';
 		$control_tag = 'div';
 		$field_tag   = '';
@@ -650,8 +646,7 @@ class FFormTable extends Widget
 		$label        = ArrayHelper::getValue($settings, 'label', '');
 		if ($this->_orientation === ActiveForm::TYPE_INLINE) {
 			Html::addCssClass($labelOptions, ActiveForm::SCREEN_READER);
-		}
-		elseif ($this->_orientation === ActiveForm::TYPE_VERTICAL) {
+		} elseif ($this->_orientation === ActiveForm::TYPE_VERTICAL) {
 			Html::addCssClass($labelOptions, "control-label");
 		}
 		if ($this->_orientation !== ActiveForm::TYPE_HORIZONTAL) {
@@ -673,7 +668,8 @@ class FFormTable extends Widget
 	 * Gets sub attribute markup content
 	 * @return string
 	 */
-	protected function getSubAttributesContent($attribute, $settings, $index) {
+	protected function getSubAttributesContent($attribute, $settings, $index)
+	{
 		$label_tag   = 'div';
 		$control_tag = 'div';
 		$field_tag   = '';
@@ -716,56 +712,57 @@ class FFormTable extends Widget
 	 * @return \kartik\form\ActiveField|mixed
 	 * @throws InvalidConfigException
 	 */
-	protected function parseInput($attribute, $settings, $index) {
+	protected function parseInput($attribute, $settings, $index)
+	{
 		if ($this->hasModel() && $settings instanceof \Closure) {
 			call_user_func($settings, $this->model, $index, $this);
 
 			return '';
 		}
 		if (strpos($attribute, ':') !== false) {
-            $arr = FHtml::parseAttribute($attribute);
-            $attribute = $arr['attribute'];
-        }
+			$arr = FHtml::parseAttribute($attribute);
+			$attribute = $arr['attribute'];
+		}
 
 		$type     = ArrayHelper::getValue($settings, 'type', self::INPUT_TEXT);
 		$readonly = ArrayHelper::getValue($settings, 'readonly', $this->readonly);
 		$required   = ArrayHelper::getValue($settings, 'required', false);
-        $showValue   = FHtml::getFieldValue($settings, ['content', 'showValue', 'preview', 'html'], null);
+		$showValue   = FHtml::getFieldValue($settings, ['content', 'showValue', 'preview', 'html'], null);
 
-        if ($readonly)
-		    $type = self::INPUT_READONLY;
+		if ($readonly)
+			$type = self::INPUT_READONLY;
 
 
-        if ($this->print == true || $readonly == true || $type == self::INPUT_READONLY || $this->edit_type == FHtml::EDIT_TYPE_VIEW || $readonly) {
-            return ($settings['value'] instanceof \Closure) ? ($this->hasModel() ? FHtml::showModelFieldValue($this->model, $attribute) : '') : $settings['value'];
-        }
-
-        if (isset($settings['value'])) {
-            $result = ($settings['value'] instanceof \Closure) ? call_user_func($settings['value'], ($this->hasModel() ? $this->model : $this->formName), $index, $this) : $settings['value'];
+		if ($this->print == true || $readonly == true || $type == self::INPUT_READONLY || $this->edit_type == FHtml::EDIT_TYPE_VIEW || $readonly) {
+			return ($settings['value'] instanceof \Closure) ? ($this->hasModel() ? FHtml::showModelFieldValue($this->model, $attribute) : '') : $settings['value'];
 		}
-		else {
+
+		if (isset($settings['value'])) {
+			$result = ($settings['value'] instanceof \Closure) ? call_user_func($settings['value'], ($this->hasModel() ? $this->model : $this->formName), $index, $this) : $settings['value'];
+		} else {
 			if ($this->edit_type == FHtml::EDIT_TYPE_INLINE || $type == self::INPUT_INLINE) {
 				$result = $this->form->field($this->model, $attribute)->inline()->label(false);
 			} else {
-                $result = $this->hasModel() ? static::renderActiveInput($this->form, $this->model, $attribute, $settings) : static::renderInput("{$this->formName}[{$attribute}]", $settings, $this->model);
-            }
-        }
+				$result = $this->hasModel() ? static::renderActiveInput($this->form, $this->model, $attribute, $settings) : static::renderInput("{$this->formName}[{$attribute}]", $settings, $this->model);
+			}
+		}
 
-//        if (!$required && ($this->hide_field || $type == self::INPUT_INLINE) && !$readonly && !FHtml::getRequiredFields($this->model, $attribute) && !$readonly && FHtml::currentAction() != 'view') {
-//            if (isset($showValue))
-//                $result = FHtml::showModelFieldToogle($showValue, $result);
-//            else
-//                $result = FHtml::showModelFieldToogle($this->model, $attribute, $result);
-//        }
+		//        if (!$required && ($this->hide_field || $type == self::INPUT_INLINE) && !$readonly && !FHtml::getRequiredFields($this->model, $attribute) && !$readonly && FHtml::currentAction() != 'view') {
+		//            if (isset($showValue))
+		//                $result = FHtml::showModelFieldToogle($showValue, $result);
+		//            else
+		//                $result = FHtml::showModelFieldToogle($this->model, $attribute, $result);
+		//        }
 
-        return $result;
+		return $result;
 	}
 
 	/**
 	 * Begins a tag markup based on orientation
 	 * @return string
 	 */
-	protected function beginTag($tag, $options, $skip = false) {
+	protected function beginTag($tag, $options, $skip = false)
+	{
 		if ($this->_orientation !== ActiveForm::TYPE_INLINE && !$skip) {
 			return Html::beginTag($tag, $options) . "\n";
 		}
@@ -777,7 +774,8 @@ class FFormTable extends Widget
 	 * Ends a tag markup based on orientation
 	 * @return string
 	 */
-	protected function endTag($tag, $skip = false) {
+	protected function endTag($tag, $skip = false)
+	{
 		if ($this->_orientation !== ActiveForm::TYPE_INLINE && !$skip) {
 			return Html::endTag($tag) . "\n";
 		}
@@ -789,7 +787,8 @@ class FFormTable extends Widget
 	 * Checks base config
 	 * @throws InvalidConfigException
 	 */
-	protected function checkBaseConfig() {
+	protected function checkBaseConfig()
+	{
 		if (empty($this->form) && empty($this->formName)) {
 			throw new InvalidConfigException("The 'formName' property must be set when you are not using with ActiveForm.");
 		}
@@ -805,7 +804,8 @@ class FFormTable extends Widget
 	 * Checks config for Form widgets
 	 * @throws InvalidConfigException
 	 */
-	protected function checkFormConfig() {
+	protected function checkFormConfig()
+	{
 		if (!$this->hasModel() && empty($this->formName)) {
 			throw new InvalidConfigException("Either the 'formName' has to be set or a valid 'model' property must be set extending from '\\yii\\base\\Model'.");
 		}
@@ -818,7 +818,8 @@ class FFormTable extends Widget
 	 * Check if a valid model is set for the object instance
 	 * @return boolean
 	 */
-	protected function hasModel() {
+	protected function hasModel()
+	{
 		return isset($this->model) && $this->model instanceof \yii\base\Model;
 	}
 
@@ -833,7 +834,8 @@ class FFormTable extends Widget
 	 * @return \kartik\form\ActiveField
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	protected static function renderActiveInput($form, $model, $attribute, $settings) {
+	protected static function renderActiveInput($form, $model, $attribute, $settings)
+	{
 		$container = ArrayHelper::getValue($settings, 'container', []);
 		$prepend   = ArrayHelper::getValue($settings, 'prepend', '');
 		$append    = ArrayHelper::getValue($settings, 'append', '');
@@ -852,7 +854,8 @@ class FFormTable extends Widget
 	 * @return string the form input markup
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	protected static function renderInput($attribute, $settings = [], $model = null) {
+	protected static function renderInput($attribute, $settings = [], $model = null)
+	{
 		$for          = '';
 		$input        = static::renderRawInput($attribute, $settings, $for, $model);
 		$label        = ArrayHelper::getValue($settings, 'label', false);
@@ -883,7 +886,8 @@ class FFormTable extends Widget
 	 * @return \kartik\form\ActiveField
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	protected static function renderRawActiveInput($form, $model, $attribute, $settings) {
+	protected static function renderRawActiveInput($form, $model, $attribute, $settings)
+	{
 		$type       = ArrayHelper::getValue($settings, 'type', self::INPUT_TEXT);
 		$i          = strpos($attribute, ']');
 		$attribName = $i > 0 ? substr($attribute, $i + 1) : $attribute;
@@ -901,8 +905,7 @@ class FFormTable extends Widget
 		if ($type === self::INPUT_DROPDOWN_LIST || $type === self::INPUT_LIST_BOX || $type === self::INPUT_CHECKBOX_LIST || $type === self::INPUT_RADIO_LIST || $type === self::INPUT_MULTISELECT) {
 			if (isset($settings['items'])) {
 				$items = $settings['items'];
-			}
-			else {
+			} else {
 				$items = FHtml::getComboArray('', FHtml::getTableName($model), $attribute);
 			}
 
@@ -945,29 +948,29 @@ class FFormTable extends Widget
 		}
 
 		if (!empty($type) && FHtml::isInArray($type, [
-				'lookup',
-				'select',
-				'date',
-				'numeric',
-				'html',
-				'datetime',
-				'money',
-				'email',
-				'checkbox',
-				'boolean',
-				'slide',
-				'url',
-				'file',
-				'image',
-				'currency',
-				'star',
-				'inline',
-				'inlineEdit',
-				'static',
-				'color',
-				'textarea',
-				'progress'
-			])) {
+			'lookup',
+			'select',
+			'date',
+			'numeric',
+			'html',
+			'datetime',
+			'money',
+			'email',
+			'checkbox',
+			'boolean',
+			'slide',
+			'url',
+			'file',
+			'image',
+			'currency',
+			'star',
+			'inline',
+			'inlineEdit',
+			'static',
+			'color',
+			'textarea',
+			'progress'
+		])) {
 			return $field->$type()->label(false); //
 		}
 
@@ -981,7 +984,8 @@ class FFormTable extends Widget
 	 * @return string the form input markup
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	protected static function renderRawInput($attribute, $settings = [], &$id, $model = null) {
+	protected static function renderRawInput($attribute, $settings = [], &$id, $model = null)
+	{
 		$type       = ArrayHelper::getValue($settings, 'type', self::INPUT_TEXT);
 		$i          = strpos($attribute, ']');
 		$attribName = $i > 0 ? substr($attribute, $i + 1) : $attribute;
@@ -993,8 +997,7 @@ class FFormTable extends Widget
 		if ($type === self::INPUT_WIDGET) {
 			$id                       = empty($options['options']['id']) ? $id : $options['options']['id'];
 			$options['options']['id'] = $id;
-		}
-		else {
+		} else {
 			$id            = empty($options['id']) ? $id : $options['id'];
 			$options['id'] = $id;
 		}
@@ -1010,8 +1013,7 @@ class FFormTable extends Widget
 		if ($type === self::INPUT_DROPDOWN_LIST || $type === self::INPUT_LIST_BOX || $type === self::INPUT_CHECKBOX_LIST || $type === self::INPUT_RADIO_LIST || $type === self::INPUT_MULTISELECT) {
 			if (isset($settings['items'])) {
 				$items = ArrayHelper::getValue($settings, 'items', []);
-			}
-			else {
+			} else {
 				$items = FHtml::getComboArray('', FHtml::getTableName($model), $attribute);
 			}
 
@@ -1051,7 +1053,8 @@ class FFormTable extends Widget
 	 * @param string      $hint  the hint for the field
 	 * @return ActiveField
 	 */
-	protected static function getInput($field, $label = null, $hint = null) {
+	protected static function getInput($field, $label = null, $hint = null)
+	{
 		if ($label !== null) {
 			$field = $field->label($label);
 		}

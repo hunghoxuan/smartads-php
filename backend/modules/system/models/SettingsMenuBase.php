@@ -9,9 +9,9 @@ use common\models\BaseDataObject;
 use frontend\models\ViewModel;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the model class for table "settings_menu".
  *
  * @property integer $id
@@ -44,7 +44,7 @@ class SettingsMenuBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     const DISPLAY_TYPE_TREE = 'TREE';
     const DISPLAY_TYPE_MEGA = 'MEGA';
 
-// id, icon, name, url, object_type, module, group, role, menu_type, display_type, sort_order, is_active, created_date, created_user, modified_date, modified_user, application_id
+    // id, icon, name, url, object_type, module, group, role, menu_type, display_type, sort_order, is_active, created_date, created_user, modified_date, modified_user, application_id
     const COLUMN_ID = 'id';
     const COLUMN_ICON = 'icon';
     const COLUMN_NAME = 'name';
@@ -72,7 +72,4 @@ class SettingsMenuBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     {
         return 'settings_menu';
     }
-
-
-
 }

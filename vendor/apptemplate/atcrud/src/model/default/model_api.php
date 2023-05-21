@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the template for generating the model class of a specified table.
  */
@@ -17,8 +18,7 @@ use yii\helpers\ArrayHelper;
 /* @var $relations array list of relations (name => relation declaration) */
 
 $columnArray = [];
-foreach ($tableSchema->columns as $column)
-{
+foreach ($tableSchema->columns as $column) {
     $columnArray[] = $column->name;
 }
 
@@ -35,29 +35,29 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
- */
+
+
+
+* This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
+*/
 class <?= $className ?>API extends <?= $className ?>
 {
-    //Customize fields to be displayed in API
-    const COLUMNS_API = [<?php foreach ($tableSchema->columns as $column) {
-    if (!FHtml::isInArray($column->name, FHtml::FIELDS_HIDDEN))
-        echo "'" . $column->name . "', ";
-}?>];
+//Customize fields to be displayed in API
+const COLUMNS_API = [<?php foreach ($tableSchema->columns as $column) {
+                            if (!FHtml::isInArray($column->name, FHtml::FIELDS_HIDDEN))
+                                echo "'" . $column->name . "', ";
+                        } ?>];
 
-    public function fields()
-    {
-        $fields = $this::COLUMNS_API;
+public function fields()
+{
+$fields = $this::COLUMNS_API;
 
-        return $fields;
-    }
+return $fields;
+}
 
-    public function rules()
-    {
-        //No Rules required for API object
-        return [];
-    }
+public function rules()
+{
+//No Rules required for API object
+return [];
+}
 }

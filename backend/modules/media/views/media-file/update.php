@@ -1,10 +1,8 @@
 <?php
-/**
-* Developed by Hung Ho (Steve): hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "MediaFile".
-*/
+
+/*
+ * This is the customized model class for table "MediaFile".
+ */
 
 use yii\helpers\Html;
 use common\components\FHtml;
@@ -22,12 +20,9 @@ $this->params['breadcrumbs'][] = FHtml::t('common', 'Update');
 $controlName = '';
 $currentRole = FHtml::getCurrentRole();
 
-if (FHtml::isInRole($moduleName, 'update', $currentRole))
-{
+if (FHtml::isInRole($moduleName, 'update', $currentRole)) {
     $controlName = '_form';
-}
-else
-{
+} else {
     $controlName = '_view';
 }
 
@@ -36,7 +31,7 @@ else
 ?>
 <div class="media-file-update hidden-print">
     <?= $this->render($controlName, [
-    'model' => $model, 'modelMeta' => $modelMeta, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath
+        'model' => $model, 'modelMeta' => $modelMeta, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath
     ]) ?>
 </div>
 <div class="visible-print">

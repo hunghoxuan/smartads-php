@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "smartscreen_layouts_frame".
  *
 
@@ -24,8 +23,8 @@ class SmartscreenLayoutsFrameBase extends BaseModel //\yii\db\ActiveRecord
 {
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'smartscreen_layouts_frame';
 
     public static function tableName()
@@ -42,28 +41,28 @@ class SmartscreenLayoutsFrameBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['layout_id', 'frame_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['layout_id', 'frame_id'], 'required'],
             [['layout_id', 'frame_id', 'sort_order'], 'integer'],
         ];
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'layout_id' => FHtml::t('SmartscreenLayoutsFrame', 'Layout ID'),
-                    'frame_id' => FHtml::t('SmartscreenLayoutsFrame', 'Frame ID'),
-                ];
+            'layout_id' => FHtml::t('SmartscreenLayoutsFrame', 'Layout ID'),
+            'frame_id' => FHtml::t('SmartscreenLayoutsFrame', 'Frame ID'),
+        ];
     }
 
     public function init()
@@ -83,8 +82,4 @@ class SmartscreenLayoutsFrameBase extends BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

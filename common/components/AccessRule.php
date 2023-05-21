@@ -1,11 +1,14 @@
 <?php
+
 namespace common\components;
+
 use backend\models\AuthPermission;
 use common\models\User;
 use Yii;
 use yii\helpers\Json;
 
-class AccessRule extends \yii\filters\AccessRule {
+class AccessRule extends \yii\filters\AccessRule
+{
 
     protected function matchRole($user)
     {
@@ -27,9 +30,7 @@ class AccessRule extends \yii\filters\AccessRule {
 
         foreach ($this->roles as $role) {
             if ($role === User::ROLE_NONE) {
-                if ($user->getIsGuest()) {
-                    return true;
-                }
+                return true;
             } elseif ($role === User::ROLE_ALL) {
                 if (!$user->getIsGuest()) {
                     return true;
@@ -46,7 +47,8 @@ class AccessRule extends \yii\filters\AccessRule {
         return self::checkAccess(FSecurity::getRoles($this->roles), $module, $controller, $action);
     }
 
-    public static function checkAccess($rights, $module = '', $controller = '', $action = '') {
+    public static function checkAccess($rights, $module = '', $controller = '', $action = '')
+    {
         //1. check user access
         $check_user_access = FSecurity::checkUserAccess();
         if ($check_user_access)
@@ -63,7 +65,7 @@ class AccessRule extends \yii\filters\AccessRule {
             return false;
 
         //3. check roles
-        $result = FSecurity::isInRoles($rights, $module, $controller, $action) ;
+        $result = FSecurity::isInRoles($rights, $module, $controller, $action);
         return $result;
     }
 }

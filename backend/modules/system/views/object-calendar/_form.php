@@ -63,98 +63,97 @@ $ajax = true;
     ]
 ]);
 ?>
-    <div class="form">
-        <div class="row">
-            <div class="col-md-<?= $col_size1 ?>">
-                <div class="portlet light">
-                    <div class="visible-print">
-                        <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
+<div class="form">
+    <div class="row">
+        <div class="col-md-<?= $col_size1 ?>">
+            <div class="portlet light">
+                <div class="visible-print">
+                    <?= FHtml::isViewAction($currentAction) ? FHtml::showPrintHeader($moduleName) : '' ?>
+                </div>
+                <div class="portlet-title tabbable-line hidden-print">
+                    <div class="caption caption-md">
+                        <i class="icon-globe theme-font hide"></i>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) . ":" . FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?></span>
                     </div>
-                    <div class="portlet-title tabbable-line hidden-print">
-                        <div class="caption caption-md">
-                            <i class="icon-globe theme-font hide"></i>
-                            <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) . ":" . FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?></span>
-                        </div>
-                        <div class="tools pull-right">
-                            <a href="#" class="fullscreen"></a>
-                            <a href="#" class="collapse"></a>
-                        </div>
-                        <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
-                            </li>
-                            <li>
-                                <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads') ?></a>
-                            </li>
-                            <li>
-                                <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Attributes') ?></a>
-                            </li>
-                        </ul>
+                    <div class="tools pull-right">
+                        <a href="#" class="fullscreen"></a>
+                        <a href="#" class="collapse"></a>
                     </div>
-                    <div class="portlet-body form">
-                        <div class="form">
-                            <div class="form-body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active row" id="tab_1_1">
-                                        <div class="col-md-12">
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                                'object_id' => ['value' => $form->fieldNoLabel($model, 'object_id')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'object_id', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'color' => ['value' => $form->fieldNoLabel($model, 'color')->color(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'title' => ['value' => $form->fieldNoLabel($model, 'title')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'start_date' => ['value' => $form->fieldNoLabel($model, 'start_date')->datetime(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'end_date' => ['value' => $form->fieldNoLabel($model, 'end_date')->datetime(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'all_day' => ['value' => $form->fieldNoLabel($model, 'all_day')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'all_day', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'link_url' => ['value' => $form->fieldNoLabel($model, 'link_url')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            ]]); ?>
-                                            <?php /*
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
+                        </li>
+                        <li>
+                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads') ?></a>
+                        </li>
+                        <li>
+                            <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Attributes') ?></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form">
+                        <div class="form-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active row" id="tab_1_1">
+                                    <div class="col-md-12">
+                                        <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
+                                            'object_id' => ['value' => $form->fieldNoLabel($model, 'object_id')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'object_id', true, 'id', 'name'))],
+                                            'color' => ['value' => $form->fieldNoLabel($model, 'color')->color()],
+                                            'title' => ['value' => $form->fieldNoLabel($model, 'title')->textInput()],
+                                            'start_date' => ['value' => $form->fieldNoLabel($model, 'start_date')->datetime()],
+                                            'end_date' => ['value' => $form->fieldNoLabel($model, 'end_date')->datetime()],
+                                            'all_day' => ['value' => $form->fieldNoLabel($model, 'all_day')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'all_day', true, 'id', 'name'))],
+                                            'link_url' => ['value' => $form->fieldNoLabel($model, 'link_url')->textInput()],
+                                        ]]); ?>
+                                        <?php /*
                                             <?= FFormTable::widget(['model' => $model, 'title' => FHtml::t('common', 'Pricing'), 'form' => $form, 'columns' => 2, 'attributes' => [
                                             ]]); ?>
                                              */ ?>
-                                            <?= FFormTable::widget(['model' => $model, 'title' => FHtml::t('common', 'Group'), 'form' => $form, 'columns' => 2, 'attributes' => [
-                                                'object_type' => ['value' => $form->fieldNoLabel($model, 'object_type')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'object_type', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'status', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                                'type' => ['value' => $form->fieldNoLabel($model, 'type')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'type', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            ]]); ?>
-                                        </div>
+                                        <?= FFormTable::widget(['model' => $model, 'title' => FHtml::t('common', 'Group'), 'form' => $form, 'columns' => 2, 'attributes' => [
+                                            'object_type' => ['value' => $form->fieldNoLabel($model, 'object_type')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'object_type', true, 'id', 'name'))],
+                                            'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'status', true, 'id', 'name'))],
+                                            'type' => ['value' => $form->fieldNoLabel($model, 'type')->select(FHtml::getComboArray('object_calendar', 'object_calendar', 'type', true, 'id', 'name'))],
+                                        ]]); ?>
                                     </div>
-                                    <div class="tab-pane row" id="tab_1_2">
-                                        <div class="col-md-12">
-                                            <?= FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            ]]); ?>
-                                            <hr/>
-                                            <?= FormObjectFile::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); ?>
-                                        </div>
+                                </div>
+                                <div class="tab-pane row" id="tab_1_2">
+                                    <div class="col-md-12">
+                                        <?= FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => []]); ?>
+                                        <hr />
+                                        <?= FormObjectFile::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); ?>
                                     </div>
-                                    <div class="tab-pane row" id="tab_1_3">
-                                        <div class="col-md-12">
-                                            <?= FormObjectAttributes::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); ?>
-                                        </div>
+                                </div>
+                                <div class="tab-pane row" id="tab_1_3">
+                                    <div class="col-md-12">
+                                        <?= FormObjectAttributes::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); ?>
                                     </div>
-                                    <?php /*
+                                </div>
+                                <?php /*
                                     <div class="tab-pane row" id="tab_1_p">
                                         <div class="col-md-12">
                                         </div>
                                     </div>
                                      */ ?>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php $type = FHtml::getFieldValue($model, 'type');
-                if (isset($modelMeta) && !empty($type)) { ?>
-                    <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
-                <?php } ?>
-                <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
             </div>
-            <?php if ($col_size2 > 0) { ?>
-                <div class="profile-sidebar col-md-<?= $col_size2 ?> col-xs-12 hidden-print">
-                    <div class="portlet light">
-                        <?= FHtml::showModelPreview($model) ?>
-                    </div>
-                </div>
+            <?php $type = FHtml::getFieldValue($model, 'type');
+            if (isset($modelMeta) && !empty($type)) { ?>
+                <?= FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]); ?>
             <?php } ?>
+            <?= FHtml::isViewAction($currentAction) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
         </div>
+        <?php if ($col_size2 > 0) { ?>
+            <div class="profile-sidebar col-md-<?= $col_size2 ?> col-xs-12 hidden-print">
+                <div class="portlet light">
+                    <?= FHtml::showModelPreview($model) ?>
+                </div>
+            </div>
+        <?php } ?>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end(); ?>

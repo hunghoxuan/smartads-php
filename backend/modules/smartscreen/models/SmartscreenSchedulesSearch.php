@@ -33,7 +33,7 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
     public $list_content;
     public $_content_id;
 
-     /**
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -52,8 +52,12 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
         return Model::scenarios();
     }
 
-    public function getDefaultFindParams() {
+    public function getDefaultFindParams()
+    {
         $arr = [];
+        if (FHtml::isRoleUser()) {
+            $arr = [$this->getFieldCreatedUserId() => FHtml::getCurrentUserId()];
+        }
 
         return $arr;
     }
@@ -109,10 +113,10 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
         } else if (!empty($channel_id) && empty($device_id) && empty($campaign_id)) {
             $schedules = Smartscreen::findSchedulesForChannel($channel_id, $date, $date_end, $start_time, $limit, $forAPI, $show_all == 0);
         }
-//        else if (!empty($campaign_id)) {
-//            $listSchedule = Smartscreen::findSchedulesForCampaign($campaign_id, $date, $date_end, $start_time, $limit, $forAPI);
-//            $schedules = array_merge($schedules, $listSchedule);
-//        }
+        //        else if (!empty($campaign_id)) {
+        //            $listSchedule = Smartscreen::findSchedulesForCampaign($campaign_id, $date, $date_end, $start_time, $limit, $forAPI);
+        //            $schedules = array_merge($schedules, $listSchedule);
+        //        }
         else {
             $autoCalculateStarttime = !empty($device_id);
             $device = SmartscreenStation::findOneCached($device_id);
@@ -149,7 +153,8 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
         return $dataProvider;
     }
 
-    public function getCustomFields() {
+    public function getCustomFields()
+    {
         $result = ['start_time2', 'date2'];
         if (FHtml::field_exists($this, 'COLUMNS_API'))
             $result = array_merge($result, $this::COLUMNS_API);
@@ -160,7 +165,8 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
         return $result;
     }
 
-    public static function findAllCached() {
+    public static function findAllCached()
+    {
         $result = Smartscreen::Cache(self::tableName());
         if (isset($result) && !empty($result))
             return $result;
@@ -170,7 +176,8 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
         return $result;
     }
 
-    public static function findOneCached($id) {
+    public static function findOneCached($id)
+    {
         if (empty($id) || $id == FHtml::NULL_VALUE)
             return null;
         if (!Smartscreen::isObjectCachable(static::tableName()))
@@ -204,7 +211,8 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
         return $this->hasOne(SmartscreenContent::className(), ['id' => 'content_id']);
     }
 
-    public function showPreview($showTable = false) {
+    public function showPreview($showTable = false)
+    {
         if (empty($this->date) && empty($this->date_end))
             $date = "<span style='color: grey'>" . FHtml::t('All') . "</span>";
         else if ($this->date == $this->date_end)
@@ -278,5 +286,4 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
         else
             return "<div style='font-size: 90%; color: grey'>" . FHtml::showArrayAsTable($result, 'label') . "</div>";
     }
-
 }

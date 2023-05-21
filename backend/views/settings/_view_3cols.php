@@ -1,8 +1,9 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "Settings".
  */
 
@@ -53,7 +54,7 @@ $form_label_CSS = 'text-default';
     'staticOnly' => false, // check the Role here
     'readonly' => !$canEdit, // check the Role here
     'options' => [
-//'class' => 'form-horizontal',
+        //'class' => 'form-horizontal',
         'enctype' => 'multipart/form-data'
     ]
 ]);
@@ -107,8 +108,7 @@ $form_label_CSS = 'text-default';
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
-                        <span
-                            class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) ?></span>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', $moduleTitle) ?></span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -126,7 +126,7 @@ $form_label_CSS = 'text-default';
                             <div class="tab-content">
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
-                                        <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?>                                               <?= FHtml::showModelField($model, 'metaKey', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings', 'metaKey', 'varchar(255)', '', '') ?>
+                                        <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?> <?= FHtml::showModelField($model, 'metaKey', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings', 'metaKey', 'varchar(255)', '', '') ?>
 
                                         <?= FHtml::showModelField($model, 'metaValue', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings', 'metaValue', 'varchar(255)', '', '') ?>
 
@@ -142,12 +142,13 @@ $form_label_CSS = 'text-default';
                                         <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?>                                                                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?>
                                     </div>
                                 </div>
-                                -->                                <!--<div class="tab-pane row" id="tab_1_3">
+                                --> <!--<div class="tab-pane row" id="tab_1_3">
                                     <div class="col-md-12">
                                         <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?>                                                                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?>
                                     </div>
                                 </div>
-                                -->                            </div>
+                                -->
+                            </div>
                         </div>
 
                     </div>
@@ -158,17 +159,16 @@ $form_label_CSS = 'text-default';
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
-                        <span
-                            class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', 'Grouping') ?></span>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', 'Grouping') ?></span>
                     </div>
                 </div>
                 <div class="">
                     <div class="tab-content">
                         <div class="tab-pane active row" id="tab_1_1">
                             <div class="col-md-12">
-                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?>                                       <?= FHtml::showModelField($model, 'is_system', FHtml::SHOW_ACTIVE, $field_layout, $form_label_CSS, 'settings', 'is_system', 'tinyint(1)', '', '') ?>
+                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?> <?= FHtml::showModelField($model, 'is_system', FHtml::SHOW_ACTIVE, $field_layout, $form_label_CSS, 'settings', 'is_system', 'tinyint(1)', '', '') ?>
 
-                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?>                            </div>
+                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?> </div>
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,3 @@ $form_label_CSS = 'text-default';
     </div>
 </div>
 <?php \common\widgets\FActiveForm::end(); ?>
-
-
-
-

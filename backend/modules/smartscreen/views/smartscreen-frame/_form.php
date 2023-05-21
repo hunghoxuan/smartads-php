@@ -1,8 +1,9 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "SmartscreenFrame".
  */
 
@@ -79,7 +80,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
                             <?= FHtml::t('common', $moduleTitle) ?>
-                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?>                        </span>
+                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -100,35 +101,34 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            //'content_id' => ['value' => $form->fieldNoLabel($model, 'content_id')->select(FHtml::getComboArray('@smartscreen_content')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            //'content_id' => ['value' => $form->fieldNoLabel($model, 'content_id')->select(FHtml::getComboArray('@smartscreen_content'))],
 
-                                            //'content' => ['value' => $form->fieldNoLabel($model, 'content')->html(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            //'file' => ['value' => $form->fieldNoLabel($model, 'file')->file(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            //'content' => ['value' => $form->fieldNoLabel($model, 'content')->html()],
+                                            //'file' => ['value' => $form->fieldNoLabel($model, 'file')->file()],
 
 
-                                            'contentLayout' => ['value' => $form->fieldNoLabel($model, 'contentLayout')->select(), 'type' => FHtml::INPUT_RAW],
-                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->boolean(), 'type' => FHtml::INPUT_RAW],
+                                            'contentLayout' => ['value' => $form->fieldNoLabel($model, 'contentLayout')->select()],
+                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->boolean()],
 
                                         ]]); ?>
                                         <?php echo FFormTable::widget(['model' => $model, 'title' => 'Position',  'form' => $form, 'columns' => 2, 'attributes' => [
 
+                                            'marginTop' => ['value' => $form->fieldNoLabel($model, 'marginTop')->numeric()],
+                                            'marginLeft' => ['value' => $form->fieldNoLabel($model, 'marginLeft')->numeric()],
+                                            'percentWidth' => ['value' => $form->fieldNoLabel($model, 'percentWidth')->numeric()],
+                                            'percentHeight' => ['value' => $form->fieldNoLabel($model, 'percentHeight')->numeric()],
                                             'backgroundColor' => ['value' => $form->fieldNoLabel($model, 'backgroundColor')->widget(ColorInput::classname(), [
                                                 'options' => [
                                                     'placeholder' => 'Select color ...',
                                                 ],
-                                            ]), 'type' => FHtml::INPUT_RAW],
+                                            ])],
                                             'font_color' => ['value' => $form->fieldNoLabel($model, 'font_color')->widget(ColorInput::classname(), [
                                                 'options' => [
                                                     'placeholder' => 'Select color ...',
                                                 ],
-                                            ]), 'type' => FHtml::INPUT_RAW],
-
-                                            'percentWidth' => ['value' => $form->fieldNoLabel($model, 'percentWidth')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'percentHeight' => ['value' => $form->fieldNoLabel($model, 'percentHeight')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'marginLeft' => ['value' => $form->fieldNoLabel($model, 'marginLeft')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'marginTop' => ['value' => $form->fieldNoLabel($model, 'marginTop')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            ]]); ?>
+                                            ])],
+                                        ]]); ?>
 
 
                                     </div>

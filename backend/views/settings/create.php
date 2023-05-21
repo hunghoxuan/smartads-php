@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "Settings".
-*/
+ *
+ ***
+ * This is the customized model class for table "Settings".
+ */
+
 use yii\helpers\Html;
 use common\components\FHtml;
 
@@ -37,8 +38,11 @@ if (FHtml::isInRole('', 'create', $currentRole)) {
 
 ?>
 <div class="settings-create">
-    <?php if($canCreate === true) { echo  $this->render($controlName, [
-    'model' => $model,'moduleKey' => $moduleKey, 'modulePath' => $modulePath
-    ]);} else { ?>
-    <?=  Html::a(FHtml::t('common', 'Cancel'), ['index'], ['class' => 'btn btn-default']);} ?>
+    <?php if ($canCreate === true) {
+        echo  $this->render($controlName, [
+            'model' => $model, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath
+        ]);
+    } else { ?>
+    <?= Html::a(FHtml::t('common', 'Cancel'), ['index'], ['class' => 'btn btn-default']);
+    } ?>
 </div>

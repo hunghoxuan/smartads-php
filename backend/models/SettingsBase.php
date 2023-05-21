@@ -10,9 +10,8 @@ use common\models\BaseDataObject;
 use frontend\models\ViewModel;
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "settings".
  *
 
@@ -28,7 +27,7 @@ use frontend\models\ViewModel;
 class SettingsBase extends \common\models\BaseModel //\yii\db\ActiveRecord
 {
 
-// id, metaKey, metaValue, group, editor, lookup, is_system, application_id
+    // id, metaKey, metaValue, group, editor, lookup, is_system, application_id
     const COLUMN_ID = 'id';
     const COLUMN_METAKEY = 'metaKey';
     const COLUMN_METAVALUE = 'metaValue';
@@ -39,8 +38,8 @@ class SettingsBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     const COLUMN_APPLICATION_ID = 'application_id';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'settings';
 
     public static function tableName()

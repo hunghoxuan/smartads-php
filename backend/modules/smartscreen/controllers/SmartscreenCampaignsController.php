@@ -1,10 +1,6 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "SmartscreenSchedules".
- */
+
+
 
 namespace backend\modules\smartscreen\controllers;
 
@@ -43,7 +39,8 @@ class SmartscreenCampaignsController extends SmartscreenController
 	/**
 	 * @inheritdoc
 	 */
-	public function behaviors() {
+	public function behaviors()
+	{
 		return FHtml::getControllerBehaviours([
 			'verbs'  => [
 				'class'   => VerbFilter::className(),
@@ -74,8 +71,7 @@ class SmartscreenCampaignsController extends SmartscreenController
 						'roles'   => [
 							User::ROLE_MODERATOR,
 							User::ROLE_ADMIN,
-                            User::ROLE_USER,
-                        ],
+						],
 					],
 				],
 			],
@@ -86,7 +82,8 @@ class SmartscreenCampaignsController extends SmartscreenController
 	 * Lists all SmartscreenSchedules models.
 	 * @return mixed
 	 */
-	public function actionIndex() {
+	public function actionIndex()
+	{
 
 		$searchModel = SmartscreenCampaigns::createNew();
 		$searchModel->load(Yii::$app->request->post());
@@ -97,13 +94,13 @@ class SmartscreenCampaignsController extends SmartscreenController
 
 		if (!empty($_POST)) {
 
-            $params = Smartscreen::getCurrentParams(['index'], 'SmartscreenCampaigns', null, ['date', 'date_end']);
-            $url = Url::to($params);
-            $url = FHtml::createFormalizedBackendLink($url);
+			$params = Smartscreen::getCurrentParams(['index'], 'SmartscreenCampaigns', null, ['date', 'date_end']);
+			$url = Url::to($params);
+			$url = FHtml::createFormalizedBackendLink($url);
 
-            $response = Yii::$app->getResponse();
-            return $response->redirect(Url::to($url), 302);
-        }
+			$response = Yii::$app->getResponse();
+			return $response->redirect(Url::to($url), 302);
+		}
 
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -120,7 +117,8 @@ class SmartscreenCampaignsController extends SmartscreenController
 	 * @param integer $id
 	 * @return mixed
 	 */
-	public function actionView($id) {
+	public function actionView($id)
+	{
 		$request = Yii::$app->request;
 
 		$model = $this->findModel($id);
@@ -135,12 +133,11 @@ class SmartscreenCampaignsController extends SmartscreenController
 					'model' => $model
 				]),
 				'footer'  => Html::a(FHtml::t('Update'), ['update', 'id' => $id], [
-						'class' => 'btn btn-primary pull-left',
-						'role'  => $this->view->params['displayType']
-					]) . Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
+					'class' => 'btn btn-primary pull-left',
+					'role'  => $this->view->params['displayType']
+				]) . Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
 			];
-		}
-		else {
+		} else {
 			return $this->render('view', ['model' => $model]);
 		}
 	}
@@ -151,59 +148,56 @@ class SmartscreenCampaignsController extends SmartscreenController
 	 * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
 	 * @return mixed
 	 */
-	public function actionCreate($type = false) {
+	public function actionCreate($type = false)
+	{
 		$request = Yii::$app->request;
 
 		$model = $this->createModel($this->object_type);
 
 		if ($request->isAjax) {
 			return FHtml::saveModelAjax($this, $model, null);
-		}
-		else {
+		} else {
 			if ($model->load($request->post())) {
-                $model->id = null;
+				$model->id = null;
 
-                $model->save();
+				$model->save();
 
 				if ($this->saveType() == 'save' && !empty($model_id)) {
 					return $this->redirect(['update', 'id' => $model_id]);
 				}
 
 				return $this->redirect(['index']);
-
-
-			}
-			else {
+			} else {
 				return $this->render('create', ['model' => $model]);
 			}
 		}
 	}
 
 
-	public function actionUpdate($id = '') {
+	public function actionUpdate($id = '')
+	{
 		$request = Yii::$app->request;
 		$model   = SmartscreenCampaigns::findOne($id);
 
 		if ($request->isAjax) {
 			return FHtml::saveModelAjax($this, $model, null);
-		}
-		else {
+		} else {
 			if ($model->load($request->post())) {
-			    $model->save();
+				$model->save();
 
 				if ($this->saveType() == 'save') {
-                    return $this->render('update', ['model' => $model]);
+					return $this->render('update', ['model' => $model]);
 				}
 
 				return $this->redirect(Smartscreen::getCurrentParams(['index']));
-			}
-			else {
+			} else {
 				return $this->render('update', ['model' => $model]);
 			}
 		}
 	}
 
-	public function actionDelete($id) {
+	public function actionDelete($id)
+	{
 		$request = Yii::$app->request;
 
 		$this->findModel($id)->delete();
@@ -212,14 +206,14 @@ class SmartscreenCampaignsController extends SmartscreenController
 			Yii::$app->response->format = Response::FORMAT_JSON;
 
 			return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-		}
-		else {
+		} else {
 			return $this->redirect(['index']);
 		}
 	}
 
 
-	public function actionBulkDelete() {
+	public function actionBulkDelete()
+	{
 		$request = Yii::$app->request;
 
 		$pks = explode(',', $request->post('pks')); // Array or selected records primary keys
@@ -234,13 +228,13 @@ class SmartscreenCampaignsController extends SmartscreenController
 			Yii::$app->response->format = Response::FORMAT_JSON;
 
 			return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-		}
-		else {
+		} else {
 			return $this->redirect(['index']);
 		}
 	}
 
-	public function actionBulkAction($action = '', $field = '', $value = '') {
+	public function actionBulkAction($action = '', $field = '', $value = '')
+	{
 		$request = Yii::$app->request;
 
 		$pks = explode(',', $request->post('pks')); // Array or selected records primary keys
@@ -258,8 +252,7 @@ class SmartscreenCampaignsController extends SmartscreenController
 			Yii::$app->response->format = Response::FORMAT_JSON;
 
 			return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-		}
-		else {
+		} else {
 			return $this->redirect(['index']);
 		}
 	}
@@ -272,12 +265,14 @@ class SmartscreenCampaignsController extends SmartscreenController
 	 * @return SmartscreenSchedules the loaded model
 	 * @throws NotFoundHttpException if the model cannot be found
 	 */
-	protected function findModel($id) {
+	protected function findModel($id)
+	{
 		$model = parent::findModel($id);
 		return $model;
 	}
 
-	protected function createModel($className = '', $id = '', $params = null) {
+	protected function createModel($className = '', $id = '', $params = null)
+	{
 		$model = parent::createModel($className, $id, $params);
 
 		//$model->start_time = null;
@@ -285,9 +280,8 @@ class SmartscreenCampaignsController extends SmartscreenController
 	}
 
 
-	public function actionLayoutContent() {
+	public function actionLayoutContent()
+	{
 		$action = $_REQUEST['action'];
 	}
-
-
 }

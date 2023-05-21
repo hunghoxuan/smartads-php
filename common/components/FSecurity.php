@@ -1,10 +1,6 @@
 <?php
 
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
+/*This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
  */
 
 namespace common\components;
@@ -47,6 +43,16 @@ class FSecurity extends FFile
     const USER_FIELD_LAST_LOGIN = 'last_login';
     const USER_FIELD_LAST_LOGOUT = 'last_logout';
     const TABLE_ALIAS_USER = 'qms_user';
+
+    public static function getCurrentUser()
+    {
+        return self::currentUserIdentity();
+    }
+
+    public static function getCurrentUserId()
+    {
+        return self::currentUserId();
+    }
 
     public static function currentUser($zone = '')
     {
@@ -242,10 +248,37 @@ class FSecurity extends FFile
         return false;
     }
 
+    public static function getCurrentAction($action = '')
+    {
+        $currentAction = FHtml::currentAction();
+
+        if (empty($action))
+            $action = $currentAction;
+
+        if ($action == 'update' && $currentAction == 'create')
+            $action = $currentAction;
+
+        if ($action == 'edit')
+            $action = 'update';
+
+        if ($action == 'add')
+            $action = 'create';
+
+        if ($action == 'view-detail')
+            $action = 'view';
+
+        return $action;
+    }
+
     //HungHX: 20160801
     public static function isInRole($object_type, $action, $role = '', $userid = '', $field = '', $checkCurrentController = true)
     {
-        $currentAction = FHtml::currentAction();
+        $action = self::getCurrentAction($action);
+        $currentRole = FHtml::getCurrentRole();
+
+        if ($currentRole && is_array($role) && !empty($role)) {
+            return in_array($currentRole, $role);
+        }
 
         if (is_bool($role)) {
             $checkCurrentController = $role;
@@ -255,13 +288,17 @@ class FSecurity extends FFile
         if (empty($role))
             $role = FHtml::getCurrentRole();
 
-        if ($role == \common\models\User::ROLE_ADMIN) {
+        if (self::isRoleAdmin()) {
             return true; // can do any thing
         }
 
         $user = self::currentUser();
         if (!isset($user)) {
             return false;
+        }
+
+        if (in_array($action, ['create']) && !$user->isGuest) {
+            return true;
         }
 
         if (in_array($action, ['update', 'edit', 'delete']) && $user->id == $userid) {
@@ -276,19 +313,6 @@ class FSecurity extends FFile
             if (in_array($action, ['view', 'index', 'create', 'update']))
                 return true;
         }
-
-        if ($action == 'edit')
-            $action = 'update';
-
-        if ($action == 'add')
-            $action = 'create';
-
-        if ($action == 'view-detail') {
-            $action = 'view';
-        }
-
-        if ($action == 'update' && $currentAction == 'create')
-            $action = $currentAction;
 
         if (empty($object_type))
             $object_type = str_replace('-', '_', FHtml::currentController());
@@ -438,7 +462,7 @@ class FSecurity extends FFile
         }
 
         if (is_string($roles)) {
-            $roles = [$roles];
+            $roles = FHtml::decode($roles);
         }
 
         foreach ($roles as $item) {
@@ -453,8 +477,9 @@ class FSecurity extends FFile
         $object_type = strtolower(str_replace('-', '_', $controller));
 
         //Hung: 15.11 - authorized columns, defined in model
-        if (!FHtml::isTableExisted($object_type))
-            return [];
+        if (!FHtml::isTableExisted($object_type)) {
+            return $arr;
+        }
 
         $object_model = FHtml::createModel($object_type);
         $authorized_columns = isset($object_model) ? FSecurity::getAuthorizedColumns($object_model) : [];
@@ -526,7 +551,6 @@ class FSecurity extends FFile
 
         $arr = array_merge($arr, $roles1);
         $arr = array_unique($arr);
-
 
         return $arr;
     }
@@ -1140,7 +1164,7 @@ class FSecurity extends FFile
         else
             $arr = array_merge($arr, [$secret_key]);
 
-        $arr_str = implode($arr, ',');
+        $arr_str = implode(',', $arr);
         $sha1 = hash($algorithm, $arr_str, true);
         return bin2hex($sha1);
     }

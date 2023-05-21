@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "ToolsCopy".
-*/
+ *
+ ***
+ * This is the customized model class for table "ToolsCopy".
+ */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -46,33 +47,33 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
 ?>
 
 <?php if (!Yii::$app->request->isAjax) {
-$this->title = FHtml::t($moduleTitle);
-$this->params['mainIcon'] = 'fa fa-list';
-$this->params['toolBarActions'] = array(
-'linkButton'=>array(),
-'button'=>array(),
-'dropdown'=>array(),
-);
+    $this->title = FHtml::t($moduleTitle);
+    $this->params['mainIcon'] = 'fa fa-list';
+    $this->params['toolBarActions'] = array(
+        'linkButton' => array(),
+        'button' => array(),
+        'dropdown' => array(),
+    );
 } ?>
 
 <?php if ($ajax) Pjax::begin(['id' => 'crud-datatable'])  ?>
 
 <?php $form = FActiveForm::begin([
-'id' => 'tools-copy-form',
-'type' => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
-'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
-'staticOnly' => false, // check the Role here
-'readonly' => !$canEdit, // check the Role here
-'edit_type' => $edit_type,
-'display_type' => $display_type,
-'enableClientValidation' => true,
-'enableAjaxValidation' => false,
-'options' => [
-    //'class' => 'form-horizontal',
-    'enctype' => 'multipart/form-data'
-]
+    'id' => 'tools-copy-form',
+    'type' => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
+    'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
+    'staticOnly' => false, // check the Role here
+    'readonly' => !$canEdit, // check the Role here
+    'edit_type' => $edit_type,
+    'display_type' => $display_type,
+    'enableClientValidation' => true,
+    'enableAjaxValidation' => false,
+    'options' => [
+        //'class' => 'form-horizontal',
+        'enctype' => 'multipart/form-data'
+    ]
 ]);
- ?>
+?>
 
 
 <div class="form">
@@ -87,7 +88,7 @@ $this->params['toolBarActions'] = array(
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
-                            <?= FHtml::t('common', $moduleTitle) ?> : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?>                        </span>
+                            <?= FHtml::t('common', $moduleTitle) ?> : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -95,15 +96,15 @@ $this->params['toolBarActions'] = array(
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info')?></a>
+                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
                         </li>
                         <li>
-                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads')?></a>
+                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads') ?></a>
                         </li>
                         <li>
-                            <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Attributes')?></a>
+                            <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Attributes') ?></a>
                         </li>
-                                                </ul>
+                    </ul>
                 </div>
                 <div class="portlet-body form">
                     <div class="form">
@@ -111,46 +112,43 @@ $this->params['toolBarActions'] = array(
                             <div class="tab-content">
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
-<?php
-    $folders_copy_to = FFile::rootFolders();
-    $folder_copy = FFile::listFolders(FFile::getFullpath(), true, ['common', 'backend'], ['web', 'runtime', 'messages']);
-    $file_copy = FFile::listFiles(FFile::getFullpath(), true, ['common', 'backend', 'modules\app'], ['web', 'modules', 'runtime', 'messages']);
-?>
-<?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [ 
-    'copy_to'   => ['value' => $form->fieldNoLabel($model, 'name')->selectMany($folders_copy_to), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-    'folder copy' => ['value' => $form->fieldNoLabel($model, 'folders')->selectMany($folder_copy), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-    'file copy' => ['value' => $form->fieldNoLabel($model, 'files')->selectMany($file_copy), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-    'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-]]); ?>
+                                        <?php
+                                        $folders_copy_to = FFile::rootFolders();
+                                        $folder_copy = FFile::listFolders(FFile::getFullpath(), true, ['common', 'backend'], ['web', 'runtime', 'messages']);
+                                        $file_copy = FFile::listFiles(FFile::getFullpath(), true, ['common', 'backend', 'modules\app'], ['web', 'modules', 'runtime', 'messages']);
+                                        ?>
+                                        <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
+                                            'copy_to'   => ['value' => $form->fieldNoLabel($model, 'name')->selectMany($folders_copy_to)],
+                                            'folder copy' => ['value' => $form->fieldNoLabel($model, 'folders')->selectMany($folder_copy)],
+                                            'file copy' => ['value' => $form->fieldNoLabel($model, 'files')->selectMany($file_copy)],
+                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea()],
+                                        ]]); ?>
 
-                                        
+
                                     </div>
                                 </div>
 
                                 <div class="tab-pane row" id="tab_1_2">
                                     <div class="col-md-12">
-                                               <?php echo FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => [ 
+                                        <?php echo FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => []]); ?>
 
-                                        
-                                              ]]); ?>
-
-                                        <hr/>
-                                               <?php echo FormObjectFile::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); 
-                                            ?>
+                                        <hr />
+                                        <?php echo FormObjectFile::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]);
+                                        ?>
 
 
                                     </div>
                                 </div>
                                 <div class="tab-pane row" id="tab_1_3">
                                     <div class="col-md-12">
-                                               <?php echo FormObjectAttributes::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]); 
-                                            ?>
+                                        <?php echo FormObjectAttributes::widget(['model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]);
+                                        ?>
 
 
 
                                     </div>
                                 </div>
-                                
+
                                 <!--<div class="tab-pane row" id="tab_1_p">
                                     <div class="col-md-12">
                                                                             </div>
@@ -164,11 +162,11 @@ $this->params['toolBarActions'] = array(
                 </div>
             </div>
 
-            
-            <?php            $type = FHtml::getFieldValue($model, 'type');
+
+            <?php $type = FHtml::getFieldValue($model, 'type');
             if (isset($modelMeta) && !empty($type))
                 echo FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]);
-              ?>
+            ?>
             <?= (FHtml::isViewAction($currentAction)) ?  FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete)  ?>
 
         </div>
@@ -179,5 +177,5 @@ $this->params['toolBarActions'] = array(
         </div>
     </div>
 </div>
-   <?php FActiveForm::end(); ?>
+<?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end()  ?>

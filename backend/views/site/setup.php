@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "Book".
  */
+
 use common\components\FHtml;
 use common\widgets\FActiveForm;
 use common\widgets\FFormTable;
@@ -33,9 +35,9 @@ $ok = \common\components\FConfig::checkDbConnection();
     $this->title = FHtml::t($moduleTitle);
     $this->params['mainIcon'] = 'fa fa-list';
     $this->params['toolBarActions'] = array(
-        'linkButton'=>array(),
-        'button'=>array(),
-        'dropdown'=>array(),
+        'linkButton' => array(),
+        'button' => array(),
+        'dropdown' => array(),
     );
 } ?>
 
@@ -55,8 +57,7 @@ $ok = \common\components\FConfig::checkDbConnection();
 ]);
 ?>
 <?php
-if ($ok)
-{?>
+if ($ok) { ?>
     <?php
     FHtml::showErrorMessage('System is already installed and running. To reinstall again, please delete current database and run setup.');
     return; ?>
@@ -87,10 +88,12 @@ echo FHtml::showWizard('fsd', [
     [
         'title' => FHtml::t('common', 'Admin User'),
         'icon' => 'glyphicon glyphicon-cloud-upload',
-        'content' => FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'title' => 'Create Admin User' ,
+        'content' => FFormTable::widget([
+            'model' => $model, 'form' => $form, 'columns' => 2, 'title' => 'Create Admin User',
             'attributes' => [
                 'admin_username', 'admin_password'
-            ]]),
+            ]
+        ]),
     ],
     [
         'title' => FHtml::t('common', 'Settings'),
@@ -101,11 +104,11 @@ echo FHtml::showWizard('fsd', [
             'app_website',
             'admin_phone', 'admin_email'
         ]]) . FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'title' => 'Purchase & License Key', 'attributes' => [
-                'purchase_site',
-                'client_name',  'client_email',
-                'purchase_order',
+            'purchase_site',
+            'client_name',  'client_email',
+            'purchase_order',
 
-            ]]),
+        ]]),
     ],
     [
         'title' => FHtml::t('common', 'Config Email'),
@@ -123,4 +126,4 @@ echo FHtml::showWizard('fsd', [
 ?>
 <?php FActiveForm::end(); ?>
 
-<?= FHtml::t('message', 'For direct question and support, please send email to the author of application') ?>: <b><?= FHtml::getAuthor() ?></b> (<a href="mailto:<?= FHtml::getAuthorEmail()?>"><?= FHtml::getAuthorEmail()?></a>) <br/>
+<?= FHtml::t('message', 'For direct question and support, please send email to the author of application') ?>: <b><?= FHtml::getAuthor() ?></b> (<a href="mailto:<?= FHtml::getAuthorEmail() ?>"><?= FHtml::getAuthorEmail() ?></a>) <br />

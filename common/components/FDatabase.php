@@ -1,10 +1,8 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
+
+/*This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
  */
+
 namespace common\components;
 
 use backend\models;
@@ -43,7 +41,8 @@ class FDatabase extends Migration
     public $backupFolder = '/backup/{application_id}/{date}';
 
     private static $_instance;
-    public static function instance() {
+    public static function instance()
+    {
         if (!isset(static::$_instance))
             static::$_instance = new FDatabase();
 
@@ -56,15 +55,18 @@ class FDatabase extends Migration
         parent::init();
     }
 
-    public function currentDb($dbName = '') {
+    public function currentDb($dbName = '')
+    {
         return FHtml::currentDb($dbName);
     }
 
-    public function execSqlFile($sqlFile) {
+    public function execSqlFile($sqlFile)
+    {
         return FModel::executeFileSql($sqlFile);
     }
 
-    protected function getPath($backupFolder = '') {
+    protected function getPath($backupFolder = '')
+    {
         if (empty($backupFolder))
             $backupFolder = $this->backupFolder;
 
@@ -72,19 +74,22 @@ class FDatabase extends Migration
         return $this->_path;
     }
 
-    public function getTables($dbName = null) {
+    public function getTables($dbName = null)
+    {
         $sql = 'SHOW TABLES';
         $cmd = $this->currentDb($dbName)->createCommand($sql);
         $tables = $cmd->queryColumn();
         return $tables;
     }
 
-    public function writeComment($string) {
+    public function writeComment($string)
+    {
         $result = $this->getComment($string);
         fwrite($this->fp, $result);
     }
 
-    public function getComment($string) {
+    public function getComment($string)
+    {
         $result = '';
         $result .= '-- -------------------------------------------' . PHP_EOL;
         $result .= '-- ' . $string . PHP_EOL;
@@ -92,7 +97,8 @@ class FDatabase extends Migration
         return $result;
     }
 
-    public function buildCreateTableSql($tableName, $fp = null) {
+    public function buildCreateTableSql($tableName, $fp = null)
+    {
         if (!isset($fp) && isset($this->fp))
             $fp = $this->fp;
 
@@ -114,13 +120,14 @@ class FDatabase extends Migration
         }
     }
 
-    public function buildDropTableSql($tableName, $fp = null) {
+    public function buildDropTableSql($tableName, $fp = null)
+    {
         if (!isset($fp) && isset($this->fp))
             $fp = $this->fp;
 
         if ($fp) {
             $this->writeComment('TABLE `' . addslashes($tableName) . '`');
-            $final = 'DROP TABLE IF EXISTS `' . addslashes($tableName) . '`;' . PHP_EOL ;
+            $final = 'DROP TABLE IF EXISTS `' . addslashes($tableName) . '`;' . PHP_EOL;
             fwrite($fp, $final);
             return $final;
         } else {
@@ -129,13 +136,14 @@ class FDatabase extends Migration
         }
     }
 
-    public function buildCleanTableSql($tableName, $fp = null) {
+    public function buildCleanTableSql($tableName, $fp = null)
+    {
         if (!isset($fp) && isset($this->fp))
             $fp = $this->fp;
 
         if ($fp) {
             $this->writeComment('TABLE `' . addslashes($tableName) . '`');
-            $final = 'TRUNCATE TABLE `' . addslashes($tableName) . '`;' . PHP_EOL ;
+            $final = 'TRUNCATE TABLE `' . addslashes($tableName) . '`;' . PHP_EOL;
             fwrite($fp, $final);
             return $final;
         } else {
@@ -144,49 +152,50 @@ class FDatabase extends Migration
         }
     }
 
-    public function buildInsertDataSql($tableName, $fp = null) {
+    public function buildInsertDataSql($tableName, $fp = null)
+    {
         $sql = 'SELECT * FROM ' . $tableName;
-        $cmd = $this->currentDb()->createCommand ( $sql );
-        $dataReader = $cmd->query ();
+        $cmd = $this->currentDb()->createCommand($sql);
+        $dataReader = $cmd->query();
 
         if (!isset($fp) && isset($this->fp))
             $fp = $this->fp;
 
         if ($fp) {
-            $this->writeComment ( 'TABLE DATA ' . $tableName );
+            $this->writeComment('TABLE DATA ' . $tableName);
         }
 
         $final = '';
-        foreach ( $dataReader as $data ) {
+        foreach ($dataReader as $data) {
             $data_string = '';
-            $itemNames = array_keys ( $data );
-            $itemNames = array_map ( "addslashes", $itemNames );
-            $items = join ( '`,`', $itemNames );
-            $itemValues = array_values ( $data );
-            $itemValues = array_map ( "addslashes", $itemValues );
-            $valueString = join ( "','", $itemValues );
+            $itemNames = array_keys($data);
+            $itemNames = array_map("addslashes", $itemNames);
+            $items = join('`,`', $itemNames);
+            $itemValues = array_values($data);
+            $itemValues = array_map("addslashes", $itemValues);
+            $valueString = join("','", $itemValues);
             $valueString = "('" . $valueString . "'),";
             $values = "\n" . $valueString;
             if ($values != "") {
-                $data_string .= "INSERT INTO `$tableName` (`$items`) VALUES" . rtrim ( $values, "," ) . ";" . PHP_EOL;
+                $data_string .= "INSERT INTO `$tableName` (`$items`) VALUES" . rtrim($values, ",") . ";" . PHP_EOL;
             }
             if ($fp) {
-                fwrite ( $fp, $data_string );
+                fwrite($fp, $data_string);
             }
             $final .= $data_string . PHP_EOL;
         }
 
         if ($fp) {
-            $this->writeComment ( 'TABLE DATA ' . $tableName );
-            fwrite ( $fp, PHP_EOL . PHP_EOL . PHP_EOL );
+            $this->writeComment('TABLE DATA ' . $tableName);
+            fwrite($fp, PHP_EOL . PHP_EOL . PHP_EOL);
         } else {
-
         }
         return $final;
     }
 
 
-    public function defaultTableOptions() {
+    public function defaultTableOptions()
+    {
         $tableOptions = null;
         $this->db = FHtml::currentDb();
         if ($this->db->driverName === 'mysql') {
@@ -278,8 +287,7 @@ class FDatabase extends Migration
     {
         $columns1 = [];
         foreach ($columns as $name => $type) {
-            if (is_numeric($name))
-            {
+            if (is_numeric($name)) {
                 $name = $type;
                 $type = 'string';
             }

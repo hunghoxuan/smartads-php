@@ -30,7 +30,20 @@ use yii\helpers\StringHelper;
 
 class BaseModelObject extends ActiveRecord
 {
-    const COLUMNS_UPLOADS = [];
+    const COLUMNS_API = [];
+    const COLUMNS_UPLOAD = [];
+    const COLUMNS_CREATED_BY = [];
+    const COLUMNS_CREATED_AT = [];
+    const COLUMNS_ATTRIBUTES = [];
+    const COLUMNS_ACTIVATED = [];
+    const DEFAULT_VALUES = [];
+
+    const OBJECTS_RELATED = [];
+    const COLUMNS_ARRAY = [];
+    const LOOKUP          = [];
+    const STATUS_OLD = 0;
+    const STATUS_NORMAL = 1;
+    const DISCOUNT_TYPE_MONEY = 0;
 
     private $objectAttributesArray = [];
 
@@ -127,24 +140,29 @@ class BaseModelObject extends ActiveRecord
         return $model;
     }
 
-    public static function settingDynamicFieldEnabled() {
+    public static function settingDynamicFieldEnabled()
+    {
         return false;
     }
 
-    public function getUploadFields() {
+    public function getUploadFields()
+    {
         return static::COLUMNS_UPLOAD;
     }
 
-    public function getRequiredFields() {
+    public function getRequiredFields()
+    {
         return FHtml::getRequiredFields($this);
     }
 
     //public $_ObjectFile;
-    public function getPreviewFields() {
+    public function getPreviewFields()
+    {
         return ['name', 'description', 'is_active'];
     }
 
-    public function getArrayFields() {
+    public function getArrayFields()
+    {
         return ['category_id'];
     }
 
@@ -182,7 +200,8 @@ class BaseModelObject extends ActiveRecord
         return [];
     }
 
-    public static function getTableSchema($db = null) {
+    public static function getTableSchema($db = null)
+    {
         return null;
     }
 
@@ -220,7 +239,8 @@ class BaseModelObject extends ActiveRecord
         return $default_value;
     }
 
-    public function setCustomAttribute($meta_key, $meta_value) {
+    public function setCustomAttribute($meta_key, $meta_value)
+    {
         $this->objectAttributesArray[$meta_key] = $meta_value;
     }
 
@@ -251,7 +271,8 @@ class BaseModelObject extends ActiveRecord
         }
     }
 
-    public static function getSettingValueByKey($key, $default_value = '') {
+    public static function getSettingValueByKey($key, $default_value = '')
+    {
         return FConfig::config($key, $default_value);
     }
 
@@ -314,7 +335,8 @@ class BaseModelObject extends ActiveRecord
         return static::find()->where($condition)->one();
     }
 
-    public function saveUploadFiles() {
+    public function saveUploadFiles()
+    {
         $tableName = $this::tableName();
         if (!empty($_FILES)) {
             FFile::saveUploadedFile($_FILES[BaseInflector::camelize($tableName)], FModel::getUploadFolder($tableName));
@@ -337,7 +359,8 @@ class BaseModelObject extends ActiveRecord
 
     //Attributes - Start
     private $customObjectArray = [];
-    public function getCustomObject($key, $object = null) {
+    public function getCustomObject($key, $object = null)
+    {
         $value = key_exists($key, $this->customObjectArray) ? $this->customObjectArray[$key] : null;
         if (!isset($value) && isset($object)) {
             $value = $object;
@@ -346,12 +369,14 @@ class BaseModelObject extends ActiveRecord
         return $value;
     }
 
-    public function setCustomObject($key, $object) {
+    public function setCustomObject($key, $object)
+    {
         $this->customObjectArray[$key] = $object;
         return $object;
     }
 
-    public function setCustomObjectFieldValue($key, $field, $value) {
+    public function setCustomObjectFieldValue($key, $field, $value)
+    {
         $object = $this->getCustomObject($key);
         if (isset($object)) {
             FHtml::setFieldValue($object, $field, $value);
@@ -360,7 +385,8 @@ class BaseModelObject extends ActiveRecord
         return $object;
     }
 
-    public function getCustomObjectFieldValue($key, $field, $value = null) {
+    public function getCustomObjectFieldValue($key, $field, $value = null)
+    {
         $object = $this->getCustomObject($key);
         return isset($object) ? FHtml::getFieldValue($object, $field) : $value;
     }
@@ -467,8 +493,7 @@ class BaseModelObject extends ActiveRecord
                 if (!empty($result)) {
                     return $result;
                 }
-            }
-            else {
+            } else {
                 if (isset($result)) {
                     return $result;
                 }
@@ -484,7 +509,8 @@ class BaseModelObject extends ActiveRecord
         return $keys;
     }
 
-    public static function getQueryObject($class_name = '') {
+    public static function getQueryObject($class_name = '')
+    {
         if (empty($class_name))
             $class_name = get_called_class();
 
@@ -492,7 +518,8 @@ class BaseModelObject extends ActiveRecord
         return $query;
     }
 
-    public static function findActiveQuery() {
+    public static function findActiveQuery()
+    {
         return parent::find();
     }
 
@@ -566,7 +593,8 @@ class BaseModelObject extends ActiveRecord
             parent::addError($attribute, $error);
     }
 
-    public function getErrorsMessages() {
+    public function getErrorsMessages()
+    {
         $result = [];
         foreach ($this->errors as $attribute => $error) {
             if (is_string($error))
@@ -582,7 +610,8 @@ class BaseModelObject extends ActiveRecord
     }
 
     private $innerMessage;
-    public function getInnerMessage() {
+    public function getInnerMessage()
+    {
         if (!empty($this->errors)) {
             $this->innerMessage = (empty($this->innerMessage) ? '' : $this->innerMessage) . ' ' . FHtml::t('common', 'Errors') . ': ';
             $errors = $this->getErrorsMessages();
@@ -592,9 +621,89 @@ class BaseModelObject extends ActiveRecord
         return $this->innerMessage;
     }
 
+    public function getOwnerIdField()
+    {
+        return $this->getCreatedUserIdField();
+    }
+
+    public function getCreatedUserIdField()
+    {
+        $arr = array_merge(is_array(self::COLUMNS_CREATED_BY) ? self::COLUMNS_CREATED_BY : [self::COLUMNS_CREATED_BY], ['created_by', 'created_user', 'owner_id']);
+        foreach ($arr as $field) {
+            if (FHtml::field_exists($this, $field))
+                return $field;
+        }
+        return null;
+    }
+
+    public function getCreatedAtField()
+    {
+        $arr = array_merge(is_array(self::COLUMNS_CREATED_AT) ? self::COLUMNS_CREATED_AT : [self::COLUMNS_CREATED_AT], ['created_at', 'created_date']);
+        foreach ($arr as $field) {
+            if (FHtml::field_exists($this, $field))
+                return $field;
+        }
+        return null;
+    }
+
+    public function getIsActiveField()
+    {
+        $arr = array_merge(is_array(self::COLUMNS_ACTIVATED) ? self::COLUMNS_ACTIVATED : [self::COLUMNS_ACTIVATED], ['is_active', 'status']);
+        foreach ($arr as $field) {
+            if (FHtml::field_exists($this, $field))
+                return $field;
+        }
+        return null;
+    }
+
+    public function getApplicationIdField()
+    {
+        return 'application_id';
+    }
+
+    public function getPermission($field = '', $action = '', $role = '', $user_id = '')
+    {
+        return true;
+    }
+
+    public function getDefaultValue($field, $default_value = null)
+    {
+        return $default_value;
+    }
+
+    public function beforeInsert()
+    {
+        $createdUserField = $this->getCreatedUserIdField();
+        if (!empty($createdUserField)) {
+            $this->{$createdUserField} = $this->getDefaultValue($createdUserField, FHtml::currentUserId());
+        }
+        $createdAtField = $this->getCreatedAtField();
+        if (!empty($createdAtField)) {
+            $this->{$createdAtField} = $this->getDefaultValue($createdAtField, date('Y-m-d H:i:s'));
+        }
+        $activatedField = $this->getIsActiveField();
+        if (!empty($activatedField)) {
+            $this->{$activatedField} = $this->getDefaultValue($activatedField, FHtml::isRoleUser() ? 0 : 1);
+        }
+
+        if ($this->field_exists('application_id'))
+            $this->application_id = FHtml::currentApplicationCode();
+    }
+
     private $_progressing = null;
     public function beforeSave($insert)
     {
+        if ($insert || $this->isNewRecord) {
+            $this->beforeInsert();
+        }
+
+        if (FHtml::isRoleUser()) {
+            $activatedField = $this->getIsActiveField();
+            if (!empty($activatedField)) {
+                $this->{$activatedField} = $this->isNewRecord ? $this->getDefaultValue($activatedField, 0) : $this->getOldAttribute($activatedField);
+            }
+        }
+
         $this->innerMessage = FHtml::t('common', 'Saving');
         $this->_progressing = false;
         return parent::beforeSave($insert); // TODO: Change the autogenerated stub
@@ -607,39 +716,45 @@ class BaseModelObject extends ActiveRecord
         return parent::afterSave($insert, $changedAttributes); // TODO: Change the autogenerated stub
     }
 
-    public function beforeValidate() {
+    public function beforeValidate()
+    {
         $this->innerMessage = FHtml::t('common', 'Validating');
         $this->_progressing = false;
         return parent::beforeValidate();
     }
 
-    public function afterValidate() {
+    public function afterValidate()
+    {
         $this->innerMessage = FHtml::t('common', 'Validated');
         $this->_progressing = true;
 
         return parent::afterValidate();
     }
 
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
         $this->innerMessage = FHtml::t('common', 'Deleting');
         $this->_progressing = false;
 
         return parent::beforeDelete();
     }
 
-    public function afterDelete() {
+    public function afterDelete()
+    {
         $this->innerMessage = FHtml::t('common', 'Deleted');
         $this->_progressing = true;
 
         return parent::afterDelete();
     }
 
-    public function refreshCache() {
+    public function refreshCache()
+    {
         //FHtml::refreshCache();
     }
 
     //Dummy, Faker
-    public static function createDummy($count = 0, $dummyValues = [], $autoSave = false) {
+    public static function createDummy($count = 0, $dummyValues = [], $autoSave = false)
+    {
         $result = [];
         if ($count <= 0 || empty($count)) {
             $one = true;
@@ -659,7 +774,8 @@ class BaseModelObject extends ActiveRecord
         return $one ? $result[0] : $result;
     }
 
-    public static function createDummyModel($dummyValues = []) {
+    public static function createDummyModel($dummyValues = [])
+    {
         $model = static::createNew();
         $columns = static::getTableColumns();
         foreach ($columns as $column) {
@@ -672,7 +788,8 @@ class BaseModelObject extends ActiveRecord
         return $model;
     }
 
-    public static function createDummyFieldValue($column, $type = null) {
+    public static function createDummyFieldValue($column, $type = null)
+    {
         // require the Faker autoloader
         $root = FHtml::getRootFolder();
 
@@ -683,9 +800,9 @@ class BaseModelObject extends ActiveRecord
             $column_name = $column;
         }
 
-//        require_once "$root/common/components/Faker/src/Faker/Factory.php";
-//        $faker = Factory::create(FHtml::currentLocale());
-//        return $faker->imageUrl();
+        //        require_once "$root/common/components/Faker/src/Faker/Factory.php";
+        //        $faker = Factory::create(FHtml::currentLocale());
+        //        return $faker->imageUrl();
         return $column_name . rand(1, 1000);
     }
     //Dummy, Faker

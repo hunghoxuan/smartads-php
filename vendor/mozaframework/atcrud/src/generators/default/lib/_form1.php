@@ -9,6 +9,7 @@ use common\components\FHtml;
 /* @var $generator mozaframework\atcrud\generators\Generator */
 
 /* @var $model \yii\db\ActiveRecord */
+
 $model = new $generator->modelClass();
 $safeAttributes = $model->safeAttributes();
 if (empty($safeAttributes)) {
@@ -53,25 +54,23 @@ foreach ($generator->getTableSchema()->columns as $column) {
 
     $group = isset($commentArray['group']) ? $commentArray['group'] : (strpos($attribute, '_') > 0 ? substr($attribute, 0, strpos($attribute, '_')) : 'common');
 
-//    if ($group == $attribute || FHtml::isInArray($attribute, $commonAttributes)) {
-//        $group = 'common';
-//    }
+    //    if ($group == $attribute || FHtml::isInArray($attribute, $commonAttributes)) {
+    //        $group = 'common';
+    //    }
 
     if (in_array($editor, ['file', 'image', 'upload']) || in_array($group, ['file', 'image', 'upload']) || in_array($attribute, $safeAttributes)  && !FHtml::isInArray($attribute, $hiddenAttributes) && (FHtml::isInArray($attribute, $uploadAttributes) || FHtml::isInArray($attribute, $imageAttributes))) {
         $fieldsUploads[] = $attribute;
         $hasColumnsUpload = true;
     }
 
-    if (FHtml::isInArray($attribute, $countAttributes))
-    {
+    if (FHtml::isInArray($attribute, $countAttributes)) {
         $group = 'count';
     }
 
-    if (!ArrayHelper::keyExists($group, $attributeGroups))
-    {
+    if (!ArrayHelper::keyExists($group, $attributeGroups)) {
         $attributeGroups = ArrayHelper::merge($attributeGroups, [$group => [$attribute]]);
     } else {
-        $attributeGroups[$group][]= $attribute;
+        $attributeGroups[$group][] = $attribute;
     }
 }
 
@@ -134,9 +133,8 @@ $urlParams = $generator->generateUrlParams();
 echo "<?php\n";
 ?>
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+*
+***
 * This is the customized model class for table "<?= StringHelper::basename($generator->modelClass) ?>".
 */
 use yii\helpers\Html;
@@ -157,7 +155,7 @@ use common\widgets\formfield\FormRelations;
 
 $form_Type = $this->params['activeForm_type'];
 
-$moduleName = '<?=StringHelper::basename($generator->modelClass)?>';
+$moduleName = '<?= StringHelper::basename($generator->modelClass) ?>';
 $moduleTitle = '<?= Inflector::camel2words(StringHelper::basename($generator->modelClass)) ?>';
 $moduleKey = '<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>';
 
@@ -194,8 +192,8 @@ $this->params['toolBarActions'] = array(
 'enableClientValidation' => true,
 'enableAjaxValidation' => false,
 'options' => [
-    //'class' => 'form-horizontal',
-    'enctype' => 'multipart/form-data'
+//'class' => 'form-horizontal',
+'enctype' => 'multipart/form-data'
 ]
 ]);
 <?= " ?>" ?><?= "\n\n" ?>
@@ -229,14 +227,16 @@ $this->params['toolBarActions'] = array(
                         $i = 4;
                         foreach ($related_objects as $object) { ?>
                             <li>
-                                <a href="#tab_1_<?=$i?>" data-toggle="tab"><?php echo "<?= FHtml::t('common', '" . \yii\helpers\BaseInflector::camelize($object) . "')?>"; ?></a>
+                                <a href="#tab_1_<?= $i ?>" data-toggle="tab"><?php echo "<?= FHtml::t('common', '" . \yii\helpers\BaseInflector::camelize($object) . "')?>"; ?></a>
                             </li>
-                        <?php $i += 1; } ?>
+                        <?php $i += 1;
+                        } ?>
                         <?php
-                        if ($hasColumnsPassword) {?><li>
-                            <a href="#tab_1_p" data-toggle="tab"><?php echo "<?= FHtml::t('common', 'Password')?>"; ?></a>
-                        </li>
-                        <?php }?></ul>
+                        if ($hasColumnsPassword) { ?><li>
+                                <a href="#tab_1_p" data-toggle="tab"><?php echo "<?= FHtml::t('common', 'Password')?>"; ?></a>
+                            </li>
+                        <?php } ?>
+                    </ul>
                 </div>
                 <div class="portlet-body form">
                     <div class="form">
@@ -248,11 +248,11 @@ $this->params['toolBarActions'] = array(
                                             $attribute = $column->name;
                                             $commentArray = FHtml::toArrayFromDbComment($column->comment);
                                             $group = isset($commentArray['group']) ? $commentArray['group'] : (strpos($attribute, '_') > 0 ? substr($attribute, 0, strpos($attribute, '_')) : 'common');
-                                            if (FHtml::isInArray($attribute, $countAttributes))
-                                            {
+                                            if (FHtml::isInArray($attribute, $countAttributes)) {
                                                 $group = 'count';
                                             }
-                                            if (in_array($attribute, $safeAttributes)
+                                            if (
+                                                in_array($attribute, $safeAttributes)
                                                 && !$column->isPrimaryKey
                                                 && FHtml::isInArray($attribute, $attributeGroups['common'])
                                                 && !FHtml::isInArray($attribute, $hiddenAttributes)
@@ -261,7 +261,8 @@ $this->params['toolBarActions'] = array(
                                                 && !FHtml::isInArray($attribute, $priceAttributes)
                                                 && !in_array($attribute, $generatedAttributes)
                                                 && !in_array($attribute, $fieldsUploads)
-                                                && !FHtml::isInArray($attribute, $groupAttributes)) {
+                                                && !FHtml::isInArray($attribute, $groupAttributes)
+                                            ) {
                                                 $generatedAttributes[] = $attribute;
                                                 echo "       <?= " . $generator->generateActiveField($attribute) . " ?>\n\n";
                                             }
@@ -291,7 +292,7 @@ $this->params['toolBarActions'] = array(
                                         <?php
                                         if (!$hasColumns) {
                                             echo "-->";
-                                        }?>
+                                        } ?>
 
 
 
@@ -308,14 +309,14 @@ $this->params['toolBarActions'] = array(
                                         ?>
                                         <div class="row">
                                             <div class="col-md-6">
-                                        <?php foreach ($generator->getColumnNames() as $attribute) {
-                                            if (!$hasColumns)
-                                                continue;
-                                            if (in_array($attribute, $safeAttributes) && !in_array($attribute, $generatedAttributes) && !FHtml::isInArray($attribute, $hiddenAttributes) && FHtml::isInArray($attribute, $groupAttributes) && !FHtml::isInArray($attribute, $booleanAttributes) && FHtml::isInArray($attribute, $attributeGroups['common'])) {
-                                                $generatedAttributes[] = $attribute;
-                                                echo "       <?= " . $generator->generateActiveField($attribute, 6) . " ?>\n\n";
-                                            }
-                                        } ?>
+                                                <?php foreach ($generator->getColumnNames() as $attribute) {
+                                                    if (!$hasColumns)
+                                                        continue;
+                                                    if (in_array($attribute, $safeAttributes) && !in_array($attribute, $generatedAttributes) && !FHtml::isInArray($attribute, $hiddenAttributes) && FHtml::isInArray($attribute, $groupAttributes) && !FHtml::isInArray($attribute, $booleanAttributes) && FHtml::isInArray($attribute, $attributeGroups['common'])) {
+                                                        $generatedAttributes[] = $attribute;
+                                                        echo "       <?= " . $generator->generateActiveField($attribute, 6) . " ?>\n\n";
+                                                    }
+                                                } ?>
                                             </div>
                                             <div class="col-md-6">
                                                 <?php foreach ($generator->getColumnNames() as $attribute) {
@@ -331,7 +332,7 @@ $this->params['toolBarActions'] = array(
                                         <?php
                                         if (!$hasColumns) {
                                             echo "-->";
-                                        }?>
+                                        } ?>
 
                                         <?php
                                         foreach ($attributeGroups as $group => $fields) {
@@ -343,7 +344,7 @@ $this->params['toolBarActions'] = array(
                                             }
                                             if ($group == 'common' || empty($fields) || $count == 0)
                                                 continue;
-                                            ?>
+                                        ?>
                                             <?php echo "       <?= FHtml::showGroupHeader('More') ?>"; ?>
 
                                             <?php foreach ($fields as $attribute) {
@@ -354,7 +355,7 @@ $this->params['toolBarActions'] = array(
                                             } ?>
 
 
-                                            <?php
+                                        <?php
                                         }
                                         ?>
 
@@ -367,8 +368,8 @@ $this->params['toolBarActions'] = array(
                                             $generatedAttributes[] = $attribute;
                                             echo "       <?= " . $generator->generateActiveField($attribute) . " ?>\n\n";
                                         } ?>
-                                        <hr/>
-                                        <?php echo "<?=";?> FormObjectFile::widget( [
+                                        <hr />
+                                        <?php echo "<?="; ?> FormObjectFile::widget( [
                                         'model' => $model, 'form' => $form,
                                         'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => 'object-file'
                                         ]) ?>
@@ -377,7 +378,7 @@ $this->params['toolBarActions'] = array(
 
                                 <div class="tab-pane row" id="tab_1_3">
                                     <div class="col-md-12">
-                                        <?php echo "<?="?> FormObjectAttributes::widget( [
+                                        <?php echo "<?=" ?> FormObjectAttributes::widget( [
                                         'model' => $model, 'form' => $form,
                                         'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath
                                         ]) ?>
@@ -389,26 +390,25 @@ $this->params['toolBarActions'] = array(
                                     $object_field_name = \yii\helpers\BaseInflector::camelize(str_replace('\\', '_', $object));
 
                                     $arr = explode('\\', $object);
-                                    if (count($arr) > 1)
-                                    {
+                                    if (count($arr) > 1) {
                                         $object_type = $arr[0];
                                         $object_relation = $arr[1];
-                                    } else
-                                    {
+                                    } else {
                                         $object_type = $object;
                                         $object_relation = '';
                                     }
-                                    ?>
+                                ?>
                                     <div class="tab-pane row" id="tab_1_<?= $i ?>">
                                         <div class="col-md-12">
-                                            <?php echo "<?="?> FormRelations::widget([
+                                            <?php echo "<?=" ?> FormRelations::widget([
                                             'model' => $model, 'form' => $form,
-                                            'field_name' => '<?=$object_field_name ?>', 'object_type' => '<?=$object_type ?>', 'relation_type' => '<?= $object_relation ?>',
+                                            'field_name' => '<?= $object_field_name ?>', 'object_type' => '<?= $object_type ?>', 'relation_type' => '<?= $object_relation ?>',
                                             'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath
                                             ]) ?>
                                         </div>
                                     </div>
-                                    <?php $i += 1; } ?>
+                                <?php $i += 1;
+                                } ?>
 
                                 <?php
 
@@ -426,7 +426,7 @@ $this->params['toolBarActions'] = array(
                                 <?php
                                 if (!$hasColumnsPassword) {
                                     echo "-->";
-                                }?>
+                                } ?>
 
 
                             </div>
@@ -438,9 +438,9 @@ $this->params['toolBarActions'] = array(
 
             <?php
             foreach ($meta_objects as $object) {
-            echo "<?php"; ?>
-            $type = FHtml::getFieldValue($model, '<?= $object ?>');
-            if (!empty($type) && in_array($type, ['type1'])) { ?>
+                echo "<?php"; ?>
+                $type = FHtml::getFieldValue($model, '<?= $object ?>');
+                if (!empty($type) && in_array($type, ['type1'])) { ?>
                 <div class="portlet light">
                     <div class="portlet-title tabbable-line">
                         <div class="caption caption-md">
@@ -462,13 +462,14 @@ $this->params['toolBarActions'] = array(
                         </div>
                     </div>
                 </div>
-            <?php echo " <?php } ?>"; }?>
+            <?php echo " <?php } ?>";
+            } ?>
 
             <?php
             echo "<?php"; ?>
             $type = FHtml::getFieldValue($model, 'type');
             if (isset($modelMeta) && !empty($type))
-                echo FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]);
+            echo FHtml::render('..\\' . $moduleKey . '-' . $type . '\\_form.php', '', ['model' => $modelMeta, 'display_actions' => false, 'canEdit' => $canEdit, 'canDelete' => $canDelete]);
             <?php echo "  ?>"; ?>
 
             <script language="javascript" type="text/javascript">
@@ -484,7 +485,7 @@ $this->params['toolBarActions'] = array(
             <?= '<?php } else { ?>' . "\n" ?>
             <input type="hidden" id="saveType" name="saveType">
 
-            <?= "<?= " ?>     FHtml::showActionsButton($model, $canEdit, $canDelete)  ?>
+            <?= "<?= " ?> FHtml::showActionsButton($model, $canEdit, $canDelete) ?>
             <?= '<?php } ?>' ?>
 
         </div>
@@ -493,7 +494,7 @@ $this->params['toolBarActions'] = array(
                 <?= "<?=" ?> FHtml::showModelPreview($model) ?>
             </div>
             <div class="row" style="padding-left:35px; color:grey">
-                <?= "<?=" ?>  FHtml::showModelHistory($model) ?>
+                <?= "<?=" ?> FHtml::showModelHistory($model) ?>
             </div>
         </div>
     </div>

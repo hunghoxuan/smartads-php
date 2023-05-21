@@ -1,9 +1,6 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
+
+/*This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
  */
 
 namespace common\base;
@@ -198,7 +195,8 @@ class BaseSecurity extends FFile
         return $user;
     }
 
-    public static function getUserName($username) {
+    public static function getUserName($username)
+    {
         if (in_array($username, self::USER_NAME_ADMIN) && APPLICATIONS_ENABLED) {
             $username = $username . '_' . FHtml::currentApplicationId();
         }
@@ -373,7 +371,8 @@ class BaseSecurity extends FFile
         return null;
     }
 
-    public static function isUserActionAuthorized($user = null, $action = '', $table = '') {
+    public static function isUserActionAuthorized($user = null, $action = '', $table = '')
+    {
         if (empty($action))
             $action = FHtml::currentAction();
 
@@ -615,7 +614,6 @@ class BaseSecurity extends FFile
 
     public static function populateAuthItems()
     {
-
     }
 
     public static function populateAuthGroups()
@@ -630,7 +628,7 @@ class BaseSecurity extends FFile
 
     public static function getUserGroupModels($user)
     {
-       return [];
+        return [];
     }
 
     public static function getUserRoleArray($user)
@@ -640,10 +638,11 @@ class BaseSecurity extends FFile
 
     public static function getUserRoleModels($user)
     {
-       return [];
+        return [];
     }
 
-    public static function getGroupRoleModels($group) {
+    public static function getGroupRoleModels($group)
+    {
 
         $arr = [];
         return $arr;
@@ -661,27 +660,22 @@ class BaseSecurity extends FFile
 
     public static function updateUserGroups($userModel, $groups = [])
     {
-
     }
 
     public static function updateUserRoles($userModel, $roles = [])
     {
-
     }
 
     public static function createAuthGroup($controller, $name, $actions = [])
     {
-
     }
 
     public static function createAuthRole($controller, $action = '', $description = '')
     {
-
     }
 
     public static function saveAuthPermission($object_type, $id, $relation_type, $related_object_type, $related_objects = [])
     {
-
     }
 
     public static function checkFootPrint($hash, $time, $arr, $check_footprint = true, $check_time = true, $max_duration = FOOTPRINT_TIME_LIMIT, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY)
@@ -695,7 +689,8 @@ class BaseSecurity extends FFile
         return '';
     }
 
-    public static function checkHash($hash, $arr, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = null) {
+    public static function checkHash($hash, $arr, $algorithm = SECRET_HASH_ALGORITHM, $secret_key = SECRET_KEY, $secret_key_position = null)
+    {
         if (isset($secret_key_position)) {
             $hash1 = FSecurity::generateHash($arr, $algorithm, $secret_key, $secret_key_position);
             $hash2 = '';
@@ -720,12 +715,13 @@ class BaseSecurity extends FFile
         else
             $arr = array_merge($arr, [$secret_key]);
 
-        $arr_str = implode($arr, ',');
+        $arr_str = implode(',', $arr);
         $sha1 = hash($algorithm, $arr_str, true);
         return bin2hex($sha1);
     }
 
-    public static function checkExpired($time, $max = FOOTPRINT_TIME_LIMIT) {
+    public static function checkExpired($time, $max = FOOTPRINT_TIME_LIMIT)
+    {
         $time_value = is_numeric($time) ? $time : strtotime($time);
 
         $duration = FHtml::time() - $time_value;
@@ -743,8 +739,9 @@ class BaseSecurity extends FFile
 
 
 
-    public static function executeApplicationFunction($func_name, $params = null) {
-       return;
+    public static function executeApplicationFunction($func_name, $params = null)
+    {
+        return;
     }
 
     public static function createBackendMenuItem($route, $name, $icon, $active, $roles = array(), $children = false)
@@ -766,20 +763,20 @@ class BaseSecurity extends FFile
         }
 
         $object_type = '';
-        $module = ''; $controller = ''; $action = '';
+        $module = '';
+        $controller = '';
+        $action = '';
         $arr = explode('/', str_replace('/index', '', trim($route, '/')));
         if (count($arr) > 2) {
             $controller = $arr[1];
             $object_type = str_replace('-', '_', $controller);
             $module = BaseInflector::camel2words($arr[0]);
             $action = $arr[2];
-
         } else if (count($arr) > 1) {
             $controller = $arr[1];
             $object_type = str_replace('-', '_', $controller);
             $module = BaseInflector::camel2words($arr[0]);
             $action = 'index';
-
         } else if (count($arr) == 1) {
             $controller = $arr[0];
             $object_type = str_replace('-', '_', $controller);
@@ -787,12 +784,12 @@ class BaseSecurity extends FFile
             $action = 'index';
         }
         $menu = array(
-                'active' => $active,
-                'name' => FHtml::t('common', $name),
-                'visible' => AccessRule::checkAccess($roles, $module, $controller, $action),
-                'icon' => $icon,
-                'url' => Yii::$app->urlManager->createUrl([$route]),
-            );
+            'active' => $active,
+            'name' => FHtml::t('common', $name),
+            'visible' => AccessRule::checkAccess($roles, $module, $controller, $action),
+            'icon' => $icon,
+            'url' => Yii::$app->urlManager->createUrl([$route]),
+        );
 
 
         if (!($children === false)) { // if all child menu is not visible and also set parent menu is invisible
@@ -807,11 +804,12 @@ class BaseSecurity extends FFile
         return $menu;
     }
 
-    public static function logAction($condition = [], $action = '', $status = '', $info = '', $object_type = '', $object_id = '', $user_id = '', $ip_address = '') {
-
+    public static function logAction($condition = [], $action = '', $status = '', $info = '', $object_type = '', $object_id = '', $user_id = '', $ip_address = '')
+    {
     }
 
-    public static function getModuleControllersFromUrls($urls = null) {
+    public static function getModuleControllersFromUrls($urls = null)
+    {
         if (!isset($urls))
             $urls = FSecurity::getMenuUrls();
 
@@ -820,14 +818,14 @@ class BaseSecurity extends FFile
             $arr1 = explode('/', $url);
 
             if (count($arr1) > 7) {
-                $module = $arr1[5]; $object_type = $arr1[6];
-            }
-            else {
-                $module = ''; $object_type = $arr1[5];
+                $module = $arr1[5];
+                $object_type = $arr1[6];
+            } else {
+                $module = '';
+                $object_type = $arr1[5];
             }
 
-            if (key_exists($module, $arr))
-            {
+            if (key_exists($module, $arr)) {
                 $arr[$module] = array_merge($arr[$module], [$object_type]);
             } else {
                 $arr = array_merge($arr, [$module => [$object_type]]);
@@ -889,9 +887,8 @@ class BaseSecurity extends FFile
             return $actions;
         }
 
-        if (!StringHelper::endsWith($controllerDir, 'controllers'))
-        {
-            if (key_exists($controllerDir, \Yii::$app->modules )) {
+        if (!StringHelper::endsWith($controllerDir, 'controllers')) {
+            if (key_exists($controllerDir, \Yii::$app->modules)) {
                 $module = \Yii::$app->modules[$controllerDir];
                 if (method_exists($module, 'getBasePath')) {
                     $basePath = $module->getBasePath();
@@ -918,11 +915,11 @@ class BaseSecurity extends FFile
         asort($controllerlist);
         $fulllist = [];
         if ($getActions) {
-            foreach ($controllerlist as $controller):
+            foreach ($controllerlist as $controller) :
                 $fulllist = array_merge($fulllist, FSecurity::getControllerActions($controllerDir, $controller));
             endforeach;
         } else {
-            foreach ($controllerlist as $controller):
+            foreach ($controllerlist as $controller) :
                 $fulllist[BaseInflector::camel2id(substr($controller, 0, -14))] = substr($controller, 0, -14);
             endforeach;
         }
@@ -930,11 +927,11 @@ class BaseSecurity extends FFile
     }
 
 
-    public static function getControllerActions($controllerDir = '', $controller = '') {
+    public static function getControllerActions($controllerDir = '', $controller = '')
+    {
         $fulllist = [];
-        if (!StringHelper::endsWith($controllerDir, 'controllers') && !empty($controller))
-        {
-            if (key_exists($controllerDir, \Yii::$app->modules )) {
+        if (!StringHelper::endsWith($controllerDir, 'controllers') && !empty($controller)) {
+            if (key_exists($controllerDir, \Yii::$app->modules)) {
                 $module = \Yii::$app->modules[$controllerDir];
                 if (method_exists($module, 'getBasePath')) {
                     $basePath = $module->getBasePath();
@@ -964,8 +961,8 @@ class BaseSecurity extends FFile
 
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
-                if (preg_match('/public function action(.*?)\(/', $line, $display)):
-                    if (strlen($display[1]) > 2):
+                if (preg_match('/public function action(.*?)\(/', $line, $display)) :
+                    if (strlen($display[1]) > 2) :
                         $fulllist[BaseInflector::camel2id(substr($controller, 0, -14))][] = strtolower($display[1]);
                     endif;
                 endif;
@@ -975,13 +972,13 @@ class BaseSecurity extends FFile
         return $fulllist;
     }
 
-    public static function getUserAccessToken($userid = null) {
+    public static function getUserAccessToken($userid = null)
+    {
 
         if (isset($userid) && is_object($userid) && method_exists($userid, 'getAuthKey'))
             return $userid->getAuthKey();
 
-        if (!empty($userid))
-        {
+        if (!empty($userid)) {
             if (is_numeric($userid))
                 $user = User::findOne($userid);
             else
@@ -1011,7 +1008,8 @@ class BaseSecurity extends FFile
         return $user;
     }
 
-    public static function getUserStatusArray() {
+    public static function getUserStatusArray()
+    {
         return [\common\models\User::STATUS_ACTIVE => FHtml::t('common', 'Enabled'), \common\models\User::STATUS_DISABLED => FHtml::t('common', 'Disabled')];
     }
 }

@@ -1,10 +1,5 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "SmartscreenSchedules".
- */
+
 
 namespace backend\modules\smartscreen\controllers;
 
@@ -44,7 +39,8 @@ class SmartscreenSchedulesController extends SmartscreenController
 	/**
 	 * @inheritdoc
 	 */
-	public function behaviors() {
+	public function behaviors()
+	{
 		return FHtml::getControllerBehaviours([
 			'verbs'  => [
 				'class'   => VerbFilter::className(),
@@ -75,8 +71,8 @@ class SmartscreenSchedulesController extends SmartscreenController
 						'roles'   => [
 							User::ROLE_MODERATOR,
 							User::ROLE_ADMIN,
-                            User::ROLE_USER,
-                        ],
+							User::ROLE_USER,
+						],
 					],
 				],
 			],
@@ -87,21 +83,22 @@ class SmartscreenSchedulesController extends SmartscreenController
 	 * Lists all SmartscreenSchedules models.
 	 * @return mixed
 	 */
-	public function actionIndex() {
-        if (!empty($_POST)) {
-            $params = Smartscreen::getCurrentParams(['index'], 'SmartscreenSchedulesSearch', null, ['date', 'date_end', 'show_all']);
+	public function actionIndex()
+	{
+		if (!empty($_POST)) {
+			$params = Smartscreen::getCurrentParams(['index'], 'SmartscreenSchedulesSearch', null, ['date', 'date_end', 'show_all']);
 
-            $url = Url::to($params);
-            $url = FHtml::createFormalizedBackendLink($url);
+			$url = Url::to($params);
+			$url = FHtml::createFormalizedBackendLink($url);
 
-            $response = Yii::$app->getResponse();
-            return $response->redirect(Url::to($url), 302);
-        }
+			$response = Yii::$app->getResponse();
+			return $response->redirect(Url::to($url), 302);
+		}
 
-        $searchModel = SmartscreenSchedulesSearch::createNew();
-        $searchModel->load(Yii::$app->request->post());
+		$searchModel = SmartscreenSchedulesSearch::createNew();
+		$searchModel->load(Yii::$app->request->post());
 
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 		if (Yii::$app->request->post('hasEditable')) {
 			$Id = Yii::$app->request->post('editableKey');
@@ -114,7 +111,6 @@ class SmartscreenSchedulesController extends SmartscreenController
 			$post['SmartscreenSchedules'] = $posted;
 
 			if ($model->load($post)) {
-			    die;
 				$model->save();
 				$output = '';
 				$out    = Json::encode(['output' => $output, 'message' => '']);
@@ -136,7 +132,8 @@ class SmartscreenSchedulesController extends SmartscreenController
 	 * @param integer $id
 	 * @return mixed
 	 */
-	public function actionView($id) {
+	public function actionView($id)
+	{
 		$request = Yii::$app->request;
 
 		$model = $this->findModel($id);
@@ -151,12 +148,11 @@ class SmartscreenSchedulesController extends SmartscreenController
 					'model' => $model
 				]),
 				'footer'  => Html::a(FHtml::t('Update'), ['update', 'id' => $id], [
-						'class' => 'btn btn-primary pull-left',
-						'role'  => $this->view->params['displayType']
-					]) . Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
+					'class' => 'btn btn-primary pull-left',
+					'role'  => $this->view->params['displayType']
+				]) . Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
 			];
-		}
-		else {
+		} else {
 			return $this->render('view', ['model' => $model]);
 		}
 	}
@@ -167,17 +163,17 @@ class SmartscreenSchedulesController extends SmartscreenController
 	 * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
 	 * @return mixed
 	 */
-	public function actionCreate($type = false) {
+	public function actionCreate($type = false)
+	{
 		$request = Yii::$app->request;
 
 		$model = $this->createModel($this->object_type);
 
 		if ($request->isAjax) {
 			return FHtml::saveModelAjax($this, $model, null);
-		}
-		else {
+		} else {
 			if ($model->load($request->post())) {
-                $model->id = null;
+				$model->id = null;
 
 				$smart_schedules = $_REQUEST['SmartscreenSchedules'];
 				$devices         = isset($smart_schedules['device_id']) ? $smart_schedules['device_id'] : [];
@@ -206,20 +202,20 @@ class SmartscreenSchedulesController extends SmartscreenController
 								$schedule->date_end   = $model->date_end;
 								$schedule->days       = $model->days;
 
-                                $schedule->channel_id = $model->channel_id;
+								$schedule->channel_id = $model->channel_id;
 								$schedule->type       = $model->type;
 								$schedule->content_id = isset($item['content']) ? $item['content'] : '';
 								$schedule->{SmartscreenSchedules::FIELD_STATUS}  = 1;
 
-                                $kind = isset($value['file_kind']) ? $item['file_kind'] : '';
-                                if ($kind == SmartscreenSchedules::DURATION_KIND_MINUTES) {
-                                    //
-                                    $schedule->duration = $item['file_duration'];
-                                } elseif ($kind == SmartscreenSchedules::DURATION_KIND_SECOND)  {
-                                    $schedule->duration = $item['file_duration'] / 60;
-                                } elseif ($kind == SmartscreenSchedules::DURATION_KIND_LOOP)  {
-                                    $schedule->duration = 0;
-                                }
+								$kind = isset($value['file_kind']) ? $item['file_kind'] : '';
+								if ($kind == SmartscreenSchedules::DURATION_KIND_MINUTES) {
+									//
+									$schedule->duration = $item['file_duration'];
+								} elseif ($kind == SmartscreenSchedules::DURATION_KIND_SECOND) {
+									$schedule->duration = $item['file_duration'] / 60;
+								} elseif ($kind == SmartscreenSchedules::DURATION_KIND_LOOP) {
+									$schedule->duration = 0;
+								}
 
 								$schedule->checkFormResubmission(false);
 
@@ -228,22 +224,17 @@ class SmartscreenSchedulesController extends SmartscreenController
 										self::callSocket($schedule, Smartscreen::REFRESH_SCHEDULE_NOW);
 									}
 									$model_id = $model->id;
-								}
-								else {
+								} else {
 									FHtml::addError($model->errors);
 								}
 							}
-
 						} catch (Exception $e) {
 							FHtml::addError($e);
 						}
 					}
-				}
-				elseif (key_exists('list_content', $_REQUEST['SmartscreenSchedules'])) {
+				} elseif (key_exists('list_content', $_REQUEST['SmartscreenSchedules'])) {
 					$data    = $_REQUEST['SmartscreenSchedules']['list_content'];
-
-				}
-				else {
+				} else {
 					$model->save();
 
 					return $this->redirect(['update', 'id' => $model->id]);
@@ -258,10 +249,7 @@ class SmartscreenSchedulesController extends SmartscreenController
 				}
 
 				return $this->redirect(['index']);
-
-
-			}
-			else {
+			} else {
 				return $this->render('create', ['model' => $model]);
 			}
 		}
@@ -274,7 +262,8 @@ class SmartscreenSchedulesController extends SmartscreenController
 	 * @param integer $id
 	 * @return mixed
 	 */
-	public function actionUpdate($id = '') {
+	public function actionUpdate($id = '')
+	{
 		$request = Yii::$app->request;
 		$model   = $this->findModel($id);
 
@@ -289,8 +278,7 @@ class SmartscreenSchedulesController extends SmartscreenController
 
 		if (!empty($id)) {
 			$listSchedule = [$model];
-		}
-		else {
+		} else {
 			$listSchedule = Smartscreen::getDeviceSchedules($ime, $date, $start_time, $finished_schedule_id, $channel_id, $schedule_id, $limit);
 			$listSchedule = Smartscreen::getDeviceSchedulesByDate($listSchedule, $date);
 		}
@@ -298,11 +286,11 @@ class SmartscreenSchedulesController extends SmartscreenController
 		$schedule = [];
 
 		if ($action == 'cancel') {
-		    if (empty($model->start_time)) {
-		        $this->actionDelete($model->id);
-            }
-            return $this->redirect(Smartscreen::getCurrentParams(['index']));
-        }
+			if (empty($model->start_time)) {
+				$this->actionDelete($model->id);
+			}
+			return $this->redirect(Smartscreen::getCurrentParams(['index']));
+		}
 
 		if (!is_array($listSchedule)) {
 			return $this->redirect(Smartscreen::getCurrentParams(['index']));
@@ -314,9 +302,9 @@ class SmartscreenSchedulesController extends SmartscreenController
 				'start_time' => !empty($item->start_time) ? (is_numeric($item->start_time) ? date('g:i A', $item->start_time) : $item->start_time) : '',
 				'layout'     => is_numeric($item->layout_id) ? $item->layout_id : null,
 				SmartscreenSchedules::FIELD_STATUS       => $item->{SmartscreenSchedules::FIELD_STATUS},
-                'duration'       => $item->duration,
+				'duration'       => $item->duration,
 				'file_duration'   => $item->duration,
-                'file_kind'       => $item->kind
+				'file_kind'       => $item->kind
 			);
 		}
 
@@ -324,30 +312,28 @@ class SmartscreenSchedulesController extends SmartscreenController
 
 		if ($request->isAjax) {
 			return FHtml::saveModelAjax($this, $model, null);
-		}
-		else {
+		} else {
 
 			if ($model->load($request->post())) {
-			    $campaign_id = $model->campaign_id;
-			    $campaign = null;
-			    //update information base on current campaign
-			    if (!empty($campaign_id)) {
-			        $campaign = SmartscreenCampaigns::findOne($campaign_id);
-			        Smartscreen::updateCampaignSchedules($campaign, $model);
-                }
+				$campaign_id = $model->campaign_id;
+				$campaign = null;
+				//update information base on current campaign
+				if (!empty($campaign_id)) {
+					$campaign = SmartscreenCampaigns::findOne($campaign_id);
+					Smartscreen::updateCampaignSchedules($campaign, $model);
+				}
 
-                $times = isset($_REQUEST['SmartscreenSchedules']['_times']) ? $_REQUEST['SmartscreenSchedules']['_times'] : [];
-                $content_name = isset($_REQUEST['SmartscreenSchedules']['name']) ? $_REQUEST['SmartscreenSchedules']['name'] : '';
-                $content_id = isset($_REQUEST['SmartscreenSchedules']['_content_id']) ? $_REQUEST['SmartscreenSchedules']['_content_id'] : '';
+				$times = isset($_REQUEST['SmartscreenSchedules']['_times']) ? $_REQUEST['SmartscreenSchedules']['_times'] : [];
+				$content_name = isset($_REQUEST['SmartscreenSchedules']['name']) ? $_REQUEST['SmartscreenSchedules']['name'] : '';
+				$content_id = isset($_REQUEST['SmartscreenSchedules']['_content_id']) ? $_REQUEST['SmartscreenSchedules']['_content_id'] : '';
 
-                if (empty($times)) {
-                    $times = [['_start_time' => $model->start_time,'_end_time' => $model->end_time, '_duration' => $model->duration]];
-                }
-                if (empty($model->start_time) && empty($times))
-                {
-                    FHtml::addError('Must set Start time !!');
-                    return $this->render('update', ['model' => $model]);
-                }
+				if (empty($times)) {
+					$times = [['_start_time' => $model->start_time, '_end_time' => $model->end_time, '_duration' => $model->duration]];
+				}
+				if (empty($model->start_time) && empty($times)) {
+					FHtml::addError('Must set Start time !!');
+					return $this->render('update', ['model' => $model]);
+				}
 				if (key_exists('layout_id', $_REQUEST['SmartscreenSchedules'])) { //advance mode
 					$data = $_REQUEST['SmartscreenSchedules']['layout_id'];
 
@@ -355,59 +341,59 @@ class SmartscreenSchedulesController extends SmartscreenController
 						try {
 							$arr = [];
 							foreach ($data as $key => $value) {
-							    foreach ($times as $timeIdx => $timeItem) {
-							        //var_dump($_REQUEST); die;
-                                    $schedule = null;
-                                    if (!empty($value['id']) && $timeIdx == 0) {
-                                        $arr[] = $value['id'];
-                                        $schedule = SmartscreenSchedules::findOne($value['id']);
-                                    }
-                                    if (!isset($schedule)) {
-                                        $schedule = new SmartscreenSchedules;
-                                    }
+								foreach ($times as $timeIdx => $timeItem) {
+									//var_dump($_REQUEST); die;
+									$schedule = null;
+									if (!empty($value['id']) && $timeIdx == 0) {
+										$arr[] = $value['id'];
+										$schedule = SmartscreenSchedules::findOne($value['id']);
+									}
+									if (!isset($schedule)) {
+										$schedule = new SmartscreenSchedules;
+									}
 
-                                    $content_id = isset($value['content']) ? $value['content'] : [];
+									$content_id = isset($value['content']) ? $value['content'] : [];
 
-                                    $time = $timeItem['_start_time'];
-                                    $duration = $timeItem['_duration'];
-                                    $end_time = $timeItem['_end_time'];
-                                    if (!empty($end_time) && empty($duration))
-                                        $duration = Smartscreen::getDurationBetween($time, 0, $end_time);
+									$time = $timeItem['_start_time'];
+									$duration = $timeItem['_duration'];
+									$end_time = $timeItem['_end_time'];
+									if (!empty($end_time) && empty($duration))
+										$duration = Smartscreen::getDurationBetween($time, 0, $end_time);
 
-                                    $schedule->device_id = $model->device_id;
-                                    $schedule->campaign_id = $model->campaign_id;
-                                    $schedule->layout_id = isset($value['layout']) ? $value['layout'] : 0;
-                                    $schedule->start_time = $time;
-                                    $schedule->end_time = $end_time;
-                                    $schedule->date = $model->date;
-                                    $schedule->content_id = $content_id;
-                                    $schedule->type = $model->type;
-                                    $schedule->channel_id = $model->channel_id;
-                                    $schedule->days = $model->days;
-                                    $schedule->date_end = $model->date_end;
-                                    $schedule->{SmartscreenSchedules::FIELD_STATUS} = $model->{SmartscreenSchedules::FIELD_STATUS};
+									$schedule->device_id = $model->device_id;
+									$schedule->campaign_id = $model->campaign_id;
+									$schedule->layout_id = isset($value['layout']) ? $value['layout'] : 0;
+									$schedule->start_time = $time;
+									$schedule->end_time = $end_time;
+									$schedule->date = $model->date;
+									$schedule->content_id = $content_id;
+									$schedule->type = $model->type;
+									$schedule->channel_id = $model->channel_id;
+									$schedule->days = $model->days;
+									$schedule->date_end = $model->date_end;
+									$schedule->{SmartscreenSchedules::FIELD_STATUS} = $model->{SmartscreenSchedules::FIELD_STATUS};
 
-                                    $kind = isset($value['file_kind']) ? $value['file_kind'] : '';
-                                    if ($kind == SmartscreenSchedules::DURATION_KIND_MINUTES) {
-                                        $schedule->duration = $value['file_duration'];
-                                    } else if ($kind == SmartscreenSchedules::DURATION_KIND_SECOND) {
+									$kind = isset($value['file_kind']) ? $value['file_kind'] : '';
+									if ($kind == SmartscreenSchedules::DURATION_KIND_MINUTES) {
+										$schedule->duration = $value['file_duration'];
+									} else if ($kind == SmartscreenSchedules::DURATION_KIND_SECOND) {
 
-                                        $schedule->duration = $value['file_duration'];
-                                    } elseif ($kind == SmartscreenSchedules::DURATION_KIND_LOOP) {
-                                        $schedule->duration = $duration;
-                                    } else { //if hidden
-                                        $schedule->duration = $duration;
-                                    }
-                                    $schedule->checkFormResubmission(false);
+										$schedule->duration = $value['file_duration'];
+									} elseif ($kind == SmartscreenSchedules::DURATION_KIND_LOOP) {
+										$schedule->duration = $duration;
+									} else { //if hidden
+										$schedule->duration = $duration;
+									}
+									$schedule->checkFormResubmission(false);
 
-                                    if (empty($schedule->start_time)) {
-                                        continue;
-                                    }
+									if (empty($schedule->start_time)) {
+										continue;
+									}
 
-                                    $schedule->save();
+									$schedule->save();
 
-                                    $model = $schedule;
-                                }
+									$model = $schedule;
+								}
 							}
 
 							foreach ($listSchedule as $schedule) {
@@ -419,117 +405,113 @@ class SmartscreenSchedulesController extends SmartscreenController
 							if ($schedule->date == Smartscreen::Today() || empty($schedule->date)) {
 								self::callSocket($schedule, Smartscreen::REFRESH_SCHEDULE_NOW);
 							}
-
 						} catch (Exception $e) {
-						    //die;
+							//die;
 							FHtml::addError($e);
 						}
 					}
-				}
-				elseif (key_exists('list_content', $_REQUEST['SmartscreenSchedules'])) {
+				} elseif (key_exists('list_content', $_REQUEST['SmartscreenSchedules'])) {
 					$list_content = key_exists('list_content', $_REQUEST['SmartscreenSchedules']) ? $_REQUEST['SmartscreenSchedules']['list_content'] : null;
-                    if (empty($model->start_time) && !empty($times)) {
-                        $smartfiles = [];
-                        $changeContentId = (!empty($content_id) && $model->content_id != $content_id);
+					if (empty($model->start_time) && !empty($times)) {
+						$smartfiles = [];
+						$changeContentId = (!empty($content_id) && $model->content_id != $content_id);
 
-                        if (!empty($list_content) && !$changeContentId) {
-                            if ((!empty($content_name) || !empty($model->content_id))) {
-                                $content_id = $model->content_id;
-                                if (is_numeric($content_id))
-                                    $content = SmartscreenContent::findOne($content_id);
-                                else {
-                                    $content = new SmartscreenContent();
-                                    $content->type = SmartscreenContent::TYPE_SLIDE;
-                                }
-                                if (!empty($content_name))
-                                    $content->title = $content_name;
-                                $content->save();
-                                Smartscreen::updateSmartFile($list_content, $content->id, $content, $model);
-                                $smartfiles = $content->smartscreenFiles();
-                            }
-                        }
+						if (!empty($list_content) && !$changeContentId) {
+							if ((!empty($content_name) || !empty($model->content_id))) {
+								$content_id = $model->content_id;
+								if (is_numeric($content_id))
+									$content = SmartscreenContent::findOne($content_id);
+								else {
+									$content = new SmartscreenContent();
+									$content->type = SmartscreenContent::TYPE_SLIDE;
+								}
+								if (!empty($content_name))
+									$content->title = $content_name;
+								$content->save();
+								Smartscreen::updateSmartFile($list_content, $content->id, $content, $model);
+								$smartfiles = $content->smartscreenFiles();
+							}
+						}
 
-                        foreach ($times as $timeIdx => $timeItem) {
-                            $schedule = null;
-                            if (!empty($value['id']) && $timeIdx == 0) {
-                                $arr[] = $value['id'];
-                                $schedule = SmartscreenSchedules::findOne($value['id']);
-                            }
-                            if (!isset($schedule)) {
-                                $schedule = new SmartscreenSchedules;
-                            }
+						foreach ($times as $timeIdx => $timeItem) {
+							$schedule = null;
+							if (!empty($value['id']) && $timeIdx == 0) {
+								$arr[] = $value['id'];
+								$schedule = SmartscreenSchedules::findOne($value['id']);
+							}
+							if (!isset($schedule)) {
+								$schedule = new SmartscreenSchedules;
+							}
 
-                            $time = $timeItem['_start_time'];
-                            $duration = $timeItem['_duration'];
-                            $end_time = $timeItem['_end_time'];
-                            if (!empty($end_time))
-                                $duration = Smartscreen::getDurationBetween($time, 0, $end_time);
+							$time = $timeItem['_start_time'];
+							$duration = $timeItem['_duration'];
+							$end_time = $timeItem['_end_time'];
+							if (!empty($end_time))
+								$duration = Smartscreen::getDurationBetween($time, 0, $end_time);
 
-                            $schedule->campaign_id = $model->campaign_id;
-                            $schedule->device_id = $model->device_id;
-                            $schedule->layout_id = isset($value['layout']) ? $value['layout'] : 0;
-                            $schedule->start_time = $time;
-                            $schedule->end_time = $end_time;
+							$schedule->campaign_id = $model->campaign_id;
+							$schedule->device_id = $model->device_id;
+							$schedule->layout_id = isset($value['layout']) ? $value['layout'] : 0;
+							$schedule->start_time = $time;
+							$schedule->end_time = $end_time;
 
-                            $schedule->date = $model->date;
-                            $schedule->content_id = isset($content) ? $content->id : $content_id;
-                            $schedule->type = $model->type;
-                            $schedule->channel_id = $model->channel_id;
-                            $schedule->days = $model->days;
-                            $schedule->date_end = $model->date_end;
-                            $schedule->{SmartscreenSchedules::FIELD_STATUS} = $model->{SmartscreenSchedules::FIELD_STATUS};
+							$schedule->date = $model->date;
+							$schedule->content_id = isset($content) ? $content->id : $content_id;
+							$schedule->type = $model->type;
+							$schedule->channel_id = $model->channel_id;
+							$schedule->days = $model->days;
+							$schedule->date_end = $model->date_end;
+							$schedule->{SmartscreenSchedules::FIELD_STATUS} = $model->{SmartscreenSchedules::FIELD_STATUS};
 
-                            $kind = isset($value['file_kind']) ? $value['file_kind'] : '';
-                            if ($kind == SmartscreenSchedules::DURATION_KIND_MINUTES) {
-                                $schedule->duration = $value['file_duration'];
-                            } elseif ($kind == SmartscreenSchedules::DURATION_KIND_LOOP) {
-                                $schedule->duration = $duration;
-                            } else { //if hidden
-                                $schedule->duration = $duration;
-                            }
+							$kind = isset($value['file_kind']) ? $value['file_kind'] : '';
+							if ($kind == SmartscreenSchedules::DURATION_KIND_MINUTES) {
+								$schedule->duration = $value['file_duration'];
+							} elseif ($kind == SmartscreenSchedules::DURATION_KIND_LOOP) {
+								$schedule->duration = $duration;
+							} else { //if hidden
+								$schedule->duration = $duration;
+							}
 
-                            $schedule->checkFormResubmission(false);
+							$schedule->checkFormResubmission(false);
 
-                            if (!empty($schedule->start_time)) {
-                                $saveSchedule = $schedule->save();
+							if (!empty($schedule->start_time)) {
+								$saveSchedule = $schedule->save();
 
-                                if (!empty($list_content) && !isset($content)) {
-                                    Smartscreen::updateSmartFile(!empty($smartfiles) ? $smartfiles : $list_content, $schedule->id, $schedule);
-                                }
-                                if (empty($smartfiles))
-                                    $smartfiles = $schedule->smartscreenFiles();
-                                $model = $schedule;
-                            }
-                        }
-
-
-                    } else {
-                        $model->layout_id = !empty($content_name) ? $content_name : "";
-                        $changeContentId = (!empty($content_id) && $model->content_id != $content_id);
-                        $model->content_id = $content_id;
-                        $model->save(); //must save before updateSmartFile :)
-                        if (!empty($list_content) && !$changeContentId) {
-                            if ((!empty($content_name) || !empty($model->content_id))) {
-                                $content_id = $model->content_id;
-                                if (is_numeric($content_id) && !empty($content_id))
-                                    $content = SmartscreenContent::findOne($content_id);
-                                if (!isset($content)) {
-                                    $content = new SmartscreenContent();
-                                    $content->type = SmartscreenContent::TYPE_SLIDE;
-                                }
-                                if (!empty($content_name))
-                                    $content->title = $content_name;
-                                $content->save();
-                                Smartscreen::updateSmartFile($list_content, $content->id, $content, $model);
-                                if (!empty($content->id)) {
-                                    \Yii::$app->db->createCommand("UPDATE smartscreen_schedules SET content_id = $content->id WHERE id = $model->id")
-                                        ->execute();
-                                }
-                            } else {
-                                Smartscreen::updateSmartFile($list_content, $model->id, $model);
-                            }
-                        }
-                    }
+								if (!empty($list_content) && !isset($content)) {
+									Smartscreen::updateSmartFile(!empty($smartfiles) ? $smartfiles : $list_content, $schedule->id, $schedule);
+								}
+								if (empty($smartfiles))
+									$smartfiles = $schedule->smartscreenFiles();
+								$model = $schedule;
+							}
+						}
+					} else {
+						$model->layout_id = !empty($content_name) ? $content_name : "";
+						$changeContentId = (!empty($content_id) && $model->content_id != $content_id);
+						$model->content_id = $content_id;
+						$model->save(); //must save before updateSmartFile :)
+						if (!empty($list_content) && !$changeContentId) {
+							if ((!empty($content_name) || !empty($model->content_id))) {
+								$content_id = $model->content_id;
+								if (is_numeric($content_id) && !empty($content_id))
+									$content = SmartscreenContent::findOne($content_id);
+								if (!isset($content)) {
+									$content = new SmartscreenContent();
+									$content->type = SmartscreenContent::TYPE_SLIDE;
+								}
+								if (!empty($content_name))
+									$content->title = $content_name;
+								$content->save();
+								Smartscreen::updateSmartFile($list_content, $content->id, $content, $model);
+								if (!empty($content->id)) {
+									\Yii::$app->db->createCommand("UPDATE smartscreen_schedules SET content_id = $content->id WHERE id = $model->id")
+										->execute();
+								}
+							} else {
+								Smartscreen::updateSmartFile($list_content, $model->id, $model);
+							}
+						}
+					}
 				}
 
 				if ($this->saveType() == 'save') {
@@ -537,13 +519,10 @@ class SmartscreenSchedulesController extends SmartscreenController
 				}
 
 				return $this->redirect(Smartscreen::getCurrentParams(['index']));
-
-			}
-			else {
+			} else {
 
 				return $this->render('update', ['model' => $model]);
 			}
-
 		}
 	}
 
@@ -554,7 +533,8 @@ class SmartscreenSchedulesController extends SmartscreenController
 	 * @param integer $id
 	 * @return mixed
 	 */
-	public function actionDelete($id) {
+	public function actionDelete($id)
+	{
 		$request = Yii::$app->request;
 
 		$this->findModel($id)->delete();
@@ -563,8 +543,7 @@ class SmartscreenSchedulesController extends SmartscreenController
 			Yii::$app->response->format = Response::FORMAT_JSON;
 
 			return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-		}
-		else {
+		} else {
 			return $this->redirect(['index']);
 		}
 	}
@@ -576,13 +555,14 @@ class SmartscreenSchedulesController extends SmartscreenController
 	 * @param integer $id
 	 * @return mixed
 	 */
-	public function actionBulkDelete() {
+	public function actionBulkDelete()
+	{
 		$request = Yii::$app->request;
 
 		$pks = explode(',', $request->post('pks')); // Array or selected records primary keys
 		foreach ($pks as $pk) {
-		    if (!is_numeric($pk))
-		        continue;
+			if (!is_numeric($pk))
+				continue;
 			$model = FHtml::findOne($this->object_type, $pk);
 			if (isset($model)) {
 				$model->delete();
@@ -592,13 +572,13 @@ class SmartscreenSchedulesController extends SmartscreenController
 		if ($request->isAjax) {
 			Yii::$app->response->format = Response::FORMAT_JSON;
 			return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-		}
-		else {
+		} else {
 			return $this->redirect(['index']);
 		}
 	}
 
-	public function actionBulkAction($action = '', $field = '', $value = '') {
+	public function actionBulkAction($action = '', $field = '', $value = '')
+	{
 		$request = Yii::$app->request;
 
 		$pks = explode(',', $request->post('pks')); // Array or selected records primary keys
@@ -616,8 +596,7 @@ class SmartscreenSchedulesController extends SmartscreenController
 			Yii::$app->response->format = Response::FORMAT_JSON;
 
 			return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-		}
-		else {
+		} else {
 			return $this->redirect(['index']);
 		}
 	}
@@ -630,12 +609,14 @@ class SmartscreenSchedulesController extends SmartscreenController
 	 * @return SmartscreenSchedules the loaded model
 	 * @throws NotFoundHttpException if the model cannot be found
 	 */
-	protected function findModel($id) {
+	protected function findModel($id)
+	{
 		$model = parent::findModel($id);
 		return $model;
 	}
 
-	protected function createModel($className = '', $id = '', $params = null) {
+	protected function createModel($className = '', $id = '', $params = null)
+	{
 		$model = parent::createModel($className, $id, $params);
 
 		//$model->start_time = null;
@@ -643,9 +624,8 @@ class SmartscreenSchedulesController extends SmartscreenController
 	}
 
 
-	public function actionLayoutContent() {
+	public function actionLayoutContent()
+	{
 		$action = $_REQUEST['action'];
 	}
-
-
 }

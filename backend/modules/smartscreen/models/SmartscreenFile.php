@@ -11,16 +11,16 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "smartscreen_file".
  */
 class SmartscreenFile extends SmartscreenFileSearch
 {
     const LOOKUP = [];
 
-    const COLUMNS_UPLOAD = ['file','file_kind','file_size','file_duration',];
+    const COLUMNS_UPLOAD = ['file', 'file_kind', 'file_size', 'file_duration',];
     const COLUMNS_CUSTOM = [];
 
     public $order_by = 'sort_order asc,is_active desc,created_date desc';
@@ -28,7 +28,8 @@ class SmartscreenFile extends SmartscreenFileSearch
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
@@ -44,20 +45,23 @@ class SmartscreenFile extends SmartscreenFileSearch
         return $fields;
     }
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
-
     }
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if (!empty($this->file) && empty($this->command))
             $this->command = SmartscreenScripts::COMMAND_DSPCLIP;
         else if (empty($this->file) && empty($this->command) && !empty($this->description))
@@ -67,14 +71,14 @@ class SmartscreenFile extends SmartscreenFileSearch
         if ($this->command == SmartscreenContent::TYPE_HTML || $this->command == SmartscreenContent::TYPE_TEXT || $this->command == SmartscreenScripts::COMMAND_DSPTEXT || $this->command == 'marquee') {
             if (!empty($this->file))
                 $this->file = '';
-        } else if (in_array($content_type , [SmartscreenContent::TYPE_IMAGE, SmartscreenContent::TYPE_VIDEO]))
+        } else if (in_array($content_type, [SmartscreenContent::TYPE_IMAGE, SmartscreenContent::TYPE_VIDEO]))
             $this->command = $content_type;
 
-            if (empty($this->file_duration) && strlen($this->file_duration) == 0)
+        if (empty($this->file_duration) && strlen($this->file_duration) == 0)
             $this->file_duration = null;
 
         if ($content_type == SmartscreenContent::TYPE_VIDEO && (!isset($this->file_duration) || !is_numeric($this->file_duration))) {
-            $file= Smartscreen::getFileUrl($this->file, 'smartscreen-file', false);
+            $file = Smartscreen::getFileUrl($this->file, 'smartscreen-file', false);
             $kind = $this->file_kind;
             $this->file_duration = Smartscreen::getVideoDuration($file, $kind);
             $this->file_kind = $kind;
@@ -88,7 +92,8 @@ class SmartscreenFile extends SmartscreenFileSearch
         return parent::beforeSave($insert);
     }
 
-    public static function findAllCached() {
+    public static function findAllCached()
+    {
         $result = Smartscreen::Cache(self::tableName());
         if (isset($result) && !empty($result))
             return $result;
@@ -98,7 +103,8 @@ class SmartscreenFile extends SmartscreenFileSearch
         return $result;
     }
 
-    public static function findOneCached($id) {
+    public static function findOneCached($id)
+    {
         if (empty($id) || $id == FHtml::NULL_VALUE)
             return null;
         if (!Smartscreen::isObjectCachable(static::tableName()))

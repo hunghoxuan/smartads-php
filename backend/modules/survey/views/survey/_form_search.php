@@ -19,7 +19,7 @@ $currentRole = FHtml::getCurrentRole();
 $currentAction = FHtml::currentAction();
 
 $canEdit = isset($canEdit) ? $canEdit : FHtml::isInRole($model, 'edit', $currentRole, FHtml::getFieldValue($model, ['user_id', 'created_user']));
-$canDelete = isset($canDelete) ? $canDelete :FHtml::isInRole($model, 'delete', $currentRole);
+$canDelete = isset($canDelete) ? $canDelete : FHtml::isInRole($model, 'delete', $currentRole);
 $edit_type = isset($edit_type) ? $edit_type : (FHtml::isViewAction($currentAction) ? FHtml::EDIT_TYPE_VIEW : FHtml::EDIT_TYPE_DEFAULT);
 $display_type = isset($display_type) ? $display_type : (FHtml::isViewAction($currentAction) ? FHtml::DISPLAY_TYPE_TABLE : FHtml::DISPLAY_TYPE_DEFAULT);
 
@@ -57,17 +57,17 @@ $pjax_container = isset($pjax_container) ? $pjax_container : FHtml::getPjaxConta
     ]
 ]); ?>
 
-    <div class="form">
-        <div class="row">
-            <div class="col-md-12">
+<div class="form">
+    <div class="row">
+        <div class="col-md-12">
 
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
-                                                'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                ]]); ?>
+            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
+                'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+            ]]); ?>
 
-                <?= FHtml::showSearchButtons($model, '{search}', $pjax_container) ?>
-            </div>
+            <?= FHtml::showSearchButtons($model, '{search}', $pjax_container) ?>
         </div>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end() ?>

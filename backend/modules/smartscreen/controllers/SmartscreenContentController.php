@@ -1,10 +1,8 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "SmartscreenContent".
+
+/*This is the customized model class for table "SmartscreenContent".
  */
+
 namespace backend\modules\smartscreen\controllers;
 
 use backend\modules\smartscreen\models\SmartscreenFile;
@@ -64,7 +62,7 @@ class SmartscreenContentController extends AdminController
                         'actions' => ['view', 'index', 'create'],
                         'allow' => true,
                         'roles' => [
-                            User::ROLE_USER, User::ROLE_MODERATOR, User::ROLE_ADMIN
+                            User::ROLE_USER, User::ROLE_MODERATOR, User::ROLE_ADMIN, User::ROLE_ALL
                         ],
                     ],
                     [
@@ -341,5 +339,4 @@ class SmartscreenContentController extends AdminController
         $model = parent::createModel($className, $id, $params);
         return $model;
     }
-
 }

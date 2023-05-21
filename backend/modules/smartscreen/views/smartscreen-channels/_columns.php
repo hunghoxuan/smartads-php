@@ -39,38 +39,47 @@ return [
         'headerOptions' => ['class' => 'kartik-sheet-style'],
         'expandOneOnly' => false
     ],
-    [ 
+    [
         'attribute' => 'id',
         'width' => '50px',
     ],
-    [ 
+    [
         'attribute' => 'name',
         'contentOptions' => ['class' => 'col-md-2 nowrap'],
     ],
-    [ 
+    [
         'attribute' => 'description',
         'contentOptions' => ['class' => 'col-md-3 nowrap'],
     ],
-//    [
-//        'attribute' => 'image',
-//        'value' => function($model) { return FHtml::showImageThumbnail($model-> image, FHtml::config(FHtml::SETTINGS_THUMBNAIL_SIZE, 50), 'smartscreen-channels'); },
-//        'width' => '50px',
-//    ],
+    //    [
+    //        'attribute' => 'image',
+    //        'value' => function($model) { return FHtml::showImageThumbnail($model-> image, FHtml::config(FHtml::SETTINGS_THUMBNAIL_SIZE, 50), 'smartscreen-channels'); },
+    //        'width' => '50px',
+    //    ],
     //[ 
-        //'attribute' => 'content',
-        //'contentOptions' => ['class' => 'col-md-1 nowrap'],
+    //'attribute' => 'content',
+    //'contentOptions' => ['class' => 'col-md-1 nowrap'],
     //],
     [
         'class'          => FHtml::COLUMN_VIEW,
-        'attribute'      => 'Actions',
-        'label'          => FHtml::t('Actions'),
+        'attribute'      => 'Schedules',
+        'label'          => FHtml::t('Schedules'),
         'contentOptions' => ['class' => 'col-md-1 nowrap text-left'],
-        'value'          => function($model) {
+        'value'          => function ($model) {
             $url = FHtml::createUrl('/smartscreen/smartscreen-schedules', ['channel_id' => $model->id]);
-            $result = "<a style='float: left; margin-bottom: 10px' href='$url' data-pjax='0' class='label label-default label-xs'><span class=\"glyphicon glyphicon-pencil\"></span>&nbsp;". FHtml::t('Schedules') . " </a>";
+            $result = "<a style='float: left;' href='$url' data-pjax='0' class='label label-primary label-xs'><span class=\"glyphicon glyphicon-pencil\"></span>&nbsp;" . FHtml::t('Schedules') . " </a>";
 
+            return $result;
+        },
+    ],
+    [
+        'class'          => FHtml::COLUMN_VIEW,
+        'attribute'      => 'Devices',
+        'label'          => FHtml::t('Devices'),
+        'contentOptions' => ['class' => 'col-md-1 nowrap text-left'],
+        'value'          => function ($model) {
             $url = FHtml::createUrl('/smartscreen/smartscreen-station', ['channel_id' => $model->id]);
-            $result .= "&nbsp;<br/><a style='float: left;' href='$url' data-pjax='0' class='label label-primary label-xs'><span class=\"glyphicon glyphicon-pencil\"></span>&nbsp;". FHtml::t('Devices') . " </a>";
+            $result = "<a style='float: left;' href='$url' data-pjax='0' class='label label-primary label-xs'><span class=\"glyphicon glyphicon-pencil\"></span>&nbsp;" . FHtml::t('Devices') . " </a>";
             return $result;
         },
     ],
@@ -81,20 +90,20 @@ return [
         'attribute' => 'is_active',
         'contentOptions' => ['class' => 'col-md-1 nowrap'],
     ],
-    [
-        'class' => FHtml::COLUMN_EDIT,
-        'attribute' => 'is_default',
-        'contentOptions' => ['class' => 'col-md-1 nowrap'],
-    ],
+    // [
+    //     'class' => FHtml::COLUMN_EDIT,
+    //     'attribute' => 'is_default',
+    //     'contentOptions' => ['class' => 'col-md-1 nowrap'],
+    // ],
     //[ 
-        //'attribute' => 'created_date',
-        //'width' => '50px',
+    //'attribute' => 'created_date',
+    //'width' => '50px',
     //],
     //[ 
-        //'attribute' => 'created_user',
-        //'width' => '80px',
-        //'filterType' => GridView::FILTER_SELECT2, 
-        //'filter' => FHtml::getComboArray('smartscreen_channels', 'smartscreen_channels', 'created_user', true, 'id', 'name'),
+    //'attribute' => 'created_user',
+    //'width' => '80px',
+    //'filterType' => GridView::FILTER_SELECT2, 
+    //'filter' => FHtml::getComboArray('smartscreen_channels', 'smartscreen_channels', 'created_user', true, 'id', 'name'),
     //],
     [
         'class' => 'kartik\grid\ActionColumn',
@@ -116,7 +125,7 @@ return [
             'role' => 'modal-remote',
             'title' => FHtml::t('common', 'Delete'),
             'data-confirm' => false,
-            'data-method' => false,// for overide yii data api
+            'data-method' => false, // for overide yii data api
             'data-request-method' => 'post',
             'data-toggle' => 'tooltip',
             'data-confirm-title' => FHtml::t('common', 'Confirmation'),

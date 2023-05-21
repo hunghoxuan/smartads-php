@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "app_token".
  *
 
@@ -30,8 +29,8 @@ class AppTokenBase extends BaseModel //\yii\db\ActiveRecord
 {
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'app_token';
 
     public static function tableName()
@@ -48,14 +47,14 @@ class AppTokenBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'user_id', 'token', 'time', 'is_expired', 'created_user', 'created_date', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['user_id'], 'required'],
             [['user_id', 'is_expired'], 'integer'],
             [['created_date'], 'safe'],
@@ -64,20 +63,20 @@ class AppTokenBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('AppToken', 'ID'),
-                    'user_id' => FHtml::t('AppToken', 'User ID'),
-                    'token' => FHtml::t('AppToken', 'Token'),
-                    'time' => FHtml::t('AppToken', 'Time'),
-                    'is_expired' => FHtml::t('AppToken', 'Is Expired'),
-                    'created_user' => FHtml::t('AppToken', 'Created User'),
-                    'created_date' => FHtml::t('AppToken', 'Created Date'),
-                    'application_id' => FHtml::t('AppToken', 'Application ID'),
-                ];
+            'id' => FHtml::t('AppToken', 'ID'),
+            'user_id' => FHtml::t('AppToken', 'User ID'),
+            'token' => FHtml::t('AppToken', 'Token'),
+            'time' => FHtml::t('AppToken', 'Time'),
+            'is_expired' => FHtml::t('AppToken', 'Is Expired'),
+            'created_user' => FHtml::t('AppToken', 'Created User'),
+            'created_date' => FHtml::t('AppToken', 'Created Date'),
+            'application_id' => FHtml::t('AppToken', 'Application ID'),
+        ];
     }
 
     public static function tableSchema()
@@ -112,8 +111,4 @@ class AppTokenBase extends BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

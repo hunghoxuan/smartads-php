@@ -12,9 +12,9 @@ use backend\modules\tools\models\ToolsCopyAPI;
 use common\actions\BaseApiAction;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "tools_copy".
  */
 class ToolsCopyAction extends BaseApiAction
@@ -34,7 +34,7 @@ class ToolsCopyAction extends BaseApiAction
             return $out;
         } else {
 
-            $list = ToolsCopyAPI::getDataProvider(Fhtml::mergeRequestParams(['name' => '%'.$this->keyword], $this->paramsArray), $this->orderby, $this->limit, $this->page, false);
+            $list = ToolsCopyAPI::getDataProvider(Fhtml::mergeRequestParams(['name' => '%' . $this->keyword], $this->paramsArray), $this->orderby, $this->limit, $this->page, false);
             $out = FHtml::getOutputForAPI($list->getModels(), $this->listname, '', 'data', $list->pagination->pageCount);
             $out['code'] = $this->params;
             return $out;

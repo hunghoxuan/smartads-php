@@ -25,7 +25,7 @@ array (
   'smartads.override_device_name' => '1',
   'smartads.save_device_name' => '1',
   'smartads.default_device_status' => '0',
-  'smartads.his_enabled' => '1',
+  'smartads.his_enabled' => '0',
   'smartads.his_api_server' => '10.0.0.94:8089',
   'smartads.his_api_patientslist' => '/api/wb/exam_pending?dept={dept_id}&room={room_id}',
   'smartads.his_api_departmentslist' => '/api/wb/deptlist',

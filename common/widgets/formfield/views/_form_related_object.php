@@ -1,4 +1,5 @@
 <?php
+
 use common\components\FHtml;
 use common\components\Helper;
 use unclead\multipleinput\MultipleInput;
@@ -34,7 +35,7 @@ $pjax_container = isset($pjax_container) ? $pjax_container : $grid_id . '-pjax';
                 <div class="caption caption-md">
                     <i class="icon-globe theme-font hide"></i>
                     <span class="caption-subject font-blue-madison uppercase">
-                            <?= FHtml::t('common', 'Create ' . $field_name) ?>                        </span>
+                        <?= FHtml::t('common', 'Create ' . $field_name) ?> </span>
                 </div>
                 <div class="tools pull-right">
                     <a href="#" class="collapse"></a>
@@ -60,11 +61,11 @@ $pjax_container = isset($pjax_container) ? $pjax_container : $grid_id . '-pjax';
                                     ]);
                                     ?>
                                     <?php echo \common\widgets\FFormTable::widget(['model' => $related_model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                        'name' => ['value' => $form->fieldNoLabel($related_model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                        'description' => ['value' => $form->fieldNoLabel($related_model, 'description')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                        'content' => ['value' => $form->fieldNoLabel($related_model, 'content')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                        'thumbnail' => ['value' => $form->fieldNoLabel($related_model, 'thumbnail')->image(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                        'image' => ['value' => $form->fieldNoLabel($related_model, 'image')->image(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                        'name' => ['value' => $form->fieldNoLabel($related_model, 'name')->textInput()],
+                                        'description' => ['value' => $form->fieldNoLabel($related_model, 'description')->textarea(['rows' => 3])],
+                                        'content' => ['value' => $form->fieldNoLabel($related_model, 'content')->textarea(['rows' => 3])],
+                                        'thumbnail' => ['value' => $form->fieldNoLabel($related_model, 'thumbnail')->image()],
+                                        'image' => ['value' => $form->fieldNoLabel($related_model, 'image')->image()],
                                     ]]); ?>
 
                                     <?php \common\widgets\FActiveForm::end(); ?>
@@ -100,12 +101,12 @@ $pjax_container = isset($pjax_container) ? $pjax_container : $grid_id . '-pjax';
                     'class' => 'kartik\grid\SerialColumn',
 
                 ],
-//                [ //name: id, dbType: int(11), phpType: integer, size: 11, allowNull:
-//                    'class' => 'kartik\grid\DataColumn',
-//                    'label' => FHtml::t('common', 'Image'),
-//                    'format' => 'image',
-//                    'attribute' => 'thumbnail',
-//                ],
+                //                [ //name: id, dbType: int(11), phpType: integer, size: 11, allowNull:
+                //                    'class' => 'kartik\grid\DataColumn',
+                //                    'label' => FHtml::t('common', 'Image'),
+                //                    'format' => 'image',
+                //                    'attribute' => 'thumbnail',
+                //                ],
                 [ //name: id, dbType: int(11), phpType: integer, size: 11, allowNull:
                     'class' => 'kartik\grid\DataColumn',
                     'label' => FHtml::t('common', 'Name'),
@@ -126,4 +127,3 @@ $pjax_container = isset($pjax_container) ? $pjax_container : $grid_id . '-pjax';
         ]) ?>
     </div>
 </div>
-

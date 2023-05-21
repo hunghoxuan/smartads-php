@@ -1,10 +1,10 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "AuthRole".
-*/
+ *
+ ***
+ * This is the customized model class for table "AuthRole".
+ */
 
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
@@ -28,9 +28,9 @@ $this->params['breadcrumbs'] = [];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['toolBarActions'] = array(
-'linkButton'=>array(),
-'button'=>array(),
-'dropdown'=>array(),
+    'linkButton' => array(),
+    'button' => array(),
+    'dropdown' => array(),
 );
 $this->params['mainIcon'] = 'fa fa-list';
 

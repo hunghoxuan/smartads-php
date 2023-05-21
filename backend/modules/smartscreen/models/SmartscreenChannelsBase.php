@@ -102,4 +102,13 @@ class SmartscreenChannelsBase extends \common\models\BaseModel //\yii\db\ActiveR
             ],
         ];
     }
+
+    public function getDefaultValue($field, $default_value = null)
+    {
+        if ($field == 'created_date') {
+            FHtml::var_dump($field);
+            return date('Y-m-d H:i:s');
+        }
+        return parent::getDefaultValue($field, $default_value);
+    }
 }

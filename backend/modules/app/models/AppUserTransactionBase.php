@@ -9,9 +9,8 @@ use common\models\BaseModel;
 use frontend\models\ViewModel;
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "app_user_transaction".
  *
 
@@ -57,7 +56,7 @@ class AppUserTransactionBase extends BaseModel //\yii\db\ActiveRecord
     const STATUS_APPROVED = 1;
     const STATUS_REJECTED = -1;
 
-// id, transaction_id, user_id, receiver_user_id, object_id, object_type, amount, currency, payment_method, note, time, action, type, status, created_date, created_user, modified_date, modified_user, application_id
+    // id, transaction_id, user_id, receiver_user_id, object_id, object_type, amount, currency, payment_method, note, time, action, type, status, created_date, created_user, modified_date, modified_user, application_id
     const COLUMN_ID = 'id';
     const COLUMN_TRANSACTION_ID = 'transaction_id';
     const COLUMN_USER_ID = 'user_id';
@@ -79,8 +78,8 @@ class AppUserTransactionBase extends BaseModel //\yii\db\ActiveRecord
     const COLUMN_APPLICATION_ID = 'application_id';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'app_user_transaction';
 
     public static function tableName()

@@ -7,9 +7,9 @@ use common\components\FHtml;
 
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "smartscreen_schedules".
  */
 class SmartscreenSchedulesAPI extends SmartscreenSchedulesSearch
@@ -17,7 +17,8 @@ class SmartscreenSchedulesAPI extends SmartscreenSchedulesSearch
     //Customize fields to be displayed in API
     const COLUMNS_API = ['id', 'device_id', 'content_id', 'start_time', 'date', 'duration', 'loop', 'data', 'download_files', 'audio'];
 
-    public function checkCustomField($name) {
+    public function checkCustomField($name)
+    {
 
         if (in_array($name,  self::COLUMNS_API))
             return true;
@@ -59,32 +60,38 @@ class SmartscreenSchedulesAPI extends SmartscreenSchedulesSearch
     }
 
     private $_data;
-    public function getData() {
+    public function getData()
+    {
         if (!isset($this->_data))
             $this->_data = Smartscreen::getScheduleData($this);
         return $this->_data;
     }
 
-    public function getData1() {
+    public function getData1()
+    {
         if (!isset($this->_data))
             $this->_data = Smartscreen::getScheduleData($this);
         return $this->_data;
     }
 
-    public function setData($value) {
+    public function setData($value)
+    {
         $this->_data = $value;
     }
 
-    public function getDownloadFiles() {
+    public function getDownloadFiles()
+    {
         $data = $this->getData();
         return Smartscreen::getScheduleFiles($data);
     }
 
-    public function getAudio() {
+    public function getAudio()
+    {
         return Smartscreen::getScheduleBackgroundAudio($this);
     }
 
-    public function afterFind() {
+    public function afterFind()
+    {
         $this->date2 = $this->date;
         $this->start_time2 = $this->start_time;
         $this->device_id = !is_array($this->device_id) ? $this->device_id : FHtml::encode($this->device_id);
@@ -126,5 +133,4 @@ class SmartscreenSchedulesAPI extends SmartscreenSchedulesSearch
 
         return parent::beforeSave($insert);
     }
-
 }

@@ -42,8 +42,10 @@ class SmartscreenContentSearch extends SmartscreenContentBase
         if (FHtml::isApplicationsEnabled($this->getTableName()) && !empty($application_id)) {
             $arr = ['application_id' => $application_id];
         }
-        if (FHtml::field_exists($this, 'is_active') && FHtml::isRoleUser())
-            $arr = array_merge($arr, ['is_active' => 1]);
+
+        if (FHtml::isRoleUser()) {
+            $arr = array_merge($arr, [$this->getOwnerIdField() => FHtml::getCurrentUserId()]);
+        }
 
         return $arr;
     }

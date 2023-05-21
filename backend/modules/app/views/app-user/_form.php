@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "User".
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -115,18 +117,18 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
-                                            'name' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1]],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
 
-                                            'code' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'code')->textInput(), 'columnOptions' => ['colspan' => 1]],
-                                            'email' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'email')->emailInput(), 'columnOptions' => ['colspan' => 3]],
-                                           'overview' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'overview')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 3]],
-                                            'content' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'content')->html(), 'columnOptions' => ['colspan' => 3]],
+                                            'code' => ['value' => $form->fieldNoLabel($model, 'code')->textInput()],
+                                            'email' => ['value' => $form->fieldNoLabel($model, 'email')->emailInput(), 'columnOptions' => ['colspan' => 3]],
+                                            'overview' => ['value' => $form->fieldNoLabel($model, 'overview')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 3]],
+                                            'content' => ['value' => $form->fieldNoLabel($model, 'content')->html(), 'columnOptions' => ['colspan' => 3]],
 
                                         ]]); ?>
 
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
-                                         'status' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'status')->select(), 'columnOptions' => ['colspan' => 1]],
-                                            'type' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'type')->select(), 'columnOptions' => ['colspan' => 1]],
+                                            'status' => ['value' => $form->fieldNoLabel($model, 'status')->select()],
+                                            'type' => ['value' => $form->fieldNoLabel($model, 'type')->select()],
                                         ]]); ?>
                                     </div>
                                 </div>
@@ -135,43 +137,43 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                     <div class="col-md-12">
 
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
-                                            'image' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'image')->image(), 'columnOptions' => ['colspan' => 3]],
+                                            'image' => ['value' => $form->fieldNoLabel($model, 'image')->image(), 'columnOptions' => ['colspan' => 3]],
 
-                                            'phone' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'phone')->textInput(), 'columnOptions' => ['colspan' => 1]],
-                                            'skype' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'skype')->textInput(), 'columnOptions' => ['colspan' => 1]],
+                                            'phone' => ['value' => $form->fieldNoLabel($model, 'phone')->textInput()],
+                                            'skype' => ['value' => $form->fieldNoLabel($model, 'skype')->textInput()],
 
-                                            'identity_card' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'identity_card')->textInput(), 'columnOptions' => ['colspan' => 1]],
-                                            'gender' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'gender')->select(), 'columnOptions' => ['colspan' => 1]],
+                                            'identity_card' => ['value' => $form->fieldNoLabel($model, 'identity_card')->textInput()],
+                                            'gender' => ['value' => $form->fieldNoLabel($model, 'gender')->select()],
 
-                                            'birth_date' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'birth_date')->date(), 'columnOptions' => ['colspan' => 1]],
-                                            'birth_place' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'birth_place')->textInput(), 'columnOptions' => ['colspan' => 1]],
-                                            'country' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'country')->select(), 'columnOptions' => ['colspan' => 1]],
-                                            'city' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'city')->select(), 'columnOptions' => ['colspan' => 1]],
-                                            'state' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'state')->select(), 'columnOptions' => ['colspan' => 1]],
-                                            'post_code' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'post_code')->textInput(), 'columnOptions' => ['colspan' => 1]],
+                                            'birth_date' => ['value' => $form->fieldNoLabel($model, 'birth_date')->date()],
+                                            'birth_place' => ['value' => $form->fieldNoLabel($model, 'birth_place')->textInput()],
+                                            'country' => ['value' => $form->fieldNoLabel($model, 'country')->select()],
+                                            'city' => ['value' => $form->fieldNoLabel($model, 'city')->select()],
+                                            'state' => ['value' => $form->fieldNoLabel($model, 'state')->select()],
+                                            'post_code' => ['value' => $form->fieldNoLabel($model, 'post_code')->textInput()],
 
-                                            'address' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'address')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 3]],
+                                            'address' => ['value' => $form->fieldNoLabel($model, 'address')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 3]],
 
                                         ]]); ?>
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'title' => FHtml::t('common', 'Employment'), 'attributes' => [
-                                            'organization' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'organization')->select(), 'columnOptions' => ['colspan' => 1]],
-                                            'department' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'department')->select(), 'columnOptions' => ['colspan' => 1]],
-                                            'position' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'position')->select(), 'columnOptions' => ['colspan' => 1]],
-                                            'type' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'type')->select(), 'columnOptions' => ['colspan' => 1]],
+                                            'organization' => ['value' => $form->fieldNoLabel($model, 'organization')->select()],
+                                            'department' => ['value' => $form->fieldNoLabel($model, 'department')->select()],
+                                            'position' => ['value' => $form->fieldNoLabel($model, 'position')->select()],
+                                            'type' => ['value' => $form->fieldNoLabel($model, 'type')->select()],
 
-                                            'start_date' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'start_date')->date(), 'columnOptions' => ['colspan' => 1]],
-                                            'end_date' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'end_date')->date(), 'columnOptions' => ['colspan' => 1]],
+                                            'start_date' => ['value' => $form->fieldNoLabel($model, 'start_date')->date()],
+                                            'end_date' => ['value' => $form->fieldNoLabel($model, 'end_date')->date()],
 
                                         ]]); ?>
 
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'title' => FHtml::t('common', 'Finance'), 'attributes' => [
-                                            'card_number' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'card_number')->textInput(), 'columnOptions' => ['colspan' => 1]],
-                                            'card_name' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'card_name')->textInput(), 'columnOptions' => ['colspan' => 1]],
-                                            'card_exp' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'card_exp')->textInput(), 'columnOptions' => ['colspan' => 1]],
-                                            'card_cvv' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'card_cvv')->textInput(), 'columnOptions' => ['colspan' => 1]],
+                                            'card_number' => ['value' => $form->fieldNoLabel($model, 'card_number')->textInput()],
+                                            'card_name' => ['value' => $form->fieldNoLabel($model, 'card_name')->textInput()],
+                                            'card_exp' => ['value' => $form->fieldNoLabel($model, 'card_exp')->textInput()],
+                                            'card_cvv' => ['value' => $form->fieldNoLabel($model, 'card_cvv')->textInput()],
 
-                                            'balance' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'balance')->numeric(), 'columnOptions' => ['colspan' => 1]],
-                                            'point' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'point')->numeric(), 'columnOptions' => ['colspan' => 1]],
+                                            'balance' => ['value' => $form->fieldNoLabel($model, 'balance')->numeric()],
+                                            'point' => ['value' => $form->fieldNoLabel($model, 'point')->numeric()],
 
                                         ]]); ?>
 
@@ -182,7 +184,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                     <div class="col-md-12">
                                         <?=  //name: auth_key, dbType: varchar(32), phpType: string, size: 32, allowNull:
                                         $form->field($model, 'username')->textInput(['readonly' => !$model->isNewRecord]) ?>
-                                        <?=  FHtml::isRoleAdmin() ? $form->field($model, 'password_new')->passwordInput(['readonly' => false])->hint('Reset New Password here') : '' ?>
+                                        <?= FHtml::isRoleAdmin() ? $form->field($model, 'password_new')->passwordInput(['readonly' => false])->hint('Reset New Password here') : '' ?>
 
                                         <?=  //name: auth_key, dbType: varchar(32), phpType: string, size: 32, allowNull:
                                         $form->field($model, 'auth_key')->textInput(['readonly' => true]) ?>
@@ -194,8 +196,8 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                 </div>
                                 <div class="tab-pane row" id="tab_1_4">
                                     <div class="col-md-12">
-                                        <?=  $form->field($model, 'groups_array')->selectMany(FHtml::getApplicationGroupsComboArray()) ?>
-                                        <?=  $form->field($model, 'rights_array')->selectMany(FHtml::getApplicationRolesComboArray()) ?>
+                                        <?= $form->field($model, 'groups_array')->selectMany(FHtml::getApplicationGroupsComboArray()) ?>
+                                        <?= $form->field($model, 'rights_array')->selectMany(FHtml::getApplicationRolesComboArray()) ?>
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +217,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
         </div>
         <div class="profile-sidebar col-md-4 col-xs-12 hidden-print">
             <div class="portlet light">
-                <?= FHtml::showModelPreview($model, ['username'], ['name', 'dob', 'email', 'phone:text' ], ['image', 'avatar'], ['lat', 'long', 'rate', 'rate_count', 'status', 'is_online', 'created_date', 'last_login:date']) ?>
+                <?= FHtml::showModelPreview($model, ['username'], ['name', 'dob', 'email', 'phone:text'], ['image', 'avatar'], ['lat', 'long', 'rate', 'rate_count', 'status', 'is_online', 'created_date', 'last_login:date']) ?>
             </div>
 
         </div>

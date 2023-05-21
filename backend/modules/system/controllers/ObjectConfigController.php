@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "ObjectActions".
-*/
+ *
+ ***
+ * This is the customized model class for table "ObjectActions".
+ */
+
 namespace backend\modules\system\controllers;
 
 use Yii;
@@ -77,8 +78,7 @@ class ObjectConfigController extends AdminController
      * @return mixed
      */
     public function actionIndex()
-    {    
-
+    {
     }
 
 
@@ -108,10 +108,10 @@ class ObjectConfigController extends AdminController
         if (isset($model))
             $model->delete();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#' . $this->getPjaxContainerId()];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
+        } else {
             return $this->redirect(['view', 'object_id' => $object_id, 'object_type' => $object_type]);
         }
     }
@@ -124,12 +124,11 @@ class ObjectConfigController extends AdminController
 
         ObjectActions::deleteAll(['object_id' => $object_id, 'object_type' => $object_type]);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#' . $this->getPjaxContainerId()];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
+        } else {
             return $this->redirect(['view', 'object_id' => $object_id, 'object_type' => $object_type]);
         }
     }
-
 }

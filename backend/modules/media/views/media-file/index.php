@@ -1,10 +1,8 @@
 <?php
-/**
-* Developed by Hung Ho (Steve): hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "MediaFile".
-*/
+
+/*
+ * This is the customized model class for table "MediaFile".
+ */
 
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
@@ -28,9 +26,9 @@ $this->params['breadcrumbs'] = [];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['toolBarActions'] = array(
-'linkButton'=>array(),
-'button'=>array(),
-'dropdown'=>array(),
+    'linkButton' => array(),
+    'button' => array(),
+    'dropdown' => array(),
 );
 $this->params['mainIcon'] = 'fa fa-list';
 
@@ -41,10 +39,10 @@ $gridControl = '';
 
 ?>
 <div class="hidden-print">
-    <?= FHtml::buildAdminToolbar(str_replace('-', '_', $moduleKey)) ?>    <?= FHtml::render('_index', FHtml::getRequestParam('view'), [
-        'dataProvider' => $dataProvider,
-        'searchModel' => $searchModel,
-    ]) ?></div>
+    <?= FHtml::buildAdminToolbar(str_replace('-', '_', $moduleKey)) ?> <?= FHtml::render('_index', FHtml::getRequestParam('view'), [
+                                                                            'dataProvider' => $dataProvider,
+                                                                            'searchModel' => $searchModel,
+                                                                        ]) ?></div>
 
 <div class="visible-print">
     <?= $this->render('_index_print', [

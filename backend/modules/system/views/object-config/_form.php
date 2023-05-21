@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "ObjectActions".
-*/
+ *
+ ***
+ * This is the customized model class for table "ObjectActions".
+ */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -48,13 +49,13 @@ $model = isset($model) ? $model : FHtml::getModel($object_type, '', $object_id);
 ?>
 
 <?php if (!Yii::$app->request->isAjax) {
-$this->title = FHtml::t($moduleTitle);
-$this->params['mainIcon'] = 'fa fa-list';
-$this->params['toolBarActions'] = array(
-'linkButton'=>array(),
-'button'=>array(),
-'dropdown'=>array(),
-);
+    $this->title = FHtml::t($moduleTitle);
+    $this->params['mainIcon'] = 'fa fa-list';
+    $this->params['toolBarActions'] = array(
+        'linkButton' => array(),
+        'button' => array(),
+        'dropdown' => array(),
+    );
 } ?>
 
 <?php if ($ajax) Pjax::begin(['id' => 'crud-datatable'])  ?>
@@ -66,7 +67,7 @@ $object_type = isset($object_type) ? $object_type : FHtml::getRequestParam('obje
 
 $objectActionsSearchModel = new \backend\models\ObjectActionsSearch();
 $objectActionsDataProvider = $objectActionsSearchModel->search(['object_id' => $object_id, 'object_type' => $object_type]);
- ?>
+?>
 
 
 <div class="form">
@@ -81,7 +82,7 @@ $objectActionsDataProvider = $objectActionsSearchModel->search(['object_id' => $
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
-                            <?= FHtml::t('common', $moduleTitle) ?> : <?= FHtml::showModelField($model, 'name') ?>                        </span>
+                            <?= FHtml::t('common', $moduleTitle) ?> : <?= FHtml::showModelField($model, 'name') ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -89,12 +90,12 @@ $objectActionsDataProvider = $objectActionsSearchModel->search(['object_id' => $
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'History')?></a>
+                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'History') ?></a>
                         </li>
                         <li>
-                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads')?></a>
+                            <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Uploads') ?></a>
                         </li>
-                                                </ul>
+                    </ul>
                 </div>
                 <div class="portlet-body form">
                     <div class="form">
@@ -103,7 +104,7 @@ $objectActionsDataProvider = $objectActionsSearchModel->search(['object_id' => $
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
                                         <?= \common\widgets\FGridView::widget([
-                                            'id'=>'crud-datatable',
+                                            'id' => 'crud-datatable',
                                             'dataProvider' => $objectActionsDataProvider,
                                             'filterModel' => $objectActionsSearchModel,
                                             'object_type' => $object_type,
@@ -115,10 +116,10 @@ $objectActionsDataProvider = $objectActionsSearchModel->search(['object_id' => $
                                             'field_group' => ['category_id', 'type', 'status', 'lang', 'is_hot', 'is_top', 'is_active'],
                                             'field_business' => ['', ''],
                                             'toolbar' => $this->render('_toolbar.php'),
-                                            'columns' => require(__DIR__.'/_columns.php'),
-                                        ])?>
+                                            'columns' => require(__DIR__ . '/_columns.php'),
+                                        ]) ?>
 
-                                        
+
                                     </div>
                                 </div>
 

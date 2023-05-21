@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Admin
@@ -40,7 +41,8 @@ class Smartads extends FApplication
     ];
 
 
-    public static function getBackendMenu($controller = '', $action = '', $module = '') {
+    public static function getBackendMenu($controller = '', $action = '', $module = '')
+    {
 
         $controller = FHtml::currentController();
 
@@ -52,17 +54,17 @@ class Smartads extends FApplication
         $menu = array_merge($menu, Smartscreen::createModuleMenu([
             'smartscreen-campaigns',
             'smartscreen-schedules',
-//            'smartscreen-layouts',
-//            'smartscreen-frame',
+            //            'smartscreen-layouts',
+            //            'smartscreen-frame',
             'smartscreen-content',
-            'smartscreen-scripts']));
+            'smartscreen-scripts'
+        ]));
 
         $menu = array_merge($menu, Smartscreen::createModuleMenu(['smartscreen-channels', 'smartscreen-station'], 'Devices'));
         //$menu = array_merge($menu, Smartscreen::createModuleMenu(['smartscreen-queue', 'smartscreen-calendar'], 'HIS'));
 
-        $menu = array_merge($menu, App::createModuleMenu(['app-file', 'app-version']));
         $menu = array_merge($menu, Smartscreen::createModuleMenu(['smartscreen-frame', 'smartscreen-layouts'], 'Layouts'));
-
+        $menu = array_merge($menu, App::createModuleMenu(['app-file', 'app-version']));
         $menu = array_merge($menu, System::createModuleMenu(['user', 'settings', 'settings-text']));
         //$menu = array_merge($menu, Survey::createModuleMenu([]));
 

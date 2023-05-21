@@ -95,8 +95,14 @@ if (FHtml::isInRole('', 'edit', $currentRole) && !empty($dataProvider->models)) 
     $updateButton = FHtml::a('<i class="fa fa-edit"></i> ' . FHtml::t('button', 'Update'), ['update', 'channel_id' => $channel_id, 'date' => $date, 'device_id' => $device_id], ['class' => 'btn btn-warning', 'data-pjax' => 0]);
 }
 $deleteButton = FHtml::buttonDeleteBulk();
-$showGrid = !empty($model->device_id)  || !empty($model->campaign_id) || !empty($model->channel_id);
+if (!empty($model->device_id)  || !empty($model->campaign_id) || !empty($model->channel_id)) {
+    $gridControl = $folder . '_columns.php';
+} else {
+    $gridControl = $folder . '_columns_simple.php';
+}
+$showGrid = true;
 $showSearch = !in_array(FHtml::getRequestParam('search', 'true'), ['no', 'false']);
+
 ?>
 
 <div class="smartscreen-schedules-index">
@@ -125,15 +131,15 @@ $showSearch = !in_array(FHtml::getRequestParam('search', 'true'), ['no', 'false'
                             'hide_field' => false,
                             'type' => \kartik\form\ActiveForm::TYPE_VERTICAL,
                             'model' => $model, 'form' => $form, 'columns' => 6, 'attributes' => [
-                                'campaign_id' => ['value' => $form->fieldNoLabel($model, 'campaign_id')->select($list_campaigns), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                'channel_id' => ['value' => $form->fieldNoLabel($model, 'channel_id')->select($list_channels), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                'campaign_id' => ['value' => $form->fieldNoLabel($model, 'campaign_id')->select($list_campaigns)],
+                                'channel_id' => ['value' => $form->fieldNoLabel($model, 'channel_id')->select($list_channels)],
                                 'device_id' => ['value' => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
                                     $selected = $item->id == $id ? 'selected' : '';
                                     return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name ($item->description)</option>";
-                                }), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                'date' => ['value' => $form->fieldNoLabel($model, 'date')->date(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                'date_end' => ['value' => $form->fieldNoLabel($model, 'date_end')->date(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                'show_all' => ['label' => FHtml::t('Type') . ' ' . FHtml::t('Filter'), 'value' => $form->fieldNoLabel($model, 'show_all')->select([['id' => 0, 'name' => FHtml::t('Active')], ['id' => 1, 'name' => FHtml::t('All')]]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                })],
+                                'date' => ['value' => $form->fieldNoLabel($model, 'date')->date()],
+                                'date_end' => ['value' => $form->fieldNoLabel($model, 'date_end')->date()],
+                                'show_all' => ['label' => FHtml::t('Type') . ' ' . FHtml::t('Filter'), 'value' => $form->fieldNoLabel($model, 'show_all')->select([['id' => 0, 'name' => FHtml::t('Active')], ['id' => 1, 'name' => FHtml::t('All')]])],
 
                             ]
                         ]);
@@ -143,7 +149,8 @@ $showSearch = !in_array(FHtml::getRequestParam('search', 'true'), ['no', 'false'
                     <?= "<div class='pull-right'>$deleteButton $view $createButton</div>" ?>
                     <?php \common\widgets\FActiveForm::end(); ?>
                 </div>
-                <?php if ($showGrid) { ?>
+                <?php if ($showGrid) {
+                ?>
 
                     <div class="col-md-12 no-padding">
 

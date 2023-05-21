@@ -1,8 +1,9 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "SettingsMenu".
  */
 
@@ -41,30 +42,30 @@ return [
         'headerOptions' => ['class' => 'kartik-sheet-style'],
         'expandOneOnly' => false
     ],
-//    [ //name: group, dbType: varchar(100), phpType: string, size: 100, allowNull: 1
-//        'class' => FHtml::getColumnClass($moduleName, 'group', $form_type, true),
-//        'format'=>'raw',
-//        'attribute'=>'group',
-//        'visible' => FHtml::isVisibleInGrid($moduleName, 'group', $form_type, true),
-//        'hAlign'=>'left',
-//        'vAlign'=>'middle',
-//        'filterType' => GridView::FILTER_SELECT2,
-//        'filterWidgetOptions'=>[
-//            'pluginOptions'=>['allowClear' => true],
-//        ],
-//        'group' => true,
-//        'filterInputOptions'=>['placeholder'=>''],
-//        'filter'=> FHtml::getComboArray('settings_menu', 'settings_menu', 'group', true, 'id', 'name'),
-//        'contentOptions'=>['class'=>'col-md-1 nowrap'],
-//        'editableOptions'=> function ($model, $key, $index, $widget) {
-//            $fields = FHtml::getComboArray('settings_menu', 'settings_menu', 'group', true, 'id', 'name');
-//            return [
-//                'inputType' => 'dropDownList',
-//                'displayValueConfig' => $fields,
-//                'data' => $fields
-//            ];
-//        },
-//    ],
+    //    [ //name: group, dbType: varchar(100), phpType: string, size: 100, allowNull: 1
+    //        'class' => FHtml::getColumnClass($moduleName, 'group', $form_type, true),
+    //        'format'=>'raw',
+    //        'attribute'=>'group',
+    //        'visible' => FHtml::isVisibleInGrid($moduleName, 'group', $form_type, true),
+    //        'hAlign'=>'left',
+    //        'vAlign'=>'middle',
+    //        'filterType' => GridView::FILTER_SELECT2,
+    //        'filterWidgetOptions'=>[
+    //            'pluginOptions'=>['allowClear' => true],
+    //        ],
+    //        'group' => true,
+    //        'filterInputOptions'=>['placeholder'=>''],
+    //        'filter'=> FHtml::getComboArray('settings_menu', 'settings_menu', 'group', true, 'id', 'name'),
+    //        'contentOptions'=>['class'=>'col-md-1 nowrap'],
+    //        'editableOptions'=> function ($model, $key, $index, $widget) {
+    //            $fields = FHtml::getComboArray('settings_menu', 'settings_menu', 'group', true, 'id', 'name');
+    //            return [
+    //                'inputType' => 'dropDownList',
+    //                'displayValueConfig' => $fields,
+    //                'data' => $fields
+    //            ];
+    //        },
+    //    ],
     [ //name: module, dbType: varchar(100), phpType: string, size: 100, allowNull: 1
         'class' => FHtml::getColumnClass($moduleName, 'module', $form_type, true),
         'format' => 'raw',
@@ -114,27 +115,27 @@ return [
     //];
     //},
     //],
-//    [ //name: icon, dbType: varchar(300), phpType: string, size: 300, allowNull: 1
-//        'class' => FHtml::getColumnClass($moduleName, 'icon', $form_type, true),
-//        'format' => 'raw',
-//        'attribute' => 'icon',
-//        'visible' => FHtml::isVisibleInGrid($moduleName, 'icon', $form_type, true),
-//        'hAlign' => 'left',
-//        'vAlign' => 'middle',
-//        'contentOptions' => ['class' => 'col-md-1 nowrap'],
-//        'editableOptions' => [
-//            'size' => 'md',
-//            'inputType' => \kartik\editable\Editable::INPUT_TEXT,
-//            'widgetClass' => 'kartik\datecontrol\InputControl',
-//            'options' => [
-//                'options' => [
-//                    'pluginOptions' => [
-//                        'autoclose' => true
-//                    ]
-//                ]
-//            ]
-//        ],
-//    ],
+    //    [ //name: icon, dbType: varchar(300), phpType: string, size: 300, allowNull: 1
+    //        'class' => FHtml::getColumnClass($moduleName, 'icon', $form_type, true),
+    //        'format' => 'raw',
+    //        'attribute' => 'icon',
+    //        'visible' => FHtml::isVisibleInGrid($moduleName, 'icon', $form_type, true),
+    //        'hAlign' => 'left',
+    //        'vAlign' => 'middle',
+    //        'contentOptions' => ['class' => 'col-md-1 nowrap'],
+    //        'editableOptions' => [
+    //            'size' => 'md',
+    //            'inputType' => \kartik\editable\Editable::INPUT_TEXT,
+    //            'widgetClass' => 'kartik\datecontrol\InputControl',
+    //            'options' => [
+    //                'options' => [
+    //                    'pluginOptions' => [
+    //                        'autoclose' => true
+    //                    ]
+    //                ]
+    //            ]
+    //        ],
+    //    ],
     [ //name: name, dbType: varchar(255), phpType: string, size: 255, allowNull:  
         'class' => FHtml::getColumnClass($moduleName, 'name', $form_type, true),
         'format' => 'raw',
@@ -195,63 +196,63 @@ return [
         'filterInputOptions' => ['placeholder' => ''],
         'filter' => FHtml::getComboArray('settings_menu', 'settings_menu', 'object_type', true, 'id', 'name'),
     ],
-//
-//
-//    [ //name: menu_type, dbType: varchar(100), phpType: string, size: 100, allowNull: 1
-//        'class' => 'kartik\grid\DataColumn',
-//        'format' => 'raw',
-//        'attribute' => 'menu_type',
-//        'visible' => FHtml::isVisibleInGrid($moduleName, 'menu_type', $form_type, true),
-//        'value' => function ($model) {
-//            return FHtml::showContent($model->menu_type, FHtml::SHOW_LABEL, 'settings_menu', 'menu_type', 'varchar(100)', 'settingsmenu');
-//        },
-//        'hAlign' => 'left',
-//        'vAlign' => 'middle',
-//        'width' => '80px',
-//        'filterType' => GridView::FILTER_SELECT2,
-//        'filterWidgetOptions' => [
-//            'pluginOptions' => ['allowClear' => true],
-//        ],
-//        'filterInputOptions' => ['placeholder' => ''],
-//        'filter' => FHtml::getComboArray('settings_menu', 'settings_menu', 'menu_type', true, 'id', 'name'),
-//    ],
-//    [ //name: display_type, dbType: varchar(100), phpType: string, size: 100, allowNull: 1
-//        'class' => 'kartik\grid\DataColumn',
-//        'format' => 'raw',
-//        'attribute' => 'display_type',
-//        'visible' => FHtml::isVisibleInGrid($moduleName, 'display_type', $form_type, true),
-//        'value' => function ($model) {
-//            return FHtml::showContent($model->display_type, FHtml::SHOW_LABEL, 'settings_menu', 'display_type', 'varchar(100)', 'settingsmenu');
-//        },
-//        'hAlign' => 'left',
-//        'vAlign' => 'middle',
-//        'width' => '80px',
-//        'filterType' => GridView::FILTER_SELECT2,
-//        'filterWidgetOptions' => [
-//            'pluginOptions' => ['allowClear' => true],
-//        ],
-//        'filterInputOptions' => ['placeholder' => ''],
-//        'filter' => FHtml::getComboArray('settings_menu', 'settings_menu', 'display_type', true, 'id', 'name'),
-//    ],
-//    [ //name: sort_order, dbType: int(11), phpType: integer, size: 11, allowNull: 1
-//        'class' => FHtml::getColumnClass($moduleName, 'sort_order', $form_type, true),
-//        'format'=>'raw', //['decimal', 0],
-//        'attribute'=>'sort_order',
-//        'visible' => FHtml::isVisibleInGrid($moduleName, 'sort_order', $form_type, true),
-//        'value' => function($model) { return FHtml::showContent($model-> sort_order, FHtml::SHOW_NUMBER, 'settings_menu', 'sort_order','int(11)','settingsmenu'); },
-//        'hAlign'=>'right',
-//        'vAlign'=>'middle',
-//        'width'=>'50px',
-//        'editableOptions'=>[
-//                            'size'=>'md',
-//                            'inputType'=>\kartik\editable\Editable::INPUT_SPIN, //'\kartik\money\MaskMoney',
-//                            'options'=>[
-//                                'pluginOptions'=>[
-//                                    'min'=>0, 'max' => 50000000000, 'precision' => 0,
-//                                ]
-//                            ]
-//                        ],
-//    ],
+    //
+    //
+    //    [ //name: menu_type, dbType: varchar(100), phpType: string, size: 100, allowNull: 1
+    //        'class' => 'kartik\grid\DataColumn',
+    //        'format' => 'raw',
+    //        'attribute' => 'menu_type',
+    //        'visible' => FHtml::isVisibleInGrid($moduleName, 'menu_type', $form_type, true),
+    //        'value' => function ($model) {
+    //            return FHtml::showContent($model->menu_type, FHtml::SHOW_LABEL, 'settings_menu', 'menu_type', 'varchar(100)', 'settingsmenu');
+    //        },
+    //        'hAlign' => 'left',
+    //        'vAlign' => 'middle',
+    //        'width' => '80px',
+    //        'filterType' => GridView::FILTER_SELECT2,
+    //        'filterWidgetOptions' => [
+    //            'pluginOptions' => ['allowClear' => true],
+    //        ],
+    //        'filterInputOptions' => ['placeholder' => ''],
+    //        'filter' => FHtml::getComboArray('settings_menu', 'settings_menu', 'menu_type', true, 'id', 'name'),
+    //    ],
+    //    [ //name: display_type, dbType: varchar(100), phpType: string, size: 100, allowNull: 1
+    //        'class' => 'kartik\grid\DataColumn',
+    //        'format' => 'raw',
+    //        'attribute' => 'display_type',
+    //        'visible' => FHtml::isVisibleInGrid($moduleName, 'display_type', $form_type, true),
+    //        'value' => function ($model) {
+    //            return FHtml::showContent($model->display_type, FHtml::SHOW_LABEL, 'settings_menu', 'display_type', 'varchar(100)', 'settingsmenu');
+    //        },
+    //        'hAlign' => 'left',
+    //        'vAlign' => 'middle',
+    //        'width' => '80px',
+    //        'filterType' => GridView::FILTER_SELECT2,
+    //        'filterWidgetOptions' => [
+    //            'pluginOptions' => ['allowClear' => true],
+    //        ],
+    //        'filterInputOptions' => ['placeholder' => ''],
+    //        'filter' => FHtml::getComboArray('settings_menu', 'settings_menu', 'display_type', true, 'id', 'name'),
+    //    ],
+    //    [ //name: sort_order, dbType: int(11), phpType: integer, size: 11, allowNull: 1
+    //        'class' => FHtml::getColumnClass($moduleName, 'sort_order', $form_type, true),
+    //        'format'=>'raw', //['decimal', 0],
+    //        'attribute'=>'sort_order',
+    //        'visible' => FHtml::isVisibleInGrid($moduleName, 'sort_order', $form_type, true),
+    //        'value' => function($model) { return FHtml::showContent($model-> sort_order, FHtml::SHOW_NUMBER, 'settings_menu', 'sort_order','int(11)','settingsmenu'); },
+    //        'hAlign'=>'right',
+    //        'vAlign'=>'middle',
+    //        'width'=>'50px',
+    //        'editableOptions'=>[
+    //                            'size'=>'md',
+    //                            'inputType'=>\kartik\editable\Editable::INPUT_SPIN, //'\kartik\money\MaskMoney',
+    //                            'options'=>[
+    //                                'pluginOptions'=>[
+    //                                    'min'=>0, 'max' => 50000000000, 'precision' => 0,
+    //                                ]
+    //                            ]
+    //                        ],
+    //    ],
     [ //name: role, dbType: varchar(255), phpType: string, size: 255, allowNull: 1
         'class' => FHtml::getColumnClass($moduleName, 'role', $form_type, true),
         'format' => 'raw',
@@ -393,7 +394,7 @@ return [
             'role' => 'modal-remote',
             'title' => FHtml::t('common', 'title.delete'),
             'data-confirm' => false,
-            'data-method' => false,// for overide yii data api
+            'data-method' => false, // for overide yii data api
             'data-request-method' => 'post',
             'data-toggle' => 'tooltip',
             'data-confirm-title' => FHtml::t('message', 'Confirmation'),

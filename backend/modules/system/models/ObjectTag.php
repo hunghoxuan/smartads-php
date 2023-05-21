@@ -10,9 +10,9 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "object_tag".
  */
 class ObjectTag extends ObjectTagBase //\yii\db\ActiveRecord
@@ -26,20 +26,20 @@ class ObjectTag extends ObjectTagBase //\yii\db\ActiveRecord
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
     const COLUMNS = [
-        'api' => ['id', 'object_id', 'object_type', 'tag', 'sort_order', 'application_id', ],
+        'api' => ['id', 'object_id', 'object_type', 'tag', 'sort_order', 'application_id',],
         'all' => ['id', 'object_id', 'object_type', 'tag', 'sort_order', 'application_id',  'objectAttributes', 'objectFile', 'objectCategories'],
         '+' => ['tag',   'objectAttributes', 'objectFile', 'objectCategories']
     ];
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'object_id', 'object_type', 'tag', 'sort_order', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['object_id', 'object_type'], 'required'],
             [['sort_order'], 'integer'],
             [['object_id'], 'string', 'max' => 255],
@@ -48,36 +48,39 @@ class ObjectTag extends ObjectTagBase //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('ObjectTag', 'ID'),
-                    'object_id' => FHtml::t('ObjectTag', 'Object ID'),
-                    'object_type' => FHtml::t('ObjectTag', 'Object Type'),
-                    'tag' => FHtml::t('ObjectTag', 'Tag'),
-                    'sort_order' => FHtml::t('ObjectTag', 'Sort Order'),
-                    'application_id' => FHtml::t('ObjectTag', 'Application ID'),
-                ];
+            'id' => FHtml::t('ObjectTag', 'ID'),
+            'object_id' => FHtml::t('ObjectTag', 'Object ID'),
+            'object_type' => FHtml::t('ObjectTag', 'Object Type'),
+            'tag' => FHtml::t('ObjectTag', 'Tag'),
+            'sort_order' => FHtml::t('ObjectTag', 'Sort Order'),
+            'application_id' => FHtml::t('ObjectTag', 'Application ID'),
+        ];
     }
 
 
 
     // Lookup Object: tag\n
     public $tag;
-    public function getTag() {
+    public function getTag()
+    {
         if (!isset($this->tag))
-        $this->tag = FHtml::getModel('settings_tag', '', $this->tag_id, '', false);
+            $this->tag = FHtml::getModel('settings_tag', '', $this->tag_id, '', false);
 
         return $this->tag;
     }
-    public function setTag($value) {
+    public function setTag($value)
+    {
         $this->tag = $value;
     }
 
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
 
         $this->tag = self::getTag();
@@ -91,7 +94,7 @@ class ObjectTag extends ObjectTagBase //\yii\db\ActiveRecord
         if (is_string($this->columnsMode) && !empty($this->columnsMode) && key_exists($this->columnsMode, $columns)) {
             $fields1 = $columns[$this->columnsMode];
             if (!empty($fields1))
-            $fields = $fields1;
+                $fields = $fields1;
         } else if (is_array($this->columnsMode))
             return $this->columnsMode;
 
@@ -103,17 +106,20 @@ class ObjectTag extends ObjectTagBase //\yii\db\ActiveRecord
         return $fields;
     }
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
     }
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 
@@ -151,14 +157,15 @@ class ObjectTag extends ObjectTagBase //\yii\db\ActiveRecord
         ];
     }
 
-    public function toViewModel() {
-    $model = new ViewModel();
-            FHtml::setFieldValue($model, ['id'], $this->id);
-            FHtml::setFieldValue($model, ['object_id'], $this->object_id);
-            FHtml::setFieldValue($model, ['object_type'], $this->object_type);
-            FHtml::setFieldValue($model, ['tag'], $this->tag);
-            FHtml::setFieldValue($model, ['sort_order'], $this->sort_order);
-            FHtml::setFieldValue($model, ['application_id'], $this->application_id);
+    public function toViewModel()
+    {
+        $model = new ViewModel();
+        FHtml::setFieldValue($model, ['id'], $this->id);
+        FHtml::setFieldValue($model, ['object_id'], $this->object_id);
+        FHtml::setFieldValue($model, ['object_type'], $this->object_type);
+        FHtml::setFieldValue($model, ['tag'], $this->tag);
+        FHtml::setFieldValue($model, ['sort_order'], $this->sort_order);
+        FHtml::setFieldValue($model, ['application_id'], $this->application_id);
         return $model;
     }
 }

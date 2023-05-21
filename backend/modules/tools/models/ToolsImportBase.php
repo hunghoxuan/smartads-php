@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "tools_import".
  *
 
@@ -40,8 +39,8 @@ class ToolsImportBase extends BaseModel //\yii\db\ActiveRecord
     const OVERRIDE_TYPE_ADD = 'add';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'tools_import';
 
     public static function tableName()
@@ -58,14 +57,14 @@ class ToolsImportBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'name', 'file', 'sheet_name', 'first_row', 'last_row', 'object_type', 'key_columns', 'columns', 'default_values', 'override_type', 'type', 'created_date', 'created_user', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['name'], 'required'],
             [['first_row', 'last_row'], 'integer'],
             [['columns', 'default_values'], 'string'],
@@ -77,27 +76,27 @@ class ToolsImportBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('ToolsImport', 'ID'),
-                    'name' => FHtml::t('ToolsImport', 'Name'),
-                    'file' => FHtml::t('ToolsImport', 'File'),
-                    'sheet_name' => FHtml::t('ToolsImport', 'Sheet Name'),
-                    'first_row' => FHtml::t('ToolsImport', 'First Row'),
-                    'last_row' => FHtml::t('ToolsImport', 'Last Row'),
-                    'object_type' => FHtml::t('ToolsImport', 'Object Type'),
-                    'key_columns' => FHtml::t('ToolsImport', 'Key Columns'),
-                    'columns' => FHtml::t('ToolsImport', 'Columns'),
-                    'default_values' => FHtml::t('ToolsImport', 'Default Values'),
-                    'override_type' => FHtml::t('ToolsImport', 'Override Type'),
-                    'type' => FHtml::t('ToolsImport', 'Type'),
-                    'created_date' => FHtml::t('ToolsImport', 'Created Date'),
-                    'created_user' => FHtml::t('ToolsImport', 'Created User'),
-                    'application_id' => FHtml::t('ToolsImport', 'Application ID'),
-                ];
+            'id' => FHtml::t('ToolsImport', 'ID'),
+            'name' => FHtml::t('ToolsImport', 'Name'),
+            'file' => FHtml::t('ToolsImport', 'File'),
+            'sheet_name' => FHtml::t('ToolsImport', 'Sheet Name'),
+            'first_row' => FHtml::t('ToolsImport', 'First Row'),
+            'last_row' => FHtml::t('ToolsImport', 'Last Row'),
+            'object_type' => FHtml::t('ToolsImport', 'Object Type'),
+            'key_columns' => FHtml::t('ToolsImport', 'Key Columns'),
+            'columns' => FHtml::t('ToolsImport', 'Columns'),
+            'default_values' => FHtml::t('ToolsImport', 'Default Values'),
+            'override_type' => FHtml::t('ToolsImport', 'Override Type'),
+            'type' => FHtml::t('ToolsImport', 'Type'),
+            'created_date' => FHtml::t('ToolsImport', 'Created Date'),
+            'created_user' => FHtml::t('ToolsImport', 'Created User'),
+            'application_id' => FHtml::t('ToolsImport', 'Application ID'),
+        ];
     }
 
     public static function tableSchema()
@@ -132,8 +131,4 @@ class ToolsImportBase extends BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

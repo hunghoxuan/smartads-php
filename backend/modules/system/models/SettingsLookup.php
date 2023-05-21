@@ -10,9 +10,9 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "settings_lookup".
  */
 class SettingsLookup extends SettingsLookupBase //\yii\db\ActiveRecord
@@ -26,20 +26,20 @@ class SettingsLookup extends SettingsLookupBase //\yii\db\ActiveRecord
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
     const COLUMNS = [
-        'api' => ['id', 'name', 'object_type', 'params', 'fields', 'orderby', 'limit', 'sql', 'is_cached', 'is_active', 'sort_order', 'created_user', 'created_date', 'application_id', ],
+        'api' => ['id', 'name', 'object_type', 'params', 'fields', 'orderby', 'limit', 'sql', 'is_cached', 'is_active', 'sort_order', 'created_user', 'created_date', 'application_id',],
         'all' => ['id', 'name', 'object_type', 'params', 'fields', 'orderby', 'limit', 'sql', 'is_cached', 'is_active', 'sort_order', 'created_user', 'created_date', 'application_id',  'objectAttributes', 'objectFile', 'objectCategories'],
-        '+' => [  'objectAttributes', 'objectFile', 'objectCategories']
+        '+' => ['objectAttributes', 'objectFile', 'objectCategories']
     ];
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'name', 'object_type', 'params', 'fields', 'orderby', 'limit', 'sql', 'is_cached', 'is_active', 'sort_order', 'created_user', 'created_date', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['name'], 'required'],
             [['is_cached', 'is_active', 'sort_order'], 'integer'],
             [['created_date'], 'safe'],
@@ -50,34 +50,34 @@ class SettingsLookup extends SettingsLookupBase //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('SettingsLookup', 'ID'),
-                    'name' => FHtml::t('SettingsLookup', 'Name'),
-                    'object_type' => FHtml::t('SettingsLookup', 'Object Type'),
-                    'params' => FHtml::t('SettingsLookup', 'Params'),
-                    'fields' => FHtml::t('SettingsLookup', 'Fields'),
-                    'orderby' => FHtml::t('SettingsLookup', 'Orderby'),
-                    'limit' => FHtml::t('SettingsLookup', 'Limit'),
-                    'sql' => FHtml::t('SettingsLookup', 'Sql'),
-                    'is_cached' => FHtml::t('SettingsLookup', 'Is Cached'),
-                    'is_active' => FHtml::t('SettingsLookup', 'Is Active'),
-                    'sort_order' => FHtml::t('SettingsLookup', 'Sort Order'),
-                    'created_user' => FHtml::t('SettingsLookup', 'Created User'),
-                    'created_date' => FHtml::t('SettingsLookup', 'Created Date'),
-                    'application_id' => FHtml::t('SettingsLookup', 'Application ID'),
-                ];
+            'id' => FHtml::t('SettingsLookup', 'ID'),
+            'name' => FHtml::t('SettingsLookup', 'Name'),
+            'object_type' => FHtml::t('SettingsLookup', 'Object Type'),
+            'params' => FHtml::t('SettingsLookup', 'Params'),
+            'fields' => FHtml::t('SettingsLookup', 'Fields'),
+            'orderby' => FHtml::t('SettingsLookup', 'Orderby'),
+            'limit' => FHtml::t('SettingsLookup', 'Limit'),
+            'sql' => FHtml::t('SettingsLookup', 'Sql'),
+            'is_cached' => FHtml::t('SettingsLookup', 'Is Cached'),
+            'is_active' => FHtml::t('SettingsLookup', 'Is Active'),
+            'sort_order' => FHtml::t('SettingsLookup', 'Sort Order'),
+            'created_user' => FHtml::t('SettingsLookup', 'Created User'),
+            'created_date' => FHtml::t('SettingsLookup', 'Created Date'),
+            'application_id' => FHtml::t('SettingsLookup', 'Application ID'),
+        ];
     }
 
 
 
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
-
     }
 
     public function fields()
@@ -88,7 +88,7 @@ class SettingsLookup extends SettingsLookupBase //\yii\db\ActiveRecord
         if (is_string($this->columnsMode) && !empty($this->columnsMode) && key_exists($this->columnsMode, $columns)) {
             $fields1 = $columns[$this->columnsMode];
             if (!empty($fields1))
-            $fields = $fields1;
+                $fields = $fields1;
         } else if (is_array($this->columnsMode))
             return $this->columnsMode;
 
@@ -100,17 +100,20 @@ class SettingsLookup extends SettingsLookupBase //\yii\db\ActiveRecord
         return $fields;
     }
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
     }
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 
@@ -148,22 +151,23 @@ class SettingsLookup extends SettingsLookupBase //\yii\db\ActiveRecord
         ];
     }
 
-    public function toViewModel() {
-    $model = new ViewModel();
-            FHtml::setFieldValue($model, ['id'], $this->id);
-            FHtml::setFieldValue($model, ['name'], $this->name);
-            FHtml::setFieldValue($model, ['object_type'], $this->object_type);
-            FHtml::setFieldValue($model, ['params'], $this->params);
-            FHtml::setFieldValue($model, ['fields'], $this->fields);
-            FHtml::setFieldValue($model, ['orderby'], $this->orderby);
-            FHtml::setFieldValue($model, ['limit'], $this->limit);
-            FHtml::setFieldValue($model, ['sql'], $this->sql);
-            FHtml::setFieldValue($model, ['is_cached'], $this->is_cached);
-            FHtml::setFieldValue($model, ['is_active'], $this->is_active);
-            FHtml::setFieldValue($model, ['sort_order'], $this->sort_order);
-            FHtml::setFieldValue($model, ['created_user'], $this->created_user);
-            FHtml::setFieldValue($model, ['created_date'], $this->created_date);
-            FHtml::setFieldValue($model, ['application_id'], $this->application_id);
+    public function toViewModel()
+    {
+        $model = new ViewModel();
+        FHtml::setFieldValue($model, ['id'], $this->id);
+        FHtml::setFieldValue($model, ['name'], $this->name);
+        FHtml::setFieldValue($model, ['object_type'], $this->object_type);
+        FHtml::setFieldValue($model, ['params'], $this->params);
+        FHtml::setFieldValue($model, ['fields'], $this->fields);
+        FHtml::setFieldValue($model, ['orderby'], $this->orderby);
+        FHtml::setFieldValue($model, ['limit'], $this->limit);
+        FHtml::setFieldValue($model, ['sql'], $this->sql);
+        FHtml::setFieldValue($model, ['is_cached'], $this->is_cached);
+        FHtml::setFieldValue($model, ['is_active'], $this->is_active);
+        FHtml::setFieldValue($model, ['sort_order'], $this->sort_order);
+        FHtml::setFieldValue($model, ['created_user'], $this->created_user);
+        FHtml::setFieldValue($model, ['created_date'], $this->created_date);
+        FHtml::setFieldValue($model, ['application_id'], $this->application_id);
         return $model;
     }
 }

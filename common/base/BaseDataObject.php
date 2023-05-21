@@ -10,6 +10,8 @@ use common\components\FModel;
 use yii\db\ActiveRecord;
 use yii\helpers\BaseInflector;
 use yii\helpers\StringHelper;
+use backend\models\AuthPermission;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class BaseDataObject
@@ -44,7 +46,8 @@ class BaseDataObject extends BaseAPIObject
     /**
      * @param  BaseDataObject $model
      */
-    public function updateCommand($model, $sql) {
+    public function updateCommand($model, $sql)
+    {
         try {
             $model::getDb()->createCommand($sql)->execute();
             return true;
@@ -99,11 +102,9 @@ class BaseDataObject extends BaseAPIObject
     {
         foreach ($this->attributes() as $attribute) {
             $value = $this->getAttribute($attribute);
-            if (FHtml::isInArray($attribute, ['is_*']) && !isset($value) && !StringHelper::endsWith(static::className(), 'Search'))
-            {
+            if (FHtml::isInArray($attribute, ['is_*']) && !isset($value) && !StringHelper::endsWith(static::className(), 'Search')) {
                 //$this->setAttribute($attribute, true);
-            }
-            else if (is_array($value)) {
+            } else if (is_array($value)) {
                 $this->setAttribute($attribute, FHtml::encode($value));
             }
         }
@@ -129,7 +130,8 @@ class BaseDataObject extends BaseAPIObject
         return static::isAttributeChanged($fieldname);
     }
 
-    public function getChangedContent() {
+    public function getChangedContent()
+    {
         $this->changedContent = [];
         foreach ($this->oldAttributes as $key => $value) {
             if ($this->isAttributeChanged($key))
@@ -170,7 +172,8 @@ class BaseDataObject extends BaseAPIObject
             return static::deleteEach($condition);
     }
 
-    public static function deleteEach($condition = '') {
+    public static function deleteEach($condition = '')
+    {
         $models = static::findAll($condition);
         foreach ($models as $model) {
             $model->delete();
@@ -200,7 +203,8 @@ class BaseDataObject extends BaseAPIObject
         return parent::beforeDelete();
     }
 
-    public function delete() {
+    public function delete()
+    {
 
         return parent::delete();
     }
@@ -270,20 +274,22 @@ class BaseDataObject extends BaseAPIObject
         $result = FHtml::encode($this->getFieldValue($fields));
 
         if (!empty($this->wp_post_id)) {
-            $result.= $this->getWPContent();
+            $result .= $this->getWPContent();
         }
 
         return FHtml::showDiv($result, $css);
     }
 
-    public function showTags($url = '', $template = '{tag}', $color = '', $fields = ['tags', 'keywords']) {
+    public function showTags($url = '', $template = '{tag}', $color = '', $fields = ['tags', 'keywords'])
+    {
         if (empty($fields))
             $fields = ['tags', 'keywords'];
         $result = $this->getFieldValue($fields);
         return FHtml::showTags($result, $url, $template, $color);
     }
 
-    public function showDate($fields = [], $format = '', $showTime = false) {
+    public function showDate($fields = [], $format = '', $showTime = false)
+    {
         if (empty($fields))
             $fields = ['created_date'];
         $result = $this->getFieldValue($fields);
@@ -291,7 +297,8 @@ class BaseDataObject extends BaseAPIObject
         return FHtml::showDate($result, $format, $showTime);
     }
 
-    public function showPrice($color = '', $showFriendly = true, $showPrice = true, $fields = []) {
+    public function showPrice($color = '', $showFriendly = true, $showPrice = true, $fields = [])
+    {
         if (empty($fields))
             $fields = ['price', 'cost'];
 
@@ -308,9 +315,9 @@ class BaseDataObject extends BaseAPIObject
 
     public static function lookupLabel($table_name, $lookup_key, $lookup_value, $needle)
     {
-        if(is_numeric($lookup_value)){
+        if (is_numeric($lookup_value)) {
             $condition = "$lookup_key = $lookup_value";
-        }else{
+        } else {
             $condition = "$lookup_key = '$lookup_value'";
         }
         /** @var BaseDataObject $model */
@@ -324,7 +331,8 @@ class BaseDataObject extends BaseAPIObject
         return '';
     }
 
-    public function setValues($model, $fields = [], $copyFromNullValue = true) {
+    public function setValues($model, $fields = [], $copyFromNullValue = true)
+    {
         if (is_array($model)) {
             FHtml::copyFieldValues($this, $model, null, $copyFromNullValue);
         } else {
@@ -332,7 +340,8 @@ class BaseDataObject extends BaseAPIObject
         }
     }
 
-    public static function updateAllCounters($counters, $condition = '', $params = []) {
+    public static function updateAllCounters($counters, $condition = '', $params = [])
+    {
         $custom_fields = [];
         $model1 = static::createNew();
         if (is_string($counters))
@@ -371,11 +380,13 @@ class BaseDataObject extends BaseAPIObject
         return $this->save();
     }
 
-    public function copyFrom($model, $fields = [], $copyFromNullValue = true) {
+    public function copyFrom($model, $fields = [], $copyFromNullValue = true)
+    {
         return $this->setValues($model, $fields, $copyFromNullValue);
     }
 
-    public function saveObjectAttributesArray($beforeSave = true) {
+    public function saveObjectAttributesArray($beforeSave = true)
+    {
         $attributes = $this->getObjectAttributesArray();
         $object_type = $this->getTableName();
         $object_id = $this->getPrimaryKeyValue();
@@ -410,7 +421,8 @@ class BaseDataObject extends BaseAPIObject
         }
     }
 
-    public function saveObjectItems() {
+    public function saveObjectItems()
+    {
         $model = $this;
         $object_type = $this->getTableName();
         $object_id = $this->getPrimaryKeyValue();
@@ -421,28 +433,30 @@ class BaseDataObject extends BaseAPIObject
         FHtml::saveObjectRelations($model, $object_type, $object_id);
     }
 
-    public function saveUploadFiles() {
+    public function saveUploadFiles()
+    {
         $this->uploadedFiles = FHtml::saveUploadedFiles($this);
 
         /*save value file upload*/
-//        $uploads = FModel::getModelUploadFields($this);
-//
-//        $attributes = $this->getAttributes();
-//        $_attributes = [];
-//
-//        array_walk($attributes, function($attribute, $key) use ($attributes, $uploads, &$_attributes){
-//            if (in_array($key, $uploads) && !empty($attributes[$key])) {
-//                $_attributes[$key] = strtolower($attribute);
-//            }
-//        });
-//
-//        if(!empty($_attributes) && !empty($this->getPrimaryKeyValue())) {
-//            //\Yii::$app->db->createCommand()->update($this->tableName, $_attributes, [$this->primaryKeyField() => $this->primaryKeyValue()])->execute();
-//        }
+        //        $uploads = FModel::getModelUploadFields($this);
+        //
+        //        $attributes = $this->getAttributes();
+        //        $_attributes = [];
+        //
+        //        array_walk($attributes, function($attribute, $key) use ($attributes, $uploads, &$_attributes){
+        //            if (in_array($key, $uploads) && !empty($attributes[$key])) {
+        //                $_attributes[$key] = strtolower($attribute);
+        //            }
+        //        });
+        //
+        //        if(!empty($_attributes) && !empty($this->getPrimaryKeyValue())) {
+        //            //\Yii::$app->db->createCommand()->update($this->tableName, $_attributes, [$this->primaryKeyField() => $this->primaryKeyValue()])->execute();
+        //        }
         /*save value file upload*/
     }
 
-    public function save($runValidation = true, $attributeNames = null) {
+    public function save($runValidation = true, $attributeNames = null)
+    {
 
         $insert = $this->isNewRecord;
         $tableName = $this::tableName();
@@ -473,8 +487,6 @@ class BaseDataObject extends BaseAPIObject
             // Save languages data
             FModel::saveTranslatedModel($this, $lang, false);
             $save = parent::save(false, $attributeNames);
-
-            //$this->afterSave(false, $attributeNames);
         } else {
             $save = parent::save($runValidation, $attributeNames);
 
@@ -521,11 +533,13 @@ class BaseDataObject extends BaseAPIObject
         return $save;
     }
 
-    public function getUploadedFiles() {
+    public function getUploadedFiles()
+    {
         return $this->uploadedFiles;
     }
 
-    public function approve($field = '', $value = FHtml::STATUS_ACTIVE) {
+    public function approve($field = '', $value = FHtml::STATUS_ACTIVE)
+    {
         if (empty($field))
             $field_arr = ['is_active', 'is_approved', 'status'];
         else if (is_string($field))
@@ -542,7 +556,8 @@ class BaseDataObject extends BaseAPIObject
         return false;
     }
 
-    public function reject($field = '', $value = FHtml::STATUS_INACTIVE) {
+    public function reject($field = '', $value = FHtml::STATUS_INACTIVE)
+    {
         if (empty($field))
             $field_arr = ['is_active', 'is_approved', 'status'];
         else if (is_string($field))
@@ -559,14 +574,16 @@ class BaseDataObject extends BaseAPIObject
         return false;
     }
 
-    public function getShowType($column) {
+    public function getShowType($column)
+    {
         return '';
     }
 
-    public function normalizeFieldValues($fields = [],
-                                         $created_fields = ['category_id_array', 'is_active', 'category_id', 'created_user', 'created_date', 'application_id'],
-                                         $updated_fields = ['category_id_array', 'category_id', 'modified_user', 'modified_date'])
-    {
+    public function normalizeFieldValues(
+        $fields = [],
+        $created_fields = ['category_id_array', 'is_active', 'category_id', 'created_user', 'created_date', 'application_id'],
+        $updated_fields = ['category_id_array', 'category_id', 'modified_user', 'modified_date']
+    ) {
 
         if (empty($fields))
             $fields = empty($this::COLUMNS_ARRAY) ? $this->attributes() : $this::COLUMNS_ARRAY;
@@ -577,9 +594,6 @@ class BaseDataObject extends BaseAPIObject
     protected $isLoaded = false;
     public function beforeSave($insert)
     {
-        if ($this->field_exists('application_id'))
-            $this->application_id = FHtml::currentApplicationCode();
-
         if (!$this->isLoaded) {
             $this->normalizeFieldValues();
             $this->isLoaded = true;

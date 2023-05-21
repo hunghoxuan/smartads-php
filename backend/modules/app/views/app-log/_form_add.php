@@ -19,7 +19,7 @@ $currentRole = FHtml::getCurrentRole();
 $currentAction = FHtml::currentAction();
 
 $canEdit = isset($canEdit) ? $canEdit : FHtml::isInRole($model, 'edit', $currentRole, FHtml::getFieldValue($model, ['user_id', 'created_user']));
-$canDelete = isset($canDelete) ? $canDelete :FHtml::isInRole($model, 'delete', $currentRole);
+$canDelete = isset($canDelete) ? $canDelete : FHtml::isInRole($model, 'delete', $currentRole);
 $edit_type = isset($edit_type) ? $edit_type : (FHtml::isViewAction($currentAction) ? FHtml::EDIT_TYPE_VIEW : FHtml::EDIT_TYPE_DEFAULT);
 $display_type = isset($display_type) ? $display_type : (FHtml::isViewAction($currentAction) ? FHtml::DISPLAY_TYPE_TABLE : FHtml::DISPLAY_TYPE_DEFAULT);
 
@@ -56,23 +56,22 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : '_
     ]
 ]); ?>
 
-    <div class="form">
-        <div class="row">
-            <div class="col-md-12">
+<div class="form">
+    <div class="row">
+        <div class="col-md-12">
 
-                                            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
-                                            ]]); ?>
-                                            <?php /*
+            <?= FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => []]); ?>
+            <?php /*
 ;
                                             */ ?>
-                                            <?= FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 2, 'attributes' => [
-                                                'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('app_log', 'app_log', 'status', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            ]]); ?>
-            </div>
-            <div class="col-md-12">
-                <?= (FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete, $ajax) : FHtml::showActionsButton($model, $canEdit, $canDelete, $ajax) ?>
-            </div>
+            <?= FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 2, 'attributes' => [
+                'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('app_log', 'app_log', 'status', true, 'id', 'name'))],
+            ]]); ?>
+        </div>
+        <div class="col-md-12">
+            <?= (FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete, $ajax) : FHtml::showActionsButton($model, $canEdit, $canDelete, $ajax) ?>
         </div>
     </div>
+</div>
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end() ?>

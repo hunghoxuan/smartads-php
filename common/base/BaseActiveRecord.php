@@ -8,11 +8,12 @@ use yii\helpers\BaseInflector;
 use Yii;
 use yii\helpers\StringHelper;
 
-class BaseActiveRecord extends ActiveRecord
+class BaseActiveRecord1 extends ActiveRecord
 {
     protected $api_fields;
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         return Yii::createObject(['class' => get_called_class()]);
     }
 
@@ -32,7 +33,8 @@ class BaseActiveRecord extends ActiveRecord
         return $name;
     }
 
-    public function field_exists($fields = []) {
+    public function field_exists($fields = [])
+    {
         $result = [];
         if (is_string($fields))
             $fields = [$fields];
@@ -49,7 +51,8 @@ class BaseActiveRecord extends ActiveRecord
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function attributes() {
+    public function attributes()
+    {
         $schema = static::getTableSchema();
         if (isset($schema))
             return array_keys($schema->columns);
@@ -58,7 +61,8 @@ class BaseActiveRecord extends ActiveRecord
         }
     }
 
-    public function getApiFields() {
+    public function getApiFields()
+    {
         $schema = static::getTableSchema();
         if (isset($schema))
             return array_keys($schema->columns);
@@ -78,7 +82,8 @@ class BaseActiveRecord extends ActiveRecord
         return $fields;
     }
 
-    public function getRequestFields() {
+    public function getRequestFields()
+    {
         $fields = FHtml::getRequestParam([static::tableName() . '_fields', 'fields']);
         if (!empty($fields)) {
             $fields = explode(',', $fields);
@@ -89,7 +94,8 @@ class BaseActiveRecord extends ActiveRecord
         return [];
     }
 
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if ($this->field_exists('application_id'))
             $this->application_id = FHtml::currentApplicationCode();
 

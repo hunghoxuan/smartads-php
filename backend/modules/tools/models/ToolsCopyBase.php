@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "tools_copy".
  *
 
@@ -31,8 +30,8 @@ class ToolsCopyBase extends \common\models\BaseModel //\yii\db\ActiveRecord
 {
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'tools_copy';
 
     public static function tableName()
@@ -49,14 +48,14 @@ class ToolsCopyBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'name', 'folders', 'files', 'description', 'created_date', 'modified_date', 'created_user', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             // [['folders', 'files'], 'string'],
             [['created_date', 'modified_date'], 'safe'],
             [['created_user'], 'integer'],
@@ -66,21 +65,21 @@ class ToolsCopyBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('ToolsCopy', 'ID'),
-                    'name' => FHtml::t('ToolsCopy', 'Name'),
-                    'folders' => FHtml::t('ToolsCopy', 'Folders'),
-                    'files' => FHtml::t('ToolsCopy', 'Files'),
-                    'description' => FHtml::t('ToolsCopy', 'Description'),
-                    'created_date' => FHtml::t('ToolsCopy', 'Created Date'),
-                    'modified_date' => FHtml::t('ToolsCopy', 'Modified Date'),
-                    'created_user' => FHtml::t('ToolsCopy', 'Created User'),
-                    'application_id' => FHtml::t('ToolsCopy', 'Application ID'),
-                ];
+            'id' => FHtml::t('ToolsCopy', 'ID'),
+            'name' => FHtml::t('ToolsCopy', 'Name'),
+            'folders' => FHtml::t('ToolsCopy', 'Folders'),
+            'files' => FHtml::t('ToolsCopy', 'Files'),
+            'description' => FHtml::t('ToolsCopy', 'Description'),
+            'created_date' => FHtml::t('ToolsCopy', 'Created Date'),
+            'modified_date' => FHtml::t('ToolsCopy', 'Modified Date'),
+            'created_user' => FHtml::t('ToolsCopy', 'Created User'),
+            'application_id' => FHtml::t('ToolsCopy', 'Application ID'),
+        ];
     }
 
     public function init()
@@ -100,8 +99,4 @@ class ToolsCopyBase extends \common\models\BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

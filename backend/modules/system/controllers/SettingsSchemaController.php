@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "SettingsSchema".
-*/
+ *
+ ***
+ * This is the customized model class for table "SettingsSchema".
+ */
+
 namespace backend\modules\system\controllers;
 
 use Yii;
@@ -36,7 +37,7 @@ class SettingsSchemaController extends AdminController
     protected $moduleTitle = 'Settings Schema';
     protected $moduleKey = 'settings_schema';
 
-/**
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -95,44 +96,44 @@ class SettingsSchemaController extends AdminController
         $searchModel = new SettingsSchemaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-           // validate if there is a editable input saved via AJAX
-           if (Yii::$app->request->post('hasEditable')) {
-               // instantiate your book model for saving
-               $Id = Yii::$app->request->post('editableKey');
+        // validate if there is a editable input saved via AJAX
+        if (Yii::$app->request->post('hasEditable')) {
+            // instantiate your book model for saving
+            $Id = Yii::$app->request->post('editableKey');
 
-               $model = SettingsSchema::findOne($Id);
+            $model = SettingsSchema::findOne($Id);
 
-               // store a default json response as desired by editable
-               $out = Json::encode(['output' => '', 'message' => '']);
+            // store a default json response as desired by editable
+            $out = Json::encode(['output' => '', 'message' => '']);
 
-               // fetch the first entry in posted data (there should
-               // only be one entry anyway in this array for an
-               // editable submission)
-               // - $posted is the posted data for Book without any indexes
-               // - $post is the converted array for single model validation
-               $post = [];
-               $posted = current($_POST['SettingsSchema']);
-               $post['SettingsSchema'] = $posted;
+            // fetch the first entry in posted data (there should
+            // only be one entry anyway in this array for an
+            // editable submission)
+            // - $posted is the posted data for Book without any indexes
+            // - $post is the converted array for single model validation
+            $post = [];
+            $posted = current($_POST['SettingsSchema']);
+            $post['SettingsSchema'] = $posted;
 
-               // load model like any single model validation
-               if ($model->load($post)) {
-                   // can save model or do something before saving model
-                   $model->save();
+            // load model like any single model validation
+            if ($model->load($post)) {
+                // can save model or do something before saving model
+                $model->save();
 
-                   // custom output to return to be displayed as the editable grid cell
-                   // data. Normally this is empty - whereby whatever value is edited by
-                   // in the input by user is updated automatically.
-                   $output = '';
-                   // similarly you can check if the name attribute was posted as well
-                   // if (isset($posted['name'])) {
-                   //   $output =  ''; // process as you need
-                   // }
-                   $out = Json::encode(['output' => $output, 'message' => '']);
-               }
-               // return ajax json encoded response and exit
-               echo $out;
-               return;
-           }
+                // custom output to return to be displayed as the editable grid cell
+                // data. Normally this is empty - whereby whatever value is edited by
+                // in the input by user is updated automatically.
+                $output = '';
+                // similarly you can check if the name attribute was posted as well
+                // if (isset($posted['name'])) {
+                //   $output =  ''; // process as you need
+                // }
+                $out = Json::encode(['output' => $output, 'message' => '']);
+            }
+            // return ajax json encoded response and exit
+            echo $out;
+            return;
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -147,24 +148,24 @@ class SettingsSchemaController extends AdminController
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $request = Yii::$app->request;
 
         $model = $this->findModel($id);
         $type = FHtml::getFieldValue($model, 'type');
         $modelMeta = FHtml::createMetaModel($this->moduleKey, $type, $model->id);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> FHtml::t($this->moduleName)." #".$id,
-                    'content'=>$this->renderPartial('_view_preview', [
-                        'model' => $model, 'modelMeta' => $modelMeta
-                    ]),
-                    'footer'=>Html::a(FHtml::t('Update'),['update','id'=>$id],['class'=>'btn btn-primary pull-left','role'=>$this->view->params['displayType']]).
-                              Html::button(FHtml::t('Close'),['class'=>'btn btn-default','data-dismiss'=>"modal"])
-                ];
-        }else{
+                'title' => FHtml::t($this->moduleName) . " #" . $id,
+                'content' => $this->renderPartial('_view_preview', [
+                    'model' => $model, 'modelMeta' => $modelMeta
+                ]),
+                'footer' => Html::a(FHtml::t('Update'), ['update', 'id' => $id], ['class' => 'btn btn-primary pull-left', 'role' => $this->view->params['displayType']]) .
+                    Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
+            ];
+        } else {
             return $this->render('view', [
                 'model' => $model, 'modelMeta' => $modelMeta
             ]);
@@ -191,40 +192,40 @@ class SettingsSchemaController extends AdminController
 
         $uploadFields = SettingsSchema::COLUMNS_UPLOAD;
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
+            if ($request->isGet) {
                 return [
-                    'title'=> FHtml::t($this->moduleName),
-                    'content'=>$this->renderPartial('create', [
+                    'title' => FHtml::t($this->moduleName),
+                    'content' => $this->renderPartial('create', [
                         'model' => $model, 'modelMeta' => $modelMeta,
                     ]),
-                    'footer'=> Html::button(FHtml::t('Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(FHtml::t('Create'),['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
-                return [
-                'forceReload'=>'#' . $this->getPjaxContainerId(),
-                'title'=> FHtml::t($this->moduleName),
-                'content'=>'<span class="text-success">Create SettingsSchema success</span>',
-                'footer'=> Html::button(FHtml::t('Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                Html::a(FHtml::t('Create more'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer' => Html::button(FHtml::t('Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button(FHtml::t('Create'), ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
-            }else{
-            return [
-            'title'=> FHtml::t($this->moduleName),
-            'content'=>$this->renderAjax('create', [
-            'model' => $model,
-            ]),
-            'footer'=> Html::button(FHtml::t('Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-            Html::button(FHtml::t('Create'),['class'=>'btn btn-primary','type'=>"submit"])
+            } else if ($model->load($request->post()) && $model->save()) {
+                return [
+                    'forceReload' => '#' . $this->getPjaxContainerId(),
+                    'title' => FHtml::t($this->moduleName),
+                    'content' => '<span class="text-success">Create SettingsSchema success</span>',
+                    'footer' => Html::button(FHtml::t('Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::a(FHtml::t('Create more'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                ];
+            } else {
+                return [
+                    'title' => FHtml::t($this->moduleName),
+                    'content' => $this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer' => Html::button(FHtml::t('Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button(FHtml::t('Create'), ['class' => 'btn btn-primary', 'type' => "submit"])
 
-            ];
+                ];
             }
-        }else{
+        } else {
             /*
             *   Process for non-ajax request
             */
@@ -234,11 +235,10 @@ class SettingsSchemaController extends AdminController
                 $model->id = null;
 
                 if ($model->save()) {
-              if ($this->saveType() == 'clone')
-                    {
-                        return $this->redirect(ArrayHelper::merge(['create', 'id' => $model->id], $returnParams ));
+                    if ($this->saveType() == 'clone') {
+                        return $this->redirect(ArrayHelper::merge(['create', 'id' => $model->id], $returnParams));
                     }
-                    return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+                    return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
                 }
                 return $this->render('create', [
                     'model' => $model,
@@ -251,7 +251,6 @@ class SettingsSchemaController extends AdminController
                 ]);
             }
         }
-       
     }
 
     /**
@@ -276,41 +275,41 @@ class SettingsSchemaController extends AdminController
         $uploadFields = SettingsSchema::COLUMNS_UPLOAD;
 
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
+            if ($request->isGet) {
                 return [
-                    'title'=> FHtml::t($this->moduleName)." #".$id,
-                    'content'=>$this->renderPartial('update', [
+                    'title' => FHtml::t($this->moduleName) . " #" . $id,
+                    'content' => $this->renderPartial('update', [
                         'model' => $model, 'modelMeta' => $modelMeta,
                     ]),
-                    'footer'=> Html::button(FHtml::t('Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(FHtml::t('Save'),['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
-                    return [
-                        'forceReload'=>'#' . $this->getPjaxContainerId(),
-                        'title'=> FHtml::t($this->moduleName)." #".$id,
-                        'content'=>$this->renderAjax('view', [
-                            'model' => $model, 'modelMeta' => $modelMeta,
-                        ]),
-                        'footer'=> Html::button(FHtml::t('Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                    Html::a(FHtml::t('update'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                    ];
-            }else{
-                    return [
-                        'title'=> FHtml::t($this->moduleName)." #".$id,
-                        'content'=>$this->renderAjax('update', [
-                            'model' => $model, 'modelMeta' => $modelMeta
-                        ]),
-                        'footer'=> Html::button(FHtml::t('Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                    Html::button(FHtml::t('Save'),['class'=>'btn btn-primary','type'=>"submit"])
-                    ];
+                    'footer' => Html::button(FHtml::t('Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button(FHtml::t('Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+                ];
+            } else if ($model->load($request->post()) && $model->save()) {
+                return [
+                    'forceReload' => '#' . $this->getPjaxContainerId(),
+                    'title' => FHtml::t($this->moduleName) . " #" . $id,
+                    'content' => $this->renderAjax('view', [
+                        'model' => $model, 'modelMeta' => $modelMeta,
+                    ]),
+                    'footer' => Html::button(FHtml::t('Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::a(FHtml::t('update'), ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                ];
+            } else {
+                return [
+                    'title' => FHtml::t($this->moduleName) . " #" . $id,
+                    'content' => $this->renderAjax('update', [
+                        'model' => $model, 'modelMeta' => $modelMeta
+                    ]),
+                    'footer' => Html::button(FHtml::t('Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button(FHtml::t('Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+                ];
             }
-        }else{
+        } else {
             /*
             *   Process for non-ajax request
             */
@@ -318,14 +317,14 @@ class SettingsSchemaController extends AdminController
             if ($model->load($request->post())) {
                 if ($model->save()) {
 
-                    if ($this->saveType() == 'clone')
-                    {
-                        return $this->redirect(ArrayHelper::merge(['create', 'id' => $model->id, 'type' => $type], $returnParams ));
+                    if ($this->saveType() == 'clone') {
+                        return $this->redirect(ArrayHelper::merge(['create', 'id' => $model->id, 'type' => $type], $returnParams));
                     }
-                    return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+                    return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
                 }
                 return $this->render('update', [
-                    'model' => $model, 'modelMeta' => $modelMeta ]);
+                    'model' => $model, 'modelMeta' => $modelMeta
+                ]);
             } else {
                 return $this->render('update', [
                     'model' => $model, 'modelMeta' => $modelMeta
@@ -349,21 +348,21 @@ class SettingsSchemaController extends AdminController
 
         $this->findModel($id)->delete();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#' . $this->getPjaxContainerId()];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
+        } else {
             /*
             *   Process for non-ajax request
             */
-            return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+            return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
         }
     }
 
-     /**
+    /**
      * Delete multiple existing SettingsSchema model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
@@ -384,38 +383,39 @@ class SettingsSchemaController extends AdminController
             }
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-        }else{
+        } else {
             /*
             *   Process for non-ajax request
             */
-            return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+            return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
         }
     }
 
-    public function actionPopulate() {
+    public function actionPopulate()
+    {
         $request = Yii::$app->request;
         $returnParams = FHtml::RequestParams(['id']);
 
         $object_type = FHtml::getRequestParam('object_type');
         FHtml::populateObjectSchema($object_type);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
-        }else{
+            return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
+        } else {
             /*
             *   Process for non-ajax request
             */
-            return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+            return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
         }
     }
 
@@ -427,26 +427,26 @@ class SettingsSchemaController extends AdminController
 
         $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
         foreach ($pks as $pk) {
-        $model = $this->findModel($pk);
-        if (isset($model)) {
-            if ($action == 'change') {
-                $model[$field] = $value;
-                $model->save();
+            $model = $this->findModel($pk);
+            if (isset($model)) {
+                if ($action == 'change') {
+                    $model[$field] = $value;
+                    $model->save();
                 }
             }
         }
 
-        if($request->isAjax){
-        /*
+        if ($request->isAjax) {
+            /*
         *   Process for ajax request
         */
-        Yii::$app->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-        }else{
-        /*
+        } else {
+            /*
             *   Process for non-ajax request
             */
-            return $this->redirect(ArrayHelper::merge(['index'], $returnParams ));
+            return $this->redirect(ArrayHelper::merge(['index'], $returnParams));
         }
     }
 

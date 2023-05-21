@@ -1,4 +1,5 @@
 <?php
+
 namespace mozaframework\atcrud\generators;
 
 use common\components\FHtml;
@@ -151,7 +152,8 @@ class Generator extends \yii\gii\Generator
         return array_merge(parent::stickyAttributes(), ['baseControllerClass']);
     }
 
-    public function getModelClassArray() {
+    public function getModelClassArray()
+    {
         $arrays = explode(',', Helper::prepareStringForExplode($this->modelClass));
         return $arrays;
     }
@@ -204,13 +206,13 @@ class Generator extends \yii\gii\Generator
                         $this->modelClassArrays[] = $item;
                     }
                 } catch (Exception $e) {
-                    echo $e->getMessage();  die;
+                    echo $e->getMessage();
+                    die;
                 }
             }
         }
 
         if (!empty($this->gridFields)) {
-
         }
     }
 
@@ -233,14 +235,12 @@ class Generator extends \yii\gii\Generator
             }
 
             // 2017-01-19 - Ha edited - Fix issue always generate modules (Naiscorp)
-            if (!empty($this->moduleName))
-            {
-                if(substr_count($_REQUEST['Generator']['ns'], 'modules') == 0)
+            if (!empty($this->moduleName)) {
+                if (substr_count($_REQUEST['Generator']['ns'], 'modules') == 0)
                     $moduleFolder = '';
                 else
                     $moduleFolder = '\\modules\\' . $this->moduleName;
-            }
-            else
+            } else
                 $moduleFolder = '';
 
 
@@ -267,18 +267,18 @@ class Generator extends \yii\gii\Generator
             }
 
             // generate api actions
-//            $this->viewPath = '@' . $this->baseFolder . str_replace('\\', '/', $moduleFolder) . '/actions/';
-//            $viewPath = $this->getViewPath();
-//            $templatePath = $this->getTemplatePath() . '/actions';
-//            foreach (scandir($templatePath) as $file) {
-//                if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-//                    $files[] = new CodeFile("$viewPath/$model$file", $this->render("actions/$file"));
-//                }
-//            }
+            //            $this->viewPath = '@' . $this->baseFolder . str_replace('\\', '/', $moduleFolder) . '/actions/';
+            //            $viewPath = $this->getViewPath();
+            //            $templatePath = $this->getTemplatePath() . '/actions';
+            //            foreach (scandir($templatePath) as $file) {
+            //                if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+            //                    $files[] = new CodeFile("$viewPath/$model$file", $this->render("actions/$file"));
+            //                }
+            //            }
 
             //
             //$this->viewPath = '@' . $this->baseFolder . '/web/upload/' . Inflector::camel2id($model);
-            $this->viewPath = FHtml::getRootFolder() . '/applications/' . FHtml::currentApplicationId(). '/upload/' . Inflector::camel2id($model);
+            $this->viewPath = FHtml::getRootFolder() . '/applications/' . FHtml::currentApplicationId() . '/upload/' . Inflector::camel2id($model);
             $viewPath = $this->getViewPath();
             $files[] = new CodeFile("$viewPath/.gitignore", $this->render('gitignore.txt'));
         }
@@ -338,7 +338,7 @@ class Generator extends \yii\gii\Generator
         } else {
             // No I18N, replace placeholders by real words, if any
             if (!empty($placeholders)) {
-                $phKeys = array_map(function($word) {
+                $phKeys = array_map(function ($word) {
                     return '{' . $word . '}';
                 }, array_keys($placeholders));
                 $phValues = array_values($placeholders);
@@ -355,7 +355,7 @@ class Generator extends \yii\gii\Generator
     public function generateActiveFieldNoLabel($attribute, $shortForm = false)
     {
         $input = self::generateActiveField($attribute, '', "\$form->fieldNoLabel", $shortForm);
-        $template = "'" . $attribute . "' => ['value' => $input, 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],\n";
+        $template = "'" . $attribute . "' => ['value' => $input],\n";
         return $template;
     }
 
@@ -421,8 +421,7 @@ class Generator extends \yii\gii\Generator
         } else if (key_exists($attribute, $specialEditors)) {
             $editor = $specialEditors[$attribute];
             $result = "$function(\$model, '$attribute')->$editor()";
-        }
-        else if ($editor == 'boolean' || $column->phpType === 'boolean' || FHtml::isInArray($column->name, $booleanAttributes) || (StringHelper::startsWith($column->dbType, 'tinyint') && $column->size == 1)) {
+        } else if ($editor == 'boolean' || $column->phpType === 'boolean' || FHtml::isInArray($column->name, $booleanAttributes) || (StringHelper::startsWith($column->dbType, 'tinyint') && $column->size == 1)) {
             //Boolean
             $editor = FHtml::EDITOR_BOOLEAN;
             if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_BOOLEAN_SETTINGS;
@@ -430,8 +429,7 @@ class Generator extends \yii\gii\Generator
             $result = "$function(\$model, '$attribute')->checkbox()";
         } elseif ($editor == 'label' || $editor == 'readonly') {
             $result = self::generateShowModelField($attribute);
-        }
-        elseif ($editor == 'text' || $column->dbType === 'text') {
+        } elseif ($editor == 'text' || $column->dbType === 'text') {
             if (FHtml::isInArray($column->name, $htmlAttributes) && !$shortForm) {
                 $editor = FHtml::EDITOR_TEXT;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_TEXT_SETTINGS;
@@ -449,7 +447,6 @@ class Generator extends \yii\gii\Generator
                 $result .= "$function(\$model, '$attribute')->dateInput()";
             else
                 $result .= "$function(\$model, '$attribute')->date()";
-
         } elseif ($editor == 'time' || (strpos($column->dbType, 'varchar') !== false && $column->size == 8) || FHtml::isInArray($column->name, $timeAttributes) || strpos($column->dbType, 'time') !== false) {
             //Time
             $editor = FHtml::EDITOR_TIME;
@@ -469,107 +466,78 @@ class Generator extends \yii\gii\Generator
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_SELECT_SETTINGS;
                 //$result .= "$function(\$model, '$attribute')->widget($editor::className(),['data' => FHtml::getComboArray('$lookup_key', '$lookup_table', '$column->name', true, 'id', 'name'), 'options'=>['multiple' => false], $editorSettings])";
                 $result .= "$function(\$model, '$attribute')->select(FHtml::getComboArray('$lookup_key', '$lookup_table', '$column->name', true, 'id', 'name'))";
-
-            }
-            else if ($editor == 'range' || strpos($column->name, 'range') !== false || strpos($column->name, 'point') !== false)
-            {
+            } else if ($editor == 'range' || strpos($column->name, 'range') !== false || strpos($column->name, 'point') !== false) {
                 $editor = FHtml::EDITOR_SLIDE;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_RANGE_SETTINGS;
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
                 $result = "$function(\$model, '$attribute')->range()";
-            }
-            else if ($editor == 'rate' || FHtml::isInArray($column->name, $rateAttributes))
-            {
+            } else if ($editor == 'rate' || FHtml::isInArray($column->name, $rateAttributes)) {
                 $editor = FHtml::EDITOR_RATE;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_RATE_SETTINGS;
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
                 $result = "$function(\$model, '$attribute')->rate()";
-            }
-            else if ($editor == 'slide' || $column->size == 3 || FHtml::isInArray($column->name, $percentAttributes))
-            {
+            } else if ($editor == 'slide' || $column->size == 3 || FHtml::isInArray($column->name, $percentAttributes)) {
                 $editor = FHtml::EDITOR_SLIDE;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_SLIDE_SETTINGS;
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
                 $result = "$function(\$model, '$attribute')->slide()";
-
-            }
-            else if ($editor == 'checkbox' || $column->size == 1 || FHtml::isInArray($column->name, $booleanAttributes))
-            {
+            } else if ($editor == 'checkbox' || $column->size == 1 || FHtml::isInArray($column->name, $booleanAttributes)) {
                 $editor = FHtml::EDITOR_BOOLEAN;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_BOOLEAN_SETTINGS;
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
                 $result = "$function(\$model, '$attribute')->checkbox()";
-            }
-            else {
+            } else {
                 //Int
                 $editor = FHtml::EDITOR_NUMERIC;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_NUMERIC_SETTINGS;
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])\n";
                 $result = "$function(\$model, '$attribute')->numeric()";
-
             }
         } elseif (StringHelper::startsWith($column->dbType, 'decimal') || StringHelper::startsWith($column->dbType, 'double') || StringHelper::startsWith($column->dbType, 'float')) {
-                if ($column->precision > 0) // assume it is money
-                {
-                    $editor = FHtml::EDITOR_CURRENCY;
-                    if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_CURRENCY_SETTINGS;
-                    //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
-                    $result = "$function(\$model, '$attribute')->currency()";
-
-                } else {
-                    $editor = FHtml::EDITOR_CURRENCY;
-                    if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_CURRENCY_SETTINGS;
-                    //$result .= "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
-                    $result = "$function(\$model, '$attribute')->money()";
-                }
-
+            if ($column->precision > 0) // assume it is money
+            {
+                $editor = FHtml::EDITOR_CURRENCY;
+                if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_CURRENCY_SETTINGS;
+                //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
+                $result = "$function(\$model, '$attribute')->currency()";
+            } else {
+                $editor = FHtml::EDITOR_CURRENCY;
+                if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_CURRENCY_SETTINGS;
+                //$result .= "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
+                $result = "$function(\$model, '$attribute')->money()";
+            }
         } elseif (is_array($column->enumValues) && count($column->enumValues) > 0) {
             $dropDownOptions = [];
             foreach ($column->enumValues as $enumValue) {
                 $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
             }
             $result = "$function(\$model, '$attribute')->dropDownList("
-                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
-        }
-        else {
+                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
+        } else {
             //varchar
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
                 $result = "$function(\$model, '$attribute')->passwordInput()";
-
-            } else if ($editor == 'color' || (empty($color) && strpos($column->name, 'color') !== false))
-            {
+            } else if ($editor == 'color' || (empty($color) && strpos($column->name, 'color') !== false)) {
                 $editor = FHtml::EDITOR_COLOR;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_COLOR_SETTINGS;
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
                 $result = "$function(\$model, '$attribute')->color()";
-
-            }
-            else if ($editor == 'email' || strpos($column->name, 'email') !== false)
-            {
+            } else if ($editor == 'email' || strpos($column->name, 'email') !== false) {
                 //$result = "$function(\$model, '$attribute')->input('email')";
                 $result = "$function(\$model, '$attribute')->emailInput()";
-
-            }
-            else if ($editor == 'range' || strpos($column->name, 'range') !== false)
-            {
+            } else if ($editor == 'range' || strpos($column->name, 'range') !== false) {
                 $editor = FHtml::EDITOR_SLIDE;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_SLIDE_RANGE_SETTINGS;
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), [$editorSettings])";
                 $result = "$function(\$model, '$attribute')->slide()";
-
-            }
-            else if ($editor == 'date' || (empty($editor) && (FHtml::isInArray($column->name, $dateAttributes) || FHtml::isInArray($column->name, $datetimeAttributes))))
-            {
+            } else if ($editor == 'date' || (empty($editor) && (FHtml::isInArray($column->name, $dateAttributes) || FHtml::isInArray($column->name, $datetimeAttributes)))) {
                 $editor = FHtml::EDITOR_DATE;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_DATE_SETTINGS;
                 if (strpos($column->dbType, 'varchar') !== false)
                     $result .= "$function(\$model, '$attribute')->dateInput()";
                 else
                     $result .= "$function(\$model, '$attribute')->date()";
-
-            }
-            else if ($editor == 'file' ||FHtml::isInArray($column->name, $fileAttributes) || ($column->size == 310) || ($column->size == 930))
-            {
+            } else if ($editor == 'file' || FHtml::isInArray($column->name, $fileAttributes) || ($column->size == 310) || ($column->size == 930)) {
                 $editor = FHtml::EDITOR_FILE;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_FILE_SETTINGS;
                 if ($column->size == 310)
@@ -578,9 +546,7 @@ class Generator extends \yii\gii\Generator
                 else
                     $result = "$function(\$model, '$attribute')->file()";
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), ['pluginOptions' => [ 'model' => \$model,  'maxFileSize'=> FHtml::config('FILE_SIZE_MAX', 4000000), 'options' => ['multiple' => true], 'showPreview' => true, 'showCaption' => false, 'showRemove' => true,'showUpload' => true, $editorSettings]])";
-            }
-            else if ($editor == 'image' || FHtml::isInArray($column->name, $imageAttributes) || ($column->size == 300) || ($column->size == 900))
-            {
+            } else if ($editor == 'image' || FHtml::isInArray($column->name, $imageAttributes) || ($column->size == 300) || ($column->size == 900)) {
                 $editor = FHtml::EDITOR_FILE;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_FILE_SETTINGS;
                 if ($column->size == 300)
@@ -592,9 +558,7 @@ class Generator extends \yii\gii\Generator
 
                 if (FHtml::isInArray($column->name, ['*_description']))
                     $result = "$function(\$model, '$attribute')->textarea(['rows' => 3])";
-            }
-            else if ($editor == 'select' || FHtml::isInArray($column->name, $lookupAttributes) || ($column->size == 500) || ($column->size == 100) || ($column->size == 10) || ($column->size == 20) || ($column->size == 50))
-            {
+            } else if ($editor == 'select' || FHtml::isInArray($column->name, $lookupAttributes) || ($column->size == 500) || ($column->size == 100) || ($column->size == 10) || ($column->size == 20) || ($column->size == 50)) {
                 $editor = FHtml::EDITOR_SELECT;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_SELECT_SETTINGS;
                 $append = in_array($attribute, ['category_id']) ? '_array' : '';
@@ -605,9 +569,7 @@ class Generator extends \yii\gii\Generator
                 else
                     $result = "$function(\$model, '$attribute')->selectMany(FHtml::getComboArray('$lookup_key', '$lookup_table', '$column->name', true, 'id', 'name'))";
                 //$result .= "$function(\$model, '$attribute')->widget($editor::className(),['data' => FHtml::getComboArray('$lookup_key', '$lookup_table', '$column->name', true, 'id', 'name'), 'options'=>['multiple' => true], $editorSettings])";
-            }
-            else if ($editor == 'text' || FHtml::isInArray($column->name, $htmlAttributes) || ($column->size > 2000))
-            {
+            } else if ($editor == 'text' || FHtml::isInArray($column->name, $htmlAttributes) || ($column->size > 2000)) {
                 $editor = FHtml::EDITOR_TEXT;
                 if (empty($editorSettings)) $editorSettings = FHtml::EDITOR_TEXT_SETTINGS;
                 if (!$shortForm) {
@@ -615,34 +577,25 @@ class Generator extends \yii\gii\Generator
                 } else {
                     $result = "$function(\$model, '$attribute')->textarea(['rows' => 3])";
                 }
-            }
-            else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaAttributes) || ($column->size > 1000 && $column->size <= 2000))
-            {
+            } else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaAttributes) || ($column->size > 1000 && $column->size <= 2000)) {
                 $result = "$function(\$model, '$attribute')->textarea(['rows' => 3])";
-            }
-            else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaSmallAttributes) || ($column->size > 500 && $column->size <= 1000))
-            {
+            } else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaSmallAttributes) || ($column->size > 500 && $column->size <= 1000)) {
                 $result = "$function(\$model, '$attribute')->textarea(['rows' => 3])";
-            }
-            else if ($column->isPrimaryKey)
-            {
+            } else if ($column->isPrimaryKey) {
                 $result = ""; //"$function(\$model, '$attribute')->textInput(['disabled' => true])";
-            }
-            else if ($editor == 'mask' || $column->size == 90) { // MaskInput, with mask value get from column comments
+            } else if ($editor == 'mask' || $column->size == 90) { // MaskInput, with mask value get from column comments
                 $editor = FHtml::EDITOR_MASK;
                 if (empty($editorSettings)) $editorSettings = isset($commentArray['mask']) ? $commentArray['mask'] : '';
                 //$result = "$function(\$model, '$attribute')->widget($editor::className(), ['pluginOptions' => ['mask' => ['$editorSettings'']]])";
                 $result = "$function(\$model, '$attribute')->maskedInput('$editorSettings')";
-
             } else {
-               $result = "$function(\$model, '$attribute')->textInput()";
+                $result = "$function(\$model, '$attribute')->textInput()";
             }
         }
 
 
         $result = $commentOut . $result . $colSpan;
         return $result;
-
     }
 
     public function generateShowModelField($attribute)
@@ -690,108 +643,69 @@ class Generator extends \yii\gii\Generator
             $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_ACTIVE, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
         } elseif ($editor == 'text' || $column->dbType === 'text') {
             $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_HTML, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-
         } elseif ($editor == 'date' || (empty($editor) && (FHtml::isInArray($column->name, $dateAttributes) || StringHelper::startsWith($column->dbType, 'date')))) {
             $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_DATE, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-
         } elseif ($editor == 'time' || FHtml::isInArray($column->name, $datetimeAttributes) || strpos($column->dbType, 'time') !== false) {
             $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_DATETIME, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-
         } elseif (strpos($column->dbType, 'int') != false || StringHelper::startsWith($column->dbType, 'tinyint') || (StringHelper::startsWith($column->dbType, 'int') && $column->size > 1)) {
 
             if ($editor == 'select' || FHtml::isInArray($column->name, $lookupAttributes)) {
                 $show_type = StringHelper::startsWith($lookup_key, '@') ? 'LOOKUP' : 'LABEL';
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_$show_type, \$field_layout, \$form_label_CSS, '$lookup_key', '$column->name', '$column->dbType', '', '')";
-            }
-            else if ($editor == 'range' || strpos($column->name, 'range') !== false || strpos($column->name, 'point') !== false)
-            {
+            } else if ($editor == 'range' || strpos($column->name, 'range') !== false || strpos($column->name, 'point') !== false) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-            }
-            else if ($editor == 'rate' || FHtml::isInArray($column->name, $rateAttributes))
-            {
+            } else if ($editor == 'rate' || FHtml::isInArray($column->name, $rateAttributes)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_RATE, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-            }
-            else if ($editor == 'slide' || $column->size == 3 || FHtml::isInArray($column->name, $percentAttributes))
-            {
+            } else if ($editor == 'slide' || $column->size == 3 || FHtml::isInArray($column->name, $percentAttributes)) {
+                $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_NUMBER, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
+            } else {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_NUMBER, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
             }
-            else {
-                $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_NUMBER, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-            }
-
         } elseif (StringHelper::startsWith($column->dbType, 'decimal') || StringHelper::startsWith($column->dbType, 'double') || StringHelper::startsWith($column->dbType, 'float')) {
             if ($column->precision > 0) // assume it is money
             {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_CURRENCY, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-
             } else {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_DECIMAL, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
             }
-
         } elseif (is_array($column->enumValues) && count($column->enumValues) > 0) {
             $dropDownOptions = [];
             foreach ($column->enumValues as $enumValue) {
                 $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
             }
             $result = "\$form->field(\$model, '$attribute')->dropDownList("
-                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
-        }
-        else {
+                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
+        } else {
             //varchar
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
                 $result = "";
-
-            } else if ($editor == 'color' || strpos($column->name, 'color') !== false)
-            {
+            } else if ($editor == 'color' || strpos($column->name, 'color') !== false) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_COLOR, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'email' || strpos($column->name, 'email') !== false)
-            {
+            } else if ($editor == 'email' || strpos($column->name, 'email') !== false) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_EMAIL, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'range' || strpos($column->name, 'range') !== false)
-            {
+            } else if ($editor == 'range' || strpos($column->name, 'range') !== false) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_RANGE, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'date' || (empty($editor) && (FHtml::isInArray($column->name, $dateAttributes) || FHtml::isInArray($column->name, $datetimeAttributes))))
-            {
+            } else if ($editor == 'date' || (empty($editor) && (FHtml::isInArray($column->name, $dateAttributes) || FHtml::isInArray($column->name, $datetimeAttributes)))) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_DATE, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'file' ||FHtml::isInArray($column->name, $fileAttributes) || ($column->size == 310) || ($column->size == 930))
-            {
+            } else if ($editor == 'file' || FHtml::isInArray($column->name, $fileAttributes) || ($column->size == 310) || ($column->size == 930)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_FILE, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'image' || FHtml::isInArray($column->name, $imageAttributes) || ($column->size == 300) || ($column->size == 900))
-            {
+            } else if ($editor == 'image' || FHtml::isInArray($column->name, $imageAttributes) || ($column->size == 300) || ($column->size == 900)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_IMAGE, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'select' || FHtml::isInArray($column->name, $lookupAttributes) || ($column->size == 500) || ($column->size == 100) || ($column->size == 10) || ($column->size == 20) || ($column->size == 50))
-            {
+            } else if ($editor == 'select' || FHtml::isInArray($column->name, $lookupAttributes) || ($column->size == 500) || ($column->size == 100) || ($column->size == 10) || ($column->size == 20) || ($column->size == 50)) {
                 $show_type = StringHelper::startsWith($lookup_key, '@') ? 'LOOKUP' : 'LABEL';
 
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_$show_type, \$field_layout, \$form_label_CSS, '$lookup_key')";
-            }
-            else if ($editor == 'text' || FHtml::isInArray($column->name, $htmlAttributes) || ($column->size > 2000))
-            {
+            } else if ($editor == 'text' || FHtml::isInArray($column->name, $htmlAttributes) || ($column->size > 2000)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_TEXT, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaAttributes) || ($column->size > 1000 && $column->size <= 2000))
-            {
+            } else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaAttributes) || ($column->size > 1000 && $column->size <= 2000)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_TEXT, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaSmallAttributes) || ($column->size > 500 && $column->size <= 1000))
-            {
+            } else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaSmallAttributes) || ($column->size > 500 && $column->size <= 1000)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_TEXT, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($column->isPrimaryKey)
-            {
+            } else if ($column->isPrimaryKey) {
                 $result = ""; //"\$form->field(\$model, '$attribute')->textInput(['disabled' => true])";
-            }
-            else if ($editor == 'mask' || $column->size == 90) { // MaskInput, with mask value get from column comments
+            } else if ($editor == 'mask' || $column->size == 90) { // MaskInput, with mask value get from column comments
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_MASK, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-
-            } else
-            {
+            } else {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_TEXT, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
             }
         }
@@ -800,7 +714,6 @@ class Generator extends \yii\gii\Generator
             $result = "'<br/>'; ";
         //$result .= " //name: $column->name, dbType: $column->dbType, phpType: $column->phpType, size: $column->size, allowNull: $column->allowNull \n" . $result;
         return "" . $commentOut . $result;
-
     }
 
 
@@ -1020,8 +933,7 @@ class Generator extends \yii\gii\Generator
                     if (StringHelper::startsWith($column, '@') || $searchExact) {
                         $column = str_replace('@', '', $column);
                         $hashConditions[] = "'{$column}' => \$this->{$column},";
-                    }
-                    else
+                    } else
                         $likeConditions[] = "->andFilterWhere(['like', '{$column}', \$this->{$column}])";
                     break;
             }
@@ -1167,7 +1079,8 @@ class Generator extends \yii\gii\Generator
         }
     }
 
-    public function getColumns() {
+    public function getColumns()
+    {
         $tableSchema = self::getTableSchema();
         return $tableSchema->columns;
     }
@@ -1217,108 +1130,69 @@ class Generator extends \yii\gii\Generator
             $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_ACTIVE, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
         } elseif ($editor == 'text' || $column->dbType === 'text') {
             $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_HTML, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-
         } elseif ($editor == 'date' || (empty($editor) && (FHtml::isInArray($column->name, $dateAttributes) || StringHelper::startsWith($column->dbType, 'date')))) {
             $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_DATE, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-
         } elseif ($editor == 'time' || FHtml::isInArray($column->name, $datetimeAttributes) || strpos($column->dbType, 'time') !== false) {
             $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_DATETIME, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-
         } elseif (strpos($column->dbType, 'int') != false || StringHelper::startsWith($column->dbType, 'tinyint') || (StringHelper::startsWith($column->dbType, 'int') && $column->size > 1)) {
 
             if ($editor == 'select' || FHtml::isInArray($column->name, $lookupAttributes)) {
                 $show_type = StringHelper::startsWith($lookup_key, '@') ? 'LOOKUP' : 'LABEL';
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_$show_type, \$field_layout, \$form_label_CSS, '$lookup_key', '$column->name', '$column->dbType', '', '')";
-            }
-            else if ($editor == 'range' || strpos($column->name, 'range') !== false || strpos($column->name, 'point') !== false)
-            {
+            } else if ($editor == 'range' || strpos($column->name, 'range') !== false || strpos($column->name, 'point') !== false) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-            }
-            else if ($editor == 'rate' || FHtml::isInArray($column->name, $rateAttributes))
-            {
+            } else if ($editor == 'rate' || FHtml::isInArray($column->name, $rateAttributes)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_RATE, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-            }
-            else if ($editor == 'slide' || $column->size == 3 || FHtml::isInArray($column->name, $percentAttributes))
-            {
+            } else if ($editor == 'slide' || $column->size == 3 || FHtml::isInArray($column->name, $percentAttributes)) {
+                $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_NUMBER, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
+            } else {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_NUMBER, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
             }
-            else {
-                $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_NUMBER, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-            }
-
         } elseif (StringHelper::startsWith($column->dbType, 'decimal') || StringHelper::startsWith($column->dbType, 'double') || StringHelper::startsWith($column->dbType, 'float')) {
             if ($column->precision > 0) // assume it is money
             {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_CURRENCY, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
-
             } else {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_DECIMAL, \$field_layout, \$form_label_CSS, '$tableSchema->name', '$column->name', '$column->dbType', '', '')";
             }
-
         } elseif (is_array($column->enumValues) && count($column->enumValues) > 0) {
             $dropDownOptions = [];
             foreach ($column->enumValues as $enumValue) {
                 $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
             }
             $result = "\$form->field(\$model, '$attribute')->dropDownList("
-                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
-        }
-        else {
+                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
+        } else {
             //varchar
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
                 $result = "";
-
-            } else if ($editor == 'color' || strpos($column->name, 'color') !== false)
-            {
+            } else if ($editor == 'color' || strpos($column->name, 'color') !== false) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_COLOR, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'email' || strpos($column->name, 'email') !== false)
-            {
+            } else if ($editor == 'email' || strpos($column->name, 'email') !== false) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_EMAIL, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'range' || strpos($column->name, 'range') !== false)
-            {
+            } else if ($editor == 'range' || strpos($column->name, 'range') !== false) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_RANGE, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'date' || (empty($editor) && (FHtml::isInArray($column->name, $dateAttributes) || FHtml::isInArray($column->name, $datetimeAttributes))))
-            {
+            } else if ($editor == 'date' || (empty($editor) && (FHtml::isInArray($column->name, $dateAttributes) || FHtml::isInArray($column->name, $datetimeAttributes)))) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_DATE, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'file' ||FHtml::isInArray($column->name, $fileAttributes) || ($column->size == 310) || ($column->size == 930))
-            {
+            } else if ($editor == 'file' || FHtml::isInArray($column->name, $fileAttributes) || ($column->size == 310) || ($column->size == 930)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_FILE, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'image' || FHtml::isInArray($column->name, $imageAttributes) || ($column->size == 300) || ($column->size == 900))
-            {
+            } else if ($editor == 'image' || FHtml::isInArray($column->name, $imageAttributes) || ($column->size == 300) || ($column->size == 900)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_IMAGE, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'select' || FHtml::isInArray($column->name, $lookupAttributes) || ($column->size == 500) || ($column->size == 100) || ($column->size == 10) || ($column->size == 20) || ($column->size == 50))
-            {
+            } else if ($editor == 'select' || FHtml::isInArray($column->name, $lookupAttributes) || ($column->size == 500) || ($column->size == 100) || ($column->size == 10) || ($column->size == 20) || ($column->size == 50)) {
                 $show_type = StringHelper::startsWith($lookup_key, '@') ? 'LOOKUP' : 'LABEL';
 
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_$show_type, \$field_layout, \$form_label_CSS, '$lookup_key')";
-            }
-            else if ($editor == 'text' || FHtml::isInArray($column->name, $htmlAttributes) || ($column->size > 2000))
-            {
+            } else if ($editor == 'text' || FHtml::isInArray($column->name, $htmlAttributes) || ($column->size > 2000)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_TEXT, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaAttributes) || ($column->size > 1000 && $column->size <= 2000))
-            {
+            } else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaAttributes) || ($column->size > 1000 && $column->size <= 2000)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_TEXT, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaSmallAttributes) || ($column->size > 500 && $column->size <= 1000))
-            {
+            } else if ($editor == 'textarea' || FHtml::isInArray($column->name, $textareaSmallAttributes) || ($column->size > 500 && $column->size <= 1000)) {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_TEXT, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-            }
-            else if ($column->isPrimaryKey)
-            {
+            } else if ($column->isPrimaryKey) {
                 $result = ""; //"\$form->field(\$model, '$attribute')->textInput(['disabled' => true])";
-            }
-            else if ($editor == 'mask' || $column->size == 90) { // MaskInput, with mask value get from column comments
+            } else if ($editor == 'mask' || $column->size == 90) { // MaskInput, with mask value get from column comments
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_MASK, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
-
-            } else
-            {
+            } else {
                 $result .= "FHtml::showModelField(\$model,'$attribute', FHtml::SHOW_TEXT, \$field_layout, \$form_label_CSS, '$tableSchema->name')";
             }
         }
@@ -1327,6 +1201,5 @@ class Generator extends \yii\gii\Generator
             $result = "'<br/>'; ";
         //$result .= " //name: $column->name, dbType: $column->dbType, phpType: $column->phpType, size: $column->size, allowNull: $column->allowNull \n" . $result;
         return "" . $commentOut . $result;
-
     }
 }

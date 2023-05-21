@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "app_notification".
  *
 
@@ -38,8 +37,8 @@ class AppNotificationBase extends BaseModel //\yii\db\ActiveRecord
     const SENT_TYPE_ALL = 'all';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'app_notification';
     public $sent_type_array;
 
@@ -57,42 +56,42 @@ class AppNotificationBase extends BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'message', 'action', 'params', 'sent_date', 'receiver_count', 'receiver_users', 'created_date', 'created_user', 'application_id'], 'filter', 'filter' => 'trim'],
-                
+
             [['message'], 'required'],
-            [['sent_date', 'created_date','sent_type'], 'safe'],
+            [['sent_date', 'created_date', 'sent_type'], 'safe'],
             [['receiver_count'], 'integer'],
             [['receiver_users'], 'string'],
             [['message', 'params'], 'string', 'max' => 2000],
             [['action'], 'string', 'max' => 255],
-            [[ 'created_user', 'application_id'], 'string', 'max' => 100],
+            [['created_user', 'application_id'], 'string', 'max' => 100],
         ];
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('AppNotification', 'ID'),
-                    'message' => FHtml::t('AppNotification', 'Message'),
-                    'action' => FHtml::t('AppNotification', 'Action'),
-                    'params' => FHtml::t('AppNotification', 'Params'),
-                    'sent_type' => FHtml::t('AppNotification', 'Sent Type'),
-                    'sent_date' => FHtml::t('AppNotification', 'Sent Date'),
-                    'receiver_count' => FHtml::t('AppNotification', 'Receiver Count'),
-                    'receiver_users' => FHtml::t('AppNotification', 'Receiver Users'),
-                    'created_date' => FHtml::t('AppNotification', 'Created Date'),
-                    'created_user' => FHtml::t('AppNotification', 'Created User'),
-                    'application_id' => FHtml::t('AppNotification', 'Application ID'),
-                ];
+            'id' => FHtml::t('AppNotification', 'ID'),
+            'message' => FHtml::t('AppNotification', 'Message'),
+            'action' => FHtml::t('AppNotification', 'Action'),
+            'params' => FHtml::t('AppNotification', 'Params'),
+            'sent_type' => FHtml::t('AppNotification', 'Sent Type'),
+            'sent_date' => FHtml::t('AppNotification', 'Sent Date'),
+            'receiver_count' => FHtml::t('AppNotification', 'Receiver Count'),
+            'receiver_users' => FHtml::t('AppNotification', 'Receiver Users'),
+            'created_date' => FHtml::t('AppNotification', 'Created Date'),
+            'created_user' => FHtml::t('AppNotification', 'Created User'),
+            'application_id' => FHtml::t('AppNotification', 'Application ID'),
+        ];
     }
 
     public static function tableSchema()
@@ -127,8 +126,4 @@ class AppNotificationBase extends BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
-
 }

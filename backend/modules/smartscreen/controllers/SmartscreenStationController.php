@@ -1,8 +1,9 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ * 
+
+ * 
  * This is the customized model class for table "SmartscreenStation".
  */
 
@@ -42,7 +43,8 @@ class SmartscreenStationController extends AdminController
 	/**
 	 * @inheritdoc
 	 */
-	public function behaviors() {
+	public function behaviors()
+	{
 		return [
 			'verbs'  => [
 				'class'   => VerbFilter::className(),
@@ -91,7 +93,8 @@ class SmartscreenStationController extends AdminController
 	 * Lists all SmartscreenStation models.
 	 * @return mixed
 	 */
-	public function actionIndex() {
+	public function actionIndex()
+	{
 		$searchModel  = new SmartscreenStationSearch;
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -147,7 +150,8 @@ class SmartscreenStationController extends AdminController
 	 * @param integer $id
 	 * @return mixed
 	 */
-	public function actionView($id) {
+	public function actionView($id)
+	{
 		$request = Yii::$app->request;
 
 		$model     = $this->findModel($id);
@@ -164,12 +168,11 @@ class SmartscreenStationController extends AdminController
 					'modelMeta' => $modelMeta
 				]),
 				'footer'  => Html::a(FHtml::t('Update'), ['update', 'id' => $id], [
-						'class' => 'btn btn-primary pull-left',
-						'role'  => $this->view->params['displayType']
-					]) . Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
+					'class' => 'btn btn-primary pull-left',
+					'role'  => $this->view->params['displayType']
+				]) . Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
 			];
-		}
-		else {
+		} else {
 			return $this->render('view', [
 				'model'     => $model,
 				'modelMeta' => $modelMeta
@@ -183,7 +186,8 @@ class SmartscreenStationController extends AdminController
 	 * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
 	 * @return mixed
 	 */
-	public function actionCreate($type = false) {
+	public function actionCreate($type = false)
+	{
 		$request      = Yii::$app->request;
 		$returnParams = FHtml::RequestParams(['id']);
 
@@ -210,37 +214,34 @@ class SmartscreenStationController extends AdminController
 						'modelMeta' => $modelMeta,
 					]),
 					'footer'  => Html::button(FHtml::t('Close'), [
-							'class'        => 'btn btn-default pull-left',
-							'data-dismiss' => "modal"
-						]) . Html::button(FHtml::t('Create'), ['class' => 'btn btn-primary', 'type' => "submit"])
+						'class'        => 'btn btn-default pull-left',
+						'data-dismiss' => "modal"
+					]) . Html::button(FHtml::t('Create'), ['class' => 'btn btn-primary', 'type' => "submit"])
 				];
-			}
-			elseif ($model->load($request->post()) && $model->save()) {
+			} elseif ($model->load($request->post()) && $model->save()) {
 				return [
 					'forceReload' => '#crud-datatable-pjax',
 					'title'       => FHtml::t($this->moduleName),
 					'content'     => '<span class="text-success">Create SmartscreenStation success</span>',
 					'footer'      => Html::button(FHtml::t('Close'), [
-							'class'        => 'btn btn-default pull-left',
-							'data-dismiss' => "modal"
-						]) . Html::a(FHtml::t('Create more'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+						'class'        => 'btn btn-default pull-left',
+						'data-dismiss' => "modal"
+					]) . Html::a(FHtml::t('Create more'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
 				];
-			}
-			else {
+			} else {
 				return [
 					'title'   => FHtml::t($this->moduleName),
 					'content' => $this->renderAjax('create', [
 						'model' => $model,
 					]),
 					'footer'  => Html::button(FHtml::t('Close'), [
-							'class'        => 'btn btn-default pull-left',
-							'data-dismiss' => "modal"
-						]) . Html::button(FHtml::t('Create'), ['class' => 'btn btn-primary', 'type' => "submit"])
+						'class'        => 'btn btn-default pull-left',
+						'data-dismiss' => "modal"
+					]) . Html::button(FHtml::t('Create'), ['class' => 'btn btn-primary', 'type' => "submit"])
 
 				];
 			}
-		}
-		else {
+		} else {
 			/*
 			*   Process for non-ajax request
 			*/
@@ -250,7 +251,7 @@ class SmartscreenStationController extends AdminController
 				$model->id = null;
 
 				if ($model->save()) {
-				    Smartscreen::clearCache();
+					Smartscreen::clearCache();
 					FHtml::saveModel($modelMeta, $request->post(), ['smartscreen_station_id' => $model->id]);
 
 					$files = FHtml::getUploadedFiles($model, $uploadFields, 'smartscreen-station' . FHtml::getAttribute($model, 'id'), $oldModel);
@@ -269,8 +270,7 @@ class SmartscreenStationController extends AdminController
 					'model'     => $model,
 					'modelMeta' => $modelMeta,
 				]);
-			}
-			else {
+			} else {
 				FHtml::prepareDefaultValues($model, ['created_date', 'created_user', 'is_active', 'application_id'], FHtml::ACTION_LOAD);
 
 				return $this->render('create', [
@@ -279,7 +279,6 @@ class SmartscreenStationController extends AdminController
 				]);
 			}
 		}
-
 	}
 
 	/**
@@ -289,7 +288,8 @@ class SmartscreenStationController extends AdminController
 	 * @param integer $id
 	 * @return mixed
 	 */
-	public function actionUpdate($id) {
+	public function actionUpdate($id)
+	{
 		$request      = Yii::$app->request;
 		$model        = $this->findModel($id);
 		$type         = FHtml::getRequestParam('type');
@@ -316,15 +316,14 @@ class SmartscreenStationController extends AdminController
 						'modelMeta' => $modelMeta,
 					]),
 					'footer'  => Html::button(FHtml::t('Close'), [
-							'class'        => 'btn btn-default pull-left',
-							'data-dismiss' => "modal"
-						]) . Html::button(FHtml::t('Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+						'class'        => 'btn btn-default pull-left',
+						'data-dismiss' => "modal"
+					]) . Html::button(FHtml::t('Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
 				];
-			}
-			elseif ($model->load($request->post()) && $model->save()) {
-                Smartscreen::clearCache();
+			} elseif ($model->load($request->post()) && $model->save()) {
+				Smartscreen::clearCache();
 
-                return [
+				return [
 					'forceReload' => '#crud-datatable-pjax',
 					'title'       => FHtml::t($this->moduleName) . " #" . $id,
 					'content'     => $this->renderAjax('view', [
@@ -332,12 +331,11 @@ class SmartscreenStationController extends AdminController
 						'modelMeta' => $modelMeta,
 					]),
 					'footer'      => Html::button(FHtml::t('Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a(FHtml::t('Edit'), [
-							'update',
-							'id' => $id
-						], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+						'update',
+						'id' => $id
+					], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
 				];
-			}
-			else {
+			} else {
 				return [
 					'title'   => FHtml::t($this->moduleName) . " #" . $id,
 					'content' => $this->renderAjax('update', [
@@ -345,13 +343,12 @@ class SmartscreenStationController extends AdminController
 						'modelMeta' => $modelMeta
 					]),
 					'footer'  => Html::button(FHtml::t('Close'), [
-							'class'        => 'btn btn-default pull-left',
-							'data-dismiss' => "modal"
-						]) . Html::button(FHtml::t('Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+						'class'        => 'btn btn-default pull-left',
+						'data-dismiss' => "modal"
+					]) . Html::button(FHtml::t('Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
 				];
 			}
-		}
-		else {
+		} else {
 			/*
 			*   Process for non-ajax request
 			*/
@@ -362,9 +359,9 @@ class SmartscreenStationController extends AdminController
 				$files = FHtml::getUploadedFiles($model, $uploadFields, 'smartscreen-station' . FHtml::getAttribute($model, 'id'), $oldModel);
 
 				if ($model->save()) {
-                    Smartscreen::clearCache();
+					Smartscreen::clearCache();
 
-                    FHtml::saveFiles($files, $this->uploadFolder . '/smartscreen-station/');
+					FHtml::saveFiles($files, $this->uploadFolder . '/smartscreen-station/');
 					FHtml::saveModel($modelMeta, $request->post(), ['smartscreen_station_id' => $model->id]);
 					FHtml::saveObjectItems($model, $this->moduleKey, $model->id, $model::getRelatedObjects());
 					if ($this->saveType() == 'clone') {
@@ -378,8 +375,7 @@ class SmartscreenStationController extends AdminController
 					'model'     => $model,
 					'modelMeta' => $modelMeta
 				]);
-			}
-			else {
+			} else {
 				FHtml::prepareDefaultValues($model, ['modified_date', 'modified_user', 'category_id_array'], FHtml::ACTION_LOAD);
 
 				return $this->render('update', [
@@ -398,11 +394,11 @@ class SmartscreenStationController extends AdminController
 	 * @return SmartscreenStation the loaded model
 	 * @throws NotFoundHttpException if the model cannot be found
 	 */
-	protected function findModel($id) {
+	protected function findModel($id)
+	{
 		if (($model = SmartscreenStation::findOne($id)) !== null) {
 			return $model;
-		}
-		else {
+		} else {
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 	}

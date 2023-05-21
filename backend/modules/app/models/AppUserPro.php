@@ -10,9 +10,9 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "app_user_pro".
  */
 class AppUserPro extends AppUserProBase //\yii\db\ActiveRecord
@@ -26,20 +26,20 @@ class AppUserPro extends AppUserProBase //\yii\db\ActiveRecord
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
     const COLUMNS = [
-        'api' => ['user_id', 'rate', 'rate_count', 'description', 'business_name', 'business_email', 'business_address', 'business_website', 'business_phone', 'is_active', 'created_date', 'modified_date', ],
+        'api' => ['user_id', 'rate', 'rate_count', 'description', 'business_name', 'business_email', 'business_address', 'business_website', 'business_phone', 'is_active', 'created_date', 'modified_date',],
         'all' => ['user_id', 'rate', 'rate_count', 'description', 'business_name', 'business_email', 'business_address', 'business_website', 'business_phone', 'is_active', 'created_date', 'modified_date',  'objectAttributes', 'objectFile', 'objectCategories'],
-        '+' => [  'objectAttributes', 'objectFile', 'objectCategories']
+        '+' => ['objectAttributes', 'objectFile', 'objectCategories']
     ];
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['user_id', 'rate', 'rate_count', 'description', 'business_name', 'business_email', 'business_address', 'business_website', 'business_phone', 'is_active', 'created_date', 'modified_date'], 'filter', 'filter' => 'trim'],
-                
+
             [['user_id', 'is_active'], 'required'],
             [['user_id', 'rate_count', 'is_active'], 'integer'],
             [['rate'], 'number'],
@@ -52,32 +52,32 @@ class AppUserPro extends AppUserProBase //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'user_id' => FHtml::t('AppUserPro', 'User ID'),
-                    'rate' => FHtml::t('AppUserPro', 'Rate'),
-                    'rate_count' => FHtml::t('AppUserPro', 'Rate Count'),
-                    'description' => FHtml::t('AppUserPro', 'Description'),
-                    'business_name' => FHtml::t('AppUserPro', 'Business Name'),
-                    'business_email' => FHtml::t('AppUserPro', 'Business Email'),
-                    'business_address' => FHtml::t('AppUserPro', 'Business Address'),
-                    'business_website' => FHtml::t('AppUserPro', 'Business Website'),
-                    'business_phone' => FHtml::t('AppUserPro', 'Business Phone'),
-                    'is_active' => FHtml::t('AppUserPro', 'Is Active'),
-                    'created_date' => FHtml::t('AppUserPro', 'Created Date'),
-                    'modified_date' => FHtml::t('AppUserPro', 'Modified Date'),
-                ];
+            'user_id' => FHtml::t('AppUserPro', 'User ID'),
+            'rate' => FHtml::t('AppUserPro', 'Rate'),
+            'rate_count' => FHtml::t('AppUserPro', 'Rate Count'),
+            'description' => FHtml::t('AppUserPro', 'Description'),
+            'business_name' => FHtml::t('AppUserPro', 'Business Name'),
+            'business_email' => FHtml::t('AppUserPro', 'Business Email'),
+            'business_address' => FHtml::t('AppUserPro', 'Business Address'),
+            'business_website' => FHtml::t('AppUserPro', 'Business Website'),
+            'business_phone' => FHtml::t('AppUserPro', 'Business Phone'),
+            'is_active' => FHtml::t('AppUserPro', 'Is Active'),
+            'created_date' => FHtml::t('AppUserPro', 'Created Date'),
+            'modified_date' => FHtml::t('AppUserPro', 'Modified Date'),
+        ];
     }
 
 
 
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
-
     }
 
     public function fields()
@@ -88,7 +88,7 @@ class AppUserPro extends AppUserProBase //\yii\db\ActiveRecord
         if (is_string($this->columnsMode) && !empty($this->columnsMode) && key_exists($this->columnsMode, $columns)) {
             $fields1 = $columns[$this->columnsMode];
             if (!empty($fields1))
-            $fields = $fields1;
+                $fields = $fields1;
         } else if (is_array($this->columnsMode))
             return $this->columnsMode;
 
@@ -100,17 +100,20 @@ class AppUserPro extends AppUserProBase //\yii\db\ActiveRecord
         return $fields;
     }
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
     }
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 
@@ -148,20 +151,21 @@ class AppUserPro extends AppUserProBase //\yii\db\ActiveRecord
         ];
     }
 
-    public function toViewModel() {
-    $model = new ViewModel();
-            FHtml::setFieldValue($model, ['user_id'], $this->user_id);
-            FHtml::setFieldValue($model, ['rate'], $this->rate);
-            FHtml::setFieldValue($model, ['rate_count'], $this->rate_count);
-            FHtml::setFieldValue($model, ['description'], $this->description);
-            FHtml::setFieldValue($model, ['business_name'], $this->business_name);
-            FHtml::setFieldValue($model, ['business_email'], $this->business_email);
-            FHtml::setFieldValue($model, ['business_address'], $this->business_address);
-            FHtml::setFieldValue($model, ['business_website'], $this->business_website);
-            FHtml::setFieldValue($model, ['business_phone'], $this->business_phone);
-            FHtml::setFieldValue($model, ['is_active'], $this->is_active);
-            FHtml::setFieldValue($model, ['created_date'], $this->created_date);
-            FHtml::setFieldValue($model, ['modified_date'], $this->modified_date);
+    public function toViewModel()
+    {
+        $model = new ViewModel();
+        FHtml::setFieldValue($model, ['user_id'], $this->user_id);
+        FHtml::setFieldValue($model, ['rate'], $this->rate);
+        FHtml::setFieldValue($model, ['rate_count'], $this->rate_count);
+        FHtml::setFieldValue($model, ['description'], $this->description);
+        FHtml::setFieldValue($model, ['business_name'], $this->business_name);
+        FHtml::setFieldValue($model, ['business_email'], $this->business_email);
+        FHtml::setFieldValue($model, ['business_address'], $this->business_address);
+        FHtml::setFieldValue($model, ['business_website'], $this->business_website);
+        FHtml::setFieldValue($model, ['business_phone'], $this->business_phone);
+        FHtml::setFieldValue($model, ['is_active'], $this->is_active);
+        FHtml::setFieldValue($model, ['created_date'], $this->created_date);
+        FHtml::setFieldValue($model, ['modified_date'], $this->modified_date);
         return $model;
     }
 }

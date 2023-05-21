@@ -10,42 +10,44 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "application".
  */
 class Application extends ApplicationBase //\yii\db\ActiveRecord
 {
-    const LOOKUP = [        'type' => [
-		['id' => Application::TYPE_ONEPAGE, 'name' => 'ONEPAGE'],
- 	['id' => Application::TYPE_COMPANY, 'name' => 'COMPANY'],
- 	['id' => Application::TYPE_ECOMMERCE, 'name' => 'ECOMMERCE'],
- 	['id' => Application::TYPE_SOCIAL, 'name' => 'SOCIAL'],
- 	['id' => Application::TYPE_MUSIC, 'name' => 'MUSIC'],
- 	['id' => Application::TYPE_EDUCATION, 'name' => 'EDUCATION'],
- ],
+    const LOOKUP = [
+        'type' => [
+            ['id' => Application::TYPE_ONEPAGE, 'name' => 'ONEPAGE'],
+            ['id' => Application::TYPE_COMPANY, 'name' => 'COMPANY'],
+            ['id' => Application::TYPE_ECOMMERCE, 'name' => 'ECOMMERCE'],
+            ['id' => Application::TYPE_SOCIAL, 'name' => 'SOCIAL'],
+            ['id' => Application::TYPE_MUSIC, 'name' => 'MUSIC'],
+            ['id' => Application::TYPE_EDUCATION, 'name' => 'EDUCATION'],
+        ],
         'status' => [
-		['id' => Application::STATUS_DEMO, 'name' => 'DEMO'],
- 	['id' => Application::STATUS_LIVE, 'name' => 'LIVE'],
- 	['id' => Application::STATUS_CLOSED, 'name' => 'CLOSED'],
- 	['id' => Application::STATUS_SUSPEND, 'name' => 'SUSPEND'],
- ],
+            ['id' => Application::STATUS_DEMO, 'name' => 'DEMO'],
+            ['id' => Application::STATUS_LIVE, 'name' => 'LIVE'],
+            ['id' => Application::STATUS_CLOSED, 'name' => 'CLOSED'],
+            ['id' => Application::STATUS_SUSPEND, 'name' => 'SUSPEND'],
+        ],
         'admin_form_alignment' => [
-		['id' => Application::ADMIN_FORM_ALIGNMENT_VERTICAL, 'name' => 'vertical'],
- 	['id' => Application::ADMIN_FORM_ALIGNMENT_HORIZONTAL, 'name' => 'horizontal'],
- 	['id' => Application::ADMIN_FORM_ALIGNMENT_INLINE, 'name' => 'inline'],
- ],
-];
+            ['id' => Application::ADMIN_FORM_ALIGNMENT_VERTICAL, 'name' => 'vertical'],
+            ['id' => Application::ADMIN_FORM_ALIGNMENT_HORIZONTAL, 'name' => 'horizontal'],
+            ['id' => Application::ADMIN_FORM_ALIGNMENT_INLINE, 'name' => 'inline'],
+        ],
+    ];
 
-    const COLUMNS_UPLOAD = ['logo','terms_of_service','profile','privacy_policy',];
+    const COLUMNS_UPLOAD = ['logo', 'terms_of_service', 'profile', 'privacy_policy',];
 
     public $order_by = 'is_active desc,created_date desc,';
 
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
 
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
@@ -53,14 +55,14 @@ class Application extends ApplicationBase //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['id', 'logo', 'code', 'name', 'description', 'keywords', 'note', 'lang', 'modules', 'storage_max', 'storage_current', 'address', 'map', 'website', 'email', 'phone', 'fax', 'chat', 'facebook', 'twitter', 'google', 'youtube', 'copyright', 'terms_of_service', 'profile', 'privacy_policy', 'is_active', 'type', 'status', 'owner_id', 'created_date', 'created_user', 'modified_date', 'modified_user'], 'filter', 'filter' => 'trim'],
-                
+
             [['name'], 'required'],
             [['storage_max', 'storage_current', 'is_active'], 'integer'],
             [['created_date', 'modified_date'], 'safe'],
@@ -75,30 +77,35 @@ class Application extends ApplicationBase //\yii\db\ActiveRecord
 
     // Lookup Object: owner\n
     public $owner;
-    public function getOwner() {
+    public function getOwner()
+    {
 
         if (!isset($this->owner))
-        $this->owner = FHtml::getModel('user,id,username', '', $this->owner_id, '', false);
+            $this->owner = FHtml::getModel('user,id,username', '', $this->owner_id, '', false);
 
         return $this->owner;
     }
-    public function setOwner($value) {
+    public function setOwner($value)
+    {
         $this->owner = $value;
     }
 
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
 
         $this->owner = self::getOwner();
     }
 
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 

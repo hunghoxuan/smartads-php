@@ -1,9 +1,6 @@
 <?php
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
+
+/*This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
  */
 
 namespace common\components;
@@ -73,7 +70,7 @@ class FModel extends FConfig
             return $model->getTableName();
         } else if (is_string($model))
             $result = $model;
-        else if (is_object($model) && method_exists($model, 'tableName')){
+        else if (is_object($model) && method_exists($model, 'tableName')) {
             return $model::tableName();
         } else {
             return '';
@@ -100,7 +97,8 @@ class FModel extends FConfig
         return $namespace;
     }
 
-    public static function getModuleTables() {
+    public static function getModuleTables()
+    {
         $modules = self::MODULES;
         $modules1 = FHtml::getModulesArray();
         foreach ($modules1 as $module1 => $module1Object) {
@@ -121,18 +119,17 @@ class FModel extends FConfig
             $table = FHtml::getTableName($table);
 
         if (is_array($table)) {
-        	if (isset($table['object_type'])) {
-        		$table = $table['object_type'];
-	        }
-	        else {
-	        	return '';
-	        }
+            if (isset($table['object_type'])) {
+                $table = $table['object_type'];
+            } else {
+                return '';
+            }
         }
 
         $modules = static::getModuleTables();
 
         foreach ($modules as $module => $tables) {
-            if (( FHtml::isInArray($table, $tables) || FHtml::isInArray(BaseInflector::camelize($table), $tables) || FHtml::isInArray(strtolower($table), $tables))&& !empty($tables)) {
+            if ((FHtml::isInArray($table, $tables) || FHtml::isInArray(BaseInflector::camelize($table), $tables) || FHtml::isInArray(strtolower($table), $tables)) && !empty($tables)) {
                 return $module;
             }
         }
@@ -262,7 +259,8 @@ class FModel extends FConfig
         return $model;
     }
 
-    public static function getProperties($model) {
+    public static function getProperties($model)
+    {
         if (!is_object($model))
             return [];
 
@@ -277,8 +275,9 @@ class FModel extends FConfig
         return $names;
     }
 
-    public static function constant_defined($model, $field) {
-        if (is_object($model) && defined($model::className() . '::' . $field))  {
+    public static function constant_defined($model, $field)
+    {
+        if (is_object($model) && defined($model::className() . '::' . $field)) {
             return true;
         }
         return false;
@@ -308,7 +307,7 @@ class FModel extends FConfig
                 $field = substr($field, 0, $pos);
             }
 
-            if (self::constant_defined($model, $field))  {
+            if (self::constant_defined($model, $field)) {
                 return true;
             }
 
@@ -324,9 +323,10 @@ class FModel extends FConfig
                     return method_exists($model, 'hasAttribute') && $model->hasAttribute($field);
                 }
 
-                if (property_exists($model, $field)
+                if (
+                    property_exists($model, $field)
                     || (method_exists($model, 'hasAttribute') && $model->hasAttribute($field)) // in attributes array
-                   // || (method_exists($model, 'fields') && in_array($field, $model->fields())) // in fields array
+                    // || (method_exists($model, 'fields') && in_array($field, $model->fields())) // in fields array
                     || (method_exists($model, $field)) //public property
                     //|| (strpos($field, '.') !== false && !empty(self::getFieldValue($model, $field))) //Hung: getFieldValue with column which has . inside the name cause performance issue
                     //|| (method_exists($model, 'getCustomFields') && in_array($field, $model->getCustomFields()))
@@ -347,7 +347,8 @@ class FModel extends FConfig
         return self::getModel($table);
     }
 
-    public static function getInstance($table) {
+    public static function getInstance($table)
+    {
         return self::getModel($table);
     }
 
@@ -380,8 +381,7 @@ class FModel extends FConfig
             } else {
                 if (is_array($model)) {
                     $model[$field1] = $value;
-                }
-                else if (is_object($model)) { // auto add column to table if not existed
+                } else if (is_object($model)) { // auto add column to table if not existed
                     if (FConfig::settingDynamicObjectEnabled()) {
                         self::addColumn($model, $field1);
                         $model->refresh();
@@ -450,35 +450,35 @@ class FModel extends FConfig
         $query = $query->andWhere($search_params)->orderBy($order_by);
         return $query;
 
-//        if ($load_active_only || !FHtml::isRoleAdmin()) {
-//            if (self::field_exists($query, 'is_active')) {
-//                if (empty($search_params)) {
-//                    $search_params = ['is_active' => 1];
-//                } else {
-//                    if (is_array($search_params))
-//                        $search_params =  ['AND', [$search_params], ['is_active' => 1]];
-//                    else if (is_string($search_params))
-//                        $search_params = $search_params . ' AND is_active = 1';
-//                }
-//            }
-//        }
-//
-//        if (is_string($search_params)) {
-//            $query = $query->andWhere($search_params);
-//        } else if (is_array($search_params)) {
-//            foreach ($search_params as $field => $value) {
-//                if ($value == self::NULL_VALUE || !isset($value) || (empty($value) && is_string($value)) || is_object($value))
-//                    continue;
-//
-//                if (self::field_exists($query, $field, true)) { // && key_exists($field, ArrayHelper::map($model->getAttributes(), 0, 0)) --> this code is error
-//                    $query = $query->andWhere(self::buildQueryParams($field, $value));
-//                }
-//            }
-//        }
-//
-//        $query = $query->orderBy(!empty($order_by) ? $order_by : FHtml::getOrderBy($model));
-//
-//        return $query;
+        //        if ($load_active_only || !FHtml::isRoleAdmin()) {
+        //            if (self::field_exists($query, 'is_active')) {
+        //                if (empty($search_params)) {
+        //                    $search_params = ['is_active' => 1];
+        //                } else {
+        //                    if (is_array($search_params))
+        //                        $search_params =  ['AND', [$search_params], ['is_active' => 1]];
+        //                    else if (is_string($search_params))
+        //                        $search_params = $search_params . ' AND is_active = 1';
+        //                }
+        //            }
+        //        }
+        //
+        //        if (is_string($search_params)) {
+        //            $query = $query->andWhere($search_params);
+        //        } else if (is_array($search_params)) {
+        //            foreach ($search_params as $field => $value) {
+        //                if ($value == self::NULL_VALUE || !isset($value) || (empty($value) && is_string($value)) || is_object($value))
+        //                    continue;
+        //
+        //                if (self::field_exists($query, $field, true)) { // && key_exists($field, ArrayHelper::map($model->getAttributes(), 0, 0)) --> this code is error
+        //                    $query = $query->andWhere(self::buildQueryParams($field, $value));
+        //                }
+        //            }
+        //        }
+        //
+        //        $query = $query->orderBy(!empty($order_by) ? $order_by : FHtml::getOrderBy($model));
+        //
+        //        return $query;
     }
 
     public static function buildQueryParams($fields, $value = '', $operator = '=', $connector = 'or')
@@ -527,7 +527,6 @@ class FModel extends FConfig
                         $item[] = ['OR', [$field1 => $value], [$operator, $field1, $value1]];
                     else
                         $item[] = ['AND', ['<>', $field1, $value], [$operator, $field1, $value1]];
-
                 } else if (!is_numeric($value) && is_string($value) && !FHtml::isInArray($field1, FHtml::getFIELDS_GROUP())) {
                     $operator = $operator == '!=' ? 'not like' : 'like';
                     $item[] = [$operator, $field1, $value];
@@ -661,6 +660,12 @@ class FModel extends FConfig
         return false;
     }
 
+    public static function findAllForCombo($table, $condition = [], $id_field = 'id', $display_name = 'name', $order_by = '')
+    {
+        $models = static::findAll($table, $condition, $order_by);
+        return FModel::arrayMap($models, $id_field, $display_name);
+    }
+
     public static function findAll($table, $condition = [], $order_by = [], $page_size = -1, $page = -1, $isCached = false, $selected_fields = [], $asArray = false, $load_active_only = true)
     {
         if (is_object($table))
@@ -726,7 +731,6 @@ class FModel extends FConfig
 
         try {
             if ($page_size < 1) {
-
             } else {
 
                 $total = $query->count();
@@ -752,7 +756,6 @@ class FModel extends FConfig
             }
 
             $models = $query->all();
-
         } catch (\yii\db\Exception $ex) {
             FHtml::addError($ex);
             $query = null;
@@ -927,12 +930,12 @@ class FModel extends FConfig
                         return $empty_value;
                     }
 
-	                //field1 as property
-	                if (isset($model) && !empty($field1)) {
-		                if (is_array($model)  && isset($model[$field1])) {
-			                return $model[$field1];
-		                }
-	                }
+                    //field1 as property
+                    if (isset($model) && !empty($field1)) {
+                        if (is_array($model)  && isset($model[$field1])) {
+                            return $model[$field1];
+                        }
+                    }
 
                     if (self::field_exists($model, $field1)) {
                         if (is_object($model))
@@ -1056,7 +1059,7 @@ class FModel extends FConfig
             $classNames[] = "backend\\modules\\$module\\models\\{$model}API";
         } else if (is_object($model)) {
             if (strpos($model::className(), "API") == false)
-            $classNames[] = $model::className() . 'API';
+                $classNames[] = $model::className() . 'API';
         }
 
         foreach ($classNames as $className) {
@@ -1120,7 +1123,7 @@ class FModel extends FConfig
         $table = FHtml::getTableName($model);
 
         if (empty($table) || empty($model))
-            return FHtml::t('common' , BaseInflector::camel2words($field));
+            return FHtml::t('common', BaseInflector::camel2words($field));
 
         if (is_string($model))
             $model = FHtml::getModel($model);
@@ -1178,46 +1181,51 @@ class FModel extends FConfig
         return $result;
     }
 
-    public static function getLookupArray($key, $table = '', $column = '', $isCache = true, $id_field = 'id', $name_field = 'name', $hasNull = true, $search_params = [], $limit = 0) {
+    public static function getLookupArray($key, $table = '', $column = '', $isCache = true, $id_field = 'id', $name_field = 'name', $hasNull = true, $search_params = [], $limit = 0)
+    {
         return static::getComboArray($key, $table, $column, $isCache, $id_field, $name_field, $hasNull, $search_params, $limit);
     }
 
-    public static function getArrayForCombo($key, $table = '', $column = '', $isCache = true, $id_field = 'id', $name_field = 'name', $hasNull = true, $search_params = [], $limit = 0) {
+    public static function getArrayForCombo($key, $table = '', $column = '', $isCache = true, $id_field = 'id', $name_field = 'name', $hasNull = true, $search_params = [], $limit = 0)
+    {
         return self::getComboArray($key, $table, $column, $isCache, $id_field, $name_field, $hasNull, $search_params, $limit);
     }
 
-    public static function getArrayKeyValues($data, $autoTranslated = true, $lang_category = 'common', $keys = ['id', 'name'], $id_fields = ['id', 'key', 'code'], $name_fields = ['name', 'text', 'title', 'value']) {
+    public static function getArrayKeyValues($data, $autoTranslated = true, $lang_category = 'common', $keys = ['id', 'name'], $id_fields = ['id', 'key', 'code'], $name_fields = ['name', 'text', 'title', 'value'])
+    {
         return self::getKeyValueArray($data, $autoTranslated, $lang_category, $keys, $id_fields, $name_fields);
     }
 
-    public static function getConstantArray($key, $table = null, $column = null) {
+    public static function getConstantArray($key, $table = null, $column = null)
+    {
         $data = null;
 
         //special cases
         if ($column == 'lang' || $key == 'lang') {
-            return $data = FHtml::applicationLangsArray();// self::ARRAY_LANG;
+            return $data = FHtml::applicationLangsArray(); // self::ARRAY_LANG;
         } else if ($column == 'modules' || $key == 'modules') {
 
             return $data = FHtml::getApplicationModulesComboArray();
         }
-//        else if ($column == 'object_type' || $key == 'object_type') {
-//            $data = FHtml::getApplicationObjectTypes();
-//        }
+        //        else if ($column == 'object_type' || $key == 'object_type') {
+        //            $data = FHtml::getApplicationObjectTypes();
+        //        }
         else if ($column == 'timezone' || $key == 'timezone') {
             return $data = FHtml::getTimeZoneArray();
-        }
-        else if ($column == 'role' || $key == 'role' || $key == 'user.role' || "$table.$column" == 'user.role') {
+        } else if ($column == 'role' || $key == 'role' || $key == 'user.role' || "$table.$column" == 'user.role') {
             $currentRole = FHtml::getCurrentRole();
             $currentAction = FHtml::currentAction();
             if ($currentRole == \common\models\User::ROLE_ADMIN || !in_array($currentAction, ['create', 'update', 'profile'])) {
                 $data = [
                     ['id' => \common\models\User::ROLE_ADMIN, 'name' => 'Admin'],
                     ['id' => \common\models\User::ROLE_MODERATOR, 'name' => 'Manager'],
-                    ['id' => \common\models\User::ROLE_USER, 'name' => 'User']];
+                    ['id' => \common\models\User::ROLE_USER, 'name' => 'User']
+                ];
             } else if ($currentRole == \common\models\User::ROLE_MODERATOR) {
                 $data = [
                     ['id' => \common\models\User::ROLE_MODERATOR, 'name' => 'Manager'],
-                    ['id' => \common\models\User::ROLE_USER, 'name' => 'User']];
+                    ['id' => \common\models\User::ROLE_USER, 'name' => 'User']
+                ];
             } else {
                 $data = [
                     ['id' => \common\models\User::ROLE_USER, 'name' => 'User']
@@ -1228,10 +1236,10 @@ class FModel extends FConfig
 
             $data = [
                 ['id' => \common\models\User::STATUS_DELETED, 'name' => FHtml::STATUS_REJECTED],
-                ['id' => \common\models\User::STATUS_ACTIVE, 'name' => FHtml::STATUS_APPROVED]];
+                ['id' => \common\models\User::STATUS_ACTIVE, 'name' => FHtml::STATUS_APPROVED]
+            ];
 
             return $data;
-
         } else if ($column == 'editor' || $key == 'editor') {
 
             return $data = self::ARRAY_EDITOR;
@@ -1288,7 +1296,7 @@ class FModel extends FConfig
 
     public static function getArray($key, $table = null, $column = null, $isCache = false, $select = '', $search_params = [], $limit = 0)
     {
-	    $isCache = false;
+        $isCache = false;
         $translated = true;
         $data = [];
 
@@ -1377,7 +1385,6 @@ class FModel extends FConfig
 
             if (!empty($arr[1]) && count($arr) > 0)
                 $column = $arr[1];
-
         } else if (!empty($key) && strpos(strtolower($key), '.') != false && empty($table) & empty($column)) {
             $arr = explode('.', $key);
             if (!empty($arr[0]))
@@ -1529,24 +1536,28 @@ class FModel extends FConfig
         return $data;
     }
 
-    public static function getModelId($model, $fields = ['id', 'key', 'meta_key']) {
+    public static function getModelId($model, $fields = ['id', 'key', 'meta_key'])
+    {
         return static::getModelField($model, $fields, null, 'getModelId');
     }
 
-    public static function getModelName($model, $fields = ['value', 'name', 'text', 'meta_value', 'title', 'username']) {
+    public static function getModelName($model, $fields = ['value', 'name', 'text', 'meta_value', 'title', 'username'])
+    {
         return static::getModelField($model, $fields, null, 'getModelName');
-
     }
 
-    public static function getModelCode($model, $fields = ['code', 'id', 'meta_key']) {
+    public static function getModelCode($model, $fields = ['code', 'id', 'meta_key'])
+    {
         return static::getModelField($model, $fields, null, 'getModelCode');
     }
 
-    public static function getModelIsActive($model, $fields = ['is_active']) {
+    public static function getModelIsActive($model, $fields = ['is_active'])
+    {
         return static::getModelField($model, $fields, true, 'getModelIsActive');
     }
 
-    public static function getModelField($model, $fields = [], $default_value = null, $method = '') {
+    public static function getModelField($model, $fields = [], $default_value = null, $method = '')
+    {
         if (is_object($model) &&  !empty($method) && method_exists($model, $method))
             return $model->$method();
 
@@ -1563,21 +1574,20 @@ class FModel extends FConfig
         return false;
     }
 
-	/**
-	 * @param string $db_config
-	 * @param string $table_name
-	 * @return Connection|object
-	 * @throws \yii\base\InvalidConfigException
-	 */
-	public static function currentDb($db_config = '', $table_name = '')
+    /**
+     * @param string $db_config
+     * @param string $table_name
+     * @return Connection|object
+     * @throws \yii\base\InvalidConfigException
+     */
+    public static function currentDb($db_config = '', $table_name = '')
     {
         if (empty($db_config))
             $arr = [FHtml::currentApplicationDatabase()];
         else
             $arr = [$db_config, FHtml::currentApplicationDatabase()];
 
-        if (isset($table_name) && is_object($table_name))
-        {
+        if (isset($table_name) && is_object($table_name)) {
             $table_name = FHtml::getTableName($table_name);
         }
 
@@ -1621,14 +1631,17 @@ class FModel extends FConfig
 
         $result = [];
 
-        $id_field = ''; $name_field = '';
+        $id_field = '';
+        $name_field = '';
         if (is_array($keys)) {
             $id_field = $keys[0];
             $name_field = $keys[1];
         } else if (!empty($keys)) {
-            $id_field = 'id'; $name_field = 'name';
+            $id_field = 'id';
+            $name_field = 'name';
         } else {
-            $id_field = ''; $name_field = '';
+            $id_field = '';
+            $name_field = '';
         }
 
         if (is_string($data)) {
@@ -1673,14 +1686,15 @@ class FModel extends FConfig
                             $name_value = $item[1];
                         }
                     }
-
                 } else {
                     $text = ($autoTranslated) ? FHtml::t($lang_category, $item) : $item;
 
                     if (!$associate) {
-                        $id_value = strtolower($id); $name_value = $text;
+                        $id_value = strtolower($id);
+                        $name_value = $text;
                     } else {
-                        $id_value = strtolower($item); $name_value = $text;
+                        $id_value = strtolower($item);
+                        $name_value = $text;
                     }
                 }
 
@@ -1827,11 +1841,10 @@ class FModel extends FConfig
             else
                 $query = $query->where(!empty($search_params) ? $search_params : ['OR', ['object_type' => $moduleName], ['object_type' => $table], ['object_type' => ''], ['object_type' => FHtml::OBJECT_TYPE_DEFAULT]]);
 
-             $query->orderBy(!empty($order_by) ? $order_by : [
+            $query->orderBy(!empty($order_by) ? $order_by : [
                 'sort_order' => SORT_ASC, 'name' => SORT_ASC
             ]);
             return $query;
-
         } else if ($column == 'parent_id') {
             if (!FHtml::isTableExisted($table))
                 return null;
@@ -1846,7 +1859,6 @@ class FModel extends FConfig
                 ]);
                 return $query;
             }
-
         } else { // Get from Meta Setting table
 
             if ($lookup_table == 'object_category') {
@@ -1865,7 +1877,7 @@ class FModel extends FConfig
                         $search_params = ['object_type' => "$key", 'is_active' => 1];
 
                     if ($key != $table && $key != "$table.$column") {
-                        $search_params = ['OR' , ['object_type' => "$key", 'is_active' => 1], $search_params];
+                        $search_params = ['OR', ['object_type' => "$key", 'is_active' => 1], $search_params];
                     }
                 }
 
@@ -1968,7 +1980,6 @@ class FModel extends FConfig
         }
 
         if ($relation_type == FHtml::RELATION_ONE_MANY) {
-
         } else {
 
             $relation_condition = empty($relation_type) ? "relation_type = '' or relation_type is null" : "relation_type = '$relation_type'";
@@ -1999,7 +2010,6 @@ class FModel extends FConfig
         $destination = self::createModel($object2_type);
         $result = [];
         if ($relation_type == FHtml::RELATION_ONE_MANY) {
-
         } else {
             $ids_array = self::getRelatedModelsIDArray($object_type, $object_id, $object2_type, $relation_type);
             $ids = !empty($ids_array) ? implode(',', $ids_array) : '-1';
@@ -2083,7 +2093,8 @@ class FModel extends FConfig
         return null;
     }
 
-    public static function executeSqlUpdate($object_type, $condition, $fields, $db = null) {
+    public static function executeSqlUpdate($object_type, $condition, $fields, $db = null)
+    {
         if (is_object($object_type)) {
             $fields = $condition;
             $model = $object_type;
@@ -2121,7 +2132,7 @@ class FModel extends FConfig
                 if (empty($value) && !is_numeric($value))
                     $fields1[] = "$key = null";
                 else
-                $fields1[] = "$key = '$value'";
+                    $fields1[] = "$key = '$value'";
             }
 
             $fields1 = implode(' , ', $fields1);
@@ -2152,7 +2163,6 @@ class FModel extends FConfig
             FHtml::addError($ex);
             return false;
         }
-
     }
 
     public static function setupTable($table, $checkExisted = true)
@@ -2204,14 +2214,16 @@ class FModel extends FConfig
         return self::createCommand($db)->delete($table, $condition)->execute();
     }
 
-    public static function getSqlValue($content, $quote = '') {
+    public static function getSqlValue($content, $quote = '')
+    {
         if (!is_string($content))
             return $content;
 
         return $quote . addcslashes(str_replace("'", "''", $content), "\000\n\r\\\032") . $quote;
     }
 
-    public static function getSqlParam($content, $quote = '') {
+    public static function getSqlParam($content, $quote = '')
+    {
         return self::getSqlValue($content, $quote);
     }
 
@@ -2258,20 +2270,21 @@ class FModel extends FConfig
         return $result;
     }
 
-    public static function getModelPrimaryKeyValue($model) {
-	    if (!is_object($model))
-	        return null;
+    public static function getModelPrimaryKeyValue($model)
+    {
+        if (!is_object($model))
+            return null;
 
-	    return static::getFieldValue($model, $model::primaryKey());
+        return static::getFieldValue($model, $model::primaryKey());
     }
 
-	/**
-	 * @param BaseDataObject $models
-	 * @return array|object
-	 */
-	public static function getTranslatedModels($models, $fields = null)
-	{
-	    $lang = FConfig::currentLang();
+    /**
+     * @param BaseDataObject $models
+     * @return array|object
+     */
+    public static function getTranslatedModels($models, $fields = null)
+    {
+        $lang = FConfig::currentLang();
 
         $tableName = "";
         $model = null;
@@ -2293,7 +2306,7 @@ class FModel extends FConfig
                 }
                 $models = $result;
             }
-			return $models;
+            return $models;
         }
 
         $field_translations = $model->getTranslationsField();
@@ -2307,9 +2320,8 @@ class FModel extends FConfig
             return $result;
         }
 
-		//method 2
-        if (FHtml::isTableExisted(FHtml::TABLE_TRANSLATIONS))
-        {
+        //method 2
+        if (FHtml::isTableExisted(FHtml::TABLE_TRANSLATIONS)) {
             $ids_models = [];
             foreach ($models as $model) {
                 $id = is_array($model) ? $model['id'] : $model->id;
@@ -2332,8 +2344,8 @@ class FModel extends FConfig
                     $content = is_array($model) ? $translates[$id]['content'] : $translates[$id]->content;
                     $model = self::getTranslatedModel($model, $content);
                 }
-                    if (!empty($fields) && is_object($model))
-                        $model->setFields($fields);
+                if (!empty($fields) && is_object($model))
+                    $model->setFields($fields);
 
                 $result[] = $model;
             }
@@ -2342,16 +2354,17 @@ class FModel extends FConfig
         }
 
         return $models;
-	}
+    }
 
-	public static function getTranslatedContent($model) {
-
+    public static function getTranslatedContent($model)
+    {
     }
     /**
      * @param  BaseDataObject $model
      * Method update data to table translation
      */
-    public static function saveTranslatedModel($model, $lang = '', $isSave = true) {
+    public static function saveTranslatedModel($model, $lang = '', $isSave = true)
+    {
         if (!isset($model))
             return false;
 
@@ -2380,26 +2393,25 @@ class FModel extends FConfig
         $translated_content = FHtml::encode($content_arr);
 
         //update orginal model by SQL Update
-	    foreach ($not_languagued_attributes as $field) {
-		    if ($field == $id_field) {
-			    continue;
-		    }
+        foreach ($not_languagued_attributes as $field) {
+            if ($field == $id_field) {
+                continue;
+            }
 
-		    if (FHtml::field_exists($model, $field)) {
-			    $value = is_array($model->{$field}) ? FHtml::encode($model->{$field}) : $model->{$field};
+            if (FHtml::field_exists($model, $field)) {
+                $value = is_array($model->{$field}) ? FHtml::encode($model->{$field}) : $model->{$field};
 
-			    if (StringHelper::startsWith($field, 'is_') || StringHelper::startsWith($field, 'modified_') || StringHelper::startsWith($field, 'created_') || StringHelper::endsWith($field, '_count')) {
-				    if ($value != '') {
-					    $set_sql .= $field . " = '" . FHtml::getSqlValue($value) . "', ";
-					    $model->{$field} = FHtml::getSqlValue($value);
-				    }
-			    }
-			    else {
-				    $set_sql .= $field . " = '" . FHtml::getSqlValue($value) . "', ";
+                if (StringHelper::startsWith($field, 'is_') || StringHelper::startsWith($field, 'modified_') || StringHelper::startsWith($field, 'created_') || StringHelper::endsWith($field, '_count')) {
+                    if ($value != '') {
+                        $set_sql .= $field . " = '" . FHtml::getSqlValue($value) . "', ";
+                        $model->{$field} = FHtml::getSqlValue($value);
+                    }
+                } else {
+                    $set_sql .= $field . " = '" . FHtml::getSqlValue($value) . "', ";
                     //$model->{$field} = FHtml::getSqlValue($value);
                 }
-		    }
-	    }
+            }
+        }
 
         //if model has Translations field, then save translated content to original model directly
         $field_translations = $model->getTranslationsField();
@@ -2475,7 +2487,6 @@ class FModel extends FConfig
 
                     $content = trim($content, "\"");
                     $arr = FHtml::decode($content, true);
-
                 } else {
                     $arr = $content;
                 }
@@ -2743,16 +2754,15 @@ class FModel extends FConfig
         return $model;
     }
 
-    public static function saveModels($object_type, $condition = [], $field_values = []) {
+    public static function saveModels($object_type, $condition = [], $field_values = [])
+    {
         if (is_array($object_type)) {
             $models = $object_type;
             $field_values = $condition;
-        }
-        else if (is_object($object_type)) {
+        } else if (is_object($object_type)) {
             $models = [$object_type];
             $field_values = $condition;
-        }
-        else
+        } else
             $models = FHtml::getModels($object_type, $condition);
 
         $errors = [];
@@ -2766,7 +2776,8 @@ class FModel extends FConfig
 
     //Check all models if every field has same value
     //Check all models if every field has same value
-    public static function checkAllModelsFieldValue($object_type, $condition = [], $field = 'status', $value = FHtml::STATUS_DONE) {
+    public static function checkAllModelsFieldValue($object_type, $condition = [], $field = 'status', $value = FHtml::STATUS_DONE)
+    {
         if (is_array($object_type))
             $models = $object_type;
         else if (is_object($object_type))
@@ -2781,7 +2792,7 @@ class FModel extends FConfig
             $value = [$value];
 
         foreach ($models as $model) {
-            if (!in_array(FHtml::getFieldValue($model, $field),$value))
+            if (!in_array(FHtml::getFieldValue($model, $field), $value))
                 return false;
         }
 
@@ -2823,22 +2834,25 @@ class FModel extends FConfig
     }
 
     // Get Value of a key in table setting
-	/**
-	 * @param BaseModel $model
-	 * @param       $object_type
-	 * @param       $object_id
-	 * @param array $arrays
-	 * @return mixed
-	 */
-	public static function prepareFieldValues($model, $object_type = '', $fields = [],
+    /**
+     * @param BaseModel $model
+     * @param       $object_type
+     * @param       $object_id
+     * @param array $arrays
+     * @return mixed
+     */
+    public static function prepareFieldValues(
+        $model,
+        $object_type = '',
+        $fields = [],
         $created_fields = ['category_id_array', 'is_active', 'category_id', 'created_user', 'created_date', 'application_id'],
         $updated_fields = ['category_id_array', 'category_id', 'modified_user', 'modified_date']
     ) {
-	    if (!isset($model) && !is_object($model))
-	        return $model;
+        if (!isset($model) && !is_object($model))
+            return $model;
 
-	    if (empty($object_type))
-	        $object_type = $model->getTableName();
+        if (empty($object_type))
+            $object_type = $model->getTableName();
 
         $object_module = BaseInflector::camelize($object_type);
         $insert = $model->isNewRecord;
@@ -2856,8 +2870,7 @@ class FModel extends FConfig
                 $fields = $_POST[$object_module][$property_field];
                 if (!empty($property_field) && self::field_exists($model, $property_field)) {
                     $model->{$property_field} = FHtml::encode($fields);
-                }
-                else if (isset($properties_model) && FHtml::field_exists($properties_model, $property_field)) {
+                } else if (isset($properties_model) && FHtml::field_exists($properties_model, $property_field)) {
                     $properties_model->{$property_field} = FHtml::encode($fields);
                     $properties_model->save();
                 }
@@ -2880,11 +2893,10 @@ class FModel extends FConfig
             $post = $_POST[$object_module];
 
             foreach ($post as $field => $value) {
-            	if (empty($value)) {
-            		continue;
-	            }
-                if (is_array($value))
-                {
+                if (empty($value)) {
+                    continue;
+                }
+                if (is_array($value)) {
                     $value = FHtml::encode($value);
                 }
 
@@ -2962,7 +2974,8 @@ class FModel extends FConfig
     }
 
     //delete all files in model or all object files of model
-    public static function deleteObjectFile($model, $file_name = '') {
+    public static function deleteObjectFile($model, $file_name = '')
+    {
         $files = [];
         if (is_object($model)) {
             $object_type = FHtml::getTableName($model);
@@ -2971,8 +2984,7 @@ class FModel extends FConfig
                 $files[] = FModel::getFieldValue($model, $field);
             }
             $files = array_unique($files);
-        }
-        else if (is_string($model))
+        } else if (is_string($model))
             $object_type = $model;
         else
             return [];
@@ -3213,20 +3225,20 @@ class FModel extends FConfig
                 $arrays = $_POST[$object_module][$object2_module];
         }
 
-	    if (is_string($arrays)) {
-		    $_arrays = json_decode($arrays, true);
+        if (is_string($arrays)) {
+            $_arrays = json_decode($arrays, true);
 
-		    if (json_last_error() == 0) {
-		    	$arrays = $_arrays;
-		    }
+            if (json_last_error() == 0) {
+                $arrays = $_arrays;
+            }
         }
 
         if (!empty($arrays) && is_array($arrays)) {
-	        //remove empty values
-	        foreach ($arrays as $id => $name) {
-		        if (empty($name))
-			        unset($arrays[$id]);
-	        }
+            //remove empty values
+            foreach ($arrays as $id => $name) {
+                if (empty($name))
+                    unset($arrays[$id]);
+            }
         }
 
         models\ObjectRelation::deleteAll(['object_type' => $object_type, 'object_id' => $object_id, 'object2_type' => $object2_type]);
@@ -3254,9 +3266,10 @@ class FModel extends FConfig
         }
     }
 
-    public static function saveObjectRelations($model, $object_type, $object_id) {
-	    if (!isset($model))
-	        return;
+    public static function saveObjectRelations($model, $object_type, $object_id)
+    {
+        if (!isset($model))
+            return;
 
         $object_module = BaseInflector::camelize($object_type);
         $arr_related = [];
@@ -3287,7 +3300,6 @@ class FModel extends FConfig
                 }
             }
         }
-
     }
 
     public static function saveObjectRelation($model, $object_type, $object_id, $object2_type, $relation_type, $object2_module = '', $arrays = null)
@@ -3366,8 +3378,8 @@ class FModel extends FConfig
             $arrays = [];
             $arrays_keys = [];
 
-//            echo $object2_module;
-//            var_dump($_POST[$object_module]); die;
+            //            echo $object2_module;
+            //            var_dump($_POST[$object_module]); die;
             foreach ($_POST[$object_module] as $key => $value) {
                 if (StringHelper::startsWith($key, $object2_module . '_') && !StringHelper::endsWith($key, 'RelationType') && !StringHelper::endsWith($key, 'ObjectType')) {
                     $arrays_keys[] = $key;
@@ -3385,10 +3397,8 @@ class FModel extends FConfig
             foreach ($arrays_keys as $arrays_key) {
                 $relation_type = str_replace($object2_module . '_', '', $arrays_key);
                 $arrays = $_POST[$object_module][$arrays_key];
-                if ($table_relation_existed)
-                {
+                if ($table_relation_existed) {
                     static::saveObjectRelation($model, $object_type, $object_id, $object2_type, $relation_type, $object2_module, $arrays);
-
                 } else if (is_array($arrays) && !empty($arrays)) {
 
                     $i = 0;
@@ -3407,7 +3417,6 @@ class FModel extends FConfig
                 }
             }
         }
-
     }
 
     public static function setModelCustomAttribute($object_type, $object_id = '', $field_name = '', $field_value = null)
@@ -3441,14 +3450,14 @@ class FModel extends FConfig
     public static function saveUploadedFiles($model, $files = [], $folder = '', $baseFolder = '')
     {
         $upload_fields = self::getModelUploadFields($model);
-	    if (!empty($upload_fields)) {
-		    $folder = empty($folder) ? FHtml::getImageFolder($model) : $folder;
-		    //$baseFolder = empty($baseFolder) ? FHtml::getFullUploadFolder() : $baseFolder;
+        if (!empty($upload_fields)) {
+            $folder = empty($folder) ? FHtml::getImageFolder($model) : $folder;
+            //$baseFolder = empty($baseFolder) ? FHtml::getFullUploadFolder() : $baseFolder;
 
             $files = empty($files) ? FHtml::saveModelFiles($model, $upload_fields, $folder . '_' . FHtml::getAttribute($model, 'id')) : $files;
             //FHtml::var_dump($model);
             //var_dump($files); die;
-	    }
+        }
         return $files;
     }
 
@@ -3484,17 +3493,14 @@ class FModel extends FConfig
 
             if (in_array($field, ['created_date']) && self::field_exists($model, $field) && ($model->isNewRecord || empty($model[$field]))) {
                 $model[$field] = FHtml::Now();
-
             } else if (in_array($field, ['created_at']) && self::field_exists($model, $field) && ($model->isNewRecord || empty($model[$field]))) {
                 $model[$field] = time();
-
             } else if (in_array($field, ['created_user']) && self::field_exists($model, $field) && ($model->isNewRecord || empty($model[$field]))) {
                 $model[$field] = FHtml::currentUserId();
             } else if (in_array($field, ['modified_date', 'updated_date']) && self::field_exists($model, $field)) {
                 $model[$field] = FHtml::Now();
             } else if (in_array($field, ['modified_at']) && self::field_exists($model, $field)) {
                 $model[$field] = time();
-
             } else if (self::field_exists($model, $field) && empty($model[$field]) && strpos($field, 'application_id') !== false || strpos($field, 'application_id') !== false) {
                 $model[$field] = FHtml::currentApplicationCode();
             } else if (self::field_exists($model, $field) && empty($model[$field]) && StringHelper::endsWith($field, 'user')) {
@@ -3512,7 +3518,6 @@ class FModel extends FConfig
 
                         $model[$field] = explode(',', $result);
                         $model[$field1] = explode(',', $result);
-
                     } else {
                         if (isset($_POST[$modelName][$field])) {
                             $arr = $_POST[$modelName][$field];
@@ -3541,7 +3546,6 @@ class FModel extends FConfig
                     }
                 }
             } else {
-
             }
         }
     }
@@ -3562,8 +3566,9 @@ class FModel extends FConfig
         return $data;
     }
 
-    public static function findDistinctArray($table, $column, $isCache = true) {
-	    return static::selectDistinctArray($table, $column, $isCache);
+    public static function findDistinctArray($table, $column, $isCache = true)
+    {
+        return static::selectDistinctArray($table, $column, $isCache);
     }
 
     public static function Request()
@@ -3682,17 +3687,17 @@ class FModel extends FConfig
                 $params1 = $params;
         }
 
-//        if (!empty($params1) && is_array($params1)) { //may be $params is $_POST or $_GET
-//            foreach ($params1 as $key => $value) {
-//                if (is_string($key) && !empty($columnsMapping) && key_exists($key, $columnsMapping))
-//                    $key = $columnsMapping[$key];
-//                $field_value = isset($params1[$key]) ? $params1[$key] : null;
-//                $model[$key] = $field_value;
-//            }
-//        };
+        //        if (!empty($params1) && is_array($params1)) { //may be $params is $_POST or $_GET
+        //            foreach ($params1 as $key => $value) {
+        //                if (is_string($key) && !empty($columnsMapping) && key_exists($key, $columnsMapping))
+        //                    $key = $columnsMapping[$key];
+        //                $field_value = isset($params1[$key]) ? $params1[$key] : null;
+        //                $model[$key] = $field_value;
+        //            }
+        //        };
 
-//        if (!empty($params1))
-//            $params = $params1;
+        //        if (!empty($params1))
+        //            $params = $params1;
 
         if (!empty($params1) && is_array($params1)) {
             if (!empty($columnsMapping)) {
@@ -3794,11 +3799,11 @@ class FModel extends FConfig
 
     public static function parseAttribute($attribute)
     {
-//        if (is_string($attribute))
-//            $arr = explode(':', $attribute);
-//
-//        if (is_array($arr))
-//            $attribute = $arr;
+        //        if (is_string($attribute))
+        //            $arr = explode(':', $attribute);
+        //
+        //        if (is_array($arr))
+        //            $attribute = $arr;
 
         if (empty($attribute))
             return [
@@ -3819,7 +3824,7 @@ class FModel extends FConfig
                     'label' => $attribute,
                     'editor' => ''
                 ];
-               // throw new \yii\console\Exception('Invalid attribute: [' . $attribute . ']. The attribute must be specified in the format of "attribute", "attribute:format" or "attribute:format:label": ');
+                // throw new \yii\console\Exception('Invalid attribute: [' . $attribute . ']. The attribute must be specified in the format of "attribute", "attribute:format" or "attribute:format:label": ');
             }
             $attribute = [
                 'attribute' => $matches[1],
@@ -3854,14 +3859,12 @@ class FModel extends FConfig
             $type = 'dropDownList';
             $format = trim($format, "[]");
             $data = FHtml::decode($format, ',');
-
         } else if (is_array($format)) {
             $attribute['format'] = 'array';
             $type = 'dropDownList';
             $data = FHtml::decode($format, ',');
             //$data = FHtml::getKeyValueArray($data);
-        }
-        else if (in_array($format, ['text', 'textarea']))
+        } else if (in_array($format, ['text', 'textarea']))
             $type = 'textArea';
         else if (in_array($format, ['range']))
             $type = FRangeInput::className();
@@ -3927,7 +3930,7 @@ class FModel extends FConfig
         foreach ($fields as $field) {
             $is_excluded = !empty($excluded_fields) && !FHtml::isInArray($field->name, $excluded_fields);
             if ($type == 'preview') {
-                if (!$is_excluded && FHtml::isInArray($field->name, ['id', 'code', 'name', 'title', 'username'. 'description', 'overview', 'is_active', 'is_hot', 'is_top', 'type', 'status', 'category_id']))
+                if (!$is_excluded && FHtml::isInArray($field->name, ['id', 'code', 'name', 'title', 'username' . 'description', 'overview', 'is_active', 'is_hot', 'is_top', 'type', 'status', 'category_id']))
                     $result[] = $field->name;
             } else if (is_array($type)) {
                 if (!$is_excluded  && FHtml::isInArray($field->name, $type))
@@ -3935,7 +3938,6 @@ class FModel extends FConfig
             } else if (!$is_excluded) {
                 $result[] = $field->name;
             }
-
         }
         return $result;
     }
@@ -3972,87 +3974,86 @@ class FModel extends FConfig
 
     public static function is_timestamp($timestamp)
     {
-        $check = (is_int($timestamp) OR is_float($timestamp))
+        $check = (is_int($timestamp) or is_float($timestamp))
             ? $timestamp
             : (string)(int)$timestamp;
         return ($check === $timestamp)
-            AND ((int)$timestamp <= PHP_INT_MAX)
-            AND ((int)$timestamp >= ~PHP_INT_MAX);
+            and ((int)$timestamp <= PHP_INT_MAX)
+            and ((int)$timestamp >= ~PHP_INT_MAX);
     }
 
-	public static function getClassName($object, $getBaseNameOnly = false)
-	{
-		if (is_object($object)) {
-			$result = $object::className();
-		} else if (is_string($object)) {
-			if (class_exists($object)) {
+    public static function getClassName($object, $getBaseNameOnly = false)
+    {
+        if (is_object($object)) {
+            $result = $object::className();
+        } else if (is_string($object)) {
+            if (class_exists($object)) {
 
-				$result = $object;
-			} else if (FHtml::isTableExisted($object)) {
-				$model = FHtml::createModel($object);
-				if (isset($model))
-					$result = $model::className();
-			}  else
-				return StringHelper::basename($object);
-		} else {
-			return '';
-		}
+                $result = $object;
+            } else if (FHtml::isTableExisted($object)) {
+                $model = FHtml::createModel($object);
+                if (isset($model))
+                    $result = $model::className();
+            } else
+                return StringHelper::basename($object);
+        } else {
+            return '';
+        }
 
 
-		if (!$getBaseNameOnly)
-			return $result;
-		else
-			return StringHelper::basename($result);
-	}
+        if (!$getBaseNameOnly)
+            return $result;
+        else
+            return StringHelper::basename($result);
+    }
 
-	public static function isTableExisted($table, $db = null)
-	{
-		if (strpos($table, '.') !== false || strpos($table, ',') !== false || strpos($table, '\\') !== false || strpos($table, ' ') !== false) {
-			return false;
-		}
-		$schema = self::getTableSchema($table, $db, false); //Hung: if set to TRUE then performance is very slow
+    public static function isTableExisted($table, $db = null)
+    {
+        if (strpos($table, '.') !== false || strpos($table, ',') !== false || strpos($table, '\\') !== false || strpos($table, ' ') !== false) {
+            return false;
+        }
+        $schema = self::getTableSchema($table, $db, false); //Hung: if set to TRUE then performance is very slow
 
-		return isset($schema);
-	}
+        return isset($schema);
+    }
 
-	public static function isModuleExisted($module)
-	{
-		$module = self::getModuleObject($module);
+    public static function isModuleExisted($module)
+    {
+        $module = self::getModuleObject($module);
 
-		return isset($module);
-	}
+        return isset($module);
+    }
 
-	public static function getTableSchema($tableName, $db = null, $refresh = false)
-	{
-		$tableSchema = null;
-		if (empty($tableName) || strpos($tableName, '.') !== false || strpos($tableName, ' ') !== false || strpos($tableName, '/') !== false)
-			return null;
-		try {
+    public static function getTableSchema($tableName, $db = null, $refresh = false)
+    {
+        $tableSchema = null;
+        if (empty($tableName) || strpos($tableName, '.') !== false || strpos($tableName, ' ') !== false || strpos($tableName, '/') !== false)
+            return null;
+        try {
 
-			if (is_bool($db)) {
-				$db = null;
-				$refresh = $db;
-			}
+            if (is_bool($db)) {
+                $db = null;
+                $refresh = $db;
+            }
 
-			if (empty($db))
-				$db = FHtml::currentDb();
-			else if (is_string($db))
-				$db = FHtml::currentDb($db);
+            if (empty($db))
+                $db = FHtml::currentDb();
+            else if (is_string($db))
+                $db = FHtml::currentDb($db);
 
-			if (!isset($db))
-				return null;
+            if (!isset($db))
+                return null;
 
-			$tableSchema = $db
-				->getSchema()
-				->getTableSchema($tableName, $refresh);
+            $tableSchema = $db
+                ->getSchema()
+                ->getTableSchema($tableName, $refresh);
+        } catch (\yii\db\Exception $ex) {
+            FHtml::addError($ex);
+            return null;
+        }
 
-		} catch (\yii\db\Exception $ex) {
-			FHtml::addError($ex);
-			return null;
-		}
-
-		return $tableSchema;
-	}
+        return $tableSchema;
+    }
 
     public static function getTableColumns($tableName)
     {
@@ -4074,7 +4075,8 @@ class FModel extends FConfig
         return FHtml::CONFIG_DB;
     }
 
-    public static function currentDatabaseName() {
+    public static function currentDatabaseName()
+    {
         $dsn = FConfig::getConfigDsn();
         if (empty($dsn))
             return '';
@@ -4084,7 +4086,8 @@ class FModel extends FConfig
         return $arr[count($arr) - 1];
     }
 
-    public static function checkFormResubmission($model = null, $token_param = '_csrf') {
+    public static function checkFormResubmission($model = null, $token_param = '_csrf')
+    {
         if (is_object($model))
             $model = FHtml::getTableName($model);
 
@@ -4111,8 +4114,7 @@ class FModel extends FConfig
         }
         if ($currentToken == $prevToken) {
             return true;
-        }
-        else {
+        } else {
             self::Session()[$session_key] = $currentToken;
             return false;
         }
@@ -4140,10 +4142,11 @@ class FModel extends FConfig
      * @param array $newData
      * @return array
      */
-    public static function getCategoryRecursive($model, $parent = 0, &$newData = []) {
+    public static function getCategoryRecursive($model, $parent = 0, &$newData = [])
+    {
         $child_array = array();
-        foreach ($model as $key1 => $item1){
-            if($item1->parent_id == $parent){
+        foreach ($model as $key1 => $item1) {
+            if ($item1->parent_id == $parent) {
                 $child_array[$item1->name] = $item1->id;
                 unset($model[$key1]);
             }
@@ -4166,10 +4169,11 @@ class FModel extends FConfig
      * @param string $character
      * @return array
      */
-    public static function getCategoryRecursiveWithCharacter($model, $parent = 0, &$newData = [], $character = "") {
+    public static function getCategoryRecursiveWithCharacter($model, $parent = 0, &$newData = [], $character = "")
+    {
         $child_array = array();
-        foreach ($model as $key1 => $item1){
-            if($item1->parent_id == $parent){
+        foreach ($model as $key1 => $item1) {
+            if ($item1->parent_id == $parent) {
                 $child_array[] = $item1;
                 unset($model[$key1]);
             }
@@ -4179,12 +4183,13 @@ class FModel extends FConfig
                 'id' => $value_child->id,
                 "name" => $character . $value_child->name
             ];
-            self::getCategoryRecursiveWithCharacter($model, $value_child->id, $newData, '- ' .$character);
+            self::getCategoryRecursiveWithCharacter($model, $value_child->id, $newData, '- ' . $character);
         }
         return $newData;
     }
 
-    public static function findArray($data, $q = '', $isFindAll = true) {
+    public static function findArray($data, $q = '', $isFindAll = true)
+    {
         $result = [];
 
         if (is_string($data))
@@ -4213,16 +4218,19 @@ class FModel extends FConfig
         return $result;
     }
 
-    public static function findOneArray($data, $q = '') {
+    public static function findOneArray($data, $q = '')
+    {
         return self::findArray($data, $q, false);
     }
 
-    public static function findAllArray($data, $q = '') {
+    public static function findAllArray($data, $q = '')
+    {
         return self::findArray($data, $q, true);
     }
 
     //only allow one model with $extra_condition to have $value_unique (1), others must set to null
-    public static function setModelUniqueBooleanColumns($object_type, $columns, $extra_condition = [], $value_unique = 1, $value_null = 0) {
+    public static function setModelUniqueBooleanColumns($object_type, $columns, $extra_condition = [], $value_unique = 1, $value_null = 0)
+    {
         if (is_object($object_type)) {
             $model = $object_type;
             $object_type = FHtml::getTableName($model);
@@ -4255,7 +4263,7 @@ class FModel extends FConfig
             //$result[] = "$model->id : $value";
 
             if ($value == $value_unique) {
-               // FModel::executeSqlUpdate($object_type, array_merge([$column => $value_unique], $extra_condition), [$column => $value_null]); //==> Error need to check.
+                // FModel::executeSqlUpdate($object_type, array_merge([$column => $value_unique], $extra_condition), [$column => $value_null]); //==> Error need to check.
                 $list = $model::findAllForEdit(array_merge([$column => $value_unique], $extra_condition));
                 if (!empty($list)) {
                     $ids = [];
@@ -4277,7 +4285,8 @@ class FModel extends FConfig
     }
 
     //find all models that have same value in secific $columns
-    public static function findDuplicatedModels($model, $columns = [], $auto_delete = false, $excluded_values = FConstant::EXCLUDED_UNIQUE_CODES) {
+    public static function findDuplicatedModels($model, $columns = [], $auto_delete = false, $excluded_values = FConstant::EXCLUDED_UNIQUE_CODES)
+    {
         if (!isset($model))
             return [];
 
@@ -4358,11 +4367,13 @@ class FModel extends FConfig
     }
 
     //2018-02-8
-    public static function getUsersComboArray($condition = [], $displayname = 'name') {
+    public static function getUsersComboArray($condition = [], $displayname = 'name')
+    {
         return models\User::findComboArray($condition, 'id', $displayname, 'name asc');
     }
 
-    public static function getDisplayField($model, $fields = ['name', 'username', 'title']) {
+    public static function getDisplayField($model, $fields = ['name', 'username', 'title'])
+    {
         $display_name = '';
         foreach ($fields as $name) {
             if (FHtml::field_exists($model, $name)) {
@@ -4373,7 +4384,8 @@ class FModel extends FConfig
         return $display_name;
     }
 
-    public static function saveModelFiles($model, $fields, $fileName = '', $oldModel = null) {
+    public static function saveModelFiles($model, $fields, $fileName = '', $oldModel = null)
+    {
         return self::getUploadedFiles($model, $fields, $fileName, $oldModel);
     }
 
@@ -4410,7 +4422,6 @@ class FModel extends FConfig
                         ];
                     }
                 }
-
             } else {
                 $filesArray = $_FILES;
             }
@@ -4456,7 +4467,7 @@ class FModel extends FConfig
                     if ($fileName == '') {
                         $file->name = FModel::normalizeFileName($fileTitle . $post_fix . '.' . $extension);
                     } else {
-                        $file->name = FModel::normalizeFileName( $field . '-' . $fileTitle . '-' . str_replace("-", "_", $fileName) . $post_fix . '.' . $extension);
+                        $file->name = FModel::normalizeFileName($field . '-' . $fileTitle . '-' . str_replace("-", "_", $fileName) . $post_fix . '.' . $extension);
                     }
 
                     $file->oldName = FHtml::getFieldValue($model, $field);
@@ -4478,74 +4489,76 @@ class FModel extends FConfig
     }
 
     //
-    public static function normalizeFileName($filename, $except = [],  $replaced = '-') {
+    public static function normalizeFileName($filename, $except = [],  $replaced = '-')
+    {
         if (empty($except))
             $except = array(' ', '\\', '/', ':', '*', '?', '"', '<', '>', '|');
         return str_replace($except, $replaced, $filename);
     }
-    
-    public static function normalizeSqlCondition($params, $model = null, $applications_enabled = true) {
+
+    public static function normalizeSqlCondition($params, $model = null, $applications_enabled = true)
+    {
         return $params;
-//        if (is_array($params))
-//        {
-//            $keywords = ['_pjax', '_show_error', 'show_error', 'lang', 'application_id'];
-//            foreach ($keywords as $keyword)
-//                unset($params[$keyword]);
-//
-//            if (isset($model)) {
-//                foreach ($params as $key => $value) {
-//                    if (is_string($key) && is_string($value) && !FHtml::field_exists($model, $key))
-//                        unset($params[$key]);
-//                }
-//            }
-//        }
-//
-//        //return $params;
-//
-//        $condition = $params;
-//        if (empty($condition))
-//            $condition = [];
-//
-//        $table = '';
-//        if (isset($model) && is_object($model)) {
-//            $table = FHtml::getTableName($model);
-//        } else if (!empty($model) && is_string($model)) {
-//            $table = $model;
-//            $model = FHtml::createModel($table);
-//        }
-//
-//        $is_sql_condition = (is_string($condition) && !is_numeric($condition) && FHtml::is_sql_condition($condition));
-//
-//        if (isset($model) && is_object($model) && $applications_enabled && FHtml::isApplicationsEnabled() && FHtml::field_exists($model, 'application_id')) {
-//
-//            $check_by_application_id = isset($check_by_application_id) ? $check_by_application_id : FHtml::isInArray($table, FHtml::EXCLUDED_TABLES_AS_APPLICATIONS);
-//            $application_id = $check_by_application_id ? FHtml::currentApplicationId() : FHtml::currentApplicationCode();
-//            $application_id_none = FHtml::APPLICATION_NONE;
-//
-//            if (is_array($condition)) {
-//                $condition = ['AND', $condition];
-//                if ($check_by_application_id)
-//                    $condition = array_merge($condition, [["application_id" => [$application_id, $application_id_none]]]);
-//                else
-//                    $condition = array_merge($condition, [["application_id" => $application_id]]);
-//
-//                if (!FHtml::isRoleAdmin() && FHtml::field_exists($model, 'is_active')) {
-//                    $condition = array_merge($condition, [['is_active' => 1]]);
-//                }
-//
-//            } else if ($is_sql_condition) {
-//                if ($check_by_application_id)
-//                    $condition = $condition . " and (application_id = '$application_id' or application_id = '$application_id_none')";
-//                else
-//                    $condition = $condition . " and (application_id = '$application_id')";
-//
-//                if (!FHtml::isRoleAdmin() && FHtml::field_exists($model, 'is_active')) {
-//                    $condition = $condition . " and (is_active = 1)";
-//                }
-//            }
-//        }
-//
-//        return $condition;
+        //        if (is_array($params))
+        //        {
+        //            $keywords = ['_pjax', '_show_error', 'show_error', 'lang', 'application_id'];
+        //            foreach ($keywords as $keyword)
+        //                unset($params[$keyword]);
+        //
+        //            if (isset($model)) {
+        //                foreach ($params as $key => $value) {
+        //                    if (is_string($key) && is_string($value) && !FHtml::field_exists($model, $key))
+        //                        unset($params[$key]);
+        //                }
+        //            }
+        //        }
+        //
+        //        //return $params;
+        //
+        //        $condition = $params;
+        //        if (empty($condition))
+        //            $condition = [];
+        //
+        //        $table = '';
+        //        if (isset($model) && is_object($model)) {
+        //            $table = FHtml::getTableName($model);
+        //        } else if (!empty($model) && is_string($model)) {
+        //            $table = $model;
+        //            $model = FHtml::createModel($table);
+        //        }
+        //
+        //        $is_sql_condition = (is_string($condition) && !is_numeric($condition) && FHtml::is_sql_condition($condition));
+        //
+        //        if (isset($model) && is_object($model) && $applications_enabled && FHtml::isApplicationsEnabled() && FHtml::field_exists($model, 'application_id')) {
+        //
+        //            $check_by_application_id = isset($check_by_application_id) ? $check_by_application_id : FHtml::isInArray($table, FHtml::EXCLUDED_TABLES_AS_APPLICATIONS);
+        //            $application_id = $check_by_application_id ? FHtml::currentApplicationId() : FHtml::currentApplicationCode();
+        //            $application_id_none = FHtml::APPLICATION_NONE;
+        //
+        //            if (is_array($condition)) {
+        //                $condition = ['AND', $condition];
+        //                if ($check_by_application_id)
+        //                    $condition = array_merge($condition, [["application_id" => [$application_id, $application_id_none]]]);
+        //                else
+        //                    $condition = array_merge($condition, [["application_id" => $application_id]]);
+        //
+        //                if (!FHtml::isRoleAdmin() && FHtml::field_exists($model, 'is_active')) {
+        //                    $condition = array_merge($condition, [['is_active' => 1]]);
+        //                }
+        //
+        //            } else if ($is_sql_condition) {
+        //                if ($check_by_application_id)
+        //                    $condition = $condition . " and (application_id = '$application_id' or application_id = '$application_id_none')";
+        //                else
+        //                    $condition = $condition . " and (application_id = '$application_id')";
+        //
+        //                if (!FHtml::isRoleAdmin() && FHtml::field_exists($model, 'is_active')) {
+        //                    $condition = $condition . " and (is_active = 1)";
+        //                }
+        //            }
+        //        }
+        //
+        //        return $condition;
     }
 
     public static function getCategories($object_type = '', $object_id = -1, $isCached = false)
@@ -4559,7 +4572,7 @@ class FModel extends FConfig
         }
 
         $data = [];
-        if ($object_id === -1) {// pass id or id array as first param
+        if ($object_id === -1) { // pass id or id array as first param
             $arr = [];
             if (is_string($object_type)) {
                 if (empty($object_type)) {
@@ -4608,7 +4621,8 @@ class FModel extends FConfig
         }
     }
 
-    public static function getQuerySelectString($query) {
+    public static function getQuerySelectString($query)
+    {
         if (!isset($query))
             return '';
         if ($query instanceof Query)
@@ -4628,7 +4642,8 @@ class FModel extends FConfig
         return strtolower($select_str);
     }
 
-    public static function field_existsInQuery($column, $query, $model = null) {
+    public static function field_existsInQuery($column, $query, $model = null)
+    {
         if (!isset($model))
             return true;
 
@@ -4653,7 +4668,8 @@ class FModel extends FConfig
         return false;
     }
 
-    public static function getCategoriesObjectType($module = '') {
+    public static function getCategoriesObjectType($module = '')
+    {
         if (!empty($module)) {
             $moduleObject = FHtml::getModuleObject($module);
             if (isset($moduleObject) && method_exists($moduleObject, 'getCategoriesObjectType'))
@@ -4675,13 +4691,13 @@ class FModel extends FConfig
         return array_unique($result);
     }
 
-    public static function getSettingsFormTableColumns($form, $model, $module = '') {
+    public static function getSettingsFormTableColumns($form, $model, $module = '')
+    {
         if (is_string($module)) {
             if (empty($module))
                 $module = FHtml::currentModule();
             $moduleObject = FHtml::getModuleObject($module);
-        }
-        else if (is_object($module)) {
+        } else if (is_object($module)) {
             $moduleObject = $module;
         }
         //FHtml::var_dump($moduleObject);
@@ -4699,8 +4715,8 @@ class FModel extends FConfig
     {
         $ranges = static::getDateRange($column, $params);
 
-        $date_start = empty($ranges) ? '': $ranges['start'];
-        $date_end = empty($ranges) ? '': $ranges['end'];
+        $date_start = empty($ranges) ? '' : $ranges['start'];
+        $date_end = empty($ranges) ? '' : $ranges['end'];
 
         $andWhere = [];
         if (!empty($date_start)) {
@@ -4715,7 +4731,8 @@ class FModel extends FConfig
         return $andWhere;
     }
 
-    public static function getDateRange($column = '', $params = ['date_range', 'daterange']) {
+    public static function getDateRange($column = '', $params = ['date_range', 'daterange'])
+    {
         $date_start = FHtml::getRequestParam(['startDate', $column . '_start']);
         $date_end = FHtml::getRequestParam(['endDate', $column . '_end']);
         $params = array_merge([$column], $params);
@@ -4734,7 +4751,8 @@ class FModel extends FConfig
         return (empty($date_start) && empty($date_end)) ? [] : ['start' => $date_start, 'end' => $date_end];
     }
 
-    public static function getTreeViewArray($array, $currentParent = null, $currLevel = 0, $prevLevel = -1, $currIndex = 1, &$html = '', $buildChildren = false, $root_call = true) {
+    public static function getTreeViewArray($array, $currentParent = null, $currLevel = 0, $prevLevel = -1, $currIndex = 1, &$html = '', $buildChildren = false, $root_call = true)
+    {
         foreach ($array as $categoryId => &$category) {
             $parent_id = FHtml::getFieldValue($category, 'parent_id');
             $name = FHtml::getFieldValue($category, ['name', 'title']);
@@ -4747,8 +4765,7 @@ class FModel extends FConfig
                     $prevLevel = $currLevel;
                     $html .= " <ol class='tree'> ";
                     $currIndex = 1;
-                }
-                else if ($currLevel == $prevLevel) {
+                } else if ($currLevel == $prevLevel) {
                     $html .= " </li> ";
                     $currIndex += 1;
                 }
@@ -4762,7 +4779,7 @@ class FModel extends FConfig
 
                 $array[$categoryId] = $category;
 
-                self::getTreeViewArray ($array, $category, $currLevel, $prevLevel, $currIndex, $html, false, false);
+                self::getTreeViewArray($array, $category, $currLevel, $prevLevel, $currIndex, $html, false, false);
 
                 $currLevel--;
             }
@@ -4772,7 +4789,12 @@ class FModel extends FConfig
             $html .= " </li>  </ol> ";
 
         if ($root_call) { //only sort at root of recursive
-            usort($array, function ($a, $b) { if ($a['tree_index'] == $b['tree_index']) { return 0; }; return ($a['tree_index'] < $b['tree_index']) ? -1 : 1; });
+            usort($array, function ($a, $b) {
+                if ($a['tree_index'] == $b['tree_index']) {
+                    return 0;
+                };
+                return ($a['tree_index'] < $b['tree_index']) ? -1 : 1;
+            });
             if ($buildChildren) {
                 $array = static::getNestArray($array);
             }
@@ -4781,21 +4803,21 @@ class FModel extends FConfig
         return $array;
     }
 
-    public static function getNestArray($source) {
+    public static function getNestArray($source)
+    {
         $nested = array();
 
-        foreach ( $source as &$s ) {
-            if ( is_null($s['parent_id']) ) {
+        foreach ($source as &$s) {
+            if (is_null($s['parent_id'])) {
                 // no parent_id so we put it in the root of the array
                 $nested[] = &$s;
-            }
-            else {
+            } else {
                 $pid = $s['parent_id'];
-                if ( isset($source[$pid]) ) {
+                if (isset($source[$pid])) {
                     // If the parent ID exists in the source array
                     // we add it to the 'children' array of the parent after initializing it.
 
-                    if ( !isset($source[$pid]['children']) ) {
+                    if (!isset($source[$pid]['children'])) {
                         $source[$pid]['children'] = array();
                     }
 
@@ -4806,7 +4828,8 @@ class FModel extends FConfig
         return $nested;
     }
 
-    public static function getRequiredFields($model, $field = '') {
+    public static function getRequiredFields($model, $field = '')
+    {
         if (!is_object($model))
             return false;
         $rules = $model->rules();

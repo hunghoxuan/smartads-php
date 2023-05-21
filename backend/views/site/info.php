@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "Book".
  */
+
 use common\components\FHtml;
 use common\widgets\FActiveForm;
 use common\widgets\FFormTable;
@@ -23,9 +25,9 @@ $moduleKey = 'setup';
 $currentRole = FHtml::getCurrentRole();
 $currentAction = FHtml::currentAction();
 
-if (! function_exists('get_absolute_path')) {
+if (!function_exists('get_absolute_path')) {
 
-// Function to get object from a relative path to this script
+    // Function to get object from a relative path to this script
     function get_absolute_path($path = null)
     {
         if (empty($path)) $path = dirname(__FILE__);
@@ -45,7 +47,7 @@ if (! function_exists('get_absolute_path')) {
 }
 
 
-if (! function_exists('return_bytes')) {
+if (!function_exists('return_bytes')) {
 
     function return_bytes($val)
     {
@@ -70,37 +72,37 @@ $arr = \common\components\FSystem::getSystemInfo();
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-    <div class="row">
-        <div class="col-md-4">
-            <h2>System Requirements</h2>
-            <?php \common\components\FSystem::showCheckArray(\common\components\FSystem::getSystemInfo()) ?>
-        </div>
-
-        <div class="col-md-8">
-            <h2>Files & Permissions</h2>
-            <?php \common\components\FSystem::showCheckArray(\common\components\FSystem::getFilesPermissions()) ?>
-
-            <h2>Database Connection Check</h2>
-            <?php $ok = \common\components\FConfig::checkDbConnection();
-                $db = '';
-                echo '<b>' . FHtml::getConfigFile() . '] </b>: <br/>';
-                echo '  - Master [Db]: ' . \common\components\FConfig::getConfigDsn();
-                if (isset($ok) && !empty($ok))
-                    echo ': <span class="ok">[Active]</span>';
-                else
-                    echo ': <span class="error">[Invalid]</span>';
-                echo '<br/>';
-
-                $application_id = FHtml::currentApplicationId();
-                echo '  - Application [' . $application_id .  ']: ' . \common\components\FConfig::getConfigDsn($application_id);
-                if (isset($ok) && !empty($ok))
-                    echo ': <span class="ok">[Active]</span>';
-                else
-                    echo ': <span class="error">[Invalid]</span>';
-                echo '<br/>';
-            ?>
-        </div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>System Requirements</h2>
+        <?php \common\components\FSystem::showCheckArray(\common\components\FSystem::getSystemInfo()) ?>
     </div>
+
+    <div class="col-md-8">
+        <h2>Files & Permissions</h2>
+        <?php \common\components\FSystem::showCheckArray(\common\components\FSystem::getFilesPermissions()) ?>
+
+        <h2>Database Connection Check</h2>
+        <?php $ok = \common\components\FConfig::checkDbConnection();
+        $db = '';
+        echo '<b>' . FHtml::getConfigFile() . '] </b>: <br/>';
+        echo '  - Master [Db]: ' . \common\components\FConfig::getConfigDsn();
+        if (isset($ok) && !empty($ok))
+            echo ': <span class="ok">[Active]</span>';
+        else
+            echo ': <span class="error">[Invalid]</span>';
+        echo '<br/>';
+
+        $application_id = FHtml::currentApplicationId();
+        echo '  - Application [' . $application_id .  ']: ' . \common\components\FConfig::getConfigDsn($application_id);
+        if (isset($ok) && !empty($ok))
+            echo ': <span class="ok">[Active]</span>';
+        else
+            echo ': <span class="error">[Invalid]</span>';
+        echo '<br/>';
+        ?>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <h2>OpCache Status</h2>

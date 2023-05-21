@@ -10,9 +10,9 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "object_type".
  */
 class ObjectType extends ObjectTypeBase //\yii\db\ActiveRecord
@@ -26,20 +26,20 @@ class ObjectType extends ObjectTypeBase //\yii\db\ActiveRecord
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
     const COLUMNS = [
-        'api' => ['object_type', 'group', 'name', 'sort_order', 'is_active', 'is_system', ],
+        'api' => ['object_type', 'group', 'name', 'sort_order', 'is_active', 'is_system',],
         'all' => ['object_type', 'group', 'name', 'sort_order', 'is_active', 'is_system',  'objectAttributes', 'objectFile', 'objectCategories'],
-        '+' => [  'objectAttributes', 'objectFile', 'objectCategories']
+        '+' => ['objectAttributes', 'objectFile', 'objectCategories']
     ];
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-        
+
             [['object_type', 'group', 'name', 'sort_order', 'is_active', 'is_system'], 'filter', 'filter' => 'trim'],
-                
+
             [['object_type', 'name'], 'required'],
             [['sort_order', 'is_active', 'is_system'], 'integer'],
             [['object_type', 'group', 'name'], 'string', 'max' => 255],
@@ -47,26 +47,26 @@ class ObjectType extends ObjectTypeBase //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'object_type' => FHtml::t('ObjectType', 'Object Type'),
-                    'group' => FHtml::t('ObjectType', 'Group'),
-                    'name' => FHtml::t('ObjectType', 'Name'),
-                    'sort_order' => FHtml::t('ObjectType', 'Sort Order'),
-                    'is_active' => FHtml::t('ObjectType', 'Is Active'),
-                    'is_system' => FHtml::t('ObjectType', 'Is System'),
-                ];
+            'object_type' => FHtml::t('ObjectType', 'Object Type'),
+            'group' => FHtml::t('ObjectType', 'Group'),
+            'name' => FHtml::t('ObjectType', 'Name'),
+            'sort_order' => FHtml::t('ObjectType', 'Sort Order'),
+            'is_active' => FHtml::t('ObjectType', 'Is Active'),
+            'is_system' => FHtml::t('ObjectType', 'Is System'),
+        ];
     }
 
 
 
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
-
     }
 
     public function fields()
@@ -77,7 +77,7 @@ class ObjectType extends ObjectTypeBase //\yii\db\ActiveRecord
         if (is_string($this->columnsMode) && !empty($this->columnsMode) && key_exists($this->columnsMode, $columns)) {
             $fields1 = $columns[$this->columnsMode];
             if (!empty($fields1))
-            $fields = $fields1;
+                $fields = $fields1;
         } else if (is_array($this->columnsMode))
             return $this->columnsMode;
 
@@ -89,17 +89,20 @@ class ObjectType extends ObjectTypeBase //\yii\db\ActiveRecord
         return $fields;
     }
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
     }
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 
@@ -137,14 +140,15 @@ class ObjectType extends ObjectTypeBase //\yii\db\ActiveRecord
         ];
     }
 
-    public function toViewModel() {
-    $model = new ViewModel();
-            FHtml::setFieldValue($model, ['object_type'], $this->object_type);
-            FHtml::setFieldValue($model, ['group'], $this->group);
-            FHtml::setFieldValue($model, ['name'], $this->name);
-            FHtml::setFieldValue($model, ['sort_order'], $this->sort_order);
-            FHtml::setFieldValue($model, ['is_active'], $this->is_active);
-            FHtml::setFieldValue($model, ['is_system'], $this->is_system);
+    public function toViewModel()
+    {
+        $model = new ViewModel();
+        FHtml::setFieldValue($model, ['object_type'], $this->object_type);
+        FHtml::setFieldValue($model, ['group'], $this->group);
+        FHtml::setFieldValue($model, ['name'], $this->name);
+        FHtml::setFieldValue($model, ['sort_order'], $this->sort_order);
+        FHtml::setFieldValue($model, ['is_active'], $this->is_active);
+        FHtml::setFieldValue($model, ['is_system'], $this->is_system);
         return $model;
     }
 }

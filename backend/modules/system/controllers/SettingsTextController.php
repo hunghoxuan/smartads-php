@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "SettingsText".
-*/
+ *
+ ***
+ * This is the customized model class for table "SettingsText".
+ */
+
 namespace backend\modules\system\controllers;
 
 use Yii;
@@ -36,7 +37,7 @@ class SettingsTextController extends AdminController
     protected $moduleKey = 'settings_text';
     protected $object_type = 'settings_text';
 
-/**
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -86,17 +87,15 @@ class SettingsTextController extends AdminController
         $lang = FHtml::currentLang();
         $model = SettingsText::findOne(['lang' => $lang]);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
         } else {
             if ($model->load($request->post())) {
                 $model->save();
                 return $this->redirect(['index']);
-
             } else {
                 return $this->render('update', ['model' => $model]);
             }
         }
     }
-
 }

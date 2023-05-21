@@ -11,9 +11,8 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "application".
  *
 
@@ -68,8 +67,8 @@ class ApplicationBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     const ADMIN_FORM_ALIGNMENT_HORIZONTAL = 'horizontal';
     const ADMIN_FORM_ALIGNMENT_INLINE = 'inline';
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'application';
 
     public static function tableName()
@@ -86,46 +85,46 @@ class ApplicationBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     }
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => FHtml::t('Application', 'ID'),
-                    'logo' => FHtml::t('Application', 'Logo'),
-                    'code' => FHtml::t('Application', 'Code'),
-                    'name' => FHtml::t('Application', 'Name'),
-                    'description' => FHtml::t('Application', 'Description'),
-                    'keywords' => FHtml::t('Application', 'Keywords'),
-                    'note' => FHtml::t('Application', 'Note'),
-                    'lang' => FHtml::t('Application', 'Lang'),
-                    'modules' => FHtml::t('Application', 'Modules'),
-                    'storage_max' => FHtml::t('Application', 'Storage Max'),
-                    'storage_current' => FHtml::t('Application', 'Storage Current'),
-                    'address' => FHtml::t('Application', 'Address'),
-                    'map' => FHtml::t('Application', 'Map'),
-                    'website' => FHtml::t('Application', 'Website'),
-                    'email' => FHtml::t('Application', 'Email'),
-                    'phone' => FHtml::t('Application', 'Phone'),
-                    'fax' => FHtml::t('Application', 'Fax'),
-                    'chat' => FHtml::t('Application', 'Chat'),
-                    'facebook' => FHtml::t('Application', 'Facebook'),
-                    'twitter' => FHtml::t('Application', 'Twitter'),
-                    'google' => FHtml::t('Application', 'Google'),
-                    'youtube' => FHtml::t('Application', 'Youtube'),
-                    'copyright' => FHtml::t('Application', 'Copyright'),
-                    'terms_of_service' => FHtml::t('Application', 'Terms Of Service'),
-                    'profile' => FHtml::t('Application', 'Profile'),
-                    'privacy_policy' => FHtml::t('Application', 'Privacy Policy'),
-                    'is_active' => FHtml::t('Application', 'Is Active'),
-                    'type' => FHtml::t('Application', 'Type'),
-                    'status' => FHtml::t('Application', 'Status'),
-                    'owner_id' => FHtml::t('Application', 'Owner ID'),
-                    'created_date' => FHtml::t('Application', 'Created Date'),
-                    'created_user' => FHtml::t('Application', 'Created User'),
-                    'modified_date' => FHtml::t('Application', 'Modified Date'),
-                    'modified_user' => FHtml::t('Application', 'Modified User'),
-                ];
+            'id' => FHtml::t('Application', 'ID'),
+            'logo' => FHtml::t('Application', 'Logo'),
+            'code' => FHtml::t('Application', 'Code'),
+            'name' => FHtml::t('Application', 'Name'),
+            'description' => FHtml::t('Application', 'Description'),
+            'keywords' => FHtml::t('Application', 'Keywords'),
+            'note' => FHtml::t('Application', 'Note'),
+            'lang' => FHtml::t('Application', 'Lang'),
+            'modules' => FHtml::t('Application', 'Modules'),
+            'storage_max' => FHtml::t('Application', 'Storage Max'),
+            'storage_current' => FHtml::t('Application', 'Storage Current'),
+            'address' => FHtml::t('Application', 'Address'),
+            'map' => FHtml::t('Application', 'Map'),
+            'website' => FHtml::t('Application', 'Website'),
+            'email' => FHtml::t('Application', 'Email'),
+            'phone' => FHtml::t('Application', 'Phone'),
+            'fax' => FHtml::t('Application', 'Fax'),
+            'chat' => FHtml::t('Application', 'Chat'),
+            'facebook' => FHtml::t('Application', 'Facebook'),
+            'twitter' => FHtml::t('Application', 'Twitter'),
+            'google' => FHtml::t('Application', 'Google'),
+            'youtube' => FHtml::t('Application', 'Youtube'),
+            'copyright' => FHtml::t('Application', 'Copyright'),
+            'terms_of_service' => FHtml::t('Application', 'Terms Of Service'),
+            'profile' => FHtml::t('Application', 'Profile'),
+            'privacy_policy' => FHtml::t('Application', 'Privacy Policy'),
+            'is_active' => FHtml::t('Application', 'Is Active'),
+            'type' => FHtml::t('Application', 'Type'),
+            'status' => FHtml::t('Application', 'Status'),
+            'owner_id' => FHtml::t('Application', 'Owner ID'),
+            'created_date' => FHtml::t('Application', 'Created Date'),
+            'created_user' => FHtml::t('Application', 'Created User'),
+            'modified_date' => FHtml::t('Application', 'Modified Date'),
+            'modified_user' => FHtml::t('Application', 'Modified User'),
+        ];
     }
 
     public static function tableSchema()
@@ -160,7 +159,4 @@ class ApplicationBase extends \common\models\BaseModel //\yii\db\ActiveRecord
             ],
         ];
     }
-
-
-
 }

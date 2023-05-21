@@ -8,9 +8,9 @@ use Yii;
 use yii\db\ActiveRecord;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the model class for table "settings_menu".
  *
  * @property integer $id
@@ -37,8 +37,8 @@ class AuthMenuBase extends \common\models\BaseModel
     const GROUP_BACKEND = BACKEND;
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'settings_menu';
 
     public static function tableName()
@@ -46,11 +46,13 @@ class AuthMenuBase extends \common\models\BaseModel
         return 'settings_menu';
     }
 
-    public function getRoute() {
+    public function getRoute()
+    {
         return $this->url;
     }
 
-    public function setRoute($value) {
+    public function setRoute($value)
+    {
         $this->url = $value;
     }
 }

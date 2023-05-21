@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the template for generating the model class of a specified table.
  */
@@ -17,8 +18,7 @@ use yii\helpers\ArrayHelper;
 /* @var $relations array list of relations (name => relation declaration) */
 
 $columnArray = [];
-foreach ($tableSchema->columns as $column)
-{
+foreach ($tableSchema->columns as $column) {
     $columnArray[] = $column->name;
 }
 
@@ -36,22 +36,21 @@ use yii\helpers\ArrayHelper;
 
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
- *
+*
+***
+* This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
+*
 
-<?php foreach ($tableSchema->columns as $column): ?>
- * @property <?= "{$column->phpType} \${$column->name}\n" ?>
+<?php foreach ($tableSchema->columns as $column) : ?>
+    * @property <?= "{$column->phpType} \${$column->name}\n" ?>
 <?php endforeach; ?>
-<?php if (!empty($relations)): ?>
- *
-<?php foreach ($relations as $name => $relation): ?>
- * @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
-<?php endforeach; ?>
+<?php if (!empty($relations)) : ?>
+    *
+    <?php foreach ($relations as $name => $relation) : ?>
+        * @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
+    <?php endforeach; ?>
 <?php endif; ?>
- */
+*/
 class <?= $className ?>Base extends \common\models\BaseModel //<?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
 <?php
@@ -68,97 +67,97 @@ foreach ($tableSchema->columns as $column) {
             $str = '';
             foreach ($a as $key => $value) {
                 if (is_numeric($value))
-                    echo "    const " . strtoupper($column->name) . "_" . str_replace(' ', '', str_replace('-', '_', strtoupper($key))) ." = $value;\n";
+                    echo "    const " . strtoupper($column->name) . "_" . str_replace(' ', '', str_replace('-', '_', strtoupper($key))) . " = $value;\n";
                 else
-                    echo "    const " . strtoupper($column->name) . "_" . str_replace(' ', '', str_replace('-', '_', strtoupper($key))) ." = '$value';\n";
+                    echo "    const " . strtoupper($column->name) . "_" . str_replace(' ', '', str_replace('-', '_', strtoupper($key))) . " = '$value';\n";
             }
         }
     }
 }
 ?>
 
+/**
+* @inheritdoc
+*/
+public $tableName = '<?= $generator->generateTableName($tableName) ?>';
+
+public static function tableName()
+{
+return '<?= $generator->generateTableName($tableName) ?>';
+}
+
+/**
+* @return \yii\db\Connection the database connection used by this AR class.
+*/
+public static function getDb()
+{
+return FHtml::currentDb();
+}
+
+/**
+* @inheritdoc
+*/
+public function rules()
+{
+return [
+<?= "\n            [['" . implode('\', \'', $columnArray)  . "'], 'filter', 'filter' => 'trim'],\n        " ?>
+<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>];
+}
+
+/**
+* @inheritdoc
+*/
+public function attributeLabels()
+{
+return [
+<?php foreach ($labels as $name => $label) : ?>
+    <?= "'$name' => " . $generator->generateString($label, null, $className) . ",\n" ?>
+<?php endforeach; ?>
+];
+}
+
+public static function tableSchema()
+{
+return FHtml::getTableSchema(self::tableName());
+}
+
+public static function Columns()
+{
+return self::tableSchema()->columns;
+}
+
+public static function ColumnsArray()
+{
+return ArrayHelper::getColumn(self::tableSchema()->columns, 'name');
+}
+
+public function init()
+{
+parent::init();
+$this->registerTranslations();
+}
+
+public function registerTranslations()
+{
+$i18n = Yii::$app->i18n;
+$i18n->translations['<?= $className ?>*'] = [
+'class' => 'common\components\FMessageSource',
+'basePath' => '@<?= str_replace('models', 'messages', str_replace('\\', '/', $generator->ns)) ?>',
+'fileMap' => [
+'<?= $className ?>' => '<?= $className ?>.php',
+],
+];
+}
+
+
+<?php foreach ($relations as $name => $relation) : ?>
+
     /**
-    * @inheritdoc
+    * @return \yii\db\ActiveQuery
     */
-    public $tableName = '<?= $generator->generateTableName($tableName) ?>';
-
-    public static function tableName()
-    {
-        return '<?= $generator->generateTableName($tableName) ?>';
-    }
-
-    /**
-     * @return \yii\db\Connection the database connection used by this AR class.
-     */
-    public static function getDb()
-    {
-        return FHtml::currentDb();
-    }
-
-    /**
-    * @inheritdoc
-    */
-    public function rules()
-    {
-        return [
-        <?= "\n            [['" . implode('\', \'', $columnArray)  . "'], 'filter', 'filter' => 'trim'],\n        " ?>
-        <?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>];
-    }
-
-    /**
-    * @inheritdoc
-    */
-    public function attributeLabels()
-    {
-        return [
-        <?php foreach ($labels as $name => $label): ?>
-            <?= "'$name' => " . $generator->generateString($label, null, $className) . ",\n" ?>
-        <?php endforeach; ?>
-        ];
-    }
-
-    public static function tableSchema()
-    {
-        return FHtml::getTableSchema(self::tableName());
-    }
-
-    public static function Columns()
-    {
-        return self::tableSchema()->columns;
-    }
-
-    public static function ColumnsArray()
-    {
-        return ArrayHelper::getColumn(self::tableSchema()->columns, 'name');
-    }
-
-    public function init()
-    {
-        parent::init();
-        $this->registerTranslations();
-    }
-
-    public function registerTranslations()
-    {
-        $i18n = Yii::$app->i18n;
-        $i18n->translations['<?= $className ?>*'] = [
-            'class' => 'common\components\FMessageSource',
-            'basePath' => '@<?= str_replace('models', 'messages', str_replace('\\', '/', $generator->ns)) ?>',
-            'fileMap' => [
-                '<?= $className ?>' => '<?= $className ?>.php',
-            ],
-        ];
-    }
-
-
-<?php foreach ($relations as $name => $relation): ?>
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function get<?= $name ?>()
     {
-        <?= $relation[0] . "\n" ?>
+    <?= $relation[0] . "\n" ?>
     }
 <?php endforeach; ?>
 

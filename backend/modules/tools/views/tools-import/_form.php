@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "ToolsImport".
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -88,7 +90,7 @@ $result = isset($result) ? $result : \common\components\FBackup::loadExcelConten
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
                             <?= FHtml::t('common', $moduleTitle) ?>
-                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?>                        </span>
+                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -110,26 +112,26 @@ $result = isset($result) ? $result : \common\components\FBackup::loadExcelConten
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
                                         <?php echo FFormTable::widget(['model' => $model, 'title' => FHtml::t('common', 'Excel'), 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'file' => ['value' => $form->fieldNoLabel($model, 'file')->file(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'sheet_name' => ['value' => $form->fieldNoLabel($model, 'sheet_name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'first_row' => ['value' => $form->fieldNoLabel($model, 'first_row')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'last_row' => ['value' => $form->fieldNoLabel($model, 'last_row')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'override_type' => ['value' => $form->fieldNoLabel($model, 'override_type')->selectInput(FHtml::getComboArray('tools_import', 'tools_import', 'override_type', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'file' => ['value' => $form->fieldNoLabel($model, 'file')->file()],
+                                            'sheet_name' => ['value' => $form->fieldNoLabel($model, 'sheet_name')->textInput()],
+                                            'first_row' => ['value' => $form->fieldNoLabel($model, 'first_row')->numeric()],
+                                            'last_row' => ['value' => $form->fieldNoLabel($model, 'last_row')->numeric()],
+                                            'override_type' => ['value' => $form->fieldNoLabel($model, 'override_type')->selectInput(FHtml::getComboArray('tools_import', 'tools_import', 'override_type', true, 'id', 'name'))],
 
                                         ]]); ?>
                                         <?php echo FFormTable::widget(['model' => $model, 'title' => FHtml::t('common', 'Database'), 'form' => $form, 'columns' => 1, 'attributes' => [
-                                             'object_type' => ['label' => 'Table', 'value' => $form->fieldNoLabel($model, 'object_type')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'key_columns' => ['value' => $form->fieldNoLabel($model, 'key_columns')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'columns' => ['value' => $form->fieldNoLabel($model, 'columns')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'default_values' => ['value' => $form->fieldNoLabel($model, 'default_values')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'object_type' => ['label' => 'Table', 'value' => $form->fieldNoLabel($model, 'object_type')->textInput()],
+                                            'key_columns' => ['value' => $form->fieldNoLabel($model, 'key_columns')->textInput()],
+                                            'columns' => ['value' => $form->fieldNoLabel($model, 'columns')->textarea(['rows' => 3])],
+                                            'default_values' => ['value' => $form->fieldNoLabel($model, 'default_values')->textarea(['rows' => 3])],
                                         ]]); ?>
 
                                     </div>
                                 </div>
                                 <div class="tab-pane row" id="tab_1_2">
                                     <div class="col-md-12">
-                                        Results: <?= count($result) ?> <br/>
+                                        Results: <?= count($result) ?> <br />
                                         <?= FHtml::showArrayAsTable($result) ?>
                                     </div>
                                 </div>

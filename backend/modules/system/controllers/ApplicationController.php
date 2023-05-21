@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "Application".
  */
+
 namespace backend\modules\system\controllers;
 
 use Yii;
@@ -102,7 +104,7 @@ class ApplicationController extends AdminController
             return $this->redirect("application/update?id=$model->id");
         }
 
-        $arr = array_merge(Yii::$app->request->queryParams, ['application_id' => $application_ids ]);
+        $arr = array_merge(Yii::$app->request->queryParams, ['application_id' => $application_ids]);
         $dataProvider = $searchModel->search($arr);
 
         //Save model if has Create new form in Index view
@@ -147,17 +149,17 @@ class ApplicationController extends AdminController
         $model = $this->findModel($id);
         $type = FHtml::getFieldValue($model, 'type');
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                'title'=> FHtml::t($this->moduleName)." #".$id,
-                'content'=>$this->renderPartial('view', [
+                'title' => FHtml::t($this->moduleName) . " #" . $id,
+                'content' => $this->renderPartial('view', [
                     'model' => $model
                 ]),
-                'footer'=>Html::a(FHtml::t('Update'),['update','id'=>$id],['class'=>'btn btn-primary pull-left','role'=>$this->view->params['displayType']]).
-                    Html::button(FHtml::t('Close'),['class'=>'btn btn-default','data-dismiss'=>"modal"])
+                'footer' => Html::a(FHtml::t('Update'), ['update', 'id' => $id], ['class' => 'btn btn-primary pull-left', 'role' => $this->view->params['displayType']]) .
+                    Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
             ];
-        }else{
+        } else {
             return $this->render('view', ['model' => $model]);
         }
     }
@@ -174,9 +176,9 @@ class ApplicationController extends AdminController
 
         $model = $this->createModel($this->object_type);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
-        }else{
+        } else {
             if ($model->load($request->post())) {
                 $model->id = null;
 
@@ -212,14 +214,14 @@ class ApplicationController extends AdminController
 
         $model = $this->findModel($id);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
         } else {
             if ($model->load($request->post())) {
                 if ($model->save()) {
                     if ($this->saveType() == 'clone') {
                         return $this->redirect(['create', 'id' => $model->id]);
-                    }  else if ($this->saveType() == 'add') {
+                    } else if ($this->saveType() == 'add') {
                         return $this->redirect(['create']);
                     } else if ($this->saveType() == 'save') {
                         return $this->redirect(['update', 'id' => $model->id]);
@@ -247,10 +249,10 @@ class ApplicationController extends AdminController
 
         $this->findModel($id)->delete();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#' . $this->getPjaxContainerId()];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
+        } else {
             return $this->redirect(['index']);
         }
     }
@@ -274,10 +276,10 @@ class ApplicationController extends AdminController
             }
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
-        }else{
+        } else {
             return $this->redirect(['index']);
         }
     }
@@ -297,7 +299,7 @@ class ApplicationController extends AdminController
             }
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose' => true, 'forceReload' => '#' . $this->getPjaxContainerId()];
         } else {
@@ -320,7 +322,8 @@ class ApplicationController extends AdminController
         return $model;
     }
 
-    protected function createModel($className = '', $id = '', $params = null) {
+    protected function createModel($className = '', $id = '', $params = null)
+    {
         $model = parent::createModel($className, $id, $params);
         return $model;
     }

@@ -110,4 +110,13 @@ class SmartscreenContentBase extends \common\models\BaseModel //\yii\db\ActiveRe
         ];
     }
 
+    public function getOnwerIdField()
+    {
+        return 'owner_id';
+    }
+
+    public function getIsActiveField()
+    {
+        return 'is_active';
+    }
 }

@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "Application".
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\form\ActiveForm;
@@ -87,7 +89,7 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                         <i class="icon-globe theme-font hide"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">
                             <?= FHtml::t('common', $moduleTitle) ?>
-                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?>                        </span>
+                            : <?= FHtml::showObjectConfigLink($model, FHtml::FIELDS_NAME) ?> </span>
                     </div>
                     <div class="tools pull-right">
                         <a href="#" class="fullscreen"></a>
@@ -117,16 +119,16 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            'code' => ['value' => $form->fieldNoLabel($model, 'code')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'keywords' => ['value' => $form->fieldNoLabel($model, 'keywords')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'note' => ['value' => $form->fieldNoLabel($model, 'note')->html(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'modules' => ['value' => $form->fieldNoLabel($model, 'modules')->selectMany(FHtml::getComboArray('application', 'application', 'modules', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'storage_max' => ['value' => $form->fieldNoLabel($model, 'storage_max')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'storage_current' => ['value' => $form->fieldNoLabel($model, 'storage_current')->numeric(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'copyright' => ['value' => $form->fieldNoLabel($model, 'copyright')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'owner_id' => ['value' => $form->fieldNoLabel($model, 'owner_id')->select(FHtml::getComboArray('@user,id,username', 'user,id,username', 'owner_id', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'code' => ['value' => $form->fieldNoLabel($model, 'code')->textInput()],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'description' => ['value' => $form->fieldNoLabel($model, 'description')->textarea(['rows' => 3])],
+                                            'keywords' => ['value' => $form->fieldNoLabel($model, 'keywords')->textarea(['rows' => 3])],
+                                            'note' => ['value' => $form->fieldNoLabel($model, 'note')->html()],
+                                            'modules' => ['value' => $form->fieldNoLabel($model, 'modules')->selectMany(FHtml::getComboArray('application', 'application', 'modules', true, 'id', 'name'))],
+                                            'storage_max' => ['value' => $form->fieldNoLabel($model, 'storage_max')->numeric()],
+                                            'storage_current' => ['value' => $form->fieldNoLabel($model, 'storage_current')->numeric()],
+                                            'copyright' => ['value' => $form->fieldNoLabel($model, 'copyright')->textInput()],
+                                            'owner_id' => ['value' => $form->fieldNoLabel($model, 'owner_id')->select(FHtml::getComboArray('@user,id,username', 'user,id,username', 'owner_id', true, 'id', 'name'))],
 
 
                                         ]]); ?>
@@ -134,11 +136,11 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
 
                                         <?php echo FFormTable::widget(['model' => $model, 'title' => FHtml::t('common', 'Group'), 'form' => $form, 'columns' => 2, 'attributes' => [
 
-                                            'lang' => ['value' => $form->fieldNoLabel($model, 'lang')->select(FHtml::getComboArray('application', 'application', 'lang', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'type' => ['value' => $form->fieldNoLabel($model, 'type')->select(FHtml::getComboArray('application', 'application', 'type', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('application', 'application', 'status', true, 'id', 'name')), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'lang' => ['value' => $form->fieldNoLabel($model, 'lang')->select(FHtml::getComboArray('application', 'application', 'lang', true, 'id', 'name'))],
+                                            'type' => ['value' => $form->fieldNoLabel($model, 'type')->select(FHtml::getComboArray('application', 'application', 'type', true, 'id', 'name'))],
+                                            'status' => ['value' => $form->fieldNoLabel($model, 'status')->select(FHtml::getComboArray('application', 'application', 'status', true, 'id', 'name'))],
 
-                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'is_active' => ['value' => $form->fieldNoLabel($model, 'is_active')->checkbox()],
 
                                         ]]); ?>
 
@@ -149,23 +151,23 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
 
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
 
-                                            'address' => ['value' => $form->fieldNoLabel($model, 'address')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'map' => ['value' => $form->fieldNoLabel($model, 'map')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'website' => ['value' => $form->fieldNoLabel($model, 'website')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'email' => ['value' => $form->fieldNoLabel($model, 'email')->emailInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'phone' => ['value' => $form->fieldNoLabel($model, 'phone')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'fax' => ['value' => $form->fieldNoLabel($model, 'fax')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'chat' => ['value' => $form->fieldNoLabel($model, 'chat')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'address' => ['value' => $form->fieldNoLabel($model, 'address')->textInput()],
+                                            'map' => ['value' => $form->fieldNoLabel($model, 'map')->textInput()],
+                                            'website' => ['value' => $form->fieldNoLabel($model, 'website')->textInput()],
+                                            'email' => ['value' => $form->fieldNoLabel($model, 'email')->emailInput()],
+                                            'phone' => ['value' => $form->fieldNoLabel($model, 'phone')->textInput()],
+                                            'fax' => ['value' => $form->fieldNoLabel($model, 'fax')->textInput()],
+                                            'chat' => ['value' => $form->fieldNoLabel($model, 'chat')->textInput()],
 
 
                                         ]]); ?>
 
                                         <?php echo FFormTable::widget(['model' => $model, 'title' => FHtml::t('common', 'social'), 'form' => $form, 'columns' => 2, 'attributes' => [
 
-                                            'facebook' => ['value' => $form->fieldNoLabel($model, 'facebook')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'twitter' => ['value' => $form->fieldNoLabel($model, 'twitter')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'google' => ['value' => $form->fieldNoLabel($model, 'google')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'youtube' => ['value' => $form->fieldNoLabel($model, 'youtube')->textInput(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'facebook' => ['value' => $form->fieldNoLabel($model, 'facebook')->textInput()],
+                                            'twitter' => ['value' => $form->fieldNoLabel($model, 'twitter')->textInput()],
+                                            'google' => ['value' => $form->fieldNoLabel($model, 'google')->textInput()],
+                                            'youtube' => ['value' => $form->fieldNoLabel($model, 'youtube')->textInput()],
 
 
                                         ]]); ?>
@@ -178,10 +180,10 @@ $ajax = isset($ajax) ? $ajax : (FHtml::isListAction($currentAction) ? false : tr
                                     <div class="col-md-12">
                                         <?php echo FFormTable::widget(['model' => $model, 'title' => '', 'form' => $form, 'columns' => 1, 'attributes' => [
 
-                                            'logo' => ['value' => $form->fieldNoLabel($model, 'logo')->image(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'terms_of_service' => ['value' => $form->fieldNoLabel($model, 'terms_of_service')->file(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'profile' => ['value' => $form->fieldNoLabel($model, 'profile')->file(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
-                                            'privacy_policy' => ['value' => $form->fieldNoLabel($model, 'privacy_policy')->file(), 'columnOptions' => ['colspan' => 1], 'type' => FHtml::INPUT_RAW],
+                                            'logo' => ['value' => $form->fieldNoLabel($model, 'logo')->image()],
+                                            'terms_of_service' => ['value' => $form->fieldNoLabel($model, 'terms_of_service')->file()],
+                                            'profile' => ['value' => $form->fieldNoLabel($model, 'profile')->file()],
+                                            'privacy_policy' => ['value' => $form->fieldNoLabel($model, 'privacy_policy')->file()],
 
                                         ]]); ?>
 

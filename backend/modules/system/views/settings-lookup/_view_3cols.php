@@ -1,10 +1,10 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "SettingsLookup".
-*/
+ *
+ ***
+ * This is the customized model class for table "SettingsLookup".
+ */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -36,28 +36,28 @@ $form_label_CSS = 'text-default';
 ?>
 
 <?php if (!Yii::$app->request->isAjax) {
-$this->title = FHtml::t($moduleTitle);
-$this->params['mainIcon'] = 'fa fa-list';
-$this->params['toolBarActions'] = array(
-'linkButton'=>array(),
-'button'=>array(),
-'dropdown'=>array(),
-);
+    $this->title = FHtml::t($moduleTitle);
+    $this->params['mainIcon'] = 'fa fa-list';
+    $this->params['toolBarActions'] = array(
+        'linkButton' => array(),
+        'button' => array(),
+        'dropdown' => array(),
+    );
 } ?>
 
 
 <?php $form = ActiveForm::begin([
-'id' => 'settings-lookup-form',
-'type' => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
-'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
-'staticOnly' => false, // check the Role here
-'readonly' => !$canEdit, // check the Role here
-'options' => [
-//'class' => 'form-horizontal',
-'enctype' => 'multipart/form-data'
-]
+    'id' => 'settings-lookup-form',
+    'type' => $form_Type, //ActiveForm::TYPE_HORIZONTAL,ActiveForm::TYPE_VERTICAL,ActiveForm::TYPE_INLINE
+    'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_MEDIUM, 'showErrors' => true],
+    'staticOnly' => false, // check the Role here
+    'readonly' => !$canEdit, // check the Role here
+    'options' => [
+        //'class' => 'form-horizontal',
+        'enctype' => 'multipart/form-data'
+    ]
 ]);
- ?>
+?>
 
 
 <div class="form">
@@ -65,13 +65,13 @@ $this->params['toolBarActions'] = array(
         <?= $this->render(\Globals::VIEWS_PRINT_HEADER, ['title' => '',]) ?>
         <div class="profile-sidebar col-md-3 hidden-print">
             <div class="portlet light">
-                                                                <div class="margin-top-20">
+                <div class="margin-top-20">
                     <h4><b><?= $model->name  ?></b></h4>
-                                                        </div>
+                </div>
                 <div class="margin-top-20">
-                                    </div>
+                </div>
                 <div class="margin-top-20">
-                                    </div>
+                </div>
 
                 <!--
                 <div class="profile-usermenu">
@@ -86,19 +86,19 @@ $this->params['toolBarActions'] = array(
             <!-- END MENU -->
             <div class="portlet light">
                 <div class="row list-separated profile-stat">
-                    </div>
+                </div>
                 <div>
                     <div class="row list-separated profile-stat">
                         <div class="col-md-6">
-                            <?= FHtml::showField('Created', FHtml::getFieldValue($model, 'created_date'), FHtml::SHOW_DATE) ?>                            </div>
+                            <?= FHtml::showField('Created', FHtml::getFieldValue($model, 'created_date'), FHtml::SHOW_DATE) ?> </div>
                         <div class="col-md-6">
-                            <?= FHtml::showField(' ', $model->created_user, FHtml::SHOW_USER) ?>                            </div>
+                            <?= FHtml::showField(' ', $model->created_user, FHtml::SHOW_USER) ?> </div>
                     </div>
                     <div class="row list-separated profile-stat">
                         <div class="col-md-6">
-                                                        </div>
+                        </div>
                         <div class="col-md-6">
-                                                        </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,9 +116,9 @@ $this->params['toolBarActions'] = array(
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info')?></a>
+                            <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
                         </li>
-                                                </ul>
+                    </ul>
                 </div>
                 <div class="body">
                     <div class="form">
@@ -126,17 +126,17 @@ $this->params['toolBarActions'] = array(
                             <div class="tab-content">
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
-                                        <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?>                                               <?= FHtml::showModelField($model,'name', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'name', 'varchar(255)', '', '') ?>
+                                        <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?> <?= FHtml::showModelField($model, 'name', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'name', 'varchar(255)', '', '') ?>
 
-       <?= FHtml::showModelField($model,'params', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'params', 'varchar(2000)', '', '') ?>
+                                        <?= FHtml::showModelField($model, 'params', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'params', 'varchar(2000)', '', '') ?>
 
-       <?= FHtml::showModelField($model,'fields', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'fields', 'varchar(2000)', '', '') ?>
+                                        <?= FHtml::showModelField($model, 'fields', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'fields', 'varchar(2000)', '', '') ?>
 
-       <?= FHtml::showModelField($model,'orderby', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'orderby', 'varchar(255)', '', '') ?>
+                                        <?= FHtml::showModelField($model, 'orderby', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'orderby', 'varchar(255)', '', '') ?>
 
-       <?= FHtml::showModelField($model,'limit', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'limit', 'varchar(255)', '', '') ?>
+                                        <?= FHtml::showModelField($model, 'limit', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'limit', 'varchar(255)', '', '') ?>
 
-       <?= FHtml::showModelField($model,'sql', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'sql', 'varchar(2000)', '', '') ?>
+                                        <?= FHtml::showModelField($model, 'sql', FHtml::SHOW_TEXT, $field_layout, $form_label_CSS, 'settings_lookup', 'sql', 'varchar(2000)', '', '') ?>
 
                                         <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?>
                                     </div>
@@ -146,47 +146,48 @@ $this->params['toolBarActions'] = array(
                                         <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?>                                                                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?>
                                     </div>
                                 </div>
-                                -->                                <!--<div class="tab-pane row" id="tab_1_3">
+                                --> <!--<div class="tab-pane row" id="tab_1_3">
                                     <div class="col-md-12">
                                         <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?>                                                                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?>
                                     </div>
                                 </div>
-                                -->                            </div>
+                                -->
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </div>
 
-                        <div class="portlet light">
+            <div class="portlet light">
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
-                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', 'Grouping')?></span>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', 'Grouping') ?></span>
                     </div>
                 </div>
                 <div class="">
                     <div class="tab-content">
                         <div class="tab-pane active row" id="tab_1_1">
                             <div class="col-md-12">
-                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?>                                       <?= FHtml::showModelField($model,'object_type', FHtml::SHOW_LABEL, $field_layout, $form_label_CSS, 'settings_lookup', 'object_type', 'varchar(100)', '', '') ?>
+                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '<table class="table table-bordered">' : '' ?> <?= FHtml::showModelField($model, 'object_type', FHtml::SHOW_LABEL, $field_layout, $form_label_CSS, 'settings_lookup', 'object_type', 'varchar(100)', '', '') ?>
 
-       <?= FHtml::showModelField($model,'is_cached', FHtml::SHOW_ACTIVE, $field_layout, $form_label_CSS, 'settings_lookup', 'is_cached', 'tinyint(1)', '', '') ?>
+                                <?= FHtml::showModelField($model, 'is_cached', FHtml::SHOW_ACTIVE, $field_layout, $form_label_CSS, 'settings_lookup', 'is_cached', 'tinyint(1)', '', '') ?>
 
-       <?= FHtml::showModelField($model,'is_active', FHtml::SHOW_ACTIVE, $field_layout, $form_label_CSS, 'settings_lookup', 'is_active', 'tinyint(4)', '', '') ?>
+                                <?= FHtml::showModelField($model, 'is_active', FHtml::SHOW_ACTIVE, $field_layout, $form_label_CSS, 'settings_lookup', 'is_active', 'tinyint(4)', '', '') ?>
 
-                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?>                            </div>
+                                <?= ($field_layout == FHtml::LAYOUT_TABLE) ? '</table>' : '' ?> </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!--
             <div class="portlet light">
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
-                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', 'Pricing')?></span>
+                        <span class="caption-subject font-blue-madison bold uppercase"><?= FHtml::t('common', 'Pricing') ?></span>
                     </div>
                 </div>
                 <div class="">
@@ -202,34 +203,34 @@ $this->params['toolBarActions'] = array(
             </div>
 
             -->
-            
+
 
             <?php if (Yii::$app->request->isAjax) { ?>
 
-            <input type="hidden" id="saveType" name="saveType">
+                <input type="hidden" id="saveType" name="saveType">
 
             <?php } else { ?>
-            <p class="hidden-print">
-                <a class="btn blue hidden-print " onclick="javascript:window.print();"> Print
-                    <i class="fa fa-print"></i>
-                </a>
-                <?php if ($canEdit) { echo Html::a('<i class="fa fa-pencil"></i> ' .  FHtml::t('common', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-warning']); } ?>
-                <?php if ($canDelete) { echo Html::a('<i class="fa fa-trash"></i> ' .  FHtml::t('common', 'Delete'), ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger pull-right',
-                'data' => [
-                'confirm' => FHtml::t('common', 'Are you sure to delete?'),
-                'method' => 'post',
-                ],
-                ]);} ?>
-                <?=  Html::a('<i class="fa fa-undo"></i> ' . FHtml::t('common', 'Cancel'), ['index'], ['class' => 'btn btn-default']) ?>
+                <p class="hidden-print">
+                    <a class="btn blue hidden-print " onclick="javascript:window.print();"> Print
+                        <i class="fa fa-print"></i>
+                    </a>
+                    <?php if ($canEdit) {
+                        echo Html::a('<i class="fa fa-pencil"></i> ' .  FHtml::t('common', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-warning']);
+                    } ?>
+                    <?php if ($canDelete) {
+                        echo Html::a('<i class="fa fa-trash"></i> ' .  FHtml::t('common', 'Delete'), ['delete', 'id' => $model->id], [
+                            'class' => 'btn btn-danger pull-right',
+                            'data' => [
+                                'confirm' => FHtml::t('common', 'Are you sure to delete?'),
+                                'method' => 'post',
+                            ],
+                        ]);
+                    } ?>
+                    <?= Html::a('<i class="fa fa-undo"></i> ' . FHtml::t('common', 'Cancel'), ['index'], ['class' => 'btn btn-default']) ?>
 
-            </p>
+                </p>
             <?php } ?>
         </div>
     </div>
 </div>
-   <?php ActiveForm::end(); ?>
-
-
-
-
+<?php ActiveForm::end(); ?>

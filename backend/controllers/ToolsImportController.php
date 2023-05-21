@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
-* This is the customized model class for table "ToolsImport".
-*/
+ *
+ ***
+ * This is the customized model class for table "ToolsImport".
+ */
+
 namespace backend\controllers;
 
 use backend\modules\system\System;
@@ -36,7 +37,7 @@ class ToolsImportController extends AdminController
     protected $moduleKey = 'tools_import';
     protected $object_type = 'tools_import';
 
-/**
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -60,9 +61,7 @@ class ToolsImportController extends AdminController
                     [
                         'actions' => ['view', 'index'],
                         'allow' => true,
-                        'roles' => [
-
-                        ],
+                        'roles' => [],
                     ],
                     [
                         'actions' => ['update', 'create', 'delete'],
@@ -82,32 +81,32 @@ class ToolsImportController extends AdminController
      * @return mixed
      */
     public function actionIndex()
-    {    
-       $searchModel = new ToolsImport();
-       $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    {
+        $searchModel = new ToolsImport();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-       //Save model if has Create new form in Index view
-       FHtml::saveModel($this->object_type);
+        //Save model if has Create new form in Index view
+        FHtml::saveModel($this->object_type);
 
-       if (Yii::$app->request->post('hasEditable')) {
-           $Id = Yii::$app->request->post('editableKey');
+        if (Yii::$app->request->post('hasEditable')) {
+            $Id = Yii::$app->request->post('editableKey');
 
-           $model = ToolsImport::findOne($Id);
+            $model = ToolsImport::findOne($Id);
 
-           $out = Json::encode(['output' => '', 'message' => '']);
+            $out = Json::encode(['output' => '', 'message' => '']);
 
-           $post = [];
-           $posted = current($_POST['ToolsImport']);
-           $post['ToolsImport'] = $posted;
+            $post = [];
+            $posted = current($_POST['ToolsImport']);
+            $post['ToolsImport'] = $posted;
 
-           if ($model->load($post)) {
-               $model->save();
-               $output = '';
-               $out = Json::encode(['output' => $output, 'message' => '']);
-           }
-           echo $out;
-           return;
-       }
+            if ($model->load($post)) {
+                $model->save();
+                $output = '';
+                $out = Json::encode(['output' => $output, 'message' => '']);
+            }
+            echo $out;
+            return;
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -122,7 +121,7 @@ class ToolsImportController extends AdminController
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $request = Yii::$app->request;
 
         $model = $this->findModel($id);
@@ -131,13 +130,13 @@ class ToolsImportController extends AdminController
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> FHtml::t($this->moduleName)." #".$id,
-                    'content'=>$this->renderPartial('view', [
-                        'model' => $model
-                    ]),
-                    'footer'=>Html::a(FHtml::t('Update'),['update','id'=>$id],['class'=>'btn btn-primary pull-left','role'=>$this->view->params['displayType']]).
-                              Html::button(FHtml::t('Close'),['class'=>'btn btn-default','data-dismiss'=>"modal"])
-                ];
+                'title' => FHtml::t($this->moduleName) . " #" . $id,
+                'content' => $this->renderPartial('view', [
+                    'model' => $model
+                ]),
+                'footer' => Html::a(FHtml::t('Update'), ['update', 'id' => $id], ['class' => 'btn btn-primary pull-left', 'role' => $this->view->params['displayType']]) .
+                    Html::button(FHtml::t('Close'), ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
+            ];
         } else {
             return $this->render('view', ['model' => $model]);
         }
@@ -155,9 +154,9 @@ class ToolsImportController extends AdminController
 
         $model = $this->createModel($this->object_type);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
-        }else{
+        } else {
             if (!empty($_POST) && $model->load($request->post())) {
                 $model->id = null;
 
@@ -197,14 +196,14 @@ class ToolsImportController extends AdminController
         $model = $this->findModel($id);
 
         $result = [];
-        if($request->isAjax) {
+        if ($request->isAjax) {
             return FHtml::saveModelAjax($this, $model, null);
         } else {
             if (!empty($_POST) && $model->load($request->post())) {
                 if ($model->save()) {
                     if ($this->saveType() == 'clone') {
                         return $this->redirect(['create', 'id' => $model->id]);
-                    }  else if ($this->saveType() == 'add') {
+                    } else if ($this->saveType() == 'add') {
                         return $this->redirect(['create']);
                     } else if ($this->saveType() == 'save') {
                         $result = System::import($model);
@@ -221,76 +220,76 @@ class ToolsImportController extends AdminController
         }
     }
 
-//    /**
-//     * Delete an existing ToolsImport model.
-//     * For ajax request will return json object
-//     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-//     * @param string $id
-//     * @return mixed
-//     */
-//    public function actionDelete($id)
-//    {
-//        $request = Yii::$app->request;
-//
-//        $this->findModel($id)->delete();
-//
-//        if($request->isAjax){
-//            Yii::$app->response->format = Response::FORMAT_JSON;
-//            return ['forceClose'=>true,'forceReload'=>'#crud-datatableToolsImport-pjax'];
-//        }else{
-//            return $this->redirect(['index']);
-//        }
-//    }
+    //    /**
+    //     * Delete an existing ToolsImport model.
+    //     * For ajax request will return json object
+    //     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
+    //     * @param string $id
+    //     * @return mixed
+    //     */
+    //    public function actionDelete($id)
+    //    {
+    //        $request = Yii::$app->request;
+    //
+    //        $this->findModel($id)->delete();
+    //
+    //        if($request->isAjax){
+    //            Yii::$app->response->format = Response::FORMAT_JSON;
+    //            return ['forceClose'=>true,'forceReload'=>'#crud-datatableToolsImport-pjax'];
+    //        }else{
+    //            return $this->redirect(['index']);
+    //        }
+    //    }
 
-//     /**
-//     * Delete multiple existing ToolsImport model.
-//     * For ajax request will return json object
-//     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-//     * @param string $id
-//     * @return mixed
-//     */
-//    public function actionBulkDelete()
-//    {
-//        $request = Yii::$app->request;
-//
-//        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
-//        foreach ($pks as $pk) {
-//            $model = FHtml::findOne($this->object_type, $pk);
-//            if (isset($model)) {
-//                $model->delete();
-//            }
-//        }
-//
-//        if($request->isAjax){
-//            Yii::$app->response->format = Response::FORMAT_JSON;
-//            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-//        }else{
-//            return $this->redirect(['index']);
-//        }
-//    }
+    //     /**
+    //     * Delete multiple existing ToolsImport model.
+    //     * For ajax request will return json object
+    //     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
+    //     * @param string $id
+    //     * @return mixed
+    //     */
+    //    public function actionBulkDelete()
+    //    {
+    //        $request = Yii::$app->request;
+    //
+    //        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
+    //        foreach ($pks as $pk) {
+    //            $model = FHtml::findOne($this->object_type, $pk);
+    //            if (isset($model)) {
+    //                $model->delete();
+    //            }
+    //        }
+    //
+    //        if($request->isAjax){
+    //            Yii::$app->response->format = Response::FORMAT_JSON;
+    //            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+    //        }else{
+    //            return $this->redirect(['index']);
+    //        }
+    //    }
 
-//    public function actionBulkAction($action = '', $field = '', $value = '')
-//    {
-//        $request = Yii::$app->request;
-//
-//        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
-//        foreach ($pks as $pk) {
-//            $model = FHtml::findOne($this->object_type, $pk);
-//            if (isset($model)) {
-//                if ($action == 'change') {
-//                    FHtml::setFieldValue($model, $field, $value);
-//                    $model->save();
-//                }
-//            }
-//        }
-//
-//        if($request->isAjax){
-//            Yii::$app->response->format = Response::FORMAT_JSON;
-//            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-//        } else {
-//            return $this->redirect(['index']);
-//        }
-//    }
+    //    public function actionBulkAction($action = '', $field = '', $value = '')
+    //    {
+    //        $request = Yii::$app->request;
+    //
+    //        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
+    //        foreach ($pks as $pk) {
+    //            $model = FHtml::findOne($this->object_type, $pk);
+    //            if (isset($model)) {
+    //                if ($action == 'change') {
+    //                    FHtml::setFieldValue($model, $field, $value);
+    //                    $model->save();
+    //                }
+    //            }
+    //        }
+    //
+    //        if($request->isAjax){
+    //            Yii::$app->response->format = Response::FORMAT_JSON;
+    //            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+    //        } else {
+    //            return $this->redirect(['index']);
+    //        }
+    //    }
 
     /**
      * Finds the ToolsImport model based on its primary key value.
@@ -305,7 +304,8 @@ class ToolsImportController extends AdminController
         return $model;
     }
 
-    protected function createModel($className = '', $id = '', $params = null) {
+    protected function createModel($className = '', $id = '', $params = null)
+    {
         $model = parent::createModel($className, $id, $params);
         return $model;
     }

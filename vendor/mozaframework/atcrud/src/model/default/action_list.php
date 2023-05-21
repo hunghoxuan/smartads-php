@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the template for generating the model class of a specified table.
  */
@@ -17,8 +18,7 @@ use yii\helpers\ArrayHelper;
 /* @var $relations array list of relations (name => relation declaration) */
 
 $columnArray = [];
-foreach ($tableSchema->columns as $column)
-{
+foreach ($tableSchema->columns as $column) {
     $columnArray[] = $column->name;
 }
 
@@ -37,32 +37,32 @@ use <?= $generator->ns ?>\<?= $className ?>API;
 use common\actions\BaseApiAction;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
- */
+
+
+
+* This is the customized model class for table "<?= $generator->generateTableName($tableName) ?>".
+*/
 class <?= $className ?>Action extends BaseApiAction
 {
-    public $is_secured = false;
-    public function run()
-    {
-        if (($re = $this->isAuthorized()) !== true)
-            return $re;
+public $is_secured = false;
+public function run()
+{
+if (($re = $this->isAuthorized()) !== true)
+return $re;
 
-        if (!empty($this->objectid)) {
+if (!empty($this->objectid)) {
 
-            $object = <?= $className ?>API::findOne($this->objectid);
+$object = <?= $className ?>API::findOne($this->objectid);
 
-            $out = FHtml::getOutputForAPI($object, $this->objectname, '', 'data', 1);
-            $out['code'] = $this->objectid;
-            return $out;
-        } else {
+$out = FHtml::getOutputForAPI($object, $this->objectname, '', 'data', 1);
+$out['code'] = $this->objectid;
+return $out;
+} else {
 
-            $list = <?= $className ?>API::getDataProvider(Fhtml::mergeRequestParams(['name' => '%'.$this->keyword], $this->paramsArray), $this->orderby, $this->limit, $this->page, false);
-            $out = FHtml::getOutputForAPI($list->getModels(), $this->listname, '', 'data', $list->pagination->pageCount);
-            $out['code'] = $this->params;
-            return $out;
-        }
-    }
+$list = <?= $className ?>API::getDataProvider(Fhtml::mergeRequestParams(['name' => '%'.$this->keyword], $this->paramsArray), $this->orderby, $this->limit, $this->page, false);
+$out = FHtml::getOutputForAPI($list->getModels(), $this->listname, '', 'data', $list->pagination->pageCount);
+$out['code'] = $this->params;
+return $out;
+}
+}
 }

@@ -10,26 +10,27 @@ use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+
+
+
  * This is the customized model class for table "user_feedback".
  */
 class UserFeedback extends UserFeedbackBase //\yii\db\ActiveRecord
 {
-    const LOOKUP = [        'type' => [
-		['id' => UserFeedback::TYPE_QUESTION, 'name' => 'Question'],
- 	['id' => UserFeedback::TYPE_FEEDBACK, 'name' => 'Feedback'],
- 	['id' => UserFeedback::TYPE_REPORT, 'name' => 'Report'],
- ],
+    const LOOKUP = [
+        'type' => [
+            ['id' => UserFeedback::TYPE_QUESTION, 'name' => 'Question'],
+            ['id' => UserFeedback::TYPE_FEEDBACK, 'name' => 'Feedback'],
+            ['id' => UserFeedback::TYPE_REPORT, 'name' => 'Report'],
+        ],
         'status' => [
-		['id' => UserFeedback::STATUS_NEW, 'name' => 'New'],
- 	['id' => UserFeedback::STATUS_RECEIVED, 'name' => 'Received'],
- 	['id' => UserFeedback::STATUS_PROCESSING, 'name' => 'Processing'],
- 	['id' => UserFeedback::STATUS_PENDING, 'name' => 'Pending'],
- 	['id' => UserFeedback::STATUS_CLOSED, 'name' => 'Closed'],
- ],
-];
+            ['id' => UserFeedback::STATUS_NEW, 'name' => 'New'],
+            ['id' => UserFeedback::STATUS_RECEIVED, 'name' => 'Received'],
+            ['id' => UserFeedback::STATUS_PROCESSING, 'name' => 'Processing'],
+            ['id' => UserFeedback::STATUS_PENDING, 'name' => 'Pending'],
+            ['id' => UserFeedback::STATUS_CLOSED, 'name' => 'Closed'],
+        ],
+    ];
 
     const COLUMNS_UPLOAD = [];
 
@@ -38,7 +39,8 @@ class UserFeedback extends UserFeedbackBase //\yii\db\ActiveRecord
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
 
-    public static function getLookupArray($column) {
+    public static function getLookupArray($column)
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
@@ -58,29 +60,34 @@ class UserFeedback extends UserFeedbackBase //\yii\db\ActiveRecord
 
     // Lookup Object: user\n
     public $user;
-    public function getUser() {
+    public function getUser()
+    {
         if (!isset($this->user))
-        $this->user = FHtml::getModel('app_user', '', $this->user_id, '', false);
+            $this->user = FHtml::getModel('app_user', '', $this->user_id, '', false);
 
         return $this->user;
     }
-    public function setUser($value) {
+    public function setUser($value)
+    {
         $this->user = $value;
     }
 
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
 
         $this->user = self::getUser();
     }
 
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 }

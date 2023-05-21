@@ -9,9 +9,8 @@ use common\models\BaseDataObject;
 use frontend\models\ViewModel;
 
 /**
-* Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
-* Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
-* MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
+ *
+ ***
  * This is the model class for table "object_booking".
  *
 
@@ -34,7 +33,7 @@ class ObjectBookingBase extends \common\models\BaseModel //\yii\db\ActiveRecord
 {
     const STATUS_LOST = 'Lost';
 
-// id, object_id, object_type, user_id, start_date, end_date, is_active, type, status, created_date, created_user, modified_date, modified_user, application_id
+    // id, object_id, object_type, user_id, start_date, end_date, is_active, type, status, created_date, created_user, modified_date, modified_user, application_id
     const COLUMN_ID = 'id';
     const COLUMN_OBJECT_ID = 'object_id';
     const COLUMN_OBJECT_TYPE = 'object_type';
@@ -51,8 +50,8 @@ class ObjectBookingBase extends \common\models\BaseModel //\yii\db\ActiveRecord
     const COLUMN_APPLICATION_ID = 'application_id';
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $tableName = 'object_booking';
 
     public static function tableName()

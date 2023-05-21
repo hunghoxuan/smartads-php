@@ -10,24 +10,22 @@ use common\models\BaseModel;
 use frontend\models\ViewModel;
 use yii\helpers\ArrayHelper;
 
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "smartscreen_schedules".
+/*This is the customized model class for table "smartscreen_schedules".
  */
+
 class SmartscreenSchedules extends SmartscreenSchedulesSearch
 {
-
     private $is_refresh;
 
-    const COLUMNS_CUSTOM = ['list_content', 'smartscreen_files', 'smartscreen_schedules' ];
+    const COLUMNS_CUSTOM = ['list_content', 'smartscreen_files', 'smartscreen_schedules'];
 
-    public function getIsRefresh() {
+    public function getIsRefresh()
+    {
         return $this->is_refresh;
     }
 
-    public static function getDurationKindArray() {
+    public static function getDurationKindArray()
+    {
         return [
             //self::DURATION_KIND_LOOP => FHtml::t('common', 'Loops'),
             self::DURATION_KIND_SECOND => FHtml::t('common', 'Second'),
@@ -35,7 +33,8 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         ];
     }
 
-    public function setIsRefresh($value) {
+    public function setIsRefresh($value)
+    {
         $this->is_refresh = $value;
     }
 
@@ -50,7 +49,8 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
     const OBJECTS_RELATED = [];
     const OBJECTS_META = [];
 
-    public static function getLookupArray($column = '') {
+    public static function getLookupArray($column = '')
+    {
         if (key_exists($column, self::LOOKUP))
             return self::LOOKUP[$column];
         return [];
@@ -66,20 +66,23 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         return $fields;
     }
 
-    public function prepareCustomFields() {
+    public function prepareCustomFields()
+    {
         parent::prepareCustomFields();
-
     }
 
-    public static function getRelatedObjects() {
+    public static function getRelatedObjects()
+    {
         return self::OBJECTS_RELATED;
     }
 
-    public static function getMetaObjects() {
+    public static function getMetaObjects()
+    {
         return self::OBJECTS_META;
     }
 
-    public function getDirtyAttributes($names = null) {
+    public function getDirtyAttributes($names = null)
+    {
         $values  = parent::getDirtyAttributes($names);
         if ($this->isNewRecord) {
             if (isset($values['id']))
@@ -88,14 +91,14 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         return $values;
     }
 
-    public function isCampaign() {
+    public function isCampaign()
+    {
         return empty($this->start_time) || $this->type == Smartscreen::SCHEDULE_TYPE_CAMPAIGN;
     }
 
     public function beforeSave($insert)
     {
         if ($this->isNewRecord) {
-            $this->is_active = true;
             $this->id = null;
         }
 
@@ -140,7 +143,8 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         return $result;
     }
 
-    public function afterFind() {
+    public function afterFind()
+    {
         if (!isset($this->list_content) && $this->type == Smartscreen::SCHEDULE_TYPE_BASIC)
             $this->list_content = $this->smartscreenFiles();
 
@@ -169,11 +173,13 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         return parent::afterFind();
     }
 
-    public function setContent($value) {
+    public function setContent($value)
+    {
         $this->list_content = $value;
     }
 
-    public static function findAllCached() {
+    public static function findAllCached()
+    {
         $result = Smartscreen::Cache(self::tableName());
         if (isset($result) && !empty($result))
             return $result;
@@ -183,7 +189,8 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         return $result;
     }
 
-    public static function findOneCached($id) {
+    public static function findOneCached($id)
+    {
         if (empty($id) || $id == FHtml::NULL_VALUE)
             return null;
         if (!Smartscreen::isObjectCachable(static::tableName()))
@@ -197,7 +204,8 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         return static::findOne($id);
     }
 
-    public function afterSave($insert, $runValidation) {
+    public function afterSave($insert, $runValidation)
+    {
         //if it is campaign
         if (!$this->isCampaign()) {
             $media_files = $this->smartscreenFiles;
@@ -236,22 +244,24 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         return $this->hasMany(SmartscreenFile::className(), ['object_id' => 'id'])->andWhere(['object_type' => self::tableName()])->orderBy('sort_order');
     }
 
-    public function smartscreenFiles() {
+    public function smartscreenFiles()
+    {
         if (!empty($this->content_id) && is_numeric($this->content_id))
             return SmartscreenFile::findAll(['object_id' => $this->content_id, 'object_type' => SmartscreenContent::tableName()], "sort_order asc");
 
         return SmartscreenFile::findAll(['object_id' => $this->id, 'object_type' => $this->getTableName()], "sort_order asc");
     }
 
-    public function afterDelete() {
+    public function afterDelete()
+    {
         Smartscreen::clearCache();
         SmartscreenFile::deleteAll(['object_id' => $this->id, 'object_type' => self::tableName()]);
         return parent::afterDelete();
     }
 
-    public function getReturnUrl() {
+    public function getReturnUrl()
+    {
         $params = Smartscreen::getCurrentParams(null, '--');
         return FHtml::createUrl('smartscreen/smartscreen-schedules/index', $params);
     }
-
 }

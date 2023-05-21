@@ -1,10 +1,6 @@
 <?php
 
-/**
- * Developed by Hung Ho (Steve): ceo@mozagroup.com | hung.hoxuan@gmail.com | skype: hung.hoxuan | whatsapp: +84912738748
- * Software Outsourcing, Mobile Apps development, Website development: Make meaningful products for start-ups and entrepreneurs
- * MOZA TECH Inc: www.mozagroup.com | www.mozasolution.com | www.moza-tech.com | www.apptemplate.co | www.projectemplate.com | www.code-faster.com
- * This is the customized model class for table "User".
+/*This is the customized model class for table "User".
  */
 
 use kartik\form\ActiveForm;
@@ -12,6 +8,9 @@ use common\widgets\FActiveForm;
 use common\components\FHtml;
 use common\widgets\FFormTable;
 use yii\widgets\Pjax;
+use \kartik\widgets\Select2;
+use \backend\modules\smartscreen\models\SmartscreenStation;
+use \backend\modules\smartscreen\models\SmartscreenChannels;
 
 $form_Type = $this->params['activeForm_type'];
 
@@ -34,10 +33,13 @@ if (empty($model->role))
 
 $is_admin = FHtml::isRoleAdmin() && FHtml::currentUserId() != $model->id && $model->role < FHtml::getCurrentRole();
 
-$size = Yii::$app->request->isAjax ? 12 : 9;
+$list_devices   = SmartscreenStation::findAllForCombo();
+$list_channels = SmartscreenChannels::findAllForCombo();
 
-//$controllers = FHtml::getModuleControllers('purchase', true);
-//FHtml::var_dump($controllers); die;
+$canEditPersonal = false;
+$disabled = false;
+
+$size = Yii::$app->request->isAjax ? 12 : 9;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\User */
@@ -98,21 +100,23 @@ $size = Yii::$app->request->isAjax ? 12 : 9;
                         <li class="active">
                             <a href="#tab_1_1" data-toggle="tab"><?= FHtml::t('common', 'Info') ?></a>
                         </li>
-                        <?php if (!Yii::$app->request->isAjax) { ?>
+                        <?php if (!Yii::$app->request->isAjax && $canEditPersonal) { ?>
+
                             <li>
                                 <a href="#tab_1_2" data-toggle="tab"><?= FHtml::t('common', 'Personal') ?></a>
                             </li>
-                            <?php if ($canEdit) { ?>
+                        <?php } ?>
 
-                                <li>
-                                    <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Reset Password') ?></a>
-                                </li>
-                            <?php } ?>
-                            <?php if ($is_admin) { ?>
-                                <li>
-                                    <a href="#tab_1_4" data-toggle="tab"><?= FHtml::t('common', 'Roles & Permissions') ?></a>
-                                </li>
-                            <?php } ?>
+                        <?php if (!Yii::$app->request->isAjax && $canEdit) { ?>
+
+                            <li>
+                                <a href="#tab_1_3" data-toggle="tab"><?= FHtml::t('common', 'Reset Password') ?></a>
+                            </li>
+                        <?php } ?>
+                        <?php if (!Yii::$app->request->isAjax && $is_admin) { ?>
+                            <li>
+                                <a href="#tab_1_4" data-toggle="tab"><?= FHtml::t('common', 'Roles & Permissions') ?></a>
+                            </li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -123,79 +127,103 @@ $size = Yii::$app->request->isAjax ? 12 : 9;
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <div class="col-md-12">
                                         <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                            '_username' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, '_username')->textInput(['readonly' => !$model->isNewRecord])],
+                                            '_username' => ['value' => $form->fieldNoLabel($model, '_username')->textInput(['readonly' => !$model->isNewRecord])],
 
-                                            'name' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'name')->textInput()],
-                                            'email' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'email')->emailInput()],
-                                            'image' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'image')->image()],
+                                            'name' => ['value' => $form->fieldNoLabel($model, 'name')->textInput()],
+                                            'email' => ['value' => $form->fieldNoLabel($model, 'email')->emailInput()],
+                                            'image' => ['value' => $form->fieldNoLabel($model, 'image')->image()],
 
-                                            'status' => ['type' => FHtml::INPUT_RAW, 'readonly' => !$is_admin, 'value' => $form->fieldNoLabel($model, 'status')->select('user.status')],
+                                            'status' => ['readonly' => !FHtml::isRoleAdmin(), 'value' => $form->fieldNoLabel($model, 'status')->select('user.status')],
                                         ]]); ?>
 
                                     </div>
                                 </div>
-                                <?php if (!Yii::$app->request->isAjax) { ?>
+                                <?php if (!Yii::$app->request->isAjax && $canEditPersonal) { ?>
+
                                     <div class="tab-pane row" id="tab_1_2">
                                         <div class="col-md-12">
 
                                             <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'attributes' => [
-                                                'code' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'code')->textInput(), 'columnOptions' => ['colspan' => 3]],
-                                                'overview' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'overview')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 3]],
-                                                'address' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'address')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 3]],
+                                                'code' => ['value' => $form->fieldNoLabel($model, 'code')->textInput(), 'columnOptions' => ['colspan' => 3]],
+                                                'overview' => ['value' => $form->fieldNoLabel($model, 'overview')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 3]],
+                                                'address' => ['value' => $form->fieldNoLabel($model, 'address')->textarea(['rows' => 3]), 'columnOptions' => ['colspan' => 3]],
 
-                                                'phone' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'phone')->textInput()],
+                                                'phone' => ['value' => $form->fieldNoLabel($model, 'phone')->textInput()],
 
-                                                'skype' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'skype')->textInput()],
+                                                'skype' => ['value' => $form->fieldNoLabel($model, 'skype')->textInput()],
 
-                                                'identity_card' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'identity_card')->textInput()],
-                                                'gender' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'gender')->select()],
+                                                'identity_card' => ['value' => $form->fieldNoLabel($model, 'identity_card')->textInput()],
+                                                'gender' => ['value' => $form->fieldNoLabel($model, 'gender')->select()],
 
-                                                'birth_date' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'birth_date')->date()],
-                                                'birth_place' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'birth_place')->textInput()],
-                                                'country' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'country')->select()],
-                                                'city' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'city')->select()],
+                                                'birth_date' => ['value' => $form->fieldNoLabel($model, 'birth_date')->date()],
+                                                'birth_place' => ['value' => $form->fieldNoLabel($model, 'birth_place')->textInput()],
+                                                'country' => ['value' => $form->fieldNoLabel($model, 'country')->select()],
+                                                'city' => ['value' => $form->fieldNoLabel($model, 'city')->select()],
 
                                             ]]); ?>
                                             <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 2, 'title' => FHtml::t('common', 'Employment'), 'attributes' => [
-                                                'organization' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'organization')->select()],
-                                                'department' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'department')->select()],
-                                                'position' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'position')->select()],
-                                                'type' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'type')->select()],
-                                                'start_date' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'start_date')->date()],
-                                                'end_date' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'end_date')->date()],
-                                                'content' => ['type' => FHtml::INPUT_RAW, 'value' => $form->fieldNoLabel($model, 'content')->textArea(), 'columnOptions' => ['colspan' => 3]],
+                                                'organization' => ['value' => $form->fieldNoLabel($model, 'organization')->select()],
+                                                'department' => ['value' => $form->fieldNoLabel($model, 'department')->select()],
+                                                'position' => ['value' => $form->fieldNoLabel($model, 'position')->select()],
+                                                'type' => ['value' => $form->fieldNoLabel($model, 'type')->select()],
+                                                'start_date' => ['value' => $form->fieldNoLabel($model, 'start_date')->date()],
+                                                'end_date' => ['value' => $form->fieldNoLabel($model, 'end_date')->date()],
+                                                'content' => ['value' => $form->fieldNoLabel($model, 'content')->textArea(), 'columnOptions' => ['colspan' => 3]],
 
                                             ]]); ?>
 
                                         </div>
                                     </div>
-                                    <?php if ($canEdit) { ?>
-                                        <div class="tab-pane row" id="tab_1_3">
-                                            <div class="col-md-12">
-                                                <?= (FHtml::isRoleAdmin() || FHtml::currentUserId() == $model->id)  ? $form->field($model, 'password_new')->passwordInput(['readonly' => false])->hint('') : '' ?>
-                                                <?= (FHtml::isRoleAdmin() || FHtml::currentUserId() == $model->id)  ? $form->field($model, 'password_retype')->passwordInput(['readonly' => false])->hint('Retype Password') : '' ?>
+                                <?php } ?>
+                                <?php if (!Yii::$app->request->isAjax && $canEdit) { ?>
+                                    <div class="tab-pane row" id="tab_1_3">
+                                        <div class="col-md-12">
+                                            <?= (FHtml::isRoleAdmin() || FHtml::currentUserId() == $model->id)  ? $form->field($model, 'password_new')->passwordInput(['readonly' => false])->hint('') : '' ?>
+                                            <?= (FHtml::isRoleAdmin() || FHtml::currentUserId() == $model->id)  ? $form->field($model, 'password_retype')->passwordInput(['readonly' => false])->hint('Retype Password') : '' ?>
 
-                                            </div>
                                         </div>
-                                    <?php } ?>
-                                    <?php if ($is_admin) { ?>
+                                    </div>
+                                <?php } ?>
+                                <?php if (!Yii::$app->request->isAjax && $is_admin) { ?>
 
-                                        <div class="tab-pane row" id="tab_1_4">
+                                    <div class="tab-pane row" id="tab_1_4">
 
-                                            <div class="col-md-12">
-                                                <?= $form->field($model, 'role', ['display_type' => FActiveForm::TYPE_HORIZONTAL])->select()->onChange([FHtml::ROLE_USER => 'div_user_role_10']) ?>
-                                                <div id="div_user_role_10">
-                                                    <?php if (FHtml::isDBSecurityEnabled()) { ?>
-                                                        <b><?= FHtml::t('common', 'User Groups') ?> </b><br />
-                                                        <?= !FHtml::isTableExisted('auth_group') ? '' : $form->field($model, 'groups_array')->label(false)->checkboxList(FHtml::getApplicationGroupsComboArray()) ?>
-                                                        <b><?= FHtml::t('common', 'User Roles') ?> </b><br />
-                                                        <?= FHtml::frameworkVersion() == 'framework' || !FHtml::isRoleAdmin() ? '' : $form->field($model, 'rights_array')->label(false)->checkboxList(FHtml::getApplicationRolesComboArray(true), 6) ?>
-                                                    <?php } ?>
-                                                </div>
-
+                                        <div class="col-md-12">
+                                            <?= $form->field($model, 'role', ['display_type' => FActiveForm::TYPE_HORIZONTAL])->select()->onChange([FHtml::ROLE_USER => 'div_user_role_10']) ?>
+                                            <div id="div_user_role_10">
+                                                <?php if (FHtml::isDBSecurityEnabled()) { ?>
+                                                    <b><?= FHtml::t('common', 'User Groups') ?> </b><br />
+                                                    <?= !FHtml::isTableExisted('auth_group') ? '' : $form->field($model, 'groups_array')->label(false)->checkboxList(FHtml::getApplicationGroupsComboArray()) ?>
+                                                    <b><?= FHtml::t('common', 'User Roles') ?> </b><br />
+                                                    <?= FHtml::frameworkVersion() == 'framework' || !FHtml::isRoleAdmin() ? '' : $form->field($model, 'rights_array')->label(false)->checkboxList(FHtml::getApplicationRolesComboArray(true), 6) ?>
+                                                <?php } ?>
                                             </div>
+
                                         </div>
-                                    <?php } ?>
+                                        <div class="col-md-12">
+                                            <?php echo FFormTable::widget([
+                                                'hide_field' => false,
+                                                'model'      => $model,
+                                                'form'       => $form,
+                                                'columns'    => 1,
+                                                // 'title'     => FHtml::t('common', 'Security'),
+                                                'attributes' => [
+                                                    'channel_id' => [
+                                                        'value'         => $form->selectMany($model, 'channel_id', $list_channels),
+
+                                                        'type'          => FHtml::INPUT_RAW
+                                                    ],
+                                                    'device_id'  => [
+                                                        'value'         => $form->selectMany($model, 'device_id', $list_devices),
+
+                                                        'type'          => FHtml::INPUT_RAW
+                                                    ],
+                                                ]
+                                            ]); ?>
+                                        </div>
+
+
+                                    </div>
                                 <?php } ?>
                             </div>
                         </div>
