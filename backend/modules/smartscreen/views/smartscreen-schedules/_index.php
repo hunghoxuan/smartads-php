@@ -55,12 +55,6 @@ $list_campaigns = \backend\modules\smartscreen\models\SmartscreenCampaigns::find
 
 $_null_value_array = [FHtml::NULL_VALUE => FHtml::NULL_VALUE];
 
-//$list_device = array_merge($_a, $list_device);
-//$list_device = $_null_value_array + $list_device;
-//if (isset($list_device['']) && $list_device == FHtml::NULL_VALUE) {
-//    unset($list_device['']);
-//}
-//FHtml::var_dump($list_device);die;
 $refresh = 0;
 if (empty(FHtml::getRequestParam('device_id')))
     $refresh = 30 * 1000;
@@ -95,11 +89,11 @@ if (FHtml::isInRole('', 'edit', $currentRole) && !empty($dataProvider->models)) 
     $updateButton = FHtml::a('<i class="fa fa-edit"></i> ' . FHtml::t('button', 'Update'), ['update', 'channel_id' => $channel_id, 'date' => $date, 'device_id' => $device_id], ['class' => 'btn btn-warning', 'data-pjax' => 0]);
 }
 $deleteButton = FHtml::buttonDeleteBulk();
-if (!empty($model->device_id)  || !empty($model->campaign_id) || !empty($model->channel_id)) {
-    $gridControl = $folder . '_columns.php';
-} else {
-    $gridControl = $folder . '_columns_simple.php';
-}
+//if (!empty($model->device_id)  || !empty($model->campaign_id) || !empty($model->channel_id)) {
+$gridControl = $folder . '_columns.php';
+// } else {
+//     $gridControl = $folder . '_columns_simple.php';
+// }
 $showGrid = true;
 $showSearch = !in_array(FHtml::getRequestParam('search', 'true'), ['no', 'false']);
 

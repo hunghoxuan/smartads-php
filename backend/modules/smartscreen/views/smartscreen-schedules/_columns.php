@@ -30,7 +30,7 @@ return [
         'width' => '20px',
     ],
     [
-        'visible' => true, // empty($campaign_id) && empty($device_id),
+        'visible' => empty($campaign_id) && empty($device_id),
         'class' => FHtml::COLUMN_VIEW,
 
         'attribute' => 'channel_id',
@@ -42,7 +42,7 @@ return [
             if (is_numeric($model->channel_id)) {
                 $item = \backend\modules\smartscreen\models\SmartscreenChannels::findOneCached($model->channel_id);
                 $name = strtoupper(is_object($item) ? $item->name : "$model->channel_id");
-                return "<b><a href='" . FHtml::createUrl('smartscreen/smartscreen-schedules', ['channel_id' => $model->channel_id]) . "'>" . FHtml::t('Channels') . ": $name </a></b>";
+                return "<b><a data-pjax='0' href='" . FHtml::createUrl('smartscreen/smartscreen-schedules', ['channel_id' => $model->channel_id]) . "'>" . FHtml::t('Channels') . ": $name </a></b>";
             } else {
                 if ($model->channel_id == FHtml::NULL_VALUE)
                     return "<div style='color:gray'>" . FHtml::t('All') .  "</div>";
@@ -56,7 +56,7 @@ return [
         'attribute' => 'device_id',
         'contentOptions' => ['class' => 'col-md-1 nowrap'],
         'group' => true,
-        //'groupedRow' => true,
+        'groupedRow' => !empty($device_id),
         'value' => function ($model, $key, $index, $column) {
             if ($model->device_id == FHtml::NULL_VALUE)
                 return "<div style='color:gray'>" . FHtml::t('All') .  "</div>";
@@ -72,7 +72,7 @@ return [
                         continue;
                     }
                     $item = \backend\modules\smartscreen\models\SmartscreenStation::findOneCached($device_id);
-                    $title = "<a href='" . FHtml::createUrl('smartscreen/smartscreen-schedules', ['device_id' => $device_id]) . "'> $item->name </a>";
+                    $title = "<a data-pjax='0' href='" . FHtml::createUrl('smartscreen/smartscreen-schedules', ['device_id' => $device_id]) . "'> $item->name </a>";
 
                     $arr[] = is_object($item) ? "$title <small style='color:darkgrey'>$item->description</small> <br/>" . Smartscreen::showDeviceLastUpdate($item, $device_id, false) : $item;
                 }
@@ -102,8 +102,8 @@ return [
             }
             $result .= " - <span style='color: darkgrey'> $start_time </span>";
 
-            $params = Smartscreen::getCurrentParams(['create', 'start_time' => $start_time], '', $model);
-            $result .= FHtml::a('<i class="fa fa-plus"></i>', $params, ['class' => 'btn btn-xs btn-success pull-right', 'data-pjax' => 0]);
+            $params = Smartscreen::getCurrentParams(['create', 'start_time' => $start_time, 'data-pjax' => 0], '', $model);
+            $result .= FHtml::a('<i class="fa fa-plus"></i>', $params, ['class' => 'btn btn-xs btn-success pull-right']);
 
             $result .= "<br/><small style='color: darkgrey'>$duration</small>";
             return $result;
@@ -130,9 +130,14 @@ return [
         'attribute'      => 'content_id',
         'label'          => FHtml::t('common', 'Content'),
         'contentOptions' => ['class' => $show_all == 0 ? 'col-md-5 nowrap text-left' : 'col-md-4 nowrap text-left'],
-        'value'          => function ($model) {
-            return Smartscreen::showScheduleOverview($model);
-        },
+        'value'          =>
+        empty($device_id) ?
+            function ($model, $key, $index, $column) {
+                return '';
+            } :
+            function ($model, $key, $index, $column) {
+                return Smartscreen::showScheduleOverview($model);
+            },
     ],
     [
         'class'          => FHtml::COLUMN_VIEW,

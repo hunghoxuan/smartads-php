@@ -112,12 +112,7 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
             }
         } else if (!empty($channel_id) && empty($device_id) && empty($campaign_id)) {
             $schedules = Smartscreen::findSchedulesForChannel($channel_id, $date, $date_end, $start_time, $limit, $forAPI, $show_all == 0);
-        }
-        //        else if (!empty($campaign_id)) {
-        //            $listSchedule = Smartscreen::findSchedulesForCampaign($campaign_id, $date, $date_end, $start_time, $limit, $forAPI);
-        //            $schedules = array_merge($schedules, $listSchedule);
-        //        }
-        else {
+        } else {
             $autoCalculateStarttime = !empty($device_id);
             $device = SmartscreenStation::findOneCached($device_id);
             if (isset($device) && (!empty($channel_id) && $channel_id != $device->channel_id)) {
@@ -125,11 +120,11 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
             } else {
                 $listSchedule = Smartscreen::findSchedules($device_id, $channel_id, $campaign_id, $schedule_id, $limit, $forAPI, $date, $date_end);
                 $listSchedule = Smartscreen::fixSchedules($listSchedule, $date, $start_time, $forAPI, $autoCalculateStarttime);
+
                 if (!empty($campaign_id) && $show_all == 2) {
                     $campaign = SmartscreenCampaigns::findOne($campaign_id);
                     $listSchedule = Smartscreen::generateSchedules($listSchedule, $campaign->start_time, $campaign->duration, null, 150, false);
                 }
-
                 $schedules = $listSchedule;
             }
         }
@@ -138,16 +133,16 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
             $schedules = $schedules[0]['schedules'];
         }
 
-        //make sure the grid grouped columns dont break !
-        foreach ($schedules as $i => $item) {
-            if (is_object($item)) {
-                if (empty($item->channel_id))
-                    $item->channel_id = !empty($channel_id) ? $channel_id : null;
-                if (empty($item->device_id))
-                    $item->device_id = !empty($device_id) ? $device_id : null;
-            }
-            $schedules[$i] = $item;
-        }
+        // //make sure the grid grouped columns dont break !
+        // foreach ($schedules as $i => $item) {
+        //     if (is_object($item)) {
+        //         if (empty($item->channel_id))
+        //             $item->channel_id = !empty($channel_id) ? $channel_id : null;
+        //         if (empty($item->device_id))
+        //             $item->device_id = !empty($device_id) ? $device_id : null;
+        //     }
+        //     $schedules[$i] = $item;
+        // }
 
         $dataProvider->models = $schedules;
         return $dataProvider;

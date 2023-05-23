@@ -120,7 +120,7 @@ $model->_content_id = $model->content_id;
 <div class="form">
     <div class="row">
 
-        <div class="col-md-12">
+        <div class="col-md-9">
             <div class="portlet light">
                 <div class="visible-print">
                     <?= (FHtml::isViewAction($currentAction)) ? FHtml::showPrintHeader($moduleName) : '' ?>
@@ -144,7 +144,7 @@ $model->_content_id = $model->content_id;
                             <div class="tab-content">
                                 <div class="tab-pane active row" id="tab_1_1">
 
-                                    <div class="col-md-9">
+                                    <div class="col-md-12">
 
                                         <?php echo FFormTable::widget([
                                             'hide_field' => false,
@@ -429,19 +429,24 @@ $model->_content_id = $model->content_id;
                                     </div>
 
                                     <?php if (!$model->isNewRecord) { ?>
-                                        <div class="col-md-3 form-label">
+                                        <div class="col-md-12">
                                             <?php
                                             $disabled = false;
                                             if ($currentAction == 'update' && empty($id)) {
                                                 $disabled = true;
                                             }
                                             ?>
-                                            <?php echo FFormTable::widget([
+                                            <?php
+
+                                            echo FFormTable::widget([
+                                                'id' => 'campaign_widget',
+                                                'overview' => 'Ghi chú: Không nhập dữ liệu nếu muốn áp dụng cho tất cả trường hợp',
+                                                'title' => 'Phạm vi áp dụng',
                                                 'hide_field' => false,
                                                 'model'      => $model,
                                                 'form'       => $form,
                                                 //'title' => FHtml::t('common', 'Devices'),
-                                                'type'                   => ActiveForm::TYPE_VERTICAL,
+                                                'type'                   => ActiveForm::TYPE_HORIZONTAL,
 
                                                 'columns'    => 1,
                                                 'attributes' => [
@@ -452,21 +457,6 @@ $model->_content_id = $model->content_id;
                                                         'columnOptions' => ['colspan' => 1, 'readonly' => true],
                                                         'type'          => FHtml::INPUT_RAW
                                                     ],
-                                                ]
-                                            ]);
-
-                                            echo FFormTable::widget([
-                                                'id' => 'campaign_widget',
-                                                'overview' => 'Ghi chú: Không nhập dữ liệu nếu muốn áp dụng cho tất cả trường hợp',
-                                                'title' => 'Phạm vi áp dụng',
-                                                'hide_field' => false,
-                                                'model'      => $model,
-                                                'form'       => $form,
-                                                //'title' => FHtml::t('common', 'Devices'),
-                                                'type'                   => ActiveForm::TYPE_VERTICAL,
-
-                                                'columns'    => 1,
-                                                'attributes' => [
                                                     'channel_id' => [
                                                         'visible' => empty($model->campaign_id),
                                                         'value'         => $form->fieldNoLabel($model, 'channel_id')->widget(Select2::classname(), [
@@ -529,16 +519,19 @@ $model->_content_id = $model->content_id;
 
             <?= $model->isNewRecord ?  '' : ((FHtml::isViewAction($currentAction)) ? FHtml::showViewButtons($model, $canEdit, $canDelete) : FHtml::showActionsButton($model, $canEdit, $canDelete, $buttons)) ?>
         </div>
+        <div class="col-md-3">
+            <?php if (!$model->isNewRecord  && empty(FHtml::getRequestParam('layout'))) {
+                $device_id = Smartscreen::getCurrentDeviceId($model);
+            ?>
+                <div style="width: 100%; height: 250px; margin-bottom: 50px; background-color: #fefefe">
+                    <div style="margin-right: 10px; float:right"><a data-pjax="0" target="_blank" href="<?= FHtml::createUrl('/smartscreen/schedules', ['id' => $model->id, 'device_id' => $device_id, 'layout' => 'no', 'auto_refresh' => 0]) ?>">Full screen</a> </div>
+                    <iframe frameborder="0" src="<?= FHtml::createUrl('/smartscreen/schedules', ['id' => $model->id, 'device_id' => $device_id, 'layout' => 'no', 'auto_refresh' => 0]) ?>" width="100%" height="100%" />
+                </div>
+            <?php  } ?>
+        </div>
     </div>
 </div>
-<?php if (!$model->isNewRecord  && empty(FHtml::getRequestParam('layout'))) {
-    $device_id = Smartscreen::getCurrentDeviceId($model);
-?>
-    <div style="width: 100%; height: 700px; margin-bottom: 50px; background-color: #fefefe">
-        <div style="margin-right: 10px; float:right"><a data-pjax="0" target="_blank" href="<?= FHtml::createUrl('/smartscreen/schedules', ['id' => $model->id, 'device_id' => $device_id, 'layout' => 'no', 'auto_refresh' => 0]) ?>">Full screen</a> </div>
-        <iframe frameborder="0" src="<?= FHtml::createUrl('/smartscreen/schedules', ['id' => $model->id, 'device_id' => $device_id, 'layout' => 'no', 'auto_refresh' => 0]) ?>" width="100%" height="100%" />
-    </div>
-<?php  } ?>
+
 <?php FActiveForm::end(); ?>
 <?php if ($ajax) Pjax::end() ?>
 

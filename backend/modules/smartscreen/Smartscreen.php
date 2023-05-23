@@ -72,6 +72,9 @@ class Smartscreen extends Module
         'smartscreen_file.command' => [[SmartscreenContent::TYPE_IMAGE => 'image', SmartscreenContent::TYPE_VIDEO => 'video', SmartscreenContent::TYPE_URL => 'url', SmartscreenContent::TYPE_TEXT => 'text']]
     ];
 
+    const SETTINGS_SCHEDULE_ALLOW_OVERLAP = false; // true -> autoFixTimes = false, false -> autoFixTimes = false
+    const SETTINGS_SCHEDULE_ALLOW_INTERSECTED = false;
+
     public $controllerNamespace = 'backend\modules\smartscreen\controllers';
 
     public function init()
@@ -683,11 +686,19 @@ class Smartscreen extends Module
         }
 
         $inMinutes = static::settingDurationInMinutes();
-        if (!isset($schedules[0]))
-            $schedules[] = ['date' => empty($date) ? date("Y-m-d") : $date, 'schedules' => []];
 
+        if (!isset($schedules[0])) {
+            $schedules[] = ['date' => empty($date) ? date("Y-m-d") : $date, 'schedules' => []];
+        } else if (is_object($schedules[0])) {
+            $tmp = [];
+            $tmp[] = ['date' => empty($date) ? date("Y-m-d") : $date, 'schedules' => $schedules];
+            $schedules = $tmp;
+        }
+
+        $result = [];
         if (isset($schedules[0])) {
             $items = $schedules[0]['schedules'];
+
             foreach ($items as $i => $schedule) {
                 $schedule['duration'] = $inMinutes ? $schedule['duration'] : (60 * $schedule['duration']);
                 if (isset($schedule['date']))
@@ -755,12 +766,10 @@ class Smartscreen extends Module
         return $schedule;
     }
 
-    public static function findSchedulesForChannel($channel_id, $date = null, $date_end = null, $start_time = null, $limit = -1, $forAPI = false, $showCurrentOnly = true)
+    public static function findSchedulesForDevices($devices1, $date = null, $date_end = null, $start_time = null, $limit = -1, $forAPI = false, $showCurrentOnly = true)
     {
         $schedules = [];
-        $devices1 = SmartscreenStation::findAll(['channel_id' => $channel_id, 'is_active' => 1]);
         foreach ($devices1 as $device) {
-
             $device_id = $device->id;
             $autoCalculateStarttime = !empty($device_id);
             $listSchedule = Smartscreen::findSchedules($device_id, null, null, null, $limit, $forAPI, $date, $date_end);
@@ -772,7 +781,7 @@ class Smartscreen extends Module
                 $start_time = date("H:i");
             $schedule_end_time = null;
             foreach ($listSchedule as $i => $schedule) {
-                $schedule->channel_id = $channel_id;
+                $schedule->channel_id = $device->channel_id;
                 $schedule->device_id = $device_id;
                 $schedule_end_time = Smartscreen::getNextStartTime($schedule->start_time, $schedule->duration, 1, null, true);
                 if ($showCurrentOnly) {
@@ -808,6 +817,18 @@ class Smartscreen extends Module
         return $schedules;
     }
 
+    public static function findSchedulesForChannel($channel_id, $date = null, $date_end = null, $start_time = null, $limit = -1, $forAPI = false, $showCurrentOnly = true)
+    {
+        if (is_numeric($channel_id) && $channel_id > 0)
+            $devices1 = SmartscreenStation::findAll(['channel_id' => $channel_id, 'is_active' => 1]);
+        else {
+            $devices1 = SmartscreenStation::findAll(['is_active' => 1], ['channel_id' => 'ASC']);
+            $channel_id = FHtml::NULL_VALUE;
+        }
+        $schedules = self::findSchedulesForDevices($devices1, $date, $date_end, $start_time, $limit, $forAPI, $showCurrentOnly);
+        return $schedules;
+    }
+
     public static function findSchedulesForCampaign($campaign_id, $date = null, $date_end = null, $start_time = null, $limit = -1, $forAPI = false)
     {
         $schedules = [];
@@ -818,7 +839,7 @@ class Smartscreen extends Module
             if (!empty($campaign->device_id)) {
                 $devices1 = FHtml::decode($campaign->device_id);
             } else {
-                $devices1 = SmartscreenStation::findAll(['channel_id' => $channel_id]);
+                $devices1 = SmartscreenStation::findAll(['channel_id' => $channel_id, 'is_active' => 1]);
             }
             foreach ($devices1 as $device_id) {
                 if (is_object($device_id))
@@ -869,47 +890,32 @@ class Smartscreen extends Module
         if ($device_id == $null_value)
             $device_id = null;
 
-        $sql_condition = '';
-        if ($forAPI) {
-            if (!empty($campaign_id))
-                $sql_condition = SmartscreenSchedules::FIELD_CAMPAIGN_ID . " = '$campaign_id'";
-            else if (!empty($schedule_id))
-                $sql_condition = "(id in (" . is_array($schedule_id) ? implode(',', $schedule_id) : $schedule_id . "))";
-            else if (!empty($channel_id) && empty($device_id))
-                $sql_condition = "((channel_id = '$channel_id') and (device_id is null or device_id = '' or device_id = '[]'))";
-            else if (!empty($device_id)) {
-                $sql_condition = "(device_id = '$device_id' or device_id like '%$device_id%')";
+        $sql_condition = "";
+        $sql_channel_null = "(channel_id = '...' or channel_id is null or channel_id = '' or channel_id = '[]')";
+        $sql_device_null = "(device_id = '...' or device_id is null or device_id = '' or device_id = '[]')";
 
-                if (!empty($channel_id))
-                    $sql_condition .= " OR (channel_id = '$channel_id' and (device_id is null or device_id = '' or device_id = '[]'))";
-            }
+        $sql_device_has = "(device_id = '$device_id' or device_id like '%$device_id%')";
+        $sql_channel_has = "(channel_id = '$channel_id' or channel_id like '%$channel_id%')";
+
+        if (!empty($campaign_id)) {
+            $sql_condition = "(" . SmartscreenSchedules::FIELD_CAMPAIGN_ID . " = '$campaign_id'" . ")";
+        } else if (!empty($schedule_id)) {
+            $sql_condition = "(id in (" . is_array($schedule_id) ? implode(',', $schedule_id) : $schedule_id . "))";
+        } else if (!empty($device_id)) {
+            $sql_condition = "($sql_device_has or ($sql_channel_null and $sql_device_null)";
+            if (!empty($channel_id))
+                $sql_condition .= " or ($sql_channel_has and $sql_device_null)";
+            $sql_condition .= ")";
         } else {
-            if (!empty($campaign_id))
-                $sql_condition = SmartscreenSchedules::FIELD_CAMPAIGN_ID . " = '$campaign_id'";
-            else if (!empty($schedule_id))
-                $sql_condition = "(id in (" . is_array($schedule_id) ? implode(',', $schedule_id) : $schedule_id . "))";
-            else if (!empty($channel_id) && empty($device_id))
-                $sql_condition = "(channel_id = '$channel_id')";
-            else if (!empty($device_id)) {
-                $sql_condition = "(device_id = '$device_id' or device_id like '%$device_id%')";
-
-                if (!empty($channel_id))
-                    $sql_condition .= " OR (channel_id = '$channel_id' and (device_id is null or device_id = '' or device_id = '[]'))";
-            }
+            return [];
         }
 
         $date_condition = Smartscreen::getDateSqlCondition($date, $date_end);
         if (!empty($date_condition)) {
-            if (!empty($sql_condition))
-                $sql_condition .= " AND $date_condition";
-            else
-                $sql_condition = $date_condition;
+            $sql_condition .= " and $date_condition";
         }
 
-        if (FHtml::getRequestParam('debug') == 'sql') {
-            echo $sql_condition;
-            die;
-        }
+        $sql_condition .= " and (type != 'campaign')";
 
         $query = SmartscreenSchedulesAPI::find();
 
@@ -920,6 +926,10 @@ class Smartscreen extends Module
             if (empty($sql_condition))
                 return [];
             $query = $query->andWhere([SmartscreenSchedules::FIELD_STATUS => 1]);
+        } else {
+            if (FHtml::isRoleUser()) {
+                $query = $query->andWhere(['owner_id' => FHtml::getCurrentUserId()]);
+            }
         }
 
         $query = $query->orderBy(['channel_id' => SORT_ASC, 'device_id' => SORT_ASC, 'start_time' => SORT_ASC]);
@@ -929,14 +939,28 @@ class Smartscreen extends Module
 
         $schedules = $query->all();
 
+        for ($i = 0; $i < count($schedules); $i++) {
+            if (!empty($device_id))
+                $schedules[$i]->device_id = $device_id;
+            if (!empty($channel_id))
+                $schedules[$i]->channel_id = $channel_id;
+        }
+
+        if (FHtml::getRequestParam('debug') == 'sql') {
+            echo $sql_condition;
+            FHtml::var_dump($schedules);
+            die;
+        }
         return $schedules;
     }
 
-    public static function fixSchedules($schedules, $date = null, $start_time = null, $forAPI = true, $autoCaculateStartTime = true)
+    public static function fixSchedules($schedules, $date = null, $start_time = null, $forAPI = true, $autoCaculateStartTime = !SmartScreen::SETTINGS_SCHEDULE_ALLOW_OVERLAP)
     {
         $day_in_week = FHtml::getWeekday($date);
-        $start_time =  null;
+        $start_time = null;
         $last_end_time = null;
+        $result = [];
+        $tmp = [];
 
         //delete the tmp/garbage schedules
         foreach ($schedules as $i => $schedule) {
@@ -944,14 +968,12 @@ class Smartscreen extends Module
                 unset($schedules[$i]);
                 continue;
             }
+
             if (!in_array($schedule->type, [Smartscreen::SCHEDULE_TYPE_BASIC, Smartscreen::SCHEDULE_TYPE_ADVANCE])) {
                 unset($schedules[$i]);
                 continue;
             }
-            //            if ($forAPI && empty($schedule->duration)) {
-            //                unset($schedules[$i]);
-            //                continue;
-            //            }
+
             if (!empty($date)) {
                 if (!empty($schedule->date) && $schedule->date > $date) {
                     unset($schedules[$i]);
@@ -971,7 +993,8 @@ class Smartscreen extends Module
             $schedule = static::fixSchedule($schedule, null, $date);
             $schedule_end_time = Smartscreen::getNextStartTime($schedule);
 
-            if ($forAPI) {
+            // remove intersected (overlapped time) schedules 
+            if ($forAPI && !SmartScreen::SETTINGS_SCHEDULE_ALLOW_INTERSECTED) {
                 if ($schedule_end_time <= $last_end_time) {
                     unset($schedules[$i]);
                     continue;
@@ -988,12 +1011,10 @@ class Smartscreen extends Module
 
         //fill content for schedules
         $schedules = self::fixSchedulesContent($schedules);
-
         $schedules = self::fixSchedulesLayout($schedules, null);
 
-
-        if ($autoCaculateStartTime) {
-            //still keep schedule->duration
+        // return consecutive schedules by time. still keep schedule->duration
+        if ($autoCaculateStartTime && !SmartScreen::SETTINGS_SCHEDULE_ALLOW_OVERLAP) {
             $schedules = self::fixSchedulesTime($schedules, $date, $start_time, null, $forAPI);
         }
 
@@ -1040,7 +1061,6 @@ class Smartscreen extends Module
         while ($date1 <= $date_end) {
             $schedules = $schedulesAll;
             $schedules = self::fixSchedules($schedules, $date1, $start_time, $forAPI);
-
             $result = array_merge($result, $schedules);
             $date1 = self::getDate($date1, "+1 day");
         }
@@ -1788,7 +1808,6 @@ class Smartscreen extends Module
                 $date_schedules1 = Smartscreen::generateSchedules($date_schedules1, $start_time, $end_time, null, 150, $for_api);
             }
 
-
             //add default schedule !!
             if (empty($date_schedule1)) {
                 $schedule_duration_between = Smartscreen::getDurationBetween('00:00', 0, '24:00');
@@ -1942,12 +1961,14 @@ class Smartscreen extends Module
 
         if (!isset($schedule)) {
             $content = self::getDefaultContent();
+            if (!isset($content))
+                return [];
 
             $contentData = self::getContentData($content, $ime);
             $useDefaultLayoutInDB = false;
 
             if ($useDefaultLayoutInDB) {
-                $layout = SmartscreenLayouts::findOne(['is_default' => 1]);
+                $layout = SmartscreenLayouts::findOne(['is_default' => 1, 'is_active' => 1]);
                 $frames = isset($layout) ? $layout->frameQuery : [];
                 $data = [];
                 foreach ($frames as $i => $frame) {
@@ -1965,9 +1986,8 @@ class Smartscreen extends Module
                     );
                 }
             } else {
-
                 $contentData = self::cleanContent($contentData);
-                $data = self::createFullScreenScheduleData($contentData, $content->type, self::getDefaultBackgroundColor());
+                $data = self::createFullScreenScheduleData($contentData, $content->type, "#000000"); // self::getDefaultBackgroundColor());
             }
 
             $schedule = new SmartscreenSchedulesAPI();
@@ -2812,7 +2832,7 @@ class Smartscreen extends Module
 
     public static function getDefaultChannel()
     {
-        $channel = SmartscreenChannels::getOne(['is_default' => 1]);
+        $channel = SmartscreenChannels::getOne(['is_default' => 1, 'is_active' => 1]);
         if (!isset($channel))
             $channel = SmartscreenChannels::getOne([]);
         return $channel;
@@ -2821,17 +2841,13 @@ class Smartscreen extends Module
     public static function getDefaultContent()
     {
         $content = SmartscreenContentAPI::getOne(['is_default' => 1, 'is_active' => 1]);
-        if (!isset($content))
-            $content = SmartscreenContentAPI::getOne([]);
-
-        return $content;
-    }
-
-    public static function getDefaultLayout()
-    {
-        $content = SmartscreenContentAPI::getOne(['is_default' => 1, 'is_active' => 1]);
-        if (!isset($content))
-            $content = SmartscreenContentAPI::getOne([]);
+        if (!isset($content)) {
+            $content = new SmartscreenContentAPI();
+            $content->id = 0;
+            $content->title = '';
+            $content->description = '';
+            $content->type = 'text';
+        }
 
         return $content;
     }
@@ -2863,7 +2879,6 @@ class Smartscreen extends Module
                 else
                     $data = [];
             } else {
-                //FHtml::var_dump($schedule);
                 $layout = isset($schedule->layout) ? $schedule->layout : null;
                 $content_ids = $schedule->content_id;
 
@@ -3042,13 +3057,6 @@ class Smartscreen extends Module
 
         if (!empty($room_id) && !empty($api_url)) {
             $api_url = FHtml::strReplace($api_url, ['{dept_id}' => $dept_id, '{room_id}' => $room_id]);
-
-            //            $data = null;
-            //            for ($i = 0; $i < 5; $i++) {
-            //                $data = FApi::getUrlContent($api_url);
-            //                if (is_array($data))
-            //                    break;
-            //            }
             $data = FApi::getUrlContent($api_url);
             if (!is_array($data)) {
                 $data = [];
@@ -3115,16 +3123,6 @@ class Smartscreen extends Module
                     $descrption = 'BS ' . $descrption;
 
                 $data['doctor'] = $descrption;
-            }
-
-            if (!empty($screen_name) || !empty($descrption) && isset($device)) {
-                //                $device->ScreenName = $screen_name;
-                //                $device->description = $descrption;
-                //                $device->save();
-
-                //$sql = "Update smartscreen_station set ScreenName = '$screen_name', description = '$descrption' where id = $device->id";
-                //$sql = "Update smartscreen_station set ScreenName = '$screen_name' where id = $device->id";
-                //FModel::executeSql($sql);
             }
 
             if (!empty($data) && is_array($data)) {
@@ -3255,12 +3253,12 @@ class Smartscreen extends Module
                         $video_file_name = '';
 
                     $content['command'] = Smartscreen::getFileType($video_file_name, isset($content['command']) ? $content['command'] : '');
-                    $smart_file->file = strtolower((!empty($video_file_name) ? $video_file_name : $smart_file->file));
+                    $smart_file->file = (!empty($video_file_name) ? $video_file_name : $smart_file->file);
                 } else {
                     if (isset($content['command']) && !in_array($content['command'], [SmartscreenContent::TYPE_VIDEO, SmartscreenContent::TYPE_IMAGE])) {
                         $smart_file->file = '';
                     } else {
-                        $smart_file->file = strtolower((!empty($video_file_name) ? $video_file_name : $smart_file->file));
+                        $smart_file->file = (!empty($video_file_name) ? $video_file_name : $smart_file->file);
                     }
                 }
 
@@ -3880,7 +3878,7 @@ class Smartscreen extends Module
                 }
                 //$result = $result . $item->description . '<span style="color:grey"> [' . $item->file . '] </span>' . '<br/>';
                 $file_kind = $item->file_kind === 'time' ? 'm' : ($item->file_kind === 'second' ? 's' : ' times');
-                $image = !empty($item->file) ? FHtml::showImage($item->file, 'smartscreen-file', '', '40px', 'border:1px solid lightgrey;', !empty($item->description) ? $item->description : (is_object($model) ? $model->title : '')) : '<span class="label label-sm label-default">' . $item->command . '</span>';
+                $image = !empty($item->file) ? FHtml::showImage($item->file, 'smartscreen-file', '', '62px', 'border:1px solid lightgrey;', !empty($item->description) ? $item->description : (is_object($model) ? $model->title : '')) : '<span class="label label-sm label-default">' . $item->command . '</span>';
                 //$result .= "<div class='row'> <div class='col-md-10' style='padding-bottom: 5px; margin-bottom: 5px;'>" . $image .  "<span style=\"color:grey\"> " . $item->description . "</span></div>" . "<div class='col-md-2 pull-right' style=\"color:grey; text-align: right\"> "  . $item->file_duration . '' . $file_kind . " </div>" . "</div>";
                 $result .= "<div class='' style='float:left;margin-right:5px;'>" . $image . (!empty($item->file_duration) ? "<div style='font-size: 80%;color:grey;text-align: center'>$item->file_duration $file_kind</div>" : "") . "</div>";
             }

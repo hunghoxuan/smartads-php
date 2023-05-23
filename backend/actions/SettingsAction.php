@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\actions;
 
 use backend\models\Settings;

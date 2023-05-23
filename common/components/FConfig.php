@@ -3360,7 +3360,7 @@ class FConfig extends FSecurity
 
     public static function settingDynamicAPIEnabled()
     {
-        return DYNAMIC_API_ENABLED && self::setting('dynamic_api_enabled', true);
+        return DYNAMIC_API_ENABLED && self::setting('dynamic_api_enabled', false);
     }
 
     public static function isDynamicObjectEnabled($moduleKey = '')

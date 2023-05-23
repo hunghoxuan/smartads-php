@@ -51,15 +51,6 @@ return [
         'attribute' => 'description',
         'contentOptions' => ['class' => 'col-md-3 nowrap'],
     ],
-    //    [
-    //        'attribute' => 'image',
-    //        'value' => function($model) { return FHtml::showImageThumbnail($model-> image, FHtml::config(FHtml::SETTINGS_THUMBNAIL_SIZE, 50), 'smartscreen-channels'); },
-    //        'width' => '50px',
-    //    ],
-    //[ 
-    //'attribute' => 'content',
-    //'contentOptions' => ['class' => 'col-md-1 nowrap'],
-    //],
     [
         'class'          => FHtml::COLUMN_VIEW,
         'attribute'      => 'Schedules',
@@ -67,7 +58,7 @@ return [
         'contentOptions' => ['class' => 'col-md-1 nowrap text-left'],
         'value'          => function ($model) {
             $url = FHtml::createUrl('/smartscreen/smartscreen-schedules', ['channel_id' => $model->id]);
-            $result = "<a style='float: left;' href='$url' data-pjax='0' class='label label-primary label-xs'><span class=\"glyphicon glyphicon-pencil\"></span>&nbsp;" . FHtml::t('Schedules') . " </a>";
+            $result = "<a style='float: left;' href='$url' data-pjax='0' class='label label-warning label-xs'><span class=\"glyphicon glyphicon-pencil\"></span>&nbsp;" . FHtml::t('Schedules') . " </a>";
 
             return $result;
         },

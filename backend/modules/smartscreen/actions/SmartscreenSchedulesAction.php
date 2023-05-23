@@ -104,51 +104,14 @@ class SmartscreenSchedulesAction extends BaseApiAction
             $schedule = Smartscreen::getDefaultSchedule($ime, "00:00", Smartscreen::getDurationBetween("00:00", 0, "24:00"));
             $schedules[] = $schedule;
         }
-
-        //        $current_schedule_index = null;
-        //        $current_schedule_id = null;
-        //        $current_schedule_remain_duration = null;
-        //        $current_schedule_current_duration = null;
-        //        $need_load_next_schedule = false;
-        //        $next_id = null;
-        //        $next_index = null;
         //make sure api data is correct !!!
         foreach ($schedules as $i => $schedule) {
             $start_time_next = Smartscreen::getNextStartTime($schedule, null, 1, null, true);
             $schedule->end_time = $start_time_next;
             $schedule->id = (int) str_replace(":", "", $schedule->start_time);
             $schedule->date = $date;
-
-            //            if ($start_time >= $schedule->start_time && $start_time <= $schedule->end_time) {
-            //                $current_schedule_id = $schedule->id;
-            //                $current_schedule_remain_duration = Smartscreen::getDurationBetween($start_time, 0, $schedule->end_time);
-            //                if ($start_time == $schedule->start_time) {
-            //                    $need_load_next_schedule = true;
-            //                } else if ($start_time == $schedule->end_time) {
-            //                    $need_load_next_schedule = true;
-            //                } else if (!empty($app_schedule_id) && !empty($current_schedule_id) && $current_schedule_id != $app_schedule_id) {
-            //                    $need_load_next_schedule = true;
-            //                } else {
-            //                    $need_load_next_schedule = $current_schedule_remain_duration == 0;
-            //                }
-            //                if (isset($schedules[$i + 1])) {
-            //                    $next_id = $schedules[$i + 1]->id;
-            //                }
-            //                break;
-            //            } else if ($start_time < $schedule->start_time) {
-            //                $next_id = $schedule->id;
-            //                $current_schedule_id = 0;
-            //                $current_schedule_remain_duration = Smartscreen::getDurationBetween($start_time, 0, $schedule->start_time);
-            //                break;
-            //            }
         }
-        //
-        //        $result['progress'] = [
-        //            'current_id' => $current_schedule_id,
-        //            'remain_duration' => $current_schedule_remain_duration,
-        //            'next_id' => $next_id,
-        //            'need_load_next_schedule' => $need_load_next_schedule
-        //        ];
+
         $result['start_time'] = $start_time;
         $result['current_time'] = time();
         $result['need_refresh_schedules'] = $need_refresh;
@@ -156,12 +119,7 @@ class SmartscreenSchedulesAction extends BaseApiAction
         $result['description'] = isset($device) ? trim($device->description) : "";
         $result['license'] = isset($device) ? trim($device->LicenseKey) : "";
 
-        //$result['device'] = isset($device) ? $device : null;
-
         $result['data'][0]['schedules'] = array_values($schedules); //update schedules
-
-        //        if ($isTestMode)
-        //            Smartscreen::addDeviceLog($ime, "AppScheduleID: $app_schedule_id, CurrentScheduleID: $current_schedule_id, NextScheduleID: $next_id, Duration: $current_schedule_current_duration, remain: $current_schedule_remain_duration, nextSchedule?: $need_load_next_schedule, refreshSchedules?: $need_refresh", $date, $start_time);
 
         return $result;
     }

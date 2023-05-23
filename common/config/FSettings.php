@@ -14,8 +14,8 @@ use yii\base\Component;
 
 // SETTINGS
 defined('CACHE_ENABLED') or define('CACHE_ENABLED', false);
-defined('LANGUAGES_ENABLED') or define('LANGUAGES_ENABLED', true); // Multiple Languages in Labels
-defined('DB_LANGUAGES_ENABLED') or define('DB_LANGUAGES_ENABLED', true); // Multiple Languages In Database
+defined('LANGUAGES_ENABLED') or define('LANGUAGES_ENABLED', false); // Multiple Languages in Labels
+defined('DB_LANGUAGES_ENABLED') or define('DB_LANGUAGES_ENABLED', false); // Multiple Languages In Database
 defined('LANGUAGES_AUTO_SAVED') or define('LANGUAGES_AUTO_SAVED', false); // Auto generate language files
 defined('LANGUAGES_AUTO_SHOW_URL') or define('LANGUAGES_AUTO_SHOW_URL', false); // Auto generate language files
 
@@ -37,12 +37,12 @@ defined('BACKEND_URL_FOLDER') or define('BACKEND_URL_FOLDER', 'backend/web/index
 //defined('') or define('BACKEND_URL_FOLDER', 'admin'); // loi redirect khi chay tren share host
 
 // PAYPAL
-defined('PAYPAL_API_USERNAME') or define('PAYPAL_API_USERNAME',"hung.hoxuan_api1.gmail.com");
-defined('PAYPAL_API_EMAIL') or define('PAYPAL_API_EMAIL',"hung.hoxuan@gmail.com");
+defined('PAYPAL_API_USERNAME') or define('PAYPAL_API_USERNAME', "hung.hoxuan_api1.gmail.com");
+defined('PAYPAL_API_EMAIL') or define('PAYPAL_API_EMAIL', "hung.hoxuan@gmail.com");
 
-defined('PAYPAL_API_PASSWORD') or define('PAYPAL_API_PASSWORD',"UBVDUPTMCEGA6Y88");
-defined('PAYPAL_API_SIGNATURE') or define('PAYPAL_API_SIGNATURE',"AFcWxV21C7fd0v3bYYYRCpSSRl31AlKUjYQEm9StBtsQZbeWCwCJcHxC");
-defined('PAYPAL_API_LIVE') or define('PAYPAL_API_LIVE', true);
+defined('PAYPAL_API_PASSWORD') or define('PAYPAL_API_PASSWORD', "UBVDUPTMCEGA6Y88");
+defined('PAYPAL_API_SIGNATURE') or define('PAYPAL_API_SIGNATURE', "AFcWxV21C7fd0v3bYYYRCpSSRl31AlKUjYQEm9StBtsQZbeWCwCJcHxC");
+defined('PAYPAL_API_LIVE') or define('PAYPAL_API_LIVE', false);
 
 // FOOTPRINT/ HASH CHECKOUT
 defined('SECRET_KEY') or define('SECRET_KEY', 'mozagroup2017∂'); // used in SHCODE
@@ -67,7 +67,7 @@ defined('DYNAMIC_FIELD_ENABLED') or define('DYNAMIC_FIELD_ENABLED', false); // G
 defined('DYNAMIC_API_ENABLED') or define('DYNAMIC_API_ENABLED', false); // allow admin to modify API Settings
 
 defined('REQUIRED_INDEX_PHP') or define('REQUIRED_INDEX_PHP', false); // Auto add index.php in Url
-defined('DB_SETTINGS_ENABLED') or define('DB_SETTINGS_ENABLED', true); // Get Setting from Database
+defined('DB_SETTINGS_ENABLED') or define('DB_SETTINGS_ENABLED', false); // Get Setting from Database
 defined('DB_OBJECT_SETTINGS_ENABLED') or define('DB_OBJECT_SETTINGS_ENABLED', false); // Get Setting from Database
 defined('DB_SECURITY_ENABLED') or define('DB_SECURITY_ENABLED', false); // Get Security, Auths, Check ROles from Database
 
@@ -83,7 +83,7 @@ defined('LOGS_OBJECT_ACTIONS') or define('LOGS_OBJECT_ACTIONS', false); // Enabl
 defined('LOGS_USER_ACTIONS') or define('LOGS_USER_ACTIONS', false); // Enable Object_actions Logs Object Actions
 
 //ADMIN USER INTERFACE
-defined('SHOW_PREVIEW_COLUMN') or define('SHOW_PREVIEW_COLUMN', true); // Show Preview column (first column in Grid)
+defined('SHOW_PREVIEW_COLUMN') or define('SHOW_PREVIEW_COLUMN', false); // Show Preview column (first column in Grid)
 defined('ADMIN_INLINE_EDIT') or define('ADMIN_INLINE_EDIT', false); // Allow admin to inline edit in Grid columns
 defined('ADMIN_GRID_SHOW_VIEWS') or define('ADMIN_GRID_SHOW_VIEWS', true); // Allow admin to inline edit in Grid columns
 
@@ -152,10 +152,10 @@ class FSettings extends \common\components\FSettings
         'en' => 'English', 'vi' => 'Vietnam', 'ru' => 'Russia', 'jp' => 'Japanese', 'kr' => 'Korea', 'es' => 'Spain', 'pt' => 'Potugal', 'fr' => 'French', 'de' => 'Germany', 'cn' => 'China'
     ];
 
-    const LOOKUP = [
-    ];
+    const LOOKUP = [];
 
-    public static function backendMenu($controller = '', $action = '') {
+    public static function backendMenu($controller = '', $action = '')
+    {
         return FSecurity::getBackendMenu($controller, $action);
     }
 }

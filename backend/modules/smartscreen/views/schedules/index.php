@@ -16,8 +16,10 @@ if (!is_array($data)) {
 $schedules = [];
 
 foreach ($data as $i => $items) {
-    $schedules = array_merge($schedules, $items['schedules']);
+    if (is_array($items['schedules']))
+        $schedules = array_merge($schedules, $items['schedules']);
 }
+
 $preview = FHtml::getRequestParam('preview');
 
 $id = FHtml::getRequestParam('id'); //specific schedule_id

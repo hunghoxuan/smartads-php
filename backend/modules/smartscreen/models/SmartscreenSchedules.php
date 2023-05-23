@@ -126,10 +126,13 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         if (!$this->isCampaign() && empty($this->duration))
             $this->duration = Smartscreen::getDefaultDuration();
 
+
         if (isset($_POST['SmartscreenSchedules']['end_time']))
             $this->end_time = $_POST['SmartscreenSchedules']['end_time'];
 
         $changed = $this->getChangedContent();
+
+        FHtml::var_dump($_POST['SmartscreenSchedules']);
 
         if (isset($changed['duration']) && array_keys($changed['duration'])[0] != array_values($changed['duration'])[0]) {
             $this->end_time = Smartscreen::getNextStartTime($this->start_time,  $this->duration);
@@ -138,6 +141,10 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         }
         if (empty($this->content_id))
             $this->content_id = null;
+
+        // if (empty($this->start_time) && empty($this->content_id) && empty($this->layout_id)) {
+        //     return false;
+        // }
 
         $result = parent::beforeSave($insert);
         return $result;
