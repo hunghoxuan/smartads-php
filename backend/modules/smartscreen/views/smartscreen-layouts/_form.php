@@ -247,6 +247,7 @@ $script = <<< JS
         var tr_closet = $(this).closest("tr");
         
         var number = parseInt(classSelect.replace(/[^0-9\.]/g, ''), 10);
+        // smartscreenlayouts-list_frame-0-margintop
         var percentWidth = '#smartscreenlayouts-list_frame-'+ number +'-percentwidth';
         var percentHeight = '#smartscreenlayouts-list_frame-'+ number +'-percentheight';
         var marginTop = '#smartscreenlayouts-list_frame-'+ number +'-margintop';
@@ -309,7 +310,7 @@ $script = <<< JS
                 var index = data.indexOf("<");
                 var frame_params = data.substring(0, index);
                 var frame_html = data.substring(index);
-                
+            
                 frame_params = JSON.parse(frame_params);
  
                 $( ".div-layout" ).append( frame_html );
@@ -317,7 +318,12 @@ $script = <<< JS
                 $( percentHeight ).val( frame_params[1] );
                 $( marginTop ).val( frame_params[2] );
                 $( marginLeft ).val( frame_params[3] );
-            }
+
+            },
+            error: function(e){
+                        alert('Error processing your request: '+e.responseText);
+                    }
+            
         });
     }
     
