@@ -30,16 +30,10 @@ if (FHtml::isInRole('', 'update', $currentRole)) {
 }
 
 $folder = Fhtml::getRequestParam(['form_type', 'type', 'status']);
-$searchModel = SmartscreenSchedulesSearch::createNew();
-if ($model->campaign_id > 0) {
-    $dataProvider = $searchModel->search(['campaign_id' => $model->campaign_id]);
-} else {
-    $dataProvider = null;
-}
+
 ?>
 <div class="smartscreen-schedules-update">
     <?php echo FHtml::render($controlName, $folder, [
-        'dataProvider' => $dataProvider,
         'model' => $model, 'modelMeta' => $modelMeta,
         'moduleKey' => $moduleKey, 'modulePath' => $modulePath,
         'object_type' => $object_type

@@ -1,7 +1,7 @@
 <?php
 
 use backend\modules\smartscreen\models\SmartscreenLayouts;
-use backend\modules\smartscreen\models\SmartscreenStationAPI;
+use backend\modules\smartscreen\models\SmartscreenStation;
 use kartik\date\DatePicker;
 use kartik\form\ActiveForm;
 use common\widgets\FActiveForm;
@@ -150,6 +150,12 @@ if (json_decode($model->device_id, true) != null) {
 
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
+                                                'is_active'     => [
+                                                    'visible'       => $model->getPermission('is_active'),
+                                                    'value'         => $form->fieldNoLabel($model, 'is_active')->boolean(),
+                                                    'columnOptions' => ['colspan' => 1, 'disable' => true],
+                                                    'type'          => FHtml::INPUT_RAW
+                                                ],
                                                 'date'     => [
                                                     'value'         => $form->fieldNoLabel($model, 'date')->date(),
 
@@ -161,29 +167,11 @@ if (json_decode($model->device_id, true) != null) {
                                                     'type'          => FHtml::INPUT_RAW
                                                 ],
 
-                                                'start_time'     => [
-                                                    'visible' => $campaignHasTime,
-                                                    'value'         => $form->fieldNoLabel($model, 'start_time')->time(),
+                                                // 'days'     => [
+                                                //     'value'         => $form->fieldNoLabel($model, 'days')->checkBoxList(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']),
 
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'end_time'     => [
-                                                    'visible' => $campaignHasTime,
-                                                    'value'         => $form->fieldNoLabel($model, 'end_time')->time(),
-
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'duration'     => [
-                                                    'visible' => $campaignHasTime,
-                                                    'value'         => $form->fieldNoLabel($model, 'duration')->numeric()->appendText('mins'),
-
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'days'     => [
-                                                    'value'         => $form->fieldNoLabel($model, 'days')->checkBoxList(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']),
-
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
+                                                //     'type'          => FHtml::INPUT_RAW
+                                                // ],
                                             ]
                                         ]); ?>
                                         <hr />
@@ -191,40 +179,28 @@ if (json_decode($model->device_id, true) != null) {
                                             'hide_field' => false,
                                             'model'      => $model,
                                             'form'       => $form,
-                                            'columns'    => 1,
+                                            'columns'    => 2,
                                             // 'title'     => FHtml::t('common', 'Security'),
                                             'attributes' => [
-
                                                 'channel_id' => [
-                                                    'value'         => $form->fieldNoLabel($model, 'channel_id')->widget(Select2::classname(), [
-                                                        'data'    => $list_channels,
-                                                        'options' => ['placeholder' => 'Tất cả Nhóm thiết bị', 'multiple' => false, 'disabled' => $disabled]
-                                                    ]),
-
-                                                    'type'          => FHtml::INPUT_RAW
+                                                    'value'         => $form->fieldNoLabel($model, 'channel_id')->dropDownList($list_channels, ['multiple' => false, 'disabled' => $disabled]),
                                                 ],
                                                 'device_id'  => [
-                                                    'value'         => $form->fieldNoLabel($model, 'device_id')->widget(Select2::classname(), [
-                                                        'data'          => $list_device,
-                                                        'options'       => ['placeholder' => 'Tất cả thiết bị', 'multiple' => true, 'disabled' => $disabled],
-                                                        'pluginOptions' => [
-                                                            'tags'            => true,
-                                                            'tokenSeparators' => [',', ' '],
-                                                        ],
-                                                    ]),
-
-                                                    'type'          => FHtml::INPUT_RAW
-                                                ],
-                                                'is_active'     => [
-                                                    'visible'       => $model->getPermission('is_active'),
-                                                    'value'         => $form->fieldNoLabel($model, 'is_active')->boolean(),
-                                                    'columnOptions' => ['colspan' => 1, 'disable' => true],
-                                                    'type'          => FHtml::INPUT_RAW
+                                                    'value'         => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
+                                                        $selected = ($item->id == $id || (is_array($id) && in_array($item->id, $id))) ? 'selected' : '';
+                                                        return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name ($item->description)</option>";
+                                                    }, ['multiple' => true]),
                                                 ]
                                             ]
                                         ]); ?>
 
                                     </div>
+                                    <?php if ($model->id > 0) { ?>
+                                        <div class="col-md-12">
+                                            <hr />
+                                            <a data-pjax=0 href="<?= FHtml::createUrl('/smartscreen/smartscreen-schedules/index', ['campaign_id' => $model->id]) ?>" class="btn btn-warning"><?= FHtml::t('Schedules') ?></a>
+                                        </div>
+                                    <?php } ?>
 
                                 </div>
 
@@ -355,3 +331,29 @@ JS;
 $this->registerJs($script, \yii\web\View::POS_END);
 
 ?>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        $('select[name="SmartscreenCampaigns[channel_id]"]').change(function() {
+            var value = this.value;
+            $('select[name="SmartscreenCampaigns[device_id]"] option').show().filter(function() {
+                var parent = $(this).attr('parent');
+                if (value == undefined || value == '')
+                    return false;
+                return parent && parent !== value;
+            }).hide();
+        });
+
+        $('select[name="SmartscreenCampaigns[device_id]"]').change(function() {
+            var value = this.value;
+            $('a[name="btnCreate"]').attr('href', $('a[name="btnCreate"]').attr('url') + '?device_id=' + value);
+        });
+
+        var channel_id = $('select[name="SmartscreenCampaigns[channel_id]"]').val();
+        if (channel_id) {
+            $('select[name="SmartscreenCampaigns[channel_id]"]').trigger('change');
+        }
+
+    });
+</script>

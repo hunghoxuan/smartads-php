@@ -19,6 +19,7 @@ use kartik\slider\Slider;
 use common\widgets\formfield\FormObjectFile;
 use common\widgets\formfield\FormObjectAttributes;
 use common\widgets\formfield\FormRelations;
+use backend\modules\smartscreen\Smartscreen;
 
 $form_Type = $this->params['activeForm_type'];
 
@@ -30,7 +31,7 @@ $currentRole = FHtml::getCurrentRole();
 $canEdit = FHtml::isInRole($moduleName, 'update', $currentRole);
 $canDelete = FHtml::isInRole($moduleName, 'delete', $currentRole);
 
-$a = \backend\modules\smartscreen\Smartscreen::getHisContentUrl(null);
+$a = Smartscreen::getHisContentUrl(null);
 //FHtml::var_dump()
 
 
@@ -95,6 +96,10 @@ $a = \backend\modules\smartscreen\Smartscreen::getHisContentUrl(null);
                                             <?= $form->field($model, 'MACAddress')->staticInput() ?>
                                             <?= $form->field($model, 'ScreenName')->staticInput() ?>
                                             <?= $form->field($model, 'last_activity')->staticInput() ?>
+                                            <?= Smartscreen::showDeviceLastUpdate($model, $model->id, false) ?>
+
+                                            <hr />
+                                            <a class="btn btn-warning" href="<?= FHtml::createUrl('smartscreen/smartscreen-schedules', ['device_id' => $model->id]) ?>" data-pjax="0"><?= FHtml::t('Schedules') ?></a>
 
                                         </div>
                                         <?php if (\backend\modules\smartscreen\Smartscreen::settingHISEnabled()) { ?>

@@ -240,7 +240,7 @@ class SmartscreenSchedulesController extends SmartscreenController
 
 				return $this->redirect(['index']);
 			} else {
-				return $this->render('create', ['model' => $model, 'dataProvider' => null]);
+				return $this->render('create', ['model' => $model]);
 			}
 		}
 	}
@@ -397,10 +397,7 @@ class SmartscreenSchedulesController extends SmartscreenController
 
 			return $this->redirect(Smartscreen::getCurrentParams(['index', ['campaign_id' => $model->campaign_id]]));
 		} else {
-			$searchModel = SmartscreenSchedulesSearch::createNew();
-			$searchModel->campaign_id = $model->campaign_id;
-			$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-			return $this->render('update', ['model' => $model, 'dataProvider' => $dataProvider]);
+			return $this->render('update', ['model' => $model]);
 		}
 	}
 

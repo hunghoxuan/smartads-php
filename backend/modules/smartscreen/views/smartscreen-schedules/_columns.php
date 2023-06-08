@@ -114,10 +114,10 @@ return [
             $params = Smartscreen::getCurrentParams(['create', 'start_time' => $end_time], '', $model);
             $result .= FHtml::a('<i class="fa fa-plus"></i>', $params, ['data-pjax' => 0, 'class' => 'btn btn-xs btn-success pull-right']);
 
-            $result .= "<small style='color: darkgrey'>$duration</small>";
+            $result .= "<span style='color: darkgrey; font-size:80%'> <span class=\"glyphicon glyphicon-time\"></span> $duration</span>";
             return "<div style='width:100%;'>$timeline </div> <div style='clear:both; padding-top:10px'>$result </div>";
         },
-        'contentOptions' => ['class' => 'col-md-2 nowrap text-center'],
+        'contentOptions' => ['class' => 'col-md-3 nowrap text-center'],
     ],
     [
         'class' => FHtml::COLUMN_VIEW,
@@ -203,7 +203,7 @@ return [
         'width'          => '80px',
         'urlCreator'     => function ($action, $model) {
             $params = Smartscreen::getCurrentParams([$action, 'id' => FHtml::getFieldValue($model, ['id', 'product_id', 'channel_id'])]);
-            return FHtml::createBackendActionUrl($params, ['device_id', 'action']);
+            return FHtml::createBackendActionUrl($params, ['action', 'date', 'show_all', '_pjax']);
         },
         'visibleButtons' => [
             'view'   => false,

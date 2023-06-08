@@ -42,7 +42,7 @@ $folder = FHtml::getRequestParam(['form_type', 'type', 'status']);
 <div class="smartscreen-schedules-create">
     <?php if ($canCreate === true) {
         echo  FHtml::render($controlName, $folder, [
-            'model' => $model, 'modelMeta' => $modelMeta, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath, 'dataProvider' => $dataProvider
+            'model' => $model, 'modelMeta' => $modelMeta, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath
         ]);
     } else { ?>
     <?= Html::a(FHtml::t('common', 'Cancel'), ['index'], ['class' => 'btn btn-default']);

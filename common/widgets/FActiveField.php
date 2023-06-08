@@ -689,6 +689,12 @@ class FActiveField extends ActiveField
         //return self::select($items, $options, $lookup_object, $populated_fields, $search_field, $id_field, FHtml::EDITOR_SELECT);
     }
 
+    public function dropdown($items = null, $options = [], $lookup_object = '', $populated_fields = [], $search_field = 'name', $id_field = 'id')
+    {
+        return parent::dropDownList($items, $options);
+        //return self::select($items, $options, $lookup_object, $populated_fields, $search_field, $id_field, FHtml::EDITOR_SELECT);
+    }
+
     public function dateInput($format = 'yyyy-mm-dd', $options = [], $disabled_date = '', $disabled_hours = '', $class = 'common\widgets\FDatePicker')
     {
         $options = array_merge($this->inputOptions, $options);

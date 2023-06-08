@@ -836,33 +836,43 @@ class Smartscreen extends Module
         $schedules = [];
         $campaign  = SmartscreenCampaigns::findOne($campaign_id);
         if (isset($campaign)) {
-            $channel_id = $campaign->channel_id;
-            $devices1 = [];
-            if (!empty($campaign->device_id) && $campaign->device_id != FHtml::NULL_VALUE) {
-                $devices1 = FHtml::decode($campaign->device_id);
-            } else if (!empty($channel_id) && $campaign->channel_id != FHtml::NULL_VALUE) {
-                $devices1 = SmartscreenStation::findAll(['channel_id' => $channel_id, 'is_active' => 1]);
-            } else {
-                $devices1 = SmartscreenStation::findAll(['is_active' => 1]);
+            $listSchedule = Smartscreen::findSchedules(null, null, $campaign_id, null, $limit, $forAPI, $date, $date_end);
+            $listSchedule = Smartscreen::fixSchedules($listSchedule, $date, $start_time, $forAPI, false);
+            if (isset($listSchedule[0]['schedules'])) {
+                $listSchedule = $listSchedule[0]['schedules'];
             }
-
-            foreach ($devices1 as $device_id) {
-                if (is_object($device_id))
-                    $device_id = $device_id->id;
-                $autoCalculateStarttime = !empty($device_id);
-                $listSchedule = Smartscreen::findSchedules($device_id, $channel_id, $campaign_id, null, $limit, $forAPI, $date, $date_end);
-
-                $listSchedule = Smartscreen::fixSchedules($listSchedule, $date, $start_time, $forAPI, $autoCalculateStarttime);
-                if (isset($listSchedule[0]['schedules'])) {
-                    $listSchedule = $listSchedule[0]['schedules'];
-                }
-                foreach ($listSchedule as $i => $item) {
-                    $item->channel_id = $channel_id;
-                    $item->device_id = $device_id;
-                    $listSchedule[$i] = $item;
-                }
-                $schedules = array_merge($schedules, $listSchedule);
+            foreach ($listSchedule as $i => $item) {
+                $item->channel_id = $campaign->channel_id ? $campaign->channel_id : FHtml::NULL_VALUE;
+                $item->device_id = $campaign->device_id ? $campaign->device_id : FHtml::NULL_VALUE;
+                $listSchedule[$i] = $item;
             }
+            $schedules = array_merge($schedules, $listSchedule);
+            // $channel_id = $campaign->channel_id;
+            // $devices1 = [];
+            // if (!empty($campaign->device_id) && $campaign->device_id != FHtml::NULL_VALUE) {
+            //     $devices1 = FHtml::decode($campaign->device_id);
+            // } else if (!empty($channel_id) && $campaign->channel_id != FHtml::NULL_VALUE) {
+            //     $devices1 = SmartscreenStation::findAll(['channel_id' => $channel_id, 'is_active' => 1]);
+            // } else {
+            //     $devices1 = SmartscreenStation::findAll(['is_active' => 1]);
+            // }
+
+            // foreach ($devices1 as $device_id) {
+            //     if (is_object($device_id))
+            //         $device_id = $device_id->id;
+            //     $autoCalculateStarttime = !empty($device_id);
+            //     $listSchedule = Smartscreen::findSchedules($device_id, $channel_id, $campaign_id, null, $limit, $forAPI, $date, $date_end);
+            //     $listSchedule = Smartscreen::fixSchedules($listSchedule, $date, $start_time, $forAPI, $autoCalculateStarttime);
+            //     if (isset($listSchedule[0]['schedules'])) {
+            //         $listSchedule = $listSchedule[0]['schedules'];
+            //     }
+            //     foreach ($listSchedule as $i => $item) {
+            //         $item->channel_id = $channel_id;
+            //         $item->device_id = $device_id;
+            //         $listSchedule[$i] = $item;
+            //     }
+            //     $schedules = array_merge($schedules, $listSchedule);
+            // }
         }
         return $schedules;
     }
@@ -4034,6 +4044,7 @@ class Smartscreen extends Module
     {
         $last_update = \backend\modules\smartscreen\Smartscreen::getCacheDeviceLoadTime($model->ime);
         $last_update = $last_update > $model->last_update ? $last_update : $model->last_update;
+        $url = FHtml::createUrl(['/smartscreen/smartscreen-station/update', 'id' => $model->id]);
 
         if ($showHtml) {
             $css = (!empty($model->status) && ceil(abs((time() - $last_update)) / 60) < 30) ? 'success' : 'danger';
@@ -4048,7 +4059,7 @@ class Smartscreen extends Module
             if ($showDateTime) {
                 $result .= '<br/><small>' . FHtml::showDateTime($last_update) . '</small>';
             }
-            return $result;
+            return "<a href='$url' data-pjax='0'> $result </a>";
         } else {
             return $last_update;
         }

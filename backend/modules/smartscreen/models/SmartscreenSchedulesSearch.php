@@ -116,6 +116,7 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
             $schedules = Smartscreen::findSchedulesForChannel($channel_id, $date, $date_end, $start_time, $limit, $forAPI, $show_all == 0);
         } else { // device
             $autoCalculateStarttime = !empty($device_id);
+            $campaign_id = 983;
             $device = SmartscreenStation::findOneCached($device_id);
             if (isset($device) && (!empty($channel_id) && $channel_id != $device->channel_id)) {
                 $schedules = [];
@@ -240,6 +241,8 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
 
         $result = [];
         $stations = SmartscreenStation::findAllCached();
+        $campaign = SmartscreenCampaigns::findOneCached($this->campaign_id);
+
         $deviceIds = FHtml::decode($this->device_id);
         if (!is_array($deviceIds))
             $deviceIds = [];
@@ -257,8 +260,8 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
         foreach ($devices as $device) {
             $devicesStr[] = $device->name;
         }
-        if (!empty($channel->campaign_id))
-            $result[FHtml::t('SmartscreenSchedules', 'Campaign')] = $channel->campaign_id;
+        if ($campaign != null)
+            $result[FHtml::t('SmartscreenSchedules', 'Campaign')] = $campaign->layout_id . ' (id:' . $campaign->id . ')';
 
         $result[FHtml::t('SmartscreenSchedules', 'Channel ID')] = isset($channel) ? $channel->name : FHtml::t('All');
         $result[FHtml::t('SmartscreenSchedules', 'Devices')] = !empty($devicesStr) ? implode(', ', $devicesStr) : FHtml::t('All');

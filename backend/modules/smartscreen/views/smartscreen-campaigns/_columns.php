@@ -49,7 +49,7 @@ return [
         'label'          => FHtml::t('common', 'Time'),
         'contentOptions' => ['class' => 'col-md-1 nowrap text-left'],
         'value'          => function ($model) {
-            return $model->showPreview('datetime');
+            return $model->showPreview('date');
         },
     ],
     [
@@ -59,7 +59,7 @@ return [
         'contentOptions' => ['class' => 'col-md-1 nowrap text-center'],
         'value'          => function ($model) {
             $url = FHtml::createUrl('/smartscreen/smartscreen-schedules', ['campaign_id' => $model->id]);
-            $result = "<a href='$url' data-pjax='0' class='label label-warning label-xs'><span class=\"glyphicon glyphicon-th-list\"></span> </a>";
+            $result = "<a href='$url' data-pjax='0' class='label label-warning label-xs'><span class=\"glyphicon glyphicon-th-list\"></span> " . FHtml::t('Schedules') . "</a>";
             return $result;
         },
     ],

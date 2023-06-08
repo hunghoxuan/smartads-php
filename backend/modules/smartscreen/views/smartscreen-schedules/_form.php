@@ -2,6 +2,7 @@
 
 use backend\modules\smartscreen\models\SmartscreenLayouts;
 use backend\modules\smartscreen\models\SmartscreenStationAPI;
+use backend\modules\smartscreen\models\SmartscreenStation;
 use kartik\date\DatePicker;
 use kartik\form\ActiveForm;
 use common\widgets\FActiveForm;
@@ -137,17 +138,7 @@ $model->_content_id = $model->content_id;
                         <div class="form-body">
                             <div class="tab-content">
                                 <div class="tab-pane active row" id="tab_1_1">
-
-                                    <div id="ajaxCrudDatatable" class="<?php if (!$this->params['displayPortlet']) echo 'portlet light ' . ($viewType != 'print' ? 'bordered' : '');  ?>">
-                                        <?php
-                                        if ($dataProvider != null) {
-                                            foreach ($model as $dataProvider->models) {
-                                                echo '<div>' . $model->start_time . ': ' . $model->id . '</div>';
-                                            }
-                                        } ?>
-                                    </div>
                                     <div class="col-md-12">
-
                                         <?php echo FFormTable::widget([
                                             'hide_field' => false,
                                             'model'      => $model,
@@ -184,6 +175,7 @@ $model->_content_id = $model->content_id;
                                             'attributes' => [
 
                                                 '_schedules' => [
+                                                    'label' => false,
                                                     'value'         => $form->fieldNoLabel($model, 'layout_id')->widget(MultipleInput::className(), [
                                                         'addButtonPosition' => $model->isNewRecord ? null : MultipleInput::POS_HEADER,
                                                         'max'               => 1,
@@ -194,7 +186,7 @@ $model->_content_id = $model->content_id;
                                                             [
                                                                 'name'    => 'layout',
                                                                 'type'    => kartik\select2\Select2::className(),
-                                                                'title'   => 'Layout',
+                                                                'title'   => FHtml::t('Content'),
                                                                 'options' => [
                                                                     'data'          => $list_layout,
                                                                     'options'       => [
@@ -264,71 +256,27 @@ $model->_content_id = $model->content_id;
                 ?>
                 <?php
 
-                echo FFormTable::widget([
-                    'id' => 'campaign_widget',
-                    'overview' => 'Ghi chú: Không nhập dữ liệu nếu muốn áp dụng cho tất cả trường hợp',
-                    'title' => 'Phạm vi áp dụng',
-                    'hide_field' => false,
-                    'model'      => $model,
-                    'form'       => $form,
-                    //'title' => FHtml::t('common', 'Devices'),
-                    'type'                   => ActiveForm::TYPE_VERTICAL,
 
-                    'columns'    => 1,
-                    'attributes' => [
-                        'campaign_id' => [
-                            'readonly' => true,
-                            'value'         => $form->fieldNoLabel($model, 'campaign_id')->dropDownList($list_campaigns, ['disabled' => !empty(FHtml::getRequestParam('campaign_id'))]),
-                            'columnOptions' => ['colspan' => 1, 'readonly' => true],
-                            'type'          => FHtml::INPUT_RAW
-                        ],
-                        'channel_id' => [
-                            'visible' => empty($model->campaign_id),
-                            'value'         => $form->fieldNoLabel($model, 'channel_id')->widget(Select2::classname(), [
-                                'data'    => $list_channels,
-                                'options' => ['placeholder' => 'Tất cả Nhóm thiết bị', 'multiple' => false, 'disabled' => $disabled]
-                            ]),
-
-                            'type'          => FHtml::INPUT_RAW
-                        ],
-                        'device_id'  => [
-                            'visible' => empty($model->campaign_id),
-
-                            'value'         => $form->fieldNoLabel($model, 'device_id')->widget(Select2::classname(), [
-                                'data'          => $list_device,
-                                'options'       => ['placeholder' => 'Tất cả thiết bị', 'multiple' => true, 'disabled' => $disabled],
-                                'pluginOptions' => [
-                                    'tags'            => true,
-                                    'tokenSeparators' => [',', ' '],
-                                ],
-                            ]),
-
-                            'type'          => FHtml::INPUT_RAW
-                        ],
-                        'date'     => [
-                            'visible' => empty($model->campaign_id),
-
-                            'value'         => $form->fieldNoLabel($model, 'date')->date(),
-
-                            'type'          => FHtml::INPUT_RAW
-                        ],
-                        'date_end' => [
-                            'visible' => empty($model->campaign_id),
-
-                            'value'         => $form->fieldNoLabel($model, 'date_end')->date(),
-
-                            'type'          => FHtml::INPUT_RAW
-                        ],
-                        'days'     => [
-                            'visible' => empty($model->campaign_id),
-                            'value'         => $form->fieldNoLabel($model, 'days')->checkBoxList(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']),
-                            'columnOptions' => ['colspan' => 3],
-                            'type'          => FHtml::INPUT_RAW
-                        ],
-                    ]
-                ]);
-                if (!empty($model->campaign_id))
+                if (!empty($model->campaign_id)) {
                     echo $model->showPreview(true);
+                } else {
+                    echo \common\widgets\FFormTable::widget([
+                        'hide_field' => false,
+                        'type' => \kartik\form\ActiveForm::TYPE_VERTICAL,
+                        'model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
+                            'campaign_id' => ['value' => $form->fieldNoLabel($model, 'campaign_id')->dropdown($list_campaigns)],
+                            'channel_id' => ['value' => $form->fieldNoLabel($model, 'channel_id')->dropdown($list_channels)],
+                            'device_id' => ['value' => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
+                                $selected = ($item->id == $id || (is_array($id) && in_array($item->id, $id))) ? 'selected' : '';
+                                return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name ($item->description)</option>";
+                            }), ['multiple' => true]],
+                            'date' => ['value' => $form->fieldNoLabel($model, 'date')->date()],
+                            'date_end' => ['value' => $form->fieldNoLabel($model, 'date_end')->date()],
+                            // 'show_all' => ['label' => FHtml::t('Type') . ' ' . FHtml::t('Filter'), 'value' => $form->fieldNoLabel($model, 'show_all')->select([['id' => 0, 'name' => FHtml::t('Active')], ['id' => 1, 'name' => FHtml::t('All')]])],
+
+                        ]
+                    ]);
+                }
                 ?>
             </div>
 
@@ -455,6 +403,52 @@ $script = <<< JS
     
 JS;
 
+
 $this->registerJs($script, \yii\web\View::POS_END);
 
 ?>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        $('select[name="SmartscreenSchedules[campaign_id]"]').change(function() {
+            var value = this.value;
+            $('select[name="SmartscreenSchedules[channel_id]"] option').prop('disabled', false).show().filter(function() {
+                if (value != '' && value != undefined)
+                    return true;
+                return false;
+            }).prop('disabled', true).prop('selected', false).hide();
+            $('select[name="SmartscreenSchedules[device_id]"] option').prop('disabled', false).show().filter(function() {
+                if (value != '' && value != undefined)
+                    return true;
+                return false;
+            }).prop('disabled', true).prop('selected', false).hide();
+        });
+
+
+        $('select[name="SmartscreenSchedules[channel_id]"]').change(function() {
+            var value = this.value;
+            $('select[name="SmartscreenSchedules[device_id]"] option').prop('disabled', false).show().filter(function() {
+                var parent = $(this).attr('parent');
+
+                if (value == undefined || value == '')
+                    return false;
+                return parent && parent !== value;
+            }).hide();
+        });
+
+        $('select[name="SmartscreenSchedules[device_id]"]').change(function() {
+            var value = this.value;
+            $('a[name="btnCreate"]').attr('href', $('a[name="btnCreate"]').attr('url') + '?device_id=' + value);
+        });
+
+        var campaign_id = $('select[name="SmartscreenSchedules[campaign_id]"]').val();
+        var channel_id = $('select[name="SmartscreenSchedules[channel_id]"]').val();
+        if (campaign_id) {
+            $('select[name="SmartscreenSchedules[campaign_id]"]').trigger('change');
+        } else if (channel_id) {
+            $('select[name="SmartscreenSchedules[channel_id]"]').trigger('change');
+        }
+
+    });
+</script>
