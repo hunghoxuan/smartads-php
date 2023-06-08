@@ -114,8 +114,9 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         if (!empty($this->name) && $this->type == Smartscreen::SCHEDULE_TYPE_CAMPAIGN)
             $this->{self::FIELD_NAME} = $this->name;
 
-        if (isset($this->is_active))
+        if (isset($this->is_active)) {
             $this->{self::FIELD_STATUS} = $this->is_active;
+        }
 
         if (!empty($this->campaign_id))
             $this->{self::FIELD_CAMPAIGN_ID} = $this->campaign_id;
@@ -123,28 +124,38 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
         if (!empty($this->date) && $this->date == $this->date_end)
             $this->days = '';
 
-        if (!$this->isCampaign() && empty($this->duration))
-            $this->duration = Smartscreen::getDefaultDuration();
+        if (empty($this->type))
+            $this->type = Smartscreen::SCHEDULE_TYPE_ADVANCE;
+        if ($this->type != Smartscreen::SCHEDULE_TYPE_CAMPAIGN) {
+            if (empty($this->start_time))
+                $this->start_time = '00:00';
 
+            if (!$this->isCampaign() && empty($this->duration))
+                $this->duration = 1400;
+        }
 
         if (isset($_POST['SmartscreenSchedules']['end_time']))
             $this->end_time = $_POST['SmartscreenSchedules']['end_time'];
 
-        $changed = $this->getChangedContent();
+        if (empty($this->end_time))
+            $this->end_time = '24:00';
 
-        FHtml::var_dump($_POST['SmartscreenSchedules']);
+        $changed = $this->getChangedContent();
 
         if (isset($changed['duration']) && array_keys($changed['duration'])[0] != array_values($changed['duration'])[0]) {
             $this->end_time = Smartscreen::getNextStartTime($this->start_time,  $this->duration);
         } else if (!empty($this->end_time)) {
             $this->duration = Smartscreen::getDurationBetween($this->start_time, 0, $this->end_time);
         }
-        if (empty($this->content_id))
+
+        if (empty($this->content_id) || $this->content_id == FHtml::NULL_VALUE)
             $this->content_id = null;
 
-        // if (empty($this->start_time) && empty($this->content_id) && empty($this->layout_id)) {
-        //     return false;
-        // }
+        if (empty($this->device_id) || $this->device_id == FHtml::NULL_VALUE)
+            $this->device_id = null;
+
+        if (empty($this->owner_id))
+            $this->owner_id = FHtml::currentUserId();
 
         $result = parent::beforeSave($insert);
         return $result;

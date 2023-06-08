@@ -20,7 +20,7 @@ $form_type = FHtml::getRequestParam('form_type');
 $isEditable = FHtml::isInRole('', 'update');
 $campaign_id = Smartscreen::getCurrentCampaignId();
 $device_id = Smartscreen::getCurrentDeviceId();
-$show_all = FHtml::getRequestParam('show_all', 0);
+$show_all = FHtml::getRequestParam('show_all', 1);
 //if (!empty(FHtml::getRequestParam('device_id'))  ||  !empty(FHtml::getRequestParam('campaign_id')))
 //    $show_all = 1;
 
@@ -93,22 +93,31 @@ return [
         'value'          => function ($model) {
             $result = !empty($model->start_time) ? (is_numeric($model->start_time) ? date('H:i A', $model->start_time) : $model->start_time) : '';
 
-            $start_time =  Smartscreen::getNextStartTime($model);
+            $end_time =  Smartscreen::getNextStartTime($model);
             $duration = $model->duration;
+            $timeline = '';
             if (is_numeric($duration) && !empty($duration)) {
                 $hours = floor($duration / 60);
                 $mins = $duration - (60 * $hours);
                 $duration = (!empty($hours) ? $hours . '<small>h</small>' : '') . (!empty($mins) ? $mins . '<small>\'</small>' : '');
             }
-            $result .= " - <span style='color: darkgrey'> $start_time </span>";
+            for ($i = 0; $i < 24; $i++) {
+                if ((int) substr($model->start_time, 0, 2) <= $i && (int) substr($end_time, 0, 2) >= $i) {
+                    $color = 'yellow';
+                } else {
+                    $color = '#ccc';
+                }
+                $timeline .= "<div style='width:30;height:30;background-color:$color;float:left;border:1px solid grey;float:left; font-size:40%; padding: 2px'> $i </div>";
+            }
+            $result .= " - <span style='color: darkgrey'> $end_time </span>";
 
-            $params = Smartscreen::getCurrentParams(['create', 'start_time' => $start_time, 'data-pjax' => 0], '', $model);
-            $result .= FHtml::a('<i class="fa fa-plus"></i>', $params, ['class' => 'btn btn-xs btn-success pull-right']);
+            $params = Smartscreen::getCurrentParams(['create', 'start_time' => $end_time], '', $model);
+            $result .= FHtml::a('<i class="fa fa-plus"></i>', $params, ['data-pjax' => 0, 'class' => 'btn btn-xs btn-success pull-right']);
 
-            $result .= "<br/><small style='color: darkgrey'>$duration</small>";
-            return $result;
+            $result .= "<small style='color: darkgrey'>$duration</small>";
+            return "<div style='width:100%;'>$timeline </div> <div style='clear:both; padding-top:10px'>$result </div>";
         },
-        'contentOptions' => ['class' => 'col-md-1 nowrap text-center'],
+        'contentOptions' => ['class' => 'col-md-2 nowrap text-center'],
     ],
     [
         'class' => FHtml::COLUMN_VIEW,
@@ -129,15 +138,10 @@ return [
         'class'          => FHtml::COLUMN_VIEW,
         'attribute'      => 'content_id',
         'label'          => FHtml::t('common', 'Content'),
-        'contentOptions' => ['class' => $show_all == 0 ? 'col-md-5 nowrap text-left' : 'col-md-4 nowrap text-left'],
-        'value'          =>
-        empty($device_id) ?
-            function ($model, $key, $index, $column) {
-                return '';
-            } :
-            function ($model, $key, $index, $column) {
-                return Smartscreen::showScheduleOverview($model);
-            },
+        'contentOptions' => ['class' => $show_all == 0 ? 'col-md-3 nowrap text-left' : 'col-md-2 nowrap text-left'],
+        'value'          => function ($model, $key, $index, $column) {
+            return Smartscreen::showScheduleOverview($model);
+        },
     ],
     [
         'class'          => FHtml::COLUMN_VIEW,
@@ -163,19 +167,24 @@ return [
             $device_id =  Smartscreen::getCurrentDeviceId($model);
             $url = FHtml::createUrl('smartscreen/schedules', ['id' => $model->id, 'device_id' => $device_id, 'layout' => 'no']);
             $result = FHtml::showModalIframeButton('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;Id' . $model->id . '&nbsp;', $url, 'iframe', 'label-xs label label-primary');
+            $label = "";
             if (!empty($model->{SmartscreenSchedules::FIELD_CAMPAIGN_ID})) {
                 $label = "Campaign: " . $model->{SmartscreenSchedules::FIELD_CAMPAIGN_ID};
                 $css = 'label label-primary';
-            } else if (!empty($model->device_id)) {
-                $label = "Device: " . $model->device_id;
-                $css = 'label label-warning';
-            } else if (!empty($model->id)) {
-                $label = "";
-                $css = 'label label-default';
-            } else
-                $label = "";
-            if (!empty($label))
-                $result .= FHtml::showModalContent("<div class='$css' style='float:left; margin-right:10px;'>$label</div>", $model->showPreview(true));
+                $url = FHtml::createUrl('smartscreen/smartscreen-schedules/index', ['campaign_id' => $model->{SmartscreenSchedules::FIELD_CAMPAIGN_ID}]);
+
+                $result .= "<a href='$url' data-pjax=0>$label</a>";
+            }
+            // else if (!empty($model->device_id)) {
+            //     $label = "Device: " . $model->device_id;
+            //     $css = 'label label-warning';
+            // } else if (!empty($model->id)) {
+            //     $label = "";
+            //     $css = 'label label-default';
+            // } else
+            //     $label = "";
+            // if (!empty($label))
+            //     $result .= FHtml::showModalContent("<div class='$css' style='float:left; margin-right:10px;'>$label</div>", $model->showPreview(true));
 
             return $result;
         },

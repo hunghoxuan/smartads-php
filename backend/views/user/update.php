@@ -16,7 +16,6 @@ $moduleKey = 'user';
 $modulePath = 'user';
 $object_type = 'user';
 $modelMeta = isset($modelMeta) ? $modelMeta : null;
-
 $this->title = FHtml::t($moduleTitle);
 
 $this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => 'index'];

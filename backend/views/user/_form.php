@@ -133,7 +133,7 @@ $size = Yii::$app->request->isAjax ? 12 : 9;
                                             'email' => ['value' => $form->fieldNoLabel($model, 'email')->emailInput()],
                                             'image' => ['value' => $form->fieldNoLabel($model, 'image')->image()],
 
-                                            'status' => ['readonly' => !FHtml::isRoleAdmin(), 'value' => $form->fieldNoLabel($model, 'status')->select('user.status')],
+                                            'status' => ['value' => (FHtml::isRoleUser() || FHtml::currentUserId() == $model->id) ? FHtml::showLabel('user.status', 'user', 'status', $model->status) : $form->fieldNoLabel($model, 'status')->select('user.status')],
                                         ]]); ?>
 
                                     </div>

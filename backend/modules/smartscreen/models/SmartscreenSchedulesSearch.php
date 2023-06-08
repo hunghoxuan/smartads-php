@@ -100,19 +100,21 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
             $start_time = $this->_start_time;
 
         $schedules = [];
-        $show_all = FHtml::getRequestParam('show_all', 0);
+        $show_all = 1; //FHtml::getRequestParam('show_all', 1);
         $forAPI = ($show_all == 0 || $show_all == 2) ? true : false;
 
-        if (empty($channel_id) && empty($device_id) && empty($campaign_id)) {
+        if (!empty($campaign_id)) { // campaign
+            $schedules = Smartscreen::findSchedulesForCampaign($campaign_id, $date, $date_end, $start_time, $limit, $forAPI);
+        } else if (empty($channel_id) && empty($device_id) && empty($campaign_id)) { // select all ?
             $schedules = [];
             $channels = SmartscreenChannels::findAll(['is_active' => 1]);
             foreach ($channels as $channel) {
                 $listSchedule = Smartscreen::findSchedulesForChannel($channel->id, $date, $date_end, $start_time, $limit, $forAPI, $show_all == 0);
                 $schedules = array_merge($schedules, $listSchedule);
             }
-        } else if (!empty($channel_id) && empty($device_id) && empty($campaign_id)) {
+        } else if (!empty($channel_id) && empty($device_id) && empty($campaign_id)) { //channel
             $schedules = Smartscreen::findSchedulesForChannel($channel_id, $date, $date_end, $start_time, $limit, $forAPI, $show_all == 0);
-        } else {
+        } else { // device
             $autoCalculateStarttime = !empty($device_id);
             $device = SmartscreenStation::findOneCached($device_id);
             if (isset($device) && (!empty($channel_id) && $channel_id != $device->channel_id)) {
@@ -129,20 +131,9 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
             }
         }
 
-        if (isset($schedules[0]['schedules'])) {
+        if (isset($schedules[0]) && isset($schedules[0]['schedules'])) {
             $schedules = $schedules[0]['schedules'];
         }
-
-        // //make sure the grid grouped columns dont break !
-        // foreach ($schedules as $i => $item) {
-        //     if (is_object($item)) {
-        //         if (empty($item->channel_id))
-        //             $item->channel_id = !empty($channel_id) ? $channel_id : null;
-        //         if (empty($item->device_id))
-        //             $item->device_id = !empty($device_id) ? $device_id : null;
-        //     }
-        //     $schedules[$i] = $item;
-        // }
 
         $dataProvider->models = $schedules;
         return $dataProvider;

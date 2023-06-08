@@ -11,6 +11,7 @@ use backend\modules\smartscreen\models\SmartscreenLayouts;
 use backend\modules\smartscreen\models\SmartscreenSchedules;
 use backend\modules\smartscreen\Smartscreen;
 use common\components\FHtml;
+use Imagine\Filter\Basic\Show;
 
 class SmartscreenController extends AdminController
 {
@@ -19,9 +20,10 @@ class SmartscreenController extends AdminController
 	 * @param $action
 	 * @return bool|string
 	 */
-	public static function callSocket($device_id, $action) {
-	    //hung: no redis setup -> remove
-        return false;
+	public static function callSocket($device_id, $action)
+	{
+		//hung: no redis setup -> remove
+		return false;
 		return Smartscreen::refreshSchedulesAndPushToDevices($device_id, $action);
 	}
 
@@ -35,12 +37,12 @@ class SmartscreenController extends AdminController
 	 * @return string
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	public static function listContent($frame_id, $number, $selected, $content_models, $content_json, $i) {
+	public static function listContent($frame_id, $number, $selected, $content_models, $content_json, $i)
+	{
 		if (is_object($frame_id)) {
 			$frame_model = $frame_id;
 			$frame_id    = $frame_model->id;
-		}
-		else {
+		} else {
 			$frame_model = SmartscreenFrame::findOne($frame_id);
 		}
 		$frame_content_id = '';
@@ -54,7 +56,7 @@ class SmartscreenController extends AdminController
 		$result .= "<option value='' $selected >" . FHtml::t('common', '...') . "</option>";
 
 		//$content_ids = json_encode($content_json->content_id);
-		$content_ids = json_decode($content_json->content_id,true);
+		$content_ids = json_decode($content_json->content_id, true);
 		$content_id = empty($content_ids[$i]) ? $frame_content_id : $content_ids[$i];
 
 		if (empty($content_models)) {
@@ -86,14 +88,14 @@ class SmartscreenController extends AdminController
 	 * @return string
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	public static function updateContent($content_id) {
+	public static function updateContent($content_id)
+	{
 		$baseUrl = \Yii::$app->getUrlManager()->getBaseUrl();
 		if (isset($content_id)) {
 			$result = '<a href="javascript:void(0)" class="data-link" data-link="' . $baseUrl . '/index.php/smartscreen/smartscreen-content/update?id=' . $content_id . '">
                         <span class="glyphicon glyphicon-eye-open"></span>
                        </a>';
-		}
-		else {
+		} else {
 			$result = '<a href="javascript:void(0)" class="data-link" data-link="">
                         <span class="glyphicon glyphicon-eye-open"></span>
                        </a>';
@@ -106,7 +108,8 @@ class SmartscreenController extends AdminController
 	 * @return bool|string
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	public function actionGetContent() {
+	public function actionGetContent()
+	{
 
 		$this->layout = false;
 		$layout_id    = $_REQUEST['layout_id'];
@@ -116,20 +119,19 @@ class SmartscreenController extends AdminController
 		if ($layout_id) {
 
 			$layout       = SmartscreenLayouts::findOne($layout_id);
-			$content_json = '';
+			$content_json = [];
 
 			if (!empty($scheduleId)) {
 				$content_json = SmartscreenSchedules::find()->select(['content_id'])->where(['id' => $scheduleId])->one();
+			} else {
+				$content_json = new SmartscreenSchedules();
 			}
 
 			if ($layout) {
 				return $this->render('get-content', ['layout' => $layout, 'selectId' => $selectId, 'content_json' => $content_json]);
 			}
-
-			//                $orderBy = new \yii\db\Expression('FIELD (id, ' . implode(',', array_values($layout->frame)) . ')');
 		}
 
 		return false;
 	}
-
 }

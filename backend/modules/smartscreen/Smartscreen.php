@@ -72,8 +72,8 @@ class Smartscreen extends Module
         'smartscreen_file.command' => [[SmartscreenContent::TYPE_IMAGE => 'image', SmartscreenContent::TYPE_VIDEO => 'video', SmartscreenContent::TYPE_URL => 'url', SmartscreenContent::TYPE_TEXT => 'text']]
     ];
 
-    const SETTINGS_SCHEDULE_ALLOW_OVERLAP = false; // true -> autoFixTimes = false, false -> autoFixTimes = false
-    const SETTINGS_SCHEDULE_ALLOW_INTERSECTED = false;
+    const SETTINGS_SCHEDULE_ALLOW_OVERLAP = true; // true -> autoFixTimes = false, false -> autoFixTimes = false
+    const SETTINGS_SCHEDULE_ALLOW_INTERSECTED = true;
 
     public $controllerNamespace = 'backend\modules\smartscreen\controllers';
 
@@ -479,7 +479,7 @@ class Smartscreen extends Module
         $campaign_id = Smartscreen::getCurrentCampaignId($model, $modelName);
         $layout = FHtml::getRequestParam('layout');
         $search = FHtml::getRequestParam('search');
-        $show_all = FHtml::getRequestParam('show_all');
+        $show_all = 1; // FHtml::getRequestParam('show_all'); Hung: test
 
         $date = Smartscreen::getCurrentDate();
         if (empty($params))
@@ -671,14 +671,15 @@ class Smartscreen extends Module
             $schedules = Smartscreen::getStandBySchedule();
         } else {
             //try get smartscreen_script first
-            $script = Smartscreen::getDeviceScripts($ime, $date, $start_time, $finished_schedule_id, $channel_id, $schedule_id, $limit);
+            // $script = Smartscreen::getDeviceScripts($ime, $date, $start_time, $finished_schedule_id, $channel_id, $schedule_id, $limit);
 
-            if (isset($script)) {
-                $schedules = Smartscreen::convertScheduleFromSmartscreenScript($script);
-                $schedules = Smartscreen::fixSchedulesTime($schedules, $date, $start_time);
-            } else {
-                $schedules = Smartscreen::getDeviceSchedules($ime, $date, $start_time, $finished_schedule_id, $channel_id, $schedule_id, $limit, $date, true);
-            }
+            // if (isset($script)) {
+            //     $schedules = Smartscreen::convertScheduleFromSmartscreenScript($script);
+            //     $schedules = Smartscreen::fixSchedulesTime($schedules, $date, $start_time);
+            // } else {
+            //     $schedules = Smartscreen::getDeviceSchedules($ime, $date, $start_time, $finished_schedule_id, $channel_id, $schedule_id, $limit, $date, true);
+            // }
+            $schedules = Smartscreen::getDeviceSchedules($ime, $date, $start_time, $finished_schedule_id, $channel_id, $schedule_id, $limit, $date, true);
         }
 
         if (is_string($schedules)) {
@@ -768,6 +769,7 @@ class Smartscreen extends Module
 
     public static function findSchedulesForDevices($devices1, $date = null, $date_end = null, $start_time = null, $limit = -1, $forAPI = false, $showCurrentOnly = true)
     {
+        $showCurrentOnly = false; //always show all schedules
         $schedules = [];
         foreach ($devices1 as $device) {
             $device_id = $device->id;
@@ -836,16 +838,20 @@ class Smartscreen extends Module
         if (isset($campaign)) {
             $channel_id = $campaign->channel_id;
             $devices1 = [];
-            if (!empty($campaign->device_id)) {
+            if (!empty($campaign->device_id) && $campaign->device_id != FHtml::NULL_VALUE) {
                 $devices1 = FHtml::decode($campaign->device_id);
-            } else {
+            } else if (!empty($channel_id) && $campaign->channel_id != FHtml::NULL_VALUE) {
                 $devices1 = SmartscreenStation::findAll(['channel_id' => $channel_id, 'is_active' => 1]);
+            } else {
+                $devices1 = SmartscreenStation::findAll(['is_active' => 1]);
             }
+
             foreach ($devices1 as $device_id) {
                 if (is_object($device_id))
                     $device_id = $device_id->id;
                 $autoCalculateStarttime = !empty($device_id);
-                $listSchedule = Smartscreen::findSchedules($device_id, null, null, null, $limit, $forAPI, $date, $date_end);
+                $listSchedule = Smartscreen::findSchedules($device_id, $channel_id, $campaign_id, null, $limit, $forAPI, $date, $date_end);
+
                 $listSchedule = Smartscreen::fixSchedules($listSchedule, $date, $start_time, $forAPI, $autoCalculateStarttime);
                 if (isset($listSchedule[0]['schedules'])) {
                     $listSchedule = $listSchedule[0]['schedules'];
@@ -932,7 +938,7 @@ class Smartscreen extends Module
             }
         }
 
-        $query = $query->orderBy(['channel_id' => SORT_ASC, 'device_id' => SORT_ASC, 'start_time' => SORT_ASC]);
+        $query = $query->orderBy(['frame_id' => SORT_DESC,  'channel_id' => SORT_ASC, 'device_id' => SORT_ASC, 'start_time' => SORT_ASC]);
 
         if ($limit > 0)
             $query = $query->limit($limit);
@@ -956,6 +962,7 @@ class Smartscreen extends Module
 
     public static function fixSchedules($schedules, $date = null, $start_time = null, $forAPI = true, $autoCaculateStartTime = !SmartScreen::SETTINGS_SCHEDULE_ALLOW_OVERLAP)
     {
+        $autoCaculateStartTime = false;
         $day_in_week = FHtml::getWeekday($date);
         $start_time = null;
         $last_end_time = null;
@@ -3782,11 +3789,10 @@ class Smartscreen extends Module
             return "<span style='color:grey'>" . $result . "</span>";
         }
 
-        $result = '';
-        $result = self::Cache("Schedule_{$model->id}_Overview");
+        $result = null;
+        //$result = self::Cache("Schedule_{$model->id}_Overview");
         if (isset($result))
             return $showAll ? $result : FHtml::showToogleContent(FHtml::t('Content') . '&nbsp;<span class="glyphicon glyphicon-collapse-down"></span>', @"<div>$result</div>");
-
         $items  = FHtml::decode($model->content_id);
 
         if (!empty($items)) {
@@ -3795,6 +3801,7 @@ class Smartscreen extends Module
 
             if (is_array($items)) {
                 //$data = $model->data;
+
                 foreach ($items as $i => $item) {
                     if (empty($item)) {
                         unset($items[$i]);
@@ -3811,17 +3818,21 @@ class Smartscreen extends Module
                     if (!isset($content_model) || in_array($content_model->type, ['text'])) {
                         continue;
                     }
-                    //$frame = isset($model->data[$i]) ? $model->data[$i]['name'] : "Zone $i";
-                    if (count($items) > 1) {
-                        $css = ($i < count($items) - 1) ? "padding-bottom:5px; border-bottom:1px solid lightgrey;" : '';
-                        $result .= "<div style='clear:both;$css; width: 100%; display: inline-block'>";
-                        //$result .= "<div style='color: #eee; font-size: 80%; float:left;writing-mode: vertical-rl;text-orientation: mixed; '>$frame</div>";
-                    }
+                    $title = '[' . $content_model->type . '] ' . $content_model->title . ' (id:' . $content_model->id . ')';
+                    $url = FHtml::createUrl('smartscreen/smartscreen-content/update', ['id' => $content_model->id]);
 
-                    $result .= Smartscreen::showContentOverview($content_model, null, true);
-                    if (count($items) > 1) {
-                        $result .= '</div>';
-                    }
+                    $result .= "<a href='$url' data-pjax=0>$title</a>" . '<br/>';
+                    // //$frame = isset($model->data[$i]) ? $model->data[$i]['name'] : "Zone $i";
+                    // if (count($items) > 1) {
+                    //     $css = ($i < count($items) - 1) ? "padding-bottom:5px; border-bottom:1px solid lightgrey;" : '';
+                    //     $result .= "<div style='clear:both;$css; width: 100%; display: inline-block'>";
+                    //     //$result .= "<div style='color: #eee; font-size: 80%; float:left;writing-mode: vertical-rl;text-orientation: mixed; '>$frame</div>";
+                    // }
+
+                    // $result .= Smartscreen::showContentOverview($content_model, null, true);
+                    // if (count($items) > 1) {
+                    //     $result .= '</div>';
+                    // }
                 }
             }
 

@@ -133,14 +133,14 @@ $showSearch = !in_array(FHtml::getRequestParam('search', 'true'), ['no', 'false'
                                 })],
                                 'date' => ['value' => $form->fieldNoLabel($model, 'date')->date()],
                                 'date_end' => ['value' => $form->fieldNoLabel($model, 'date_end')->date()],
-                                'show_all' => ['label' => FHtml::t('Type') . ' ' . FHtml::t('Filter'), 'value' => $form->fieldNoLabel($model, 'show_all')->select([['id' => 0, 'name' => FHtml::t('Active')], ['id' => 1, 'name' => FHtml::t('All')]])],
+                                // 'show_all' => ['label' => FHtml::t('Type') . ' ' . FHtml::t('Filter'), 'value' => $form->fieldNoLabel($model, 'show_all')->select([['id' => 0, 'name' => FHtml::t('Active')], ['id' => 1, 'name' => FHtml::t('All')]])],
 
                             ]
                         ]);
-                        echo FHtml::buttonSearch();
+                        echo FHtml::buttonSearch() . '&nbsp;' . $createButton;
                     }
                     ?>
-                    <?= "<div class='pull-right'>$deleteButton $view $createButton</div>" ?>
+                    <?= "<div class='pull-right'>$deleteButton $view </div>" ?>
                     <?php \common\widgets\FActiveForm::end(); ?>
                 </div>
                 <?php if ($showGrid) {

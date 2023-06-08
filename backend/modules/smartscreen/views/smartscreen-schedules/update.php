@@ -1,14 +1,13 @@
 <?php
 
-/**
- *
- ***
- * This is the customized model class for table "SmartscreenSchedules".
- */
+/* @var $this yii\web\View */
+/* @var $searchModel backend\modules\smartscreen\models\SmartscreenSchedulesSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 use yii\helpers\Html;
 use common\components\FHtml;
 use common\components\Helper;
+use backend\modules\smartscreen\models\SmartScreenSchedulesSearch;
 
 $moduleName = 'SmartscreenSchedules';
 $moduleTitle = 'Smartscreen Schedules';
@@ -31,12 +30,18 @@ if (FHtml::isInRole('', 'update', $currentRole)) {
 }
 
 $folder = Fhtml::getRequestParam(['form_type', 'type', 'status']);
-
-/* @var $this yii\web\View */
-/* @var $model backend\modules\smartscreen\models\SmartscreenSchedules */
+$searchModel = SmartscreenSchedulesSearch::createNew();
+if ($model->campaign_id > 0) {
+    $dataProvider = $searchModel->search(['campaign_id' => $model->campaign_id]);
+} else {
+    $dataProvider = null;
+}
 ?>
 <div class="smartscreen-schedules-update">
-    <?= FHtml::render($controlName, $folder, [
-        'model' => $model, 'modelMeta' => $modelMeta, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath, 'object_type' => $object_type
+    <?php echo FHtml::render($controlName, $folder, [
+        'dataProvider' => $dataProvider,
+        'model' => $model, 'modelMeta' => $modelMeta,
+        'moduleKey' => $moduleKey, 'modulePath' => $modulePath,
+        'object_type' => $object_type
     ]) ?>
 </div>
