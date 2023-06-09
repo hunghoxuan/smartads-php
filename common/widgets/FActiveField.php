@@ -455,7 +455,10 @@ class FActiveField extends ActiveField
         $name = $this->getInputName();
         $id = $this->getInputId();
         $value = $this->getFieldValue();
-        $options['name'] = $name;
+        if (isset($options['multiple']) && $options['multiple'] == true)
+            $options['name'] = $name . '[]'; // support parse multiple select as array to $_POST
+        else
+            $options['name'] = $name;
         $options['id'] = $id;
         $control = '';
         foreach ($options as $a => $b) {

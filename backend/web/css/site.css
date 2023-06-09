@@ -1580,3 +1580,10 @@ select > option {
 select:-internal-list-box option:checked {
     background-color: lightgray !important;
 }
+
+select option:active {
+    background-color: lightgray !important;
+}
+select option:focus {
+    background-color: lightgray !important;
+}

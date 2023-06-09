@@ -266,7 +266,7 @@ $model->_content_id = $model->content_id;
                         'model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
                             'campaign_id' => ['value' => $form->fieldNoLabel($model, 'campaign_id')->dropdown($list_campaigns)],
                             'channel_id' => ['value' => $form->fieldNoLabel($model, 'channel_id')->dropdown($list_channels)],
-                            'device_id' => ['value' => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
+                            'device_id[]' => ['name' => 'device_id[]', 'value' => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
                                 $selected = ($item->id == $id || (is_array($id) && in_array($item->id, $id))) ? 'selected' : '';
                                 return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name. $item->description (id: $item->id)</option>";
                             }, ['multiple' => true])],
@@ -435,11 +435,6 @@ $this->registerJs($script, \yii\web\View::POS_END);
                     return false;
                 return parent && parent !== value;
             }).hide();
-        });
-
-        $('select[name="SmartscreenSchedules[device_id]"]').change(function() {
-            var value = this.value;
-            $('a[name="btnCreate"]').attr('href', $('a[name="btnCreate"]').attr('url') + '?device_id=' + value);
         });
 
         var campaign_id = $('select[name="SmartscreenSchedules[campaign_id]"]').val();
