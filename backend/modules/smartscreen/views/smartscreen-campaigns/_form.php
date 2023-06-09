@@ -188,7 +188,7 @@ if (json_decode($model->device_id, true) != null) {
                                                 'device_id'  => [
                                                     'value'         => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
                                                         $selected = ($item->id == $id || (is_array($id) && in_array($item->id, $id))) ? 'selected' : '';
-                                                        return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name ($item->description)</option>";
+                                                        return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name. $item->description (id: $item->id)</option>";
                                                     }, ['multiple' => true]),
                                                 ]
                                             ]

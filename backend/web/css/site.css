@@ -1565,3 +1565,18 @@ span.warning {
 .no-bordred {
     border:none !important;
 }
+
+select[multiple], select[size] {
+    min-height: 200px !important;
+    height: auto !important;
+}
+
+select > option {
+    padding:5px;
+    min-height: 20px !important;
+    height: auto !important;
+}
+
+select:-internal-list-box option:checked {
+    background-color: lightgray !important;
+}
