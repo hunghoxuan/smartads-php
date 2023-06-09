@@ -889,7 +889,7 @@ class Smartscreen extends Module
         else if ($date_end < $date)
             $date_end = $date;
 
-        $sql_condition = "('$date' <= date_end or (date_end is null or date_end = '')) AND ('$date_end' >= date or (date is null or date=''))";
+        $sql_condition = "('$date' <= date_end or date_end is null or date_end = '') AND ('$date_end' >= date or date is null or date='')";
         return $sql_condition;
     }
 
@@ -910,8 +910,8 @@ class Smartscreen extends Module
         $sql_channel_null = "(channel_id = '...' or channel_id is null or channel_id = '' or channel_id = '[]')";
         $sql_device_null = "(device_id = '...' or device_id is null or device_id = '' or device_id = '[]')";
 
-        $sql_device_has = "(device_id = '$device_id' or device_id like '%$device_id%')";
-        $sql_channel_has = "(channel_id = '$channel_id' or channel_id like '%$channel_id%')";
+        $sql_device_has = "(device_id = '$device_id' or device_id = '[$device_id]' or device_id like '%,$device_id,%' or device_id like '%,$device_id]' or device_id like '[$device_id,%')";
+        $sql_channel_has = "(channel_id = '$channel_id' or channel_id = '[$channel_id]' or channel_id like '%,$channel_id,%' or channel_id like '%,$channel_id]' or channel_id like '[$channel_id,%')";
 
         if (!empty($campaign_id)) {
             $sql_condition = "(" . SmartscreenSchedules::FIELD_CAMPAIGN_ID . " = '$campaign_id'" . ")";
@@ -948,7 +948,7 @@ class Smartscreen extends Module
             }
         }
 
-        $query = $query->orderBy(['frame_id' => SORT_DESC,  'channel_id' => SORT_ASC, 'device_id' => SORT_ASC, 'start_time' => SORT_ASC]);
+        $query = $query->orderBy(['frame_id' => SORT_DESC, 'channel_id' => SORT_ASC, 'device_id' => SORT_ASC, 'start_time' => SORT_ASC]);
 
         if ($limit > 0)
             $query = $query->limit($limit);

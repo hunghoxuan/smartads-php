@@ -116,11 +116,11 @@ class SmartscreenSchedulesSearch extends SmartscreenSchedulesBase
             $schedules = Smartscreen::findSchedulesForChannel($channel_id, $date, $date_end, $start_time, $limit, $forAPI, $show_all == 0);
         } else { // device
             $autoCalculateStarttime = !empty($device_id);
-            $campaign_id = 983;
             $device = SmartscreenStation::findOneCached($device_id);
             if (isset($device) && (!empty($channel_id) && $channel_id != $device->channel_id)) {
                 $schedules = [];
             } else {
+
                 $listSchedule = Smartscreen::findSchedules($device_id, $channel_id, $campaign_id, $schedule_id, $limit, $forAPI, $date, $date_end);
                 $listSchedule = Smartscreen::fixSchedules($listSchedule, $date, $start_time, $forAPI, $autoCalculateStarttime);
 
