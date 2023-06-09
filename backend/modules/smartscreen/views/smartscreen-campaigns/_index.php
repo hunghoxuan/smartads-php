@@ -102,7 +102,7 @@ $deleteButton = FHtml::buttonDeleteBulk();
                         'channel_id' => ['value' => $form->fieldNoLabel($model, 'channel_id')->select($list_channels)],
                         'device_id' => ['value' => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
                             $selected = $item->id == $id ? 'selected' : '';
-                            return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name</option>";
+                            return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name. $item->description ($item->id)</option>";
                         })],
                         'date' => ['value' => $form->fieldNoLabel($model, 'date')->date()],
                         'date_end' => ['value' => $form->fieldNoLabel($model, 'date_end')->date()],

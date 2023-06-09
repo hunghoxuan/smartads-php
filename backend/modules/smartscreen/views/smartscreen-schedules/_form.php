@@ -266,7 +266,7 @@ $model->_content_id = $model->content_id;
                         'model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
                             'campaign_id' => ['value' => $form->fieldNoLabel($model, 'campaign_id')->dropdown($list_campaigns)],
                             'channel_id' => ['value' => $form->fieldNoLabel($model, 'channel_id')->dropdown($list_channels)],
-                            'device_id[]' => ['name' => 'device_id[]', 'value' => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
+                            'device_id' => ['name' => 'device_id', 'value' => $form->fieldNoLabel($model, 'device_id')->selectCustomRenderer(SmartscreenStation::findAll(), function ($item, $id) {
                                 $selected = ($item->id == $id || (is_array($id) && in_array($item->id, $id))) ? 'selected' : '';
                                 return "<option parent='$item->channel_id' value='$item->id' $selected>$item->name. $item->description (id: $item->id)</option>";
                             }, ['multiple' => true])],
@@ -418,7 +418,7 @@ $this->registerJs($script, \yii\web\View::POS_END);
                     return true;
                 return false;
             }).prop('disabled', true).prop('selected', false).hide();
-            $('select[name="SmartscreenSchedules[device_id]"] option').prop('disabled', false).show().filter(function() {
+            $('select[name="SmartscreenSchedules[device_id][]"] option').prop('disabled', false).show().filter(function() {
                 if (value != '' && value != undefined)
                     return true;
                 return false;
@@ -428,7 +428,7 @@ $this->registerJs($script, \yii\web\View::POS_END);
 
         $('select[name="SmartscreenSchedules[channel_id]"]').change(function() {
             var value = this.value;
-            $('select[name="SmartscreenSchedules[device_id]"] option').prop('disabled', false).show().filter(function() {
+            $('select[name="SmartscreenSchedules[device_id][]"] option').prop('disabled', false).show().filter(function() {
                 var parent = $(this).attr('parent');
 
                 if (value == undefined || value == '')

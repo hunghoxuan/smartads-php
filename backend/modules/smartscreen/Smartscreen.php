@@ -896,6 +896,7 @@ class Smartscreen extends Module
     public static function findSchedules($device_id = null, $channel_id = null, $campaign_id = null, $schedule_id = null, $limit = -1, $forAPI = true, $date = null, $date_end = null)
     {
         $null_value = FHtml::NULL_VALUE;
+        $field_campaign_id = SmartscreenSchedules::FIELD_CAMPAIGN_ID;
 
         if ($channel_id == $null_value)
             $channel_id = null;
@@ -914,7 +915,7 @@ class Smartscreen extends Module
         $sql_channel_has = "(channel_id = '$channel_id' or channel_id = '[$channel_id]' or channel_id like '%,$channel_id,%' or channel_id like '%,$channel_id]' or channel_id like '[$channel_id,%')";
 
         if (!empty($campaign_id)) {
-            $sql_condition = "(" . SmartscreenSchedules::FIELD_CAMPAIGN_ID . " = '$campaign_id'" . ")";
+            $sql_condition = "($field_campaign_id = '$campaign_id')";
         } else if (!empty($schedule_id)) {
             $sql_condition = "(id in (" . is_array($schedule_id) ? implode(',', $schedule_id) : $schedule_id . "))";
         } else if (!empty($device_id)) {
@@ -932,6 +933,16 @@ class Smartscreen extends Module
         }
 
         $sql_condition .= " and (type != 'campaign')";
+        if (empty($campaign_id)) { // exclude inactive campaigns
+            $active_campaigns = SmartScreenSchedules::findAll(['loop' => 1, 'type' => 'campaign']);
+            $active_campaigns_ids = [];
+            foreach ($active_campaigns as $active_campaign) {
+                $active_campaigns_ids[] = $active_campaign->id;
+            }
+            $sql_active_campaigns_ids = empty($active_campaigns_ids) ? '' : " or $field_campaign_id in (" . implode(',', $active_campaigns_ids) . ")";
+            $sql_condition .= " and ($field_campaign_id = '' or $field_campaign_id is null $sql_active_campaigns_ids)";
+        }
+
 
         $query = SmartscreenSchedulesAPI::find();
 

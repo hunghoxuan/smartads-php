@@ -337,7 +337,7 @@ $this->registerJs($script, \yii\web\View::POS_END);
 
         $('select[name="SmartscreenCampaigns[channel_id]"]').change(function() {
             var value = this.value;
-            $('select[name="SmartscreenCampaigns[device_id]"] option').show().filter(function() {
+            $('select[name="SmartscreenCampaigns[device_id][]"] option').show().filter(function() {
                 var parent = $(this).attr('parent');
                 if (value == undefined || value == '')
                     return false;
