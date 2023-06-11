@@ -143,7 +143,7 @@ $model->_content_id = $model->content_id;
                                             'hide_field' => false,
                                             'model'      => $model,
                                             'form'       => $form,
-                                            'columns'    => 3,
+                                            'columns'    => 1,
                                             'attributes' => [
 
                                                 'start_time' => [

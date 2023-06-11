@@ -1,4 +1,5 @@
 <?php
+
 use common\components\FHtml;
 use unclead\multipleinput\MultipleInput;
 use yii\helpers\Url;
@@ -47,10 +48,10 @@ $type = isset($type) ? $type : $model->type;
                     [
                         'name' => 'description',
                         'enableError' => true,
-                        'title' => FHtml::t('common', 'Description'),
+                        'title' => 'Image Url / Video Url / Web Url / ' . FHtml::t('common', 'Description'),
+                        'type' => 'textarea',
 
-                        'options' => [
-                        ],
+                        'options' => [],
                         'headerOptions' => [
                             'class' => 'col-md-5',
                         ]
@@ -64,7 +65,7 @@ $type = isset($type) ? $type : $model->type;
                         ],
                         'headerOptions' => [
                             'class' => 'col-md-1',
-                            'style' => $type == SmartscreenContent::TYPE_VIDEO ? null : null,//'width:0px;visible:none',
+                            'style' => $type == SmartscreenContent::TYPE_VIDEO ? null : null, //'width:0px;visible:none',
                         ]
                     ],
                     [
@@ -73,8 +74,8 @@ $type = isset($type) ? $type : $model->type;
                         'enableError' => true,
                         'title' => FHtml::t('common', ''),
                         'items' =>  [
-                            'second' => FHtml::t('common', 'Seconds'),
-                            'time' => FHtml::t('common', 'Minutes'),
+                            'time' => 'min',
+                            'second' => 'sec',
                             //'number' => FHtml::t('common', 'Times'),
                         ],
                         'headerOptions' => [
@@ -99,7 +100,7 @@ $type = isset($type) ? $type : $model->type;
                     [
                         'name' => '_file_upload',
                         'type' => \kartik\widgets\FileInput::className(),
-                        'title' => FHtml::t('common', 'File'),
+                        'title' => FHtml::t('common', 'Upload'),
 
                         'options' => [
                             'options' => ['accept' => $accept_files, 'class' => 'small_size', 'multiple' => false],
@@ -116,7 +117,7 @@ $type = isset($type) ? $type : $model->type;
                                 return FHtml::getFieldValue($data, 'file');
                             else
                                 return $file;
-                            },
+                        },
                         'type' => 'static',
                         'name' => 'id',
                         'enableError' => true,
@@ -142,12 +143,11 @@ $type = isset($type) ? $type : $model->type;
             ?>
             <small style="font-style:italic;color:grey">
                 Ghi chú:
-                - Thời lượng: thời gian chờ một slide. Nếu Kiểu là video có thể đặt bằng 0 để tự động chơi hết video. <br/>
-                - Facebook: https://www.facebook.com/xxx/videos/xxx <br/>
-                - Youtube: https://www.youtube.com/embed/xxx <br/>
-                - URL: Đường link website. <br/>
-                - HTML: Nội dung Html bất kỳ hoặc mã nhúng html dạng < iframe..
-            </small>
+                - Thời lượng: thời gian chờ một slide. Nếu Kiểu là video có thể đặt bằng 0 để tự động chơi hết video. <br />
+                - Facebook: https://www.facebook.com/xxx/videos/xxx <br />
+                - Youtube: https://www.youtube.com/embed/xxx <br />
+                - URL: Đường link website. <br />
+                - HTML: Nội dung Html bất kỳ hoặc mã nhúng html dạng < iframe.. </small>
         </div>
     </div>
 
@@ -155,6 +155,3 @@ $type = isset($type) ? $type : $model->type;
 
 
 <?php } ?>
-
-
-

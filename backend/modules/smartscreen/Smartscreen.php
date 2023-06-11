@@ -2945,7 +2945,7 @@ class Smartscreen extends Module
 
                 $content = SmartscreenContent::findOneCached($content_ids[$key]);
 
-                if (!isset($content))
+                if (!isset($content) || !$content->is_active) // don't show inactive content in api
                     continue;
 
                 $list_content = Smartscreen::getContentData($content, $ime);
@@ -3839,7 +3839,7 @@ class Smartscreen extends Module
                     if (!isset($content_model) || in_array($content_model->type, ['text'])) {
                         continue;
                     }
-                    $title = '[' . $content_model->type . '] ' . $content_model->title . ' (id:' . $content_model->id . ')';
+                    $title = '[' . $content_model->type . '] ' . $content_model->title . ' (id:' . $content_model->id . ')' . ($content_model->is_active ? '' : ' <span class="label label-sm label-danger">' . FHtml::t('Inactive') . '</span>');
                     $url = FHtml::createUrl('smartscreen/smartscreen-content/update', ['id' => $content_model->id]);
 
                     $result .= "<a href='$url' data-pjax=0>$title</a>" . '<br/>';

@@ -105,7 +105,7 @@ $is_multipe_files = in_array($model->type, ['slide', 'audio', 'file', 'video', '
                                             ]]); ?>
 
                                             <?php echo FFormTable::widget(['model' => $model, 'form' => $form, 'columns' => 1, 'attributes' => [
-                                                '_scripts' => ['label' => FHtml::t('Content'), 'visible' => $is_multipe_files, 'value' => \common\widgets\formfield\FormObjectFile::widget(['accept_files' => "$model->type/*", 'view_path' => '_form_filesAnpx.php', 'model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]), 'columnOptions' => ['colspan' => 3]],
+                                                '_scripts' => ['label' => FHtml::t('Content'), 'visible' => $is_multipe_files, 'value' => \common\widgets\formfield\FormObjectFile::widget(['accept_files' => "$model->type/*", 'view_path' => '_form_slides.php', 'model' => $model, 'form' => $form, 'canEdit' => $canEdit, 'moduleKey' => $moduleKey, 'modulePath' => $modulePath]), 'columnOptions' => ['colspan' => 3]],
                                             ]]); ?>
 
                                             <?php echo FFormTable::widget([
@@ -169,15 +169,16 @@ $is_multipe_files = in_array($model->type, ['slide', 'audio', 'file', 'video', '
                                                 ]
                                             ]); ?>
 
+                                            <input type="hidden" id="saveType" name="saveType" value="<?= $model->isNewRecord ? 'new' : 'update' ?>">
+                                            <input type="hidden" id="action" name="action" value="<?= $model->isNewRecord ? 'new' : 'update' ?>">
 
                                             <?php if ($model->isNewRecord) { ?>
-                                                <br /><br />
-                                                <input type="hidden" id="saveType" name="saveType">
                                                 <script language="javascript" type="text/javascript">
                                                     function submitForm(saveType) {
                                                         $('#saveType').val(saveType);
                                                     }
                                                 </script>
+                                                <br /><br />
                                                 <button type="submit" class="btn btn-primary" onclick="submitForm(&quot;save&quot;)"><i class="fa fa-save"></i> Tiếp tục</button>
                                                 <a class="btn btn-default pull-right" href="<?= FHtml::createUrl('smartscreen/smartscreen-content/index') ?>" data-pjax="0"><i class="fa fa-undo"></i> Đóng</a>
                                             <?php } ?>

@@ -162,22 +162,28 @@ class SmartscreenContentController extends AdminController
             if ($model->load($request->post())) {
                 $model->id = null;
 
-                if ($model->save()) {
-                    $id = $model->id;
-                    $list_content = key_exists('list_content', $_REQUEST['SmartscreenContent']) ? $_REQUEST['SmartscreenContent']['list_content'] : null;
+                if ($_POST['action'] == 'update') {
+                    if ($model->save()) {
+                        $model->isNewRecord = false;
+                        $id = $model->id;
+                        $list_content = key_exists('list_content', $_REQUEST['SmartscreenContent']) ? $_REQUEST['SmartscreenContent']['list_content'] : null;
+                        if (!empty($list_content)) {
+                            Smartscreen::createSmartFile($list_content, $id, $model);
+                        }
 
-                    if (!empty($list_content)) {
-                        Smartscreen::createSmartFile($list_content, $id, $model);
+                        if ($this->saveType() == 'clone') {
+                            return $this->redirect(['create', 'id' => $id]);
+                        } else if ($this->saveType() == 'add') {
+                            return $this->redirect(['create']);
+                        } else if ($this->saveType() == 'save') {
+                            return $this->redirect(['update', 'id' => $id]);
+                        }
+                        return $this->redirect(['index']);
                     }
+                }
 
-                    if ($this->saveType() == 'clone') {
-                        return $this->redirect(['create', 'id' => $id]);
-                    } else if ($this->saveType() == 'add') {
-                        return $this->redirect(['create']);
-                    } else if ($this->saveType() == 'save') {
-                        return $this->redirect(['update', 'id' => $id]);
-                    }
-                    return $this->redirect(['index']);
+                if (!empty($model->type) && $model->isNewRecord) {
+                    $model->isNewRecord = false;
                 }
                 return $this->render('create', ['model' => $model]);
             } else {

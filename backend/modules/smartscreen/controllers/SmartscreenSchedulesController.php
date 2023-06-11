@@ -173,12 +173,18 @@ class SmartscreenSchedulesController extends SmartscreenController
 			return FHtml::saveModelAjax($this, $model, null);
 		} else {
 			if ($model->load($request->post())) {
+
+				if ($model->isNewRecord && !empty($model->type)) {
+					$model->isNewRecord = false;
+					return $this->render('create', ['model' => $model]);
+				}
+
 				$model->id = null;
 
 				$smart_schedules = $_REQUEST['SmartscreenSchedules'];
 				$devices         = isset($smart_schedules['device_id']) ? $smart_schedules['device_id'] : [];
 
-				$data    = $_REQUEST['SmartscreenSchedules']['layout_id'];
+				$data    = isset($smart_schedules['layout_id']) ? $smart_schedules['layout_id'] : [];
 				$mode_id = '';
 
 				if (!empty($data)) {
@@ -516,7 +522,6 @@ class SmartscreenSchedulesController extends SmartscreenController
 									if ($kind == SmartscreenSchedules::DURATION_KIND_MINUTES) {
 										$schedule->duration = $value['file_duration'];
 									} else if ($kind == SmartscreenSchedules::DURATION_KIND_SECOND) {
-
 										$schedule->duration = $value['file_duration'];
 									} elseif ($kind == SmartscreenSchedules::DURATION_KIND_LOOP) {
 										$schedule->duration = $duration;
@@ -528,7 +533,6 @@ class SmartscreenSchedulesController extends SmartscreenController
 									if (empty($schedule->start_time)) {
 										continue;
 									}
-
 									$schedule->save();
 
 									$model = $schedule;

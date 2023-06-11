@@ -226,13 +226,14 @@ class SmartscreenSchedules extends SmartscreenSchedulesSearch
     {
         //if it is not campaign
         if (!$this->isCampaign()) {
-            if ($this->{self::FIELD_STATUS} == 1 && $this->{self::FIELD_CAMPAIGN_ID} != '') {
-                $campaign = SmartscreenCampaigns::findOne($this->{self::FIELD_CAMPAIGN_ID});
-                if ($campaign != null) {
-                    $campaign->{self::FIELD_STATUS} = 1;
-                    $campaign->save();
-                }
-            }
+            // --> recursive
+            // if ($this->{self::FIELD_STATUS} == 1 && $this->{self::FIELD_CAMPAIGN_ID} != '') {
+            //     $campaign = SmartscreenCampaigns::findOne($this->{self::FIELD_CAMPAIGN_ID});
+            //     if ($campaign != null) {
+            //         $campaign->{self::FIELD_STATUS} = 1;
+            //         $campaign->save();
+            //     }
+            // }
 
             $media_files = $this->smartscreenFiles;
             if (empty($this->list_content) && is_array($media_files)) {

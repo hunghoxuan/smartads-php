@@ -272,7 +272,7 @@ array (
   'Delivery Address' => 'Địa chỉ giao hàng',
   'Blogs' => 'Bài viết',
   'Articles' => 'Nội dung',
-  'Slide' => 'Ảnh trượt',
+  'Slide' => 'Album',
   'About' => 'Giới thiệu',
   'Services' => 'Dịch vụ',
   'Partners' => 'Đối tác',
@@ -856,4 +856,4 @@ array (
   'smartscreen_station.dept_id' => 'Dept ID',
   'common.not_online' => 'Not Online',
     'Days' => 'Ngày trong tuần'
-); ?>
+);

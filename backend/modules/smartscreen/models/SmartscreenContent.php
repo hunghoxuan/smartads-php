@@ -253,8 +253,8 @@ class SmartscreenContent extends SmartscreenContentSearch
         $models = static::findAllCached($condition, $order_by);
         $arr = ['' => FHtml::NULL_VALUE];
         foreach ($models as $model) {
-            $arr[] = [$model->id => "[ $model->type ] $model->title (id: $model->id)"];
-            //$arr[] = ['id' => $model->id, 'title' => "[ $model->type ] $model->title (id: $model->id)"];
+            $status = $model->is_active ? '' : '(inactive)';
+            $arr[] = [$model->id => "[ $model->type ] $model->title (id: $model->id) $status"];
         }
         return array_values($arr);
     }
