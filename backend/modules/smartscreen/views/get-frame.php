@@ -36,10 +36,13 @@ if (is_object($frame)) {
     $number = intval(preg_replace('/[^0-9]+/', '', $classSelect), 10);
     $url = isset($url) ? $url : '';
     $content = isset($content) ? $content : '';
-    if (isset($frame['data']) && isset($frame['data'][0]) && $frame['data'][0]['dataType'] == 'html')
+    if (isset($frame['data']) && isset($frame['data'][0]) && $frame['data'][0]['dataType'] == 'html') {
         $url = $frame['data'][0]['url'];
+        $content = $frame['data'][0]['description'];
+    } else if ($frame['contentLayout'] == 'html') {
+        $content = $frame['data'][0]['description'];
+    }
     if (empty($content)) {
-
         if (!empty($url))
             $content = "<iframe frameBorder='0' src='$url' width='100%' height='100%'></iframe>";
         else if (!empty($frame['data']) && is_array($frame['data'])) {
@@ -48,8 +51,7 @@ if (is_object($frame)) {
             $models->type = $frame['contentLayout'];
             $models->list_content = [];
             foreach ($frame['data'] as $frameItem) {
-                if (!isset($frameItem['url']))
-                {
+                if (!isset($frameItem['url'])) {
                     continue;
                 }
                 $item = new \backend\modules\smartscreen\models\SmartscreenFileAPI();
@@ -61,8 +63,7 @@ if (is_object($frame)) {
                 $models->list_content[] = $item;
             }
             $content = \common\components\FHtml::renderView('content/index', ['models' => $models]);
-        }
-        else {
+        } else {
             $content = _getHtmlContent($frame['name']);
         }
     }
@@ -70,18 +71,19 @@ if (is_object($frame)) {
 } else {
     $content = _getHtmlContent($content);
 }
-?>
 
+?>
 <div class="frame-for-layout frame_<?= $id ?> <?= $classSelect ?>" style="
     background-color: <?= $backgroundColor ?>;
+    color: <?= $backgroundColor == '#000000' ? '#fff' : '#000' ?>;
+    text-align: center;
+    font-size: 150%;
     width: <?= $width ?>%;
     height: <?= $height ?>%;
     left: <?= $marginLeft ?>%;
     top: <?= $marginTop ?>%;
     position: absolute;
     z-index: <?= $number ?>;
-        border: 1px solid darkgrey;
-    ">
-        <?= $content ?>
+    border: 1px solid darkgrey;">
+    <?= $content ?>
 </div>
-

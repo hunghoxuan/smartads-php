@@ -162,11 +162,14 @@ return [
         'vAlign'         => 'middle',
         'contentOptions' => ['class' => 'col-md-1 nowrap'],
         'value' => function ($model, $key, $index, $column) {
-            if ($model->id == 0)
-                return "<div style='color: darkgrey;'>" . FHtml::t('Default') . "</div>";
+            // if ($model->id == 0)
+            //     return "<div style='color: darkgrey;'>" . FHtml::t('Default') . "</div>";
             $device_id =  Smartscreen::getCurrentDeviceId($model);
             $url = FHtml::createUrl('smartscreen/schedules', ['id' => $model->id, 'device_id' => $device_id, 'layout' => 'no']);
-            $result = FHtml::showModalIframeButton('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;Id' . $model->id . '&nbsp;', $url, 'iframe', 'label-xs label label-primary');
+            if (empty($model->id))
+                $result = FHtml::showModalIframeButton("<span style='color: darkgrey;'>" . FHtml::t('Default') . "</span>" . '&nbsp;', $url, 'iframe', 'label-xs label label-default');
+            else
+                $result = FHtml::showModalIframeButton('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;Id' . $model->id . '&nbsp;', $url, 'iframe', 'label-xs label label-primary');
             $label = "";
             if (!empty($model->{SmartscreenSchedules::FIELD_CAMPAIGN_ID})) {
                 $label = "Campaign: " . $model->{SmartscreenSchedules::FIELD_CAMPAIGN_ID};

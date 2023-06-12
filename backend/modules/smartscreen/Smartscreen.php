@@ -775,6 +775,7 @@ class Smartscreen extends Module
             $autoCalculateStarttime = !empty($device_id);
             $listSchedule = Smartscreen::findSchedules($device_id, null, null, null, $limit, $forAPI, $date, $date_end);
             $listSchedule = Smartscreen::fixSchedules($listSchedule, $date, $start_time, $forAPI, $showCurrentOnly || $autoCalculateStarttime);
+
             if (isset($listSchedule[0]['schedules'])) {
                 $listSchedule = $listSchedule[0]['schedules'];
             }
@@ -1049,6 +1050,7 @@ class Smartscreen extends Module
 
         //fill content for schedules
         $schedules = self::fixSchedulesContent($schedules);
+
         $schedules = self::fixSchedulesLayout($schedules, null);
 
         // return consecutive schedules by time. still keep schedule->duration
@@ -1242,7 +1244,6 @@ class Smartscreen extends Module
     //tự động tao schedule cho các schedule dạng basic
     public static function fixSchedulesContent($schedules)
     {
-
         $result1 = [];
         $convertContentToIFRAME = static::settingConvertContentToIframe();
         $convertVideoToIFRAME = static::settingConvertVideoToIframe();
@@ -2057,7 +2058,7 @@ class Smartscreen extends Module
         $schedule1->loop = 1;
         $schedule1->content_id = $schedule->content_id;
         $schedule1->device_id = "";
-        $schedule1->type = Smartscreen::SCHEDULE_TYPE_BASIC;
+        $schedule1->type = Smartscreen::SCHEDULE_TYPE_ADVANCE;
         $schedule1->start_time = '00:00';
         $schedule1->duration = 1440;
 
@@ -3813,17 +3814,17 @@ class Smartscreen extends Module
 
     public static function showScheduleOverview($model, $showAll = true)
     {
-        if (empty($model->id)) {
-            $result = FHtml::t('Default');
-            //var_dump($model->data[0]['data'][0]);
-            if (isset($model->data[0]['data'][0])) {
-                $result = '<span class="label label-sm label-primary">' . $model->data[0]['contentLayout'] . '</span> ' . $model->data[0]['data'][0]['title'];
-                $content = SmartscreenContent::findOneCached($model->data[0]['data'][0]['id']);
-                if (isset($content))
-                    return Smartscreen::showScheduleOverview($content);
-            }
-            return "<span style='color:grey'>" . $result . "</span>";
-        }
+        // if (empty($model->id)) {
+        //     $result = FHtml::t('Content') . ' ' . FHtml::t('Default');
+        //     //var_dump($model->data[0]['data'][0]);
+        //     if (isset($model->data[0]['data'][0])) {
+        //         $result = '<span class="label label-sm label-primary">' . $model->data[0]['contentLayout'] . '</span> ' . $model->data[0]['data'][0]['title'];
+        //         $content = SmartscreenContent::findOneCached($model->data[0]['data'][0]['id']);
+        //         if (isset($content))
+        //             return Smartscreen::showScheduleOverview($content);
+        //     }
+        //     return "<span style='color:grey'>" . $result . "</span>";
+        // }
 
         $result = null;
         //$result = self::Cache("Schedule_{$model->id}_Overview");

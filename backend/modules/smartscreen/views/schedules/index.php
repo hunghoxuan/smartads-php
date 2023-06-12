@@ -23,6 +23,7 @@ foreach ($data as $i => $items) {
 $preview = FHtml::getRequestParam('preview');
 
 $id = FHtml::getRequestParam('id'); //specific schedule_id
+
 if (strlen($id) > 0 && is_numeric($id)) {
     foreach ($schedules as $schedule) {
         if ($schedule->id == $id) {
@@ -30,7 +31,12 @@ if (strlen($id) > 0 && is_numeric($id)) {
             die;
         }
     }
+} else {
+    $schedule = SmartScreen::getDefaultSchedule();
+    echo \backend\modules\smartscreen\Smartscreen::showLayoutPreview($schedule->data);
+    die;
 }
+
 ?>
 <style>
     body {
