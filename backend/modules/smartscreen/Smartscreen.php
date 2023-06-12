@@ -935,6 +935,10 @@ class Smartscreen extends Module
         $sql_condition .= " and (type != 'campaign')";
         if (empty($campaign_id)) { // exclude inactive campaigns
             $active_campaigns = SmartScreenSchedules::findAll(['loop' => 1, 'type' => 'campaign']);
+
+            // $campaign_field_status = SmartscreenSchedules::FIELD_STATUS;
+            // $active_campaigns = SmartScreenSchedules::findAll("($sql_device_has or $sql_device_null) and $campaign_field_status = 1 and type = 'campaign'");
+
             $active_campaigns_ids = [];
             foreach ($active_campaigns as $active_campaign) {
                 if ($active_campaign->device_id == $device_id || empty($active_campaign->device_id) || $active_campaign->device_id == $null_value || in_array($device_id, FHtml::decode($active_campaign->device_id)) || (empty($active_campaign->device_id) && $active_campaign->channel_id == $channel_id)) {
