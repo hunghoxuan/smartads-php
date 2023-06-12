@@ -108,7 +108,7 @@ class SmartscreenSchedulesAction extends BaseApiAction
         foreach ($schedules as $i => $schedule) {
             $start_time_next = Smartscreen::getNextStartTime($schedule, null, 1, null, true);
             $schedule->end_time = $start_time_next;
-            $schedule->id = (int) str_replace(":", "", $schedule->start_time);
+            // $schedule->id = (int) str_replace(":", "", $schedule->start_time);
             $schedule->date = $date;
         }
 

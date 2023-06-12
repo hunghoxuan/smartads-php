@@ -1989,6 +1989,8 @@ class Smartscreen extends Module
     public static function getDefaultSchedule($ime = '', $start_time = '', $duration = 0, $defaultSchedule = null)
     {
         $schedule = null;
+        $start_time = '00:00';
+        $duration = 1440;
 
         if (empty($ime)) {
             $ime = static::getCurrentIme();
@@ -2035,8 +2037,7 @@ class Smartscreen extends Module
             $schedule->content_id = [$content->id];
             $schedule->is_active = 1;
             $schedule->loop = 1;
-            $schedule->duration = 1440;
-
+            $schedule->duration = $duration;
 
             $schedule->setData($data);
             self::Cache("schedules_default", $schedule);
@@ -2059,8 +2060,7 @@ class Smartscreen extends Module
         $schedule1->content_id = $schedule->content_id;
         $schedule1->device_id = "";
         $schedule1->type = Smartscreen::SCHEDULE_TYPE_ADVANCE;
-        $schedule1->start_time = '00:00';
-        $schedule1->duration = 1440;
+        $schedule1->start_time = $start_time;
 
         return $schedule1;
     }
@@ -4033,8 +4033,11 @@ class Smartscreen extends Module
 
             $schedule->start_time = $last_time;
             $next_start_time = date("H:i", strtotime($last_time . " +" . ($schedule->duration . ' minutes')));
-            if ($forAPI && self::isAPI())
-                $schedule->id = (int) str_replace(":", "", $schedule->start_time);
+            if ($forAPI && self::isAPI()) {
+                // $schedule->id = (int) str_replace(":", "", $schedule->start_time);
+                if ($schedule->id == 0)
+                    $schedule->id = 1;
+            }
             $i += 1;
 
             if ($max > 0 && $i == $max)
