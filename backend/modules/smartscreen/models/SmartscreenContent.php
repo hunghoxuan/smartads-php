@@ -148,7 +148,6 @@ class SmartscreenContent extends SmartscreenContentSearch
     public function afterSave($insert, $runValidation)
     {
         Smartscreen::clearCache();
-
         if ($this->is_default) {
             FHtml::Cache("schedules_default", null);
         }

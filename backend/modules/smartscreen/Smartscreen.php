@@ -707,7 +707,6 @@ class Smartscreen extends Module
                 $items[$i] = $schedule;
             }
             $schedules[0]['schedules'] = $items;
-
             $result = $schedules;
             $default_schedule = Smartscreen::getDefaultSchedule();
 
@@ -982,6 +981,12 @@ class Smartscreen extends Module
             echo $sql_condition;
             FHtml::var_dump($schedules);
             die;
+        }
+
+        //auto add default schedule
+        $default_schedule = self::getDefaultSchedule($device_id, $channel_id, $campaign_id, $date, $date_end);
+        if ($default_schedule != null) {
+            $schedules[] = $default_schedule;
         }
         return $schedules;
     }
@@ -2029,6 +2034,8 @@ class Smartscreen extends Module
             $schedule->content_id = [$content->id];
             $schedule->is_active = 1;
             $schedule->loop = 1;
+            $schedule->duration = 1440;
+
 
             $schedule->setData($data);
             self::Cache("schedules_default", $schedule);
@@ -2050,6 +2057,9 @@ class Smartscreen extends Module
         $schedule1->loop = 1;
         $schedule1->content_id = $schedule->content_id;
         $schedule1->device_id = "";
+        $schedule1->type = Smartscreen::SCHEDULE_TYPE_BASIC;
+        $schedule1->start_time = '00:00';
+        $schedule1->duration = 1440;
 
         return $schedule1;
     }
