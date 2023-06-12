@@ -937,12 +937,13 @@ class Smartscreen extends Module
             $active_campaigns = SmartScreenSchedules::findAll(['loop' => 1, 'type' => 'campaign']);
             $active_campaigns_ids = [];
             foreach ($active_campaigns as $active_campaign) {
-                $active_campaigns_ids[] = $active_campaign->id;
+                if ($active_campaign->device_id == $device_id || empty($active_campaign->device_id) || $active_campaign->device_id == $null_value || in_array($device_id, FHtml::decode($active_campaign->device_id)) || (empty($active_campaign->device_id) && $active_campaign->channel_id == $channel_id)) {
+                    $active_campaigns_ids[] = $active_campaign->id;
+                }
             }
             $sql_active_campaigns_ids = empty($active_campaigns_ids) ? '' : " or $field_campaign_id in (" . implode(',', $active_campaigns_ids) . ")";
             $sql_condition .= " and ($field_campaign_id = '' or $field_campaign_id is null $sql_active_campaigns_ids)";
         }
-
 
         $query = SmartscreenSchedulesAPI::find();
 
