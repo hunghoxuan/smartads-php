@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * `CREATE` statement.
+ */
 
 namespace PhpMyAdmin\SqlParser\Statements;
 
@@ -16,40 +18,40 @@ use PhpMyAdmin\SqlParser\Statement;
 use PhpMyAdmin\SqlParser\Token;
 use PhpMyAdmin\SqlParser\TokensList;
 
-use function is_array;
-use function trim;
-
 /**
  * `CREATE` statement.
+ *
+ * @category   Statements
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class CreateStatement extends Statement
 {
     /**
      * Options for `CREATE` statements.
      *
-     * @var array<string, int|array<int, int|string>>
-     * @psalm-var array<string, (positive-int|array{positive-int, ('var'|'var='|'expr'|'expr=')})>
+     * @var array
      */
-    public static $OPTIONS = [
+    public static $OPTIONS = array(
         // CREATE TABLE
         'TEMPORARY' => 1,
 
         // CREATE VIEW
         'OR REPLACE' => 2,
-        'ALGORITHM' => [
+        'ALGORITHM' => array(
             3,
             'var=',
-        ],
+        ),
         // `DEFINER` is also used for `CREATE FUNCTION / PROCEDURE`
-        'DEFINER' => [
+        'DEFINER' => array(
             4,
             'expr=',
-        ],
+        ),
         // Used in `CREATE VIEW`
-        'SQL SECURITY' => [
+        'SQL SECURITY' => array(
             5,
             'var',
-        ],
+        ),
 
         'DATABASE' => 6,
         'EVENT' => 6,
@@ -68,219 +70,220 @@ class CreateStatement extends Statement
         'SCHEMA' => 6,
 
         // CREATE TABLE
-        'IF NOT EXISTS' => 7,
-    ];
+        'IF NOT EXISTS' => 7
+    );
 
     /**
      * All database options.
      *
-     * @var array<string, int|array<int, int|string>>
-     * @psalm-var array<string, (positive-int|array{positive-int, ('var'|'var='|'expr'|'expr=')})>
+     * @var array
      */
-    public static $DB_OPTIONS = [
-        'CHARACTER SET' => [
+    public static $DB_OPTIONS = array(
+        'CHARACTER SET' => array(
             1,
             'var=',
-        ],
-        'CHARSET' => [
+        ),
+        'CHARSET' => array(
             1,
             'var=',
-        ],
-        'DEFAULT CHARACTER SET' => [
+        ),
+        'DEFAULT CHARACTER SET' => array(
             1,
             'var=',
-        ],
-        'DEFAULT CHARSET' => [
+        ),
+        'DEFAULT CHARSET' => array(
             1,
             'var=',
-        ],
-        'DEFAULT COLLATE' => [
+        ),
+        'DEFAULT COLLATE' => array(
             2,
             'var=',
-        ],
-        'COLLATE' => [
+        ),
+        'COLLATE' => array(
             2,
             'var=',
-        ],
-    ];
+        )
+    );
 
     /**
      * All table options.
      *
-     * @var array<string, int|array<int, int|string>>
-     * @psalm-var array<string, (positive-int|array{positive-int, ('var'|'var='|'expr'|'expr=')})>
+     * @var array
      */
-    public static $TABLE_OPTIONS = [
-        'ENGINE' => [
+    public static $TABLE_OPTIONS = array(
+        'ENGINE' => array(
             1,
             'var=',
-        ],
-        'AUTO_INCREMENT' => [
+        ),
+        'AUTO_INCREMENT' => array(
             2,
             'var=',
-        ],
-        'AVG_ROW_LENGTH' => [
+        ),
+        'AVG_ROW_LENGTH' => array(
             3,
             'var',
-        ],
-        'CHARACTER SET' => [
+        ),
+        'CHARACTER SET' => array(
             4,
             'var=',
-        ],
-        'CHARSET' => [
+        ),
+        'CHARSET' => array(
             4,
             'var=',
-        ],
-        'DEFAULT CHARACTER SET' => [
+        ),
+        'DEFAULT CHARACTER SET' => array(
             4,
             'var=',
-        ],
-        'DEFAULT CHARSET' => [
+        ),
+        'DEFAULT CHARSET' => array(
             4,
             'var=',
-        ],
-        'CHECKSUM' => [
+        ),
+        'CHECKSUM' => array(
             5,
             'var',
-        ],
-        'DEFAULT COLLATE' => [
+        ),
+        'DEFAULT COLLATE' => array(
             6,
             'var=',
-        ],
-        'COLLATE' => [
+        ),
+        'COLLATE' => array(
             6,
             'var=',
-        ],
-        'COMMENT' => [
+        ),
+        'COMMENT' => array(
             7,
             'var=',
-        ],
-        'CONNECTION' => [
+        ),
+        'CONNECTION' => array(
             8,
             'var',
-        ],
-        'DATA DIRECTORY' => [
+        ),
+        'DATA DIRECTORY' => array(
             9,
             'var',
-        ],
-        'DELAY_KEY_WRITE' => [
+        ),
+        'DELAY_KEY_WRITE' => array(
             10,
             'var',
-        ],
-        'INDEX DIRECTORY' => [
+        ),
+        'INDEX DIRECTORY' => array(
             11,
             'var',
-        ],
-        'INSERT_METHOD' => [
+        ),
+        'INSERT_METHOD' => array(
             12,
             'var',
-        ],
-        'KEY_BLOCK_SIZE' => [
+        ),
+        'KEY_BLOCK_SIZE' => array(
             13,
             'var',
-        ],
-        'MAX_ROWS' => [
+        ),
+        'MAX_ROWS' => array(
             14,
             'var',
-        ],
-        'MIN_ROWS' => [
+        ),
+        'MIN_ROWS' => array(
             15,
             'var',
-        ],
-        'PACK_KEYS' => [
+        ),
+        'PACK_KEYS' => array(
             16,
             'var',
-        ],
-        'PASSWORD' => [
+        ),
+        'PASSWORD' => array(
             17,
             'var',
-        ],
-        'ROW_FORMAT' => [
+        ),
+        'ROW_FORMAT' => array(
             18,
             'var',
-        ],
-        'TABLESPACE' => [
+        ),
+        'TABLESPACE' => array(
             19,
             'var',
-        ],
-        'STORAGE' => [
+        ),
+        'STORAGE' => array(
             20,
             'var',
-        ],
-        'UNION' => [
+        ),
+        'UNION' => array(
             21,
             'var',
-        ],
-        'PAGE_COMPRESSED' => [
-            22,
-            'var',
-        ],
-        'PAGE_COMPRESSION_LEVEL' => [
-            23,
-            'var',
-        ],
-    ];
+        )
+    );
 
     /**
      * All function options.
      *
-     * @var array<string, int|array<int, int|string>>
-     * @psalm-var array<string, (positive-int|array{positive-int, ('var'|'var='|'expr'|'expr=')})>
+     * @var array
      */
-    public static $FUNC_OPTIONS = [
-        'NOT' => [
+    public static $FUNC_OPTIONS = array(
+        'NOT' =>  array(
             2,
             'var',
-        ],
-        'FUNCTION' => [
+        ),
+        'FUNCTION' =>  array(
             3,
             'var=',
-        ],
-        'PROCEDURE' => [
+        ),
+        'PROCEDURE' =>  array(
             3,
             'var=',
-        ],
-        'CONTAINS SQL' => 4,
-        'NO SQL' => 4,
-        'READS SQL DATA' => 4,
-        'MODIFIES SQL DATA' => 4,
-        'SQL SECURITY' => [
+        ),
+        'CONTAINS' =>  array(
+            4,
+            'expr',
+        ),
+        'NO' =>  array(
+            4,
+            'var',
+        ),
+        'READS' =>  array(
+            4,
+            'var',
+        ),
+        'MODIFIES' =>  array(
+            4,
+            'expr',
+        ),
+        'SQL SECURITY' =>  array(
             6,
             'var',
-        ],
-        'LANGUAGE' => [
+        ),
+        'LANGUAGE' =>  array(
             7,
             'var',
-        ],
-        'COMMENT' => [
+        ),
+        'COMMENT' =>  array(
             8,
             'var',
-        ],
+        ),
 
         'CREATE' => 1,
         'DETERMINISTIC' => 2,
-    ];
+        'DATA' =>  5,
+    );
 
     /**
      * All trigger options.
      *
-     * @var array<string, int|array<int, int|string>>
-     * @psalm-var array<string, (positive-int|array{positive-int, ('var'|'var='|'expr'|'expr=')})>
+     * @var array
      */
-    public static $TRIGGER_OPTIONS = [
+    public static $TRIGGER_OPTIONS = array(
         'BEFORE' => 1,
         'AFTER' => 1,
         'INSERT' => 2,
         'UPDATE' => 2,
-        'DELETE' => 2,
-    ];
+        'DELETE' => 2
+    );
 
     /**
      * The name of the entity that is created.
      *
      * Used by all `CREATE` statements.
      *
-     * @var Expression|null
+     * @var Expression
      */
     public $name;
 
@@ -289,11 +292,11 @@ class CreateStatement extends Statement
      *
      * Used by `CREATE TABLE`, `CREATE FUNCTION` and `CREATE PROCEDURE`.
      *
+     * @var OptionsArray
+     *
      * @see static::$TABLE_OPTIONS
      * @see static::$FUNC_OPTIONS
      * @see static::$TRIGGER_OPTIONS
-     *
-     * @var OptionsArray|null
      */
     public $entityOptions;
 
@@ -303,20 +306,9 @@ class CreateStatement extends Statement
      *
      * Used by `CREATE TABLE` and `CREATE VIEW`.
      *
-     * @var CreateDefinition[]|ArrayObj|null
+     * @var CreateDefinition[]|ArrayObj
      */
     public $fields;
-
-    /**
-     * If `CREATE TABLE WITH`.
-     * If `CREATE TABLE AS WITH`.
-     * If `CREATE VIEW AS WITH`.
-     *
-     * Used by `CREATE TABLE`, `CREATE VIEW`
-     *
-     * @var WithStatement|null
-     */
-    public $with;
 
     /**
      * If `CREATE TABLE ... SELECT`.
@@ -333,42 +325,42 @@ class CreateStatement extends Statement
      *
      * Used by `CREATE TABLE`
      *
-     * @var Expression|null
+     * @var Expression
      */
     public $like;
 
     /**
      * Expression used for partitioning.
      *
-     * @var string|null
+     * @var string
      */
     public $partitionBy;
 
     /**
      * The number of partitions.
      *
-     * @var int|null
+     * @var int
      */
     public $partitionsNum;
 
     /**
      * Expression used for subpartitioning.
      *
-     * @var string|null
+     * @var string
      */
     public $subpartitionBy;
 
     /**
      * The number of subpartitions.
      *
-     * @var int|null
+     * @var int
      */
     public $subpartitionsNum;
 
     /**
      * The partition of the new table.
      *
-     * @var PartitionDefinition[]|null
+     * @var PartitionDefinition[]
      */
     public $partitions;
 
@@ -377,7 +369,7 @@ class CreateStatement extends Statement
      *
      * Used by `CREATE TRIGGER`.
      *
-     * @var Expression|null
+     * @var Expression
      */
     public $table;
 
@@ -386,7 +378,7 @@ class CreateStatement extends Statement
      *
      * Used by `CREATE FUNCTION`.
      *
-     * @var DataType|null
+     * @var DataType
      */
     public $return;
 
@@ -395,7 +387,7 @@ class CreateStatement extends Statement
      *
      * Used by `CREATE FUNCTION` and `CREATE PROCEDURE`.
      *
-     * @var ParameterDefinition[]|null
+     * @var ParameterDefinition[]
      */
     public $parameters;
 
@@ -406,7 +398,7 @@ class CreateStatement extends Statement
      *
      * @var Token[]|string
      */
-    public $body = [];
+    public $body = array();
 
     /**
      * @return string
@@ -421,77 +413,53 @@ class CreateStatement extends Statement
                 $fields = ArrayObj::build($this->fields);
             }
         }
-
         if ($this->options->has('DATABASE') || $this->options->has('SCHEMA')) {
             return 'CREATE '
                 . OptionsArray::build($this->options) . ' '
                 . Expression::build($this->name) . ' '
                 . OptionsArray::build($this->entityOptions);
-        }
-
-        if ($this->options->has('TABLE')) {
-            if ($this->select !== null) {
+        } elseif ($this->options->has('TABLE')) {
+            if (! is_null($this->select)) {
                 return 'CREATE '
                     . OptionsArray::build($this->options) . ' '
                     . Expression::build($this->name) . ' '
                     . $this->select->build();
-            }
-
-            if ($this->like !== null) {
+            } elseif (! is_null($this->like)) {
                 return 'CREATE '
                     . OptionsArray::build($this->options) . ' '
                     . Expression::build($this->name) . ' LIKE '
                     . Expression::build($this->like);
-            }
+            } else {
+                $partition = '';
 
-            if ($this->with !== null) {
+                if (! empty($this->partitionBy)) {
+                    $partition .= "\nPARTITION BY " . $this->partitionBy;
+                }
+                if (! empty($this->partitionsNum)) {
+                    $partition .= "\nPARTITIONS " . $this->partitionsNum;
+                }
+                if (! empty($this->subpartitionBy)) {
+                    $partition .= "\nSUBPARTITION BY " . $this->subpartitionBy;
+                }
+                if (! empty($this->subpartitionsNum)) {
+                    $partition .= "\nSUBPARTITIONS " . $this->subpartitionsNum;
+                }
+                if (! empty($this->partitions)) {
+                    $partition .= "\n" . PartitionDefinition::build($this->partitions);
+                }
+
                 return 'CREATE '
-                . OptionsArray::build($this->options) . ' '
-                . Expression::build($this->name) . ' '
-                . $this->with->build();
+                    . OptionsArray::build($this->options) . ' '
+                    . Expression::build($this->name) . ' '
+                    . $fields
+                    . OptionsArray::build($this->entityOptions)
+                    . $partition;
             }
-
-            $partition = '';
-
-            if (! empty($this->partitionBy)) {
-                $partition .= "\nPARTITION BY " . $this->partitionBy;
-            }
-
-            if (! empty($this->partitionsNum)) {
-                $partition .= "\nPARTITIONS " . $this->partitionsNum;
-            }
-
-            if (! empty($this->subpartitionBy)) {
-                $partition .= "\nSUBPARTITION BY " . $this->subpartitionBy;
-            }
-
-            if (! empty($this->subpartitionsNum)) {
-                $partition .= "\nSUBPARTITIONS " . $this->subpartitionsNum;
-            }
-
-            if (! empty($this->partitions)) {
-                $partition .= "\n" . PartitionDefinition::build($this->partitions);
-            }
-
-            return 'CREATE '
-                . OptionsArray::build($this->options) . ' '
-                . Expression::build($this->name) . ' '
-                . $fields
-                . OptionsArray::build($this->entityOptions)
-                . $partition;
         } elseif ($this->options->has('VIEW')) {
-            $builtStatement = '';
-            if ($this->select !== null) {
-                $builtStatement = $this->select->build();
-            } elseif ($this->with !== null) {
-                $builtStatement = $this->with->build();
-            }
-
             return 'CREATE '
                 . OptionsArray::build($this->options) . ' '
                 . Expression::build($this->name) . ' '
-                . $fields . ' AS ' . $builtStatement
-                . (! empty($this->body) ? TokensList::build($this->body) : '') . ' '
+                . $fields . ' AS ' . ($this->select ? $this->select->build() : '') . (! empty($this->body) ? TokensList::build($this->body) : '') . ' '
                 . OptionsArray::build($this->entityOptions);
         } elseif ($this->options->has('TRIGGER')) {
             return 'CREATE '
@@ -500,7 +468,9 @@ class CreateStatement extends Statement
                 . OptionsArray::build($this->entityOptions) . ' '
                 . 'ON ' . Expression::build($this->table) . ' '
                 . 'FOR EACH ROW ' . TokensList::build($this->body);
-        } elseif ($this->options->has('PROCEDURE') || $this->options->has('FUNCTION')) {
+        } elseif ($this->options->has('PROCEDURE')
+            || $this->options->has('FUNCTION')
+        ) {
             $tmp = '';
             if ($this->options->has('FUNCTION')) {
                 $tmp = 'RETURNS ' . DataType::build($this->return);
@@ -510,7 +480,7 @@ class CreateStatement extends Statement
                 . OptionsArray::build($this->options) . ' '
                 . Expression::build($this->name) . ' '
                 . ParameterDefinition::build($this->parameters) . ' '
-                . $tmp . ' ' . OptionsArray::build($this->entityOptions) . ' '
+                . $tmp . ' ' .  OptionsArray::build($this->entityOptions) . ' '
                 . TokensList::build($this->body);
         }
 
@@ -539,20 +509,25 @@ class CreateStatement extends Statement
         $this->name = Expression::parse(
             $parser,
             $list,
-            [
+            array(
                 'parseField' => $fieldName,
-                'breakOnAlias' => true,
-            ]
+                'breakOnAlias' => true
+            )
         );
 
         if (! isset($this->name) || ($this->name === '')) {
-            $parser->error('The name of the entity was expected.', $list->tokens[$list->idx]);
+            $parser->error(
+                'The name of the entity was expected.',
+                $list->tokens[$list->idx]
+            );
         } else {
             ++$list->idx; // Skipping field.
         }
 
         /**
          * Token parsed at this moment.
+         *
+         * @var Token
          */
         $token = $list->tokens[$list->idx];
         $nextidx = $list->idx + 1;
@@ -561,51 +536,56 @@ class CreateStatement extends Statement
         }
 
         if ($isDatabase) {
-            $this->entityOptions = OptionsArray::parse($parser, $list, static::$DB_OPTIONS);
+            $this->entityOptions = OptionsArray::parse(
+                $parser,
+                $list,
+                static::$DB_OPTIONS
+            );
         } elseif ($this->options->has('TABLE')) {
-            if (($token->type === Token::TYPE_KEYWORD) && ($token->keyword === 'SELECT')) {
+            if (($token->type === Token::TYPE_KEYWORD)
+             && ($token->keyword === 'SELECT')) {
                 /* CREATE TABLE ... SELECT */
                 $this->select = new SelectStatement($parser, $list);
-            } elseif ($token->type === Token::TYPE_KEYWORD && ($token->keyword === 'WITH')) {
-                /* CREATE TABLE WITH */
-                $this->with = new WithStatement($parser, $list);
-            } elseif (
-                ($token->type === Token::TYPE_KEYWORD) && ($token->keyword === 'AS')
+            } elseif (($token->type === Token::TYPE_KEYWORD) && ($token->keyword === 'AS')
                 && ($list->tokens[$nextidx]->type === Token::TYPE_KEYWORD)
-            ) {
-                if ($list->tokens[$nextidx]->value === 'SELECT') {
-                    /* CREATE TABLE ... AS SELECT */
-                    $list->idx = $nextidx;
-                    $this->select = new SelectStatement($parser, $list);
-                } elseif ($list->tokens[$nextidx]->value === 'WITH') {
-                    /* CREATE TABLE WITH */
-                    $list->idx = $nextidx;
-                    $this->with = new WithStatement($parser, $list);
-                }
-            } elseif ($token->type === Token::TYPE_KEYWORD && $token->keyword === 'LIKE') {
+                && ($list->tokens[$nextidx]->value === 'SELECT')) {
+                /* CREATE TABLE ... AS SELECT */
+                $list->idx = $nextidx;
+                $this->select = new SelectStatement($parser, $list);
+            } elseif ($token->type === Token::TYPE_KEYWORD
+                && $token->keyword === 'LIKE') {
                 /* CREATE TABLE `new_tbl` LIKE 'orig_tbl' */
                 $list->idx = $nextidx;
                 $this->like = Expression::parse(
                     $parser,
                     $list,
-                    [
+                    array(
                         'parseField' => 'table',
-                        'breakOnAlias' => true,
-                    ]
+                        'breakOnAlias' => true
+                    )
                 );
                 // The 'LIKE' keyword was found, but no table_name was found next to it
-                if ($this->like === null) {
-                    $parser->error('A table name was expected.', $list->tokens[$list->idx]);
+                if (is_null($this->like)) {
+                    $parser->error(
+                        'A table name was expected.',
+                        $list->tokens[$list->idx]
+                    );
                 }
             } else {
                 $this->fields = CreateDefinition::parse($parser, $list);
                 if (empty($this->fields)) {
-                    $parser->error('At least one column definition was expected.', $list->tokens[$list->idx]);
+                    $parser->error(
+                        'At least one column definition was expected.',
+                        $list->tokens[$list->idx]
+                    );
                 }
-
                 ++$list->idx;
 
-                $this->entityOptions = OptionsArray::parse($parser, $list, static::$TABLE_OPTIONS);
+                $this->entityOptions = OptionsArray::parse(
+                    $parser,
+                    $list,
+                    static::$TABLE_OPTIONS
+                );
 
                 /**
                  * The field that is being filled (`partitionBy` or
@@ -630,6 +610,8 @@ class CreateStatement extends Statement
                 for (; $list->idx < $list->count; ++$list->idx) {
                     /**
                      * Token parsed at this moment.
+                     *
+                     * @var Token
                      */
                     $token = $list->tokens[$list->idx];
 
@@ -668,14 +650,14 @@ class CreateStatement extends Statement
                                 // This is used instead of `++$brackets` because,
                                 // initially, `$brackets` is `false` cannot be
                                 // incremented.
-                                $brackets += 1;
+                                $brackets = $brackets + 1;
                             } elseif ($token->value === ')') {
                                 --$brackets;
                             }
                         }
 
                         // Building the expression used for partitioning.
-                        $this->$field .= $token->type === Token::TYPE_WHITESPACE ? ' ' : $token->token;
+                        $this->$field .= ($token->type === Token::TYPE_WHITESPACE) ? ' ' : $token->token;
 
                         // Last bracket was read, the expression ended.
                         // Comparing with `0` and not `false`, because `false` means
@@ -690,30 +672,42 @@ class CreateStatement extends Statement
                             $this->partitions = ArrayObj::parse(
                                 $parser,
                                 $list,
-                                ['type' => 'PhpMyAdmin\\SqlParser\\Components\\PartitionDefinition']
+                                array(
+                                    'type' => 'PhpMyAdmin\\SqlParser\\Components\\PartitionDefinition'
+                                )
                             );
                         }
-
                         break;
                     }
                 }
             }
-        } elseif ($this->options->has('PROCEDURE') || $this->options->has('FUNCTION')) {
+        } elseif ($this->options->has('PROCEDURE')
+            || $this->options->has('FUNCTION')
+        ) {
             $this->parameters = ParameterDefinition::parse($parser, $list);
             if ($this->options->has('FUNCTION')) {
-                $prevToken = $token;
+                $prev_token = $token;
                 $token = $list->getNextOfType(Token::TYPE_KEYWORD);
-                if ($token === null || $token->keyword !== 'RETURNS') {
-                    $parser->error('A "RETURNS" keyword was expected.', $token ?? $prevToken);
+                if (is_null($token) || $token->keyword !== 'RETURNS') {
+                    $parser->error(
+                        'A "RETURNS" keyword was expected.',
+                        is_null($token) ? $prev_token : $token
+                    );
                 } else {
                     ++$list->idx;
-                    $this->return = DataType::parse($parser, $list);
+                    $this->return = DataType::parse(
+                        $parser,
+                        $list
+                    );
                 }
             }
-
             ++$list->idx;
 
-            $this->entityOptions = OptionsArray::parse($parser, $list, static::$FUNC_OPTIONS);
+            $this->entityOptions = OptionsArray::parse(
+                $parser,
+                $list,
+                static::$FUNC_OPTIONS
+            );
             ++$list->idx;
 
             for (; $list->idx < $list->count; ++$list->idx) {
@@ -737,29 +731,26 @@ class CreateStatement extends Statement
                 $token->type === Token::TYPE_KEYWORD
                 && $token->keyword === 'AS'
                 && $list->tokens[$nextidx]->type === Token::TYPE_KEYWORD
+                && $list->tokens[$nextidx]->value === 'SELECT'
             ) {
-                if ($list->tokens[$nextidx]->value === 'SELECT') {
-                    $list->idx = $nextidx;
-                    $this->select = new SelectStatement($parser, $list);
-                    ++$list->idx; // Skipping last token from the select.
-                } elseif ($list->tokens[$nextidx]->value === 'WITH') {
-                    ++$list->idx;
-                    $this->with = new WithStatement($parser, $list);
-                }
+                $list->idx = $nextidx;
+                $this->select = new SelectStatement($parser, $list);
             }
-
             // Parsing all other tokens
             for (; $list->idx < $list->count; ++$list->idx) {
                 $token = $list->tokens[$list->idx];
                 if ($token->type === Token::TYPE_DELIMITER) {
                     break;
                 }
-
                 $this->body[] = $token;
             }
         } elseif ($this->options->has('TRIGGER')) {
             // Parsing the time and the event.
-            $this->entityOptions = OptionsArray::parse($parser, $list, static::$TRIGGER_OPTIONS);
+            $this->entityOptions = OptionsArray::parse(
+                $parser,
+                $list,
+                static::$TRIGGER_OPTIONS
+            );
             ++$list->idx;
 
             $list->getNextOfTypeAndValue(Token::TYPE_KEYWORD, 'ON');
@@ -769,10 +760,10 @@ class CreateStatement extends Statement
             $this->table = Expression::parse(
                 $parser,
                 $list,
-                [
+                array(
                     'parseField' => 'table',
-                    'breakOnAlias' => true,
-                ]
+                    'breakOnAlias' => true
+                )
             );
             ++$list->idx;
 
@@ -789,7 +780,6 @@ class CreateStatement extends Statement
                 if ($token->type === Token::TYPE_DELIMITER) {
                     break;
                 }
-
                 $this->body[] = $token;
             }
         }

@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * Not implemented (yet) statements.
+ */
 
 namespace PhpMyAdmin\SqlParser\Statements;
 
@@ -13,6 +15,10 @@ use PhpMyAdmin\SqlParser\TokensList;
  * Not implemented (yet) statements.
  *
  * The `after` function makes the parser jump straight to the first delimiter.
+ *
+ * @category   Statements
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class NotImplementedStatement extends Statement
 {
@@ -21,7 +27,7 @@ class NotImplementedStatement extends Statement
      *
      * @var Token[]
      */
-    public $unknown = [];
+    public $unknown = array();
 
     /**
      * @return string
@@ -49,7 +55,6 @@ class NotImplementedStatement extends Statement
             if ($list->tokens[$list->idx]->type === Token::TYPE_DELIMITER) {
                 break;
             }
-
             $this->unknown[] = $list->tokens[$list->idx];
         }
     }

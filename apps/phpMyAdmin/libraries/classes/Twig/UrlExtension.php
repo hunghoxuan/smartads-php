@@ -1,13 +1,20 @@
 <?php
-
-declare(strict_types=1);
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * hold PhpMyAdmin\Twig\UrlExtension class
+ *
+ * @package PhpMyAdmin\Twig
+ */
 namespace PhpMyAdmin\Twig;
 
-use PhpMyAdmin\Url;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * Class UrlExtension
+ *
+ * @package PhpMyAdmin\Twig
+ */
 class UrlExtension extends AbstractExtension
 {
     /**
@@ -17,32 +24,31 @@ class UrlExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        return [
+        return array(
             new TwigFunction(
-                'get_hidden_inputs',
-                [Url::class, 'getHiddenInputs'],
-                ['is_safe' => ['html']]
+                'Url_getHiddenInputs',
+                'PhpMyAdmin\Url::getHiddenInputs',
+                array('is_safe' => array('html'))
             ),
             new TwigFunction(
-                'get_hidden_fields',
-                [Url::class, 'getHiddenFields'],
-                ['is_safe' => ['html']]
+                'Url_getHiddenFields',
+                'PhpMyAdmin\Url::getHiddenFields',
+                array('is_safe' => array('html'))
             ),
             new TwigFunction(
-                'get_common',
-                [Url::class, 'getCommon'],
-                ['is_safe' => ['html']]
+                'Url_getCommon',
+                'PhpMyAdmin\Url::getCommon',
+                array('is_safe' => array('html'))
             ),
             new TwigFunction(
-                'get_common_raw',
-                [Url::class, 'getCommonRaw'],
-                ['is_safe' => ['html']]
+                'Url_getCommonRaw',
+                'PhpMyAdmin\Url::getCommonRaw',
+                array('is_safe' => array('html'))
             ),
             new TwigFunction(
-                'url',
-                [Url::class, 'getFromRoute'],
-                ['is_safe' => ['html']]
+                'Url_link',
+                'PhpMyAdmin\Core::linkURL'
             ),
-        ];
+        );
     }
 }

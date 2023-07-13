@@ -1,41 +1,36 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * Parses a list of expressions delimited by a comma.
+ */
 
 namespace PhpMyAdmin\SqlParser\Components;
 
 use PhpMyAdmin\SqlParser\Component;
-use PhpMyAdmin\SqlParser\Exceptions\ParserException;
 use PhpMyAdmin\SqlParser\Parser;
 use PhpMyAdmin\SqlParser\Token;
 use PhpMyAdmin\SqlParser\TokensList;
 
-use function count;
-use function implode;
-use function is_array;
-use function preg_match;
-use function strlen;
-use function substr;
-
 /**
  * Parses a list of expressions delimited by a comma.
  *
- * @final
+ * @category   Keywords
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class ExpressionArray extends Component
 {
     /**
-     * @param Parser               $parser  the parser that serves as context
-     * @param TokensList           $list    the list of tokens that are being parsed
-     * @param array<string, mixed> $options parameters for parsing
+     * @param Parser     $parser  the parser that serves as context
+     * @param TokensList $list    the list of tokens that are being parsed
+     * @param array      $options parameters for parsing
      *
      * @return Expression[]
-     *
-     * @throws ParserException
+     * @throws \PhpMyAdmin\SqlParser\Exceptions\ParserException
      */
-    public static function parse(Parser $parser, TokensList $list, array $options = [])
+    public static function parse(Parser $parser, TokensList $list, array $options = array())
     {
-        $ret = [];
+        $ret = array();
 
         /**
          * The state of the parser.
@@ -54,6 +49,8 @@ class ExpressionArray extends Component
         for (; $list->idx < $list->count; ++$list->idx) {
             /**
              * Token parsed at this moment.
+             *
+             * @var Token
              */
             $token = $list->tokens[$list->idx];
 
@@ -67,21 +64,21 @@ class ExpressionArray extends Component
                 continue;
             }
 
-            if (
-                ($token->type === Token::TYPE_KEYWORD)
+            if (($token->type === Token::TYPE_KEYWORD)
                 && ($token->flags & Token::FLAG_KEYWORD_RESERVED)
                 && ((~$token->flags & Token::FLAG_KEYWORD_FUNCTION))
                 && ($token->value !== 'DUAL')
                 && ($token->value !== 'NULL')
                 && ($token->value !== 'CASE')
-                && ($token->value !== 'NOT')
             ) {
                 // No keyword is expected.
                 break;
             }
 
             if ($state === 0) {
-                if ($token->type === Token::TYPE_KEYWORD && $token->value === 'CASE') {
+                if ($token->type === Token::TYPE_KEYWORD
+                    && $token->value === 'CASE'
+                ) {
                     $expr = CaseExpression::parse($parser, $list, $options);
                 } else {
                     $expr = Expression::parse($parser, $list, $options);
@@ -90,20 +87,22 @@ class ExpressionArray extends Component
                 if ($expr === null) {
                     break;
                 }
-
                 $ret[] = $expr;
                 $state = 1;
             } elseif ($state === 1) {
-                if ($token->value !== ',') {
+                if ($token->value === ',') {
+                    $state = 0;
+                } else {
                     break;
                 }
-
-                $state = 0;
             }
         }
 
         if ($state === 0) {
-            $parser->error('An expression was expected.', $list->tokens[$list->idx]);
+            $parser->error(
+                'An expression was expected.',
+                $list->tokens[$list->idx]
+            );
         }
 
         --$list->idx;
@@ -123,14 +122,14 @@ class ExpressionArray extends Component
     }
 
     /**
-     * @param Expression[]         $component the component to be built
-     * @param array<string, mixed> $options   parameters for building
+     * @param Expression[] $component the component to be built
+     * @param array        $options   parameters for building
      *
      * @return string
      */
-    public static function build($component, array $options = [])
+    public static function build($component, array $options = array())
     {
-        $ret = [];
+        $ret = array();
         foreach ($component as $frag) {
             $ret[] = $frag::build($frag);
         }

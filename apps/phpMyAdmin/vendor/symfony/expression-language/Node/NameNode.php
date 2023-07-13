@@ -20,11 +20,11 @@ use Symfony\Component\ExpressionLanguage\Compiler;
  */
 class NameNode extends Node
 {
-    public function __construct(string $name)
+    public function __construct($name)
     {
         parent::__construct(
-            [],
-            ['name' => $name]
+            array(),
+            array('name' => $name)
         );
     }
 
@@ -33,13 +33,8 @@ class NameNode extends Node
         $compiler->raw('$'.$this->attributes['name']);
     }
 
-    public function evaluate(array $functions, array $values)
+    public function evaluate($functions, $values)
     {
         return $values[$this->attributes['name']];
-    }
-
-    public function toArray()
-    {
-        return [$this->attributes['name']];
     }
 }

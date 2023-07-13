@@ -20,15 +20,18 @@ class Expression
 {
     protected $expression;
 
-    public function __construct(string $expression)
+    /**
+     * @param string $expression An expression
+     */
+    public function __construct($expression)
     {
-        $this->expression = $expression;
+        $this->expression = (string) $expression;
     }
 
     /**
      * Gets the expression.
      *
-     * @return string
+     * @return string The expression
      */
     public function __toString()
     {

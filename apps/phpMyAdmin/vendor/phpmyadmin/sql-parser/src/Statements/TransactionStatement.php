@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * Transaction statement.
+ */
 
 namespace PhpMyAdmin\SqlParser\Statements;
 
@@ -11,47 +13,54 @@ use PhpMyAdmin\SqlParser\TokensList;
 
 /**
  * Transaction statement.
+ *
+ * @category   Statements
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class TransactionStatement extends Statement
 {
     /**
      * START TRANSACTION and BEGIN.
+     *
+     * @var int
      */
-    public const TYPE_BEGIN = 1;
+    const TYPE_BEGIN = 1;
 
     /**
      * COMMIT and ROLLBACK.
+     *
+     * @var int
      */
-    public const TYPE_END = 2;
+    const TYPE_END = 2;
 
     /**
      * The type of this query.
      *
-     * @var int|null
+     * @var int
      */
     public $type;
 
     /**
      * The list of statements in this transaction.
      *
-     * @var Statement[]|null
+     * @var Statement[]
      */
     public $statements;
 
     /**
      * The ending transaction statement which may be a `COMMIT` or a `ROLLBACK`.
      *
-     * @var TransactionStatement|null
+     * @var TransactionStatement
      */
     public $end;
 
     /**
      * Options for this query.
      *
-     * @var array<string, int|array<int, int|string>>
-     * @psalm-var array<string, (positive-int|array{positive-int, ('var'|'var='|'expr'|'expr=')})>
+     * @var array
      */
-    public static $OPTIONS = [
+    public static $OPTIONS = array(
         'START TRANSACTION' => 1,
         'BEGIN' => 1,
         'COMMIT' => 1,
@@ -61,23 +70,25 @@ class TransactionStatement extends Statement
         'AND NO CHAIN' => 3,
         'AND CHAIN' => 3,
         'RELEASE' => 4,
-        'NO RELEASE' => 4,
-    ];
+        'NO RELEASE' => 4
+    );
 
     /**
      * @param Parser     $parser the instance that requests parsing
      * @param TokensList $list   the list of tokens to be parsed
-     *
-     * @return void
      */
     public function parse(Parser $parser, TokensList $list)
     {
         parent::parse($parser, $list);
 
         // Checks the type of this query.
-        if ($this->options->has('START TRANSACTION') || $this->options->has('BEGIN')) {
+        if ($this->options->has('START TRANSACTION')
+            || $this->options->has('BEGIN')
+        ) {
             $this->type = self::TYPE_BEGIN;
-        } elseif ($this->options->has('COMMIT') || $this->options->has('ROLLBACK')) {
+        } elseif ($this->options->has('COMMIT')
+            || $this->options->has('ROLLBACK')
+        ) {
             $this->type = self::TYPE_END;
         }
     }
@@ -95,7 +106,6 @@ class TransactionStatement extends Statement
                  */
                 $ret .= ';' . $statement->build();
             }
-
             $ret .= ';' . $this->end->build();
         }
 

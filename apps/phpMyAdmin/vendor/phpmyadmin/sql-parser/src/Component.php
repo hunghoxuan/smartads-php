@@ -1,42 +1,46 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * Defines a component that is later extended to parse specialized components or
+ * keywords.
+ *
+ * There is a small difference between *Component and *Keyword classes: usually,
+ * *Component parsers can be reused in multiple  situations and *Keyword parsers
+ * count on the *Component classes to do their job.
+ */
 
 namespace PhpMyAdmin\SqlParser;
 
-use Exception;
-use Stringable;
-
 /**
- * Defines a component that is later extended to parse specialized components or keywords.
+ * A component (of a statement) is a part of a statement that is common to
+ * multiple query types.
  *
- * There is a small difference between *Component and *Keyword classes: usually, *Component parsers can be reused in
- * multiple situations and *Keyword parsers count on the *Component classes to do their job.
+ * @category Components
  *
- * A component (of a statement) is a part of a statement that is common to multiple query types.
+ * @license  https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
-abstract class Component implements Stringable
+abstract class Component
 {
     /**
      * Parses the tokens contained in the given list in the context of the given
      * parser.
      *
-     * @param Parser               $parser  the parser that serves as context
-     * @param TokensList           $list    the list of tokens that are being parsed
-     * @param array<string, mixed> $options parameters for parsing
+     * @param Parser     $parser  the parser that serves as context
+     * @param TokensList $list    the list of tokens that are being parsed
+     * @param array      $options parameters for parsing
+     *
+     * @throws \Exception not implemented yet
      *
      * @return mixed
-     *
-     * @throws Exception not implemented yet.
      */
     public static function parse(
         Parser $parser,
         TokensList $list,
-        array $options = []
+        array $options = array()
     ) {
         // This method should be abstract, but it can't be both static and
         // abstract.
-        throw new Exception(Translator::gettext('Not implemented yet.'));
+        throw new \Exception(Translator::gettext('Not implemented yet.'));
     }
 
     /**
@@ -45,18 +49,18 @@ abstract class Component implements Stringable
      * In other words, this function represents the inverse function of
      * `static::parse`.
      *
-     * @param mixed                $component the component to be built
-     * @param array<string, mixed> $options   parameters for building
+     * @param mixed $component the component to be built
+     * @param array $options   parameters for building
      *
-     * @return mixed
+     * @throws \Exception not implemented yet
      *
-     * @throws Exception not implemented yet.
+     * @return string
      */
-    public static function build($component, array $options = [])
+    public static function build($component, array $options = array())
     {
         // This method should be abstract, but it can't be both static and
         // abstract.
-        throw new Exception(Translator::gettext('Not implemented yet.'));
+        throw new \Exception(Translator::gettext('Not implemented yet.'));
     }
 
     /**

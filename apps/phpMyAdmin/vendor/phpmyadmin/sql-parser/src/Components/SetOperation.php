@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * `SET` keyword parser.
+ */
 
 namespace PhpMyAdmin\SqlParser\Components;
 
@@ -9,14 +11,12 @@ use PhpMyAdmin\SqlParser\Parser;
 use PhpMyAdmin\SqlParser\Token;
 use PhpMyAdmin\SqlParser\TokensList;
 
-use function implode;
-use function is_array;
-use function trim;
-
 /**
  * `SET` keyword parser.
  *
- * @final
+ * @category   Keywords
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class SetOperation extends Component
 {
@@ -35,6 +35,8 @@ class SetOperation extends Component
     public $value;
 
     /**
+     * Constructor.
+     *
      * @param string $column Field's name..
      * @param string $value  new value
      */
@@ -45,17 +47,17 @@ class SetOperation extends Component
     }
 
     /**
-     * @param Parser               $parser  the parser that serves as context
-     * @param TokensList           $list    the list of tokens that are being parsed
-     * @param array<string, mixed> $options parameters for parsing
+     * @param Parser     $parser  the parser that serves as context
+     * @param TokensList $list    the list of tokens that are being parsed
+     * @param array      $options parameters for parsing
      *
      * @return SetOperation[]
      */
-    public static function parse(Parser $parser, TokensList $list, array $options = [])
+    public static function parse(Parser $parser, TokensList $list, array $options = array())
     {
-        $ret = [];
+        $ret = array();
 
-        $expr = new static();
+        $expr = new self();
 
         /**
          * The state of the parser.
@@ -81,6 +83,8 @@ class SetOperation extends Component
         for (; $list->idx < $list->count; ++$list->idx) {
             /**
              * Token parsed at this moment.
+             *
+             * @var Token
              */
             $token = $list->tokens[$list->idx];
 
@@ -95,8 +99,7 @@ class SetOperation extends Component
             }
 
             // No keyword is expected.
-            if (
-                ($token->type === Token::TYPE_KEYWORD)
+            if (($token->type === Token::TYPE_KEYWORD)
                 && ($token->flags & Token::FLAG_KEYWORD_RESERVED)
                 && ($state === 0)
             ) {
@@ -115,22 +118,22 @@ class SetOperation extends Component
                 $tmp = Expression::parse(
                     $parser,
                     $list,
-                    ['breakOnAlias' => true]
+                    array(
+                        'breakOnAlias' => true
+                    )
                 );
-                if ($tmp === null) {
+                if (is_null($tmp)) {
                     $parser->error('Missing expression.', $token);
                     break;
                 }
-
                 $expr->column = trim($expr->column);
                 $expr->value = $tmp->expr;
                 $ret[] = $expr;
-                $expr = new static();
+                $expr = new self();
                 $state = 0;
                 $commaLastSeenAt = null;
             }
         }
-
         --$list->idx;
 
         // We saw a comma, but didn't see a column-value pair after it
@@ -143,11 +146,11 @@ class SetOperation extends Component
 
     /**
      * @param SetOperation|SetOperation[] $component the component to be built
-     * @param array<string, mixed>        $options   parameters for building
+     * @param array                       $options   parameters for building
      *
      * @return string
      */
-    public static function build($component, array $options = [])
+    public static function build($component, array $options = array())
     {
         if (is_array($component)) {
             return implode(', ', $component);

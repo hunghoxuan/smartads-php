@@ -1,19 +1,19 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Functionality for the navigation tree
+ *
+ * @package PhpMyAdmin-Navigation
  */
-
-declare(strict_types=1);
-
 namespace PhpMyAdmin\Navigation\Nodes;
 
 use PhpMyAdmin\Navigation\NodeFactory;
-
-use function __;
-use function _pgettext;
+use PhpMyAdmin\Util;
 
 /**
  * Represents a container for view nodes in the navigation tree
+ *
+ * @package PhpMyAdmin-Navigation
  */
 class NodeViewContainer extends NodeDatabaseChildContainer
 {
@@ -23,21 +23,30 @@ class NodeViewContainer extends NodeDatabaseChildContainer
     public function __construct()
     {
         parent::__construct(__('Views'), Node::CONTAINER);
-        $this->icon = ['image' => 'b_views', 'title' => __('Views')];
-        $this->links = [
-            'text' => ['route' => '/database/structure', 'params' => ['tbl_type' => 'view', 'db' => null]],
-            'icon' => ['route' => '/database/structure', 'params' => ['tbl_type' => 'view', 'db' => null]],
-        ];
+        $this->icon = Util::getImage('b_views', __('Views'));
+        $this->links = array(
+            'text' => 'db_structure.php?server=' . $GLOBALS['server']
+                . '&amp;db=%1$s&amp;tbl_type=view',
+            'icon' => 'db_structure.php?server=' . $GLOBALS['server']
+                . '&amp;db=%1$s&amp;tbl_type=view',
+        );
         $this->classes = 'viewContainer subContainer';
-        $this->realName = 'views';
+        $this->real_name = 'views';
 
-        $newLabel = _pgettext('Create new view', 'New');
-        $new = NodeFactory::getInstanceForNewNode($newLabel, 'new_view italics');
-        $new->icon = ['image' => 'b_view_add', 'title' => $newLabel];
-        $new->links = [
-            'text' => ['route' => '/view/create', 'params' => ['db' => null]],
-            'icon' => ['route' => '/view/create', 'params' => ['db' => null]],
-        ];
+        $new_label = _pgettext('Create new view', 'New');
+        $new = NodeFactory::getInstance(
+            'Node',
+            $new_label
+        );
+        $new->isNew = true;
+        $new->icon = Util::getImage('b_view_add', $new_label);
+        $new->links = array(
+            'text' => 'view_create.php?server=' . $GLOBALS['server']
+                . '&amp;db=%2$s',
+            'icon' => 'view_create.php?server=' . $GLOBALS['server']
+                . '&amp;db=%2$s',
+        );
+        $new->classes = 'new_view italics';
         $this->addChild($new);
     }
 }

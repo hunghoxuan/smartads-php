@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * Maintenance statement.
+ */
 
 namespace PhpMyAdmin\SqlParser\Statements;
 
@@ -16,13 +18,17 @@ use PhpMyAdmin\SqlParser\TokensList;
  *
  * They follow the syntax:
  *     STMT [some options] tbl_name [, tbl_name] ... [some more options]
+ *
+ * @category   Statements
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class MaintenanceStatement extends Statement
 {
     /**
      * Tables maintained.
      *
-     * @var Expression[]|null
+     * @var Expression[]
      */
     public $tables;
 
@@ -34,8 +40,6 @@ class MaintenanceStatement extends Statement
      * @param Parser     $parser the instance that requests parsing
      * @param TokensList $list   the list of tokens to be parsed
      * @param Token      $token  the token that is being parsed
-     *
-     * @return void
      */
     public function after(Parser $parser, TokensList $list, Token $token)
     {

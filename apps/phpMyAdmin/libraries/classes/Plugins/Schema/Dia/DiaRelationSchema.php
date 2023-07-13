@@ -1,15 +1,18 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Classes to create relation schema in Dia format.
+ *
+ * @package PhpMyAdmin
  */
-
-declare(strict_types=1);
-
 namespace PhpMyAdmin\Plugins\Schema\Dia;
 
+use PhpMyAdmin\Plugins\Schema\Eps\TableStatsEps;
 use PhpMyAdmin\Plugins\Schema\ExportRelationSchema;
-
-use function in_array;
+use PhpMyAdmin\Plugins\Schema\Pdf\TableStatsPdf;
+use PhpMyAdmin\Plugins\Schema\Svg\TableStatsSvg;
+use PhpMyAdmin\Plugins\Schema\Dia\TableStatsDia;
+use PhpMyAdmin\Relation;
 
 /**
  * Dia Relation Schema Class
@@ -23,40 +26,32 @@ use function in_array;
  * inherits ExportRelationSchema class has common functionality added
  * to this class
  *
- * @property Dia $diagram
+ * @package PhpMyAdmin
+ * @name    Dia_Relation_Schema
  */
 class DiaRelationSchema extends ExportRelationSchema
 {
-    /** @var TableStatsDia[] */
-    private $tables = [];
-
+    /**
+     * @var TableStatsDia[]|TableStatsEps[]|TableStatsPdf[]|TableStatsSvg[]
+     */
+    private $_tables = array();
     /** @var RelationStatsDia[] Relations */
-    private $relations = [];
-
-    /** @var float */
-    private $topMargin = 2.8222000598907471;
-
-    /** @var float */
-    private $bottomMargin = 2.8222000598907471;
-
-    /** @var float */
-    private $leftMargin = 2.8222000598907471;
-
-    /** @var float */
-    private $rightMargin = 2.8222000598907471;
-
-    /** @var int */
+    private $_relations = array();
+    private $_topMargin = 2.8222000598907471;
+    private $_bottomMargin = 2.8222000598907471;
+    private $_leftMargin = 2.8222000598907471;
+    private $_rightMargin = 2.8222000598907471;
     public static $objectId = 0;
 
     /**
+     * The "PhpMyAdmin\Plugins\Schema\Dia\DiaRelationSchema" constructor
+     *
      * Upon instantiation This outputs the Dia XML document
      * that user can download
      *
-     * @see Dia
-     * @see TableStatsDia
-     * @see RelationStatsDia
-     *
      * @param string $db database name
+     *
+     * @see Dia,TableStatsDia,RelationStatsDia
      */
     public function __construct($db)
     {
@@ -64,39 +59,33 @@ class DiaRelationSchema extends ExportRelationSchema
 
         $this->setShowColor(isset($_REQUEST['dia_show_color']));
         $this->setShowKeys(isset($_REQUEST['dia_show_keys']));
-        $this->setOrientation((string) $_REQUEST['dia_orientation']);
-        $this->setPaper((string) $_REQUEST['dia_paper']);
+        $this->setOrientation($_REQUEST['dia_orientation']);
+        $this->setPaper($_REQUEST['dia_paper']);
 
         $this->diagram->startDiaDoc(
             $this->paper,
-            $this->topMargin,
-            $this->bottomMargin,
-            $this->leftMargin,
-            $this->rightMargin,
+            $this->_topMargin,
+            $this->_bottomMargin,
+            $this->_leftMargin,
+            $this->_rightMargin,
             $this->orientation
         );
 
         $alltables = $this->getTablesFromRequest();
 
         foreach ($alltables as $table) {
-            if (isset($this->tables[$table])) {
-                continue;
+            if (!isset($this->tables[$table])) {
+                $this->_tables[$table] = new TableStatsDia(
+                    $this->diagram, $this->db, $table, $this->pageNumber,
+                    $this->showKeys, $this->offline
+                );
             }
-
-            $this->tables[$table] = new TableStatsDia(
-                $this->diagram,
-                $this->db,
-                $table,
-                $this->pageNumber,
-                $this->showKeys,
-                $this->offline
-            );
         }
 
         $seen_a_relation = false;
         foreach ($alltables as $one_table) {
             $exist_rel = $this->relation->getForeigners($this->db, $one_table, '', 'both');
-            if (! $exist_rel) {
+            if (!$exist_rel) {
                 continue;
             }
 
@@ -107,9 +96,9 @@ class DiaRelationSchema extends ExportRelationSchema
                  * (do not use array_search() because we would have to
                  * to do a === false and this is not PHP3 compatible)
                  */
-                if ($master_field !== 'foreign_keys_data') {
+                if ($master_field != 'foreign_keys_data') {
                     if (in_array($rel['foreign_table'], $alltables)) {
-                        $this->addRelation(
+                        $this->_addRelation(
                             $one_table,
                             $master_field,
                             $rel['foreign_table'],
@@ -117,17 +106,16 @@ class DiaRelationSchema extends ExportRelationSchema
                             $this->showKeys
                         );
                     }
-
                     continue;
                 }
 
                 foreach ($rel as $one_key) {
-                    if (! in_array($one_key['ref_table_name'], $alltables)) {
+                    if (!in_array($one_key['ref_table_name'], $alltables)) {
                         continue;
                     }
 
                     foreach ($one_key['index_list'] as $index => $one_field) {
-                        $this->addRelation(
+                        $this->_addRelation(
                             $one_table,
                             $one_field,
                             $one_key['ref_table_name'],
@@ -138,20 +126,21 @@ class DiaRelationSchema extends ExportRelationSchema
                 }
             }
         }
-
-        $this->drawTables();
+        $this->_drawTables();
 
         if ($seen_a_relation) {
-            $this->drawRelations();
+            $this->_drawRelations();
         }
-
         $this->diagram->endDiaDoc();
     }
 
     /**
      * Output Dia Document for download
+     *
+     * @return void
+     * @access public
      */
-    public function showOutput(): void
+    public function showOutput()
     {
         $this->diagram->showOutput($this->getFileName('.dia'));
     }
@@ -159,33 +148,31 @@ class DiaRelationSchema extends ExportRelationSchema
     /**
      * Defines relation objects
      *
-     * @see    TableStatsDia::__construct(),RelationStatsDia::__construct()
-     *
      * @param string $masterTable  The master table name
      * @param string $masterField  The relation field in the master table
      * @param string $foreignTable The foreign table name
      * @param string $foreignField The relation field in the foreign table
      * @param bool   $showKeys     Whether to display ONLY keys or not
+     *
+     * @return void
+     *
+     * @access private
+     * @see    TableStatsDia::__construct(),RelationStatsDia::__construct()
      */
-    private function addRelation(
+    private function _addRelation(
         $masterTable,
         $masterField,
         $foreignTable,
         $foreignField,
         $showKeys
-    ): void {
-        if (! isset($this->tables[$masterTable])) {
-            $this->tables[$masterTable] = new TableStatsDia(
-                $this->diagram,
-                $this->db,
-                $masterTable,
-                $this->pageNumber,
-                $showKeys
+    ) {
+        if (!isset($this->_tables[$masterTable])) {
+            $this->_tables[$masterTable] = new TableStatsDia(
+                $this->diagram, $this->db, $masterTable, $this->pageNumber, $showKeys
             );
         }
-
-        if (! isset($this->tables[$foreignTable])) {
-            $this->tables[$foreignTable] = new TableStatsDia(
+        if (!isset($this->_tables[$foreignTable])) {
+            $this->_tables[$foreignTable] = new TableStatsDia(
                 $this->diagram,
                 $this->db,
                 $foreignTable,
@@ -193,12 +180,11 @@ class DiaRelationSchema extends ExportRelationSchema
                 $showKeys
             );
         }
-
-        $this->relations[] = new RelationStatsDia(
+        $this->_relations[] = new RelationStatsDia(
             $this->diagram,
-            $this->tables[$masterTable],
+            $this->_tables[$masterTable],
             $masterField,
-            $this->tables[$foreignTable],
+            $this->_tables[$foreignTable],
             $foreignField
         );
     }
@@ -210,11 +196,14 @@ class DiaRelationSchema extends ExportRelationSchema
      * foreign table's foreign field using Dia object
      * type Database - Reference
      *
+     * @return void
+     *
+     * @access private
      * @see    RelationStatsDia::relationDraw()
      */
-    private function drawRelations(): void
+    private function _drawRelations()
     {
-        foreach ($this->relations as $relation) {
+        foreach ($this->_relations as $relation) {
             $relation->relationDraw($this->showColor);
         }
     }
@@ -225,11 +214,14 @@ class DiaRelationSchema extends ExportRelationSchema
      * Tables are generated using Dia object type Database - Table
      * primary fields are underlined and bold in tables
      *
+     * @return void
+     *
+     * @access private
      * @see    TableStatsDia::tableDraw()
      */
-    private function drawTables(): void
+    private function _drawTables()
     {
-        foreach ($this->tables as $table) {
+        foreach ($this->_tables as $table) {
             $table->tableDraw($this->showColor);
         }
     }

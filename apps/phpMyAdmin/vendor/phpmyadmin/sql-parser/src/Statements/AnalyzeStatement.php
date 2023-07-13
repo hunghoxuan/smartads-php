@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * `ANALYZE` statement.
+ */
 
 namespace PhpMyAdmin\SqlParser\Statements;
 
@@ -10,28 +12,31 @@ use PhpMyAdmin\SqlParser\Statement;
 /**
  * `ANALYZE` statement.
  *
- * ANALYZE [NO_WRITE_TO_BINLOG | LOCAL] TABLE
- *  tbl_name [, tbl_name] ...
+ * ANALYZE array(NO_WRITE_TO_BINLOG | LOCAL] TABLE
+ *  tbl_name array(, tbl_name] ...
+ *
+ * @category   Statements
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class AnalyzeStatement extends Statement
 {
     /**
      * Options of this statement.
      *
-     * @var array<string, int|array<int, int|string>>
-     * @psalm-var array<string, (positive-int|array{positive-int, ('var'|'var='|'expr'|'expr=')})>
+     * @var array
      */
-    public static $OPTIONS = [
+    public static $OPTIONS = array(
         'TABLE' => 1,
 
         'NO_WRITE_TO_BINLOG' => 2,
-        'LOCAL' => 3,
-    ];
+        'LOCAL' => 3
+    );
 
     /**
      * Analyzed tables.
      *
-     * @var Expression[]|null
+     * @var Expression[]
      */
     public $tables;
 }

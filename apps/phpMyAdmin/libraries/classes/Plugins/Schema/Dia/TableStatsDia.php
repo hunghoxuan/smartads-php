@@ -1,19 +1,14 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Contains PhpMyAdmin\Plugins\Schema\Dia\TableStatsDia class
+ *
+ * @package PhpMyAdmin
  */
-
-declare(strict_types=1);
-
 namespace PhpMyAdmin\Plugins\Schema\Dia;
 
 use PhpMyAdmin\Plugins\Schema\ExportRelationSchema;
 use PhpMyAdmin\Plugins\Schema\TableStats;
-
-use function __;
-use function in_array;
-use function shuffle;
-use function sprintf;
 
 /**
  * Table preferences/statistics
@@ -21,24 +16,25 @@ use function sprintf;
  * This class preserves the table co-ordinates,fields
  * and helps in drawing/generating the Tables in dia XML document.
  *
- * @property Dia $diagram
+ * @package PhpMyAdmin
+ * @name    Table_Stats_Dia
+ * @see     PMA_DIA
  */
 class TableStatsDia extends TableStats
 {
-    /** @var int */
     public $tableId;
-
-    /** @var string */
-    public $tableColor = '#000000';
+    public $tableColor;
 
     /**
-     * @param Dia    $diagram    The current dia document
-     * @param string $db         The database name
-     * @param string $tableName  The table name
-     * @param int    $pageNumber The current page number (from the
-     *                           $cfg['Servers'][$i]['table_coords'] table)
-     * @param bool   $showKeys   Whether to display ONLY keys or not
-     * @param bool   $offline    Whether the coordinates are sent from the browser
+     * The "PhpMyAdmin\Plugins\Schema\Dia\TableStatsDia" constructor
+     *
+     * @param object  $diagram    The current dia document
+     * @param string  $db         The database name
+     * @param string  $tableName  The table name
+     * @param integer $pageNumber The current page number (from the
+     *                            $cfg['Servers'][$i]['table_coords'] table)
+     * @param boolean $showKeys   Whether to display ONLY keys or not
+     * @param boolean $offline    Whether the coordinates are sent from the browser
      */
     public function __construct(
         $diagram,
@@ -48,7 +44,15 @@ class TableStatsDia extends TableStats
         $showKeys = false,
         $offline = false
     ) {
-        parent::__construct($diagram, $db, $pageNumber, $tableName, $showKeys, false, $offline);
+        parent::__construct(
+            $diagram,
+            $db,
+            $pageNumber,
+            $tableName,
+            $showKeys,
+            false,
+            $offline
+        );
 
         /**
          * Every object in Dia document needs an ID to identify
@@ -59,12 +63,14 @@ class TableStatsDia extends TableStats
 
     /**
      * Displays an error when the table cannot be found.
+     *
+     * @return void
      */
-    protected function showMissingTableError(): void
+    protected function showMissingTableError()
     {
         ExportRelationSchema::dieSchema(
             $this->pageNumber,
-            'DIA',
+            "DIA",
             sprintf(__('The %s table doesn\'t exist!'), $this->tableName)
         );
     }
@@ -78,23 +84,26 @@ class TableStatsDia extends TableStats
      * Object and their attributes are involved in the combination
      * of displaying Database - Table on Dia Document.
      *
-     * @see    Dia
+     * @param boolean $showColor Whether to show color for tables text or not
+     *                           if showColor is true then an array of $listOfColors
+     *                           will be used to choose the random colors for tables
+     *                           text we can change/add more colors to this array
      *
-     * @param bool $showColor Whether to show color for tables text or not
-     *                        if showColor is true then an array of $listOfColors
-     *                        will be used to choose the random colors for tables
-     *                        text we can change/add more colors to this array
+     * @return void
+     *
+     * @access public
+     * @see    Dia
      */
-    public function tableDraw($showColor): void
+    public function tableDraw($showColor)
     {
         if ($showColor) {
-            $listOfColors = [
+            $listOfColors = array(
                 'FF0000',
                 '000099',
-                '00FF00',
-            ];
+                '00FF00'
+            );
             shuffle($listOfColors);
-            $this->tableColor = '#' . $listOfColors[0] . '';
+            $this->tableColor =  '#' . $listOfColors[0] . '';
         } else {
             $this->tableColor = '#000000';
         }
@@ -198,11 +207,9 @@ class TableStatsDia extends TableStats
             if (in_array($field, $this->primary)) {
                 $pm = 'true';
             }
-
             if ($field == $this->displayfield) {
                 $pm = 'false';
             }
-
             $this->diagram->writeRaw(
                 '<dia:attribute name="primary_key">
                     <dia:boolean val="' . $pm . '"/>
@@ -216,7 +223,6 @@ class TableStatsDia extends TableStats
                 </dia:composite>'
             );
         }
-
         $this->diagram->endElement();
         $this->diagram->endElement();
     }

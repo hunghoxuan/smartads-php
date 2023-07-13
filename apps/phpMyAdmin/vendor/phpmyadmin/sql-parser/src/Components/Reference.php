@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * `REFERENCES` keyword parser.
+ */
 
 namespace PhpMyAdmin\SqlParser\Components;
 
@@ -10,36 +12,34 @@ use PhpMyAdmin\SqlParser\Parser;
 use PhpMyAdmin\SqlParser\Token;
 use PhpMyAdmin\SqlParser\TokensList;
 
-use function implode;
-use function trim;
-
 /**
  * `REFERENCES` keyword parser.
  *
- * @final
+ * @category   Keywords
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class Reference extends Component
 {
     /**
      * All references options.
      *
-     * @var array<string, int|array<int, int|string>>
-     * @psalm-var array<string, (positive-int|array{positive-int, ('var'|'var='|'expr'|'expr=')})>
+     * @var array
      */
-    public static $REFERENCES_OPTIONS = [
-        'MATCH' => [
+    public static $REFERENCES_OPTIONS = array(
+        'MATCH' => array(
             1,
             'var',
-        ],
-        'ON DELETE' => [
+        ),
+        'ON DELETE' => array(
             2,
             'var',
-        ],
-        'ON UPDATE' => [
+        ),
+        'ON UPDATE' => array(
             3,
             'var',
-        ],
-    ];
+        )
+    );
 
     /**
      * The referenced table.
@@ -51,7 +51,7 @@ class Reference extends Component
     /**
      * The referenced columns.
      *
-     * @var string[]
+     * @var array
      */
     public $columns;
 
@@ -63,11 +63,13 @@ class Reference extends Component
     public $options;
 
     /**
+     * Constructor.
+     *
      * @param Expression   $table   the name of the table referenced
-     * @param string[]     $columns the columns referenced
+     * @param array        $columns the columns referenced
      * @param OptionsArray $options the options
      */
-    public function __construct($table = null, array $columns = [], $options = null)
+    public function __construct($table = null, array $columns = array(), $options = null)
     {
         $this->table = $table;
         $this->columns = $columns;
@@ -75,15 +77,15 @@ class Reference extends Component
     }
 
     /**
-     * @param Parser               $parser  the parser that serves as context
-     * @param TokensList           $list    the list of tokens that are being parsed
-     * @param array<string, mixed> $options parameters for parsing
+     * @param Parser     $parser  the parser that serves as context
+     * @param TokensList $list    the list of tokens that are being parsed
+     * @param array      $options parameters for parsing
      *
      * @return Reference
      */
-    public static function parse(Parser $parser, TokensList $list, array $options = [])
+    public static function parse(Parser $parser, TokensList $list, array $options = array())
     {
-        $ret = new static();
+        $ret = new self();
 
         /**
          * The state of the parser.
@@ -103,6 +105,8 @@ class Reference extends Component
         for (; $list->idx < $list->count; ++$list->idx) {
             /**
              * Token parsed at this moment.
+             *
+             * @var Token
              */
             $token = $list->tokens[$list->idx];
 
@@ -120,10 +124,10 @@ class Reference extends Component
                 $ret->table = Expression::parse(
                     $parser,
                     $list,
-                    [
+                    array(
                         'parseField' => 'table',
-                        'breakOnAlias' => true,
-                    ]
+                        'breakOnAlias' => true
+                    )
                 );
                 $state = 1;
             } elseif ($state === 1) {
@@ -142,12 +146,12 @@ class Reference extends Component
     }
 
     /**
-     * @param Reference            $component the component to be built
-     * @param array<string, mixed> $options   parameters for building
+     * @param Reference $component the component to be built
+     * @param array     $options   parameters for building
      *
      * @return string
      */
-    public static function build($component, array $options = [])
+    public static function build($component, array $options = array())
     {
         return trim(
             $component->table

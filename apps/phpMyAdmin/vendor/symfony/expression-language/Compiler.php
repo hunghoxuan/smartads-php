@@ -11,14 +11,12 @@
 
 namespace Symfony\Component\ExpressionLanguage;
 
-use Symfony\Contracts\Service\ResetInterface;
-
 /**
  * Compiles a node to PHP code.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Compiler implements ResetInterface
+class Compiler
 {
     private $source;
     private $functions;
@@ -28,7 +26,7 @@ class Compiler implements ResetInterface
         $this->functions = $functions;
     }
 
-    public function getFunction(string $name)
+    public function getFunction($name)
     {
         return $this->functions[$name];
     }
@@ -36,16 +34,13 @@ class Compiler implements ResetInterface
     /**
      * Gets the current PHP code after compilation.
      *
-     * @return string
+     * @return string The PHP code
      */
     public function getSource()
     {
         return $this->source;
     }
 
-    /**
-     * @return $this
-     */
     public function reset()
     {
         $this->source = '';
@@ -81,9 +76,11 @@ class Compiler implements ResetInterface
     /**
      * Adds a raw string to the compiled code.
      *
+     * @param string $string The string
+     *
      * @return $this
      */
-    public function raw(string $string)
+    public function raw($string)
     {
         $this->source .= $string;
 
@@ -93,9 +90,11 @@ class Compiler implements ResetInterface
     /**
      * Adds a quoted string to the compiled code.
      *
+     * @param string $value The string
+     *
      * @return $this
      */
-    public function string(string $value)
+    public function string($value)
     {
         $this->source .= sprintf('"%s"', addcslashes($value, "\0\t\"\$\\"));
 
@@ -112,21 +111,21 @@ class Compiler implements ResetInterface
     public function repr($value)
     {
         if (\is_int($value) || \is_float($value)) {
-            if (false !== $locale = setlocale(\LC_NUMERIC, 0)) {
-                setlocale(\LC_NUMERIC, 'C');
+            if (false !== $locale = setlocale(LC_NUMERIC, 0)) {
+                setlocale(LC_NUMERIC, 'C');
             }
 
             $this->raw($value);
 
             if (false !== $locale) {
-                setlocale(\LC_NUMERIC, $locale);
+                setlocale(LC_NUMERIC, $locale);
             }
         } elseif (null === $value) {
             $this->raw('null');
         } elseif (\is_bool($value)) {
             $this->raw($value ? 'true' : 'false');
         } elseif (\is_array($value)) {
-            $this->raw('[');
+            $this->raw('array(');
             $first = true;
             foreach ($value as $key => $value) {
                 if (!$first) {
@@ -137,7 +136,7 @@ class Compiler implements ResetInterface
                 $this->raw(' => ');
                 $this->repr($value);
             }
-            $this->raw(']');
+            $this->raw(')');
         } else {
             $this->string($value);
         }

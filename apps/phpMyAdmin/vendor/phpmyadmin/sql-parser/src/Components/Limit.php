@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * `LIMIT` keyword parser.
+ */
 
 namespace PhpMyAdmin\SqlParser\Components;
 
@@ -12,7 +14,9 @@ use PhpMyAdmin\SqlParser\TokensList;
 /**
  * `LIMIT` keyword parser.
  *
- * @final
+ * @category   Keywords
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class Limit extends Component
 {
@@ -31,6 +35,8 @@ class Limit extends Component
     public $rowCount;
 
     /**
+     * Constructor.
+     *
      * @param int $rowCount the row count
      * @param int $offset   the offset
      */
@@ -41,21 +47,23 @@ class Limit extends Component
     }
 
     /**
-     * @param Parser               $parser  the parser that serves as context
-     * @param TokensList           $list    the list of tokens that are being parsed
-     * @param array<string, mixed> $options parameters for parsing
+     * @param Parser     $parser  the parser that serves as context
+     * @param TokensList $list    the list of tokens that are being parsed
+     * @param array      $options parameters for parsing
      *
      * @return Limit
      */
-    public static function parse(Parser $parser, TokensList $list, array $options = [])
+    public static function parse(Parser $parser, TokensList $list, array $options = array())
     {
-        $ret = new static();
+        $ret = new self();
 
         $offset = false;
 
         for (; $list->idx < $list->count; ++$list->idx) {
             /**
              * Token parsed at this moment.
+             *
+             * @var Token
              */
             $token = $list->tokens[$list->idx];
 
@@ -77,7 +85,6 @@ class Limit extends Component
                 if ($offset) {
                     $parser->error('An offset was expected.', $token);
                 }
-
                 $offset = true;
                 continue;
             }
@@ -102,7 +109,10 @@ class Limit extends Component
         }
 
         if ($offset) {
-            $parser->error('An offset was expected.', $list->tokens[$list->idx - 1]);
+            $parser->error(
+                'An offset was expected.',
+                $list->tokens[$list->idx - 1]
+            );
         }
 
         --$list->idx;
@@ -111,12 +121,12 @@ class Limit extends Component
     }
 
     /**
-     * @param Limit                $component the component to be built
-     * @param array<string, mixed> $options   parameters for building
+     * @param Limit $component the component to be built
+     * @param array $options   parameters for building
      *
      * @return string
      */
-    public static function build($component, array $options = [])
+    public static function build($component, array $options = array())
     {
         return $component->offset . ', ' . $component->rowCount;
     }

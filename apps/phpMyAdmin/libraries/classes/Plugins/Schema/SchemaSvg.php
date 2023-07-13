@@ -1,38 +1,42 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * PDF schema export code
+ *
+ * @package    PhpMyAdmin-Schema
+ * @subpackage SVG
  */
-
-declare(strict_types=1);
-
 namespace PhpMyAdmin\Plugins\Schema;
 
-use PhpMyAdmin\Plugins\Schema\Svg\SvgRelationSchema;
-use PhpMyAdmin\Plugins\SchemaPlugin;
+use PhpMyAdmin\Properties\Options\Items\BoolPropertyItem;
 use PhpMyAdmin\Properties\Options\Groups\OptionsPropertyMainGroup;
 use PhpMyAdmin\Properties\Options\Groups\OptionsPropertyRootGroup;
-use PhpMyAdmin\Properties\Options\Items\BoolPropertyItem;
+use PhpMyAdmin\Plugins\SchemaPlugin;
+use PhpMyAdmin\Plugins\Schema\Svg\SvgRelationSchema;
 use PhpMyAdmin\Properties\Plugins\SchemaPluginProperties;
-
-use function __;
 
 /**
  * Handles the schema export for the SVG format
+ *
+ * @package    PhpMyAdmin-Schema
+ * @subpackage SVG
  */
 class SchemaSvg extends SchemaPlugin
 {
     /**
-     * @psalm-return non-empty-lowercase-string
+     * Constructor
      */
-    public function getName(): string
+    public function __construct()
     {
-        return 'svg';
+        $this->setProperties();
     }
 
     /**
      * Sets the schema export SVG properties
+     *
+     * @return void
      */
-    protected function setProperties(): SchemaPluginProperties
+    protected function setProperties()
     {
         $schemaPluginProperties = new SchemaPluginProperties();
         $schemaPluginProperties->setText('SVG');
@@ -42,10 +46,12 @@ class SchemaSvg extends SchemaPlugin
         // create the root group that will be the options field for
         // $schemaPluginProperties
         // this will be shown as "Format specific options"
-        $exportSpecificOptions = new OptionsPropertyRootGroup('Format Specific Options');
+        $exportSpecificOptions = new OptionsPropertyRootGroup(
+            "Format Specific Options"
+        );
 
         // specific options main group
-        $specificOptions = new OptionsPropertyMainGroup('general_opts');
+        $specificOptions = new OptionsPropertyMainGroup("general_opts");
         // add options common to all plugins
         $this->addCommonOptions($specificOptions);
 
@@ -61,20 +67,19 @@ class SchemaSvg extends SchemaPlugin
 
         // set the options for the schema export plugin property item
         $schemaPluginProperties->setOptions($exportSpecificOptions);
-
-        return $schemaPluginProperties;
+        $this->properties = $schemaPluginProperties;
     }
 
     /**
      * Exports the schema into SVG format.
      *
      * @param string $db database name
+     *
+     * @return bool Whether it succeeded
      */
-    public function exportSchema($db): bool
+    public function exportSchema($db)
     {
         $export = new SvgRelationSchema($db);
         $export->showOutput();
-
-        return true;
     }
 }

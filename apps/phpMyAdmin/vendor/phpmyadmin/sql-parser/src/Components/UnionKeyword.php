@@ -1,29 +1,31 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * `UNION` keyword builder.
+ */
 
 namespace PhpMyAdmin\SqlParser\Components;
 
 use PhpMyAdmin\SqlParser\Component;
 
-use function implode;
-
 /**
  * `UNION` keyword builder.
  *
- * @final
+ * @category   Keywords
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class UnionKeyword extends Component
 {
     /**
      * @param array<UnionKeyword[]> $component the component to be built
-     * @param array<string, mixed>  $options   parameters for building
+     * @param array                 $options   parameters for building
      *
      * @return string
      */
-    public static function build($component, array $options = [])
+    public static function build($component, array $options = array())
     {
-        $tmp = [];
+        $tmp = array();
         foreach ($component as $componentPart) {
             $tmp[] = $componentPart[0] . ' ' . $componentPart[1];
         }

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Custom Themes &#8212; phpMyAdmin 5.2.1 documentation</title>
+    <title>Custom Themes &#8212; phpMyAdmin 4.9.11 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="import_export.html" title="Import and export"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 5.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 4.9.11 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="user.html" accesskey="U">User Guide</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Custom Themes</a></li> 
       </ul>
@@ -46,7 +46,7 @@
   <div class="section" id="custom-themes">
 <span id="themes"></span><h1>Custom Themes<a class="headerlink" href="#custom-themes" title="Permalink to this headline">¶</a></h1>
 <p>phpMyAdmin comes with support for third party themes. You can download
-additional themes from our website at &lt;<a class="reference external" href="https://www.phpmyadmin.net/themes/">https://www.phpmyadmin.net/themes/</a>&gt;.</p>
+additonal themes from our website at &lt;<a class="reference external" href="https://www.phpmyadmin.net/themes/">https://www.phpmyadmin.net/themes/</a>&gt;.</p>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>Themes are configured with <span class="target" id="index-0"></span><a class="reference internal" href="config.html#cfg_ThemeManager"><code class="xref config config-option docutils literal notranslate"><span class="pre">$cfg['ThemeManager']</span></code></a> and
@@ -66,7 +66,7 @@ stored in a cookie.</p>
 <li><p>copy the files and directories from <code class="docutils literal notranslate"><span class="pre">pmahomme</span></code> to “your_theme_name”</p></li>
 <li><p>edit the css-files in “your_theme_name/css”</p></li>
 <li><p>put your new images in “your_theme_name/img”</p></li>
-<li><p>edit <code class="file docutils literal notranslate"><span class="pre">_variables.scss</span></code> in “your_theme_name/scss”</p></li>
+<li><p>edit <code class="file docutils literal notranslate"><span class="pre">layout.inc.php</span></code> in “your_theme_name”</p></li>
 <li><p>edit <code class="file docutils literal notranslate"><span class="pre">theme.json</span></code> in “your_theme_name” to contain theme metadata (see below)</p></li>
 <li><p>make a new screenshot of your theme and save it under
 “your_theme_name/screen.png”</p></li>
@@ -90,13 +90,13 @@ metadata. Currently it consists of:</p>
 <dl class="describe">
 <dt>
 <code class="sig-name descname">version</code></dt>
-<dd><p>Theme version, can be quite arbitrary and does not have to match phpMyAdmin version.</p>
+<dd><p>Theme version, can be quite arbirary and does not have to match phpMyAdmin version.</p>
 <p><strong>This field is required.</strong></p>
 </dd></dl>
 
 <dl class="describe">
 <dt>
-<code class="sig-name descname">description</code></dt>
+<code class="sig-name descname">desciption</code></dt>
 <dd><p>Theme description. this will be shown on the website.</p>
 <p><strong>This field is required.</strong></p>
 </dd></dl>
@@ -122,7 +122,7 @@ support there.</p>
 <p><strong>This field is required.</strong></p>
 </dd></dl>
 
-<p>For example, the definition for Original theme shipped with phpMyAdmin 4.8:</p>
+<p>For example, the definition for Original theme shipped with phpMyAdnin 4.8:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Original&quot;</span><span class="p">,</span>
     <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;4.8&quot;</span><span class="p">,</span>
@@ -202,13 +202,13 @@ default icons and buttons (from the system-theme <code class="docutils literal n
         <li class="right" >
           <a href="import_export.html" title="Import and export"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 5.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 4.9.11 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="user.html" >User Guide</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Custom Themes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; <a href="copyright.html">Copyright</a> 2012 - 2021, The phpMyAdmin devel team.
+        &#169; <a href="copyright.html">Copyright</a> 2012 - 2018, The phpMyAdmin devel team.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
     </div>
   </body>

@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * `RENAME TABLE` keyword parser.
+ */
 
 namespace PhpMyAdmin\SqlParser\Components;
 
@@ -9,13 +11,12 @@ use PhpMyAdmin\SqlParser\Parser;
 use PhpMyAdmin\SqlParser\Token;
 use PhpMyAdmin\SqlParser\TokensList;
 
-use function implode;
-use function is_array;
-
 /**
  * `RENAME TABLE` keyword parser.
  *
- * @final
+ * @category   Keywords
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class RenameOperation extends Component
 {
@@ -34,6 +35,8 @@ class RenameOperation extends Component
     public $new;
 
     /**
+     * Constructor.
+     *
      * @param Expression $old old expression
      * @param Expression $new new expression containing new name
      */
@@ -44,17 +47,17 @@ class RenameOperation extends Component
     }
 
     /**
-     * @param Parser               $parser  the parser that serves as context
-     * @param TokensList           $list    the list of tokens that are being parsed
-     * @param array<string, mixed> $options parameters for parsing
+     * @param Parser     $parser  the parser that serves as context
+     * @param TokensList $list    the list of tokens that are being parsed
+     * @param array      $options parameters for parsing
      *
      * @return RenameOperation[]
      */
-    public static function parse(Parser $parser, TokensList $list, array $options = [])
+    public static function parse(Parser $parser, TokensList $list, array $options = array())
     {
-        $ret = [];
+        $ret = array();
 
-        $expr = new static();
+        $expr = new self();
 
         /**
          * The state of the parser.
@@ -77,6 +80,8 @@ class RenameOperation extends Component
         for (; $list->idx < $list->count; ++$list->idx) {
             /**
              * Token parsed at this moment.
+             *
+             * @var Token
              */
             $token = $list->tokens[$list->idx];
 
@@ -94,50 +99,60 @@ class RenameOperation extends Component
                 $expr->old = Expression::parse(
                     $parser,
                     $list,
-                    [
+                    array(
                         'breakOnAlias' => true,
-                        'parseField' => 'table',
-                    ]
+                        'parseField' => 'table'
+                    )
                 );
                 if (empty($expr->old)) {
-                    $parser->error('The old name of the table was expected.', $token);
+                    $parser->error(
+                        'The old name of the table was expected.',
+                        $token
+                    );
                 }
-
                 $state = 1;
             } elseif ($state === 1) {
-                if ($token->type !== Token::TYPE_KEYWORD || $token->keyword !== 'TO') {
-                    $parser->error('Keyword "TO" was expected.', $token);
+                if ($token->type === Token::TYPE_KEYWORD && $token->keyword === 'TO') {
+                    $state = 2;
+                } else {
+                    $parser->error(
+                        'Keyword "TO" was expected.',
+                        $token
+                    );
                     break;
                 }
-
-                $state = 2;
             } elseif ($state === 2) {
                 $expr->new = Expression::parse(
                     $parser,
                     $list,
-                    [
+                    array(
                         'breakOnAlias' => true,
-                        'parseField' => 'table',
-                    ]
+                        'parseField' => 'table'
+                    )
                 );
                 if (empty($expr->new)) {
-                    $parser->error('The new name of the table was expected.', $token);
+                    $parser->error(
+                        'The new name of the table was expected.',
+                        $token
+                    );
                 }
-
                 $state = 3;
             } elseif ($state === 3) {
-                if (($token->type !== Token::TYPE_OPERATOR) || ($token->value !== ',')) {
+                if (($token->type === Token::TYPE_OPERATOR) && ($token->value === ',')) {
+                    $ret[] = $expr;
+                    $expr = new self();
+                    $state = 0;
+                } else {
                     break;
                 }
-
-                $ret[] = $expr;
-                $expr = new static();
-                $state = 0;
             }
         }
 
         if ($state !== 3) {
-            $parser->error('A rename operation was expected.', $list->tokens[$list->idx - 1]);
+            $parser->error(
+                'A rename operation was expected.',
+                $list->tokens[$list->idx - 1]
+            );
         }
 
         // Last iteration was not saved.
@@ -151,12 +166,12 @@ class RenameOperation extends Component
     }
 
     /**
-     * @param RenameOperation      $component the component to be built
-     * @param array<string, mixed> $options   parameters for building
+     * @param RenameOperation $component the component to be built
+     * @param array           $options   parameters for building
      *
      * @return string
      */
-    public static function build($component, array $options = [])
+    public static function build($component, array $options = array())
     {
         if (is_array($component)) {
             return implode(', ', $component);

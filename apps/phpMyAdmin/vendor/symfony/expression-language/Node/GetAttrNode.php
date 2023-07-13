@@ -20,15 +20,15 @@ use Symfony\Component\ExpressionLanguage\Compiler;
  */
 class GetAttrNode extends Node
 {
-    public const PROPERTY_CALL = 1;
-    public const METHOD_CALL = 2;
-    public const ARRAY_CALL = 3;
+    const PROPERTY_CALL = 1;
+    const METHOD_CALL = 2;
+    const ARRAY_CALL = 3;
 
-    public function __construct(Node $node, Node $attribute, ArrayNode $arguments, int $type)
+    public function __construct(Node $node, Node $attribute, ArrayNode $arguments, $type)
     {
         parent::__construct(
-            ['node' => $node, 'attribute' => $attribute, 'arguments' => $arguments],
-            ['type' => $type]
+            array('node' => $node, 'attribute' => $attribute, 'arguments' => $arguments),
+            array('type' => $type)
         );
     }
 
@@ -64,13 +64,13 @@ class GetAttrNode extends Node
         }
     }
 
-    public function evaluate(array $functions, array $values)
+    public function evaluate($functions, $values)
     {
         switch ($this->attributes['type']) {
             case self::PROPERTY_CALL:
                 $obj = $this->nodes['node']->evaluate($functions, $values);
                 if (!\is_object($obj)) {
-                    throw new \RuntimeException(sprintf('Unable to get property "%s" of non-object "%s".', $this->nodes['attribute']->dump(), $this->nodes['node']->dump()));
+                    throw new \RuntimeException('Unable to get a property on a non-object.');
                 }
 
                 $property = $this->nodes['attribute']->attributes['value'];
@@ -80,35 +80,21 @@ class GetAttrNode extends Node
             case self::METHOD_CALL:
                 $obj = $this->nodes['node']->evaluate($functions, $values);
                 if (!\is_object($obj)) {
-                    throw new \RuntimeException(sprintf('Unable to call method "%s" of non-object "%s".', $this->nodes['attribute']->dump(), $this->nodes['node']->dump()));
+                    throw new \RuntimeException('Unable to get a property on a non-object.');
                 }
-                if (!\is_callable($toCall = [$obj, $this->nodes['attribute']->attributes['value']])) {
-                    throw new \RuntimeException(sprintf('Unable to call method "%s" of object "%s".', $this->nodes['attribute']->attributes['value'], get_debug_type($obj)));
+                if (!\is_callable($toCall = array($obj, $this->nodes['attribute']->attributes['value']))) {
+                    throw new \RuntimeException(sprintf('Unable to call method "%s" of object "%s".', $this->nodes['attribute']->attributes['value'], \get_class($obj)));
                 }
 
-                return $toCall(...array_values($this->nodes['arguments']->evaluate($functions, $values)));
+                return \call_user_func_array($toCall, $this->nodes['arguments']->evaluate($functions, $values));
 
             case self::ARRAY_CALL:
                 $array = $this->nodes['node']->evaluate($functions, $values);
                 if (!\is_array($array) && !$array instanceof \ArrayAccess) {
-                    throw new \RuntimeException(sprintf('Unable to get an item of non-array "%s".', $this->nodes['node']->dump()));
+                    throw new \RuntimeException('Unable to get an item on a non-array.');
                 }
 
                 return $array[$this->nodes['attribute']->evaluate($functions, $values)];
-        }
-    }
-
-    public function toArray()
-    {
-        switch ($this->attributes['type']) {
-            case self::PROPERTY_CALL:
-                return [$this->nodes['node'], '.', $this->nodes['attribute']];
-
-            case self::METHOD_CALL:
-                return [$this->nodes['node'], '.', $this->nodes['attribute'], '(', $this->nodes['arguments'], ')'];
-
-            case self::ARRAY_CALL:
-                return [$this->nodes['node'], '[', $this->nodes['attribute'], ']'];
         }
     }
 }

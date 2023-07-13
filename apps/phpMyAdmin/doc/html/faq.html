@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FAQ - Frequently Asked Questions &#8212; phpMyAdmin 5.2.1 documentation</title>
+    <title>FAQ - Frequently Asked Questions &#8212; phpMyAdmin 4.9.11 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="other.html" title="Other sources of information"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 5.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 4.9.11 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">FAQ - Frequently Asked Questions</a></li> 
       </ul>
     </div>  
@@ -51,7 +51,7 @@ or interface.</p>
 <span id="faqserver"></span><h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="my-server-is-crashing-each-time-a-specific-action-is-required-or-phpmyadmin-sends-a-blank-page-or-a-page-full-of-cryptic-characters-to-my-browser-what-can-i-do">
 <span id="faq1-1"></span><h3>1.1 My server is crashing each time a specific action is required or phpMyAdmin sends a blank page or a page full of cryptic characters to my browser, what can I do?<a class="headerlink" href="#my-server-is-crashing-each-time-a-specific-action-is-required-or-phpmyadmin-sends-a-blank-page-or-a-page-full-of-cryptic-characters-to-my-browser-what-can-i-do" title="Permalink to this headline">¶</a></h3>
-<p>Try to set the <span class="target" id="index-0"></span><a class="reference internal" href="config.html#cfg_OBGzip"><code class="xref config config-option docutils literal notranslate"><span class="pre">$cfg['OBGzip']</span></code></a> directive to <code class="docutils literal notranslate"><span class="pre">false</span></code> in your
+<p>Try to set the <span class="target" id="index-0"></span><a class="reference internal" href="config.html#cfg_OBGzip"><code class="xref config config-option docutils literal notranslate"><span class="pre">$cfg['OBGzip']</span></code></a>  directive to <code class="docutils literal notranslate"><span class="pre">false</span></code> in your
 <code class="file docutils literal notranslate"><span class="pre">config.inc.php</span></code> file and the <code class="docutils literal notranslate"><span class="pre">zlib.output_compression</span></code> directive to
 <code class="docutils literal notranslate"><span class="pre">Off</span></code> in your php configuration file.</p>
 </div>
@@ -83,7 +83,7 @@ Please use instead the cookie authentication mode.</p>
 <span id="faq1-6"></span><h3>1.6 I can’t use phpMyAdmin on PWS: nothing is displayed!<a class="headerlink" href="#i-can-t-use-phpmyadmin-on-pws-nothing-is-displayed" title="Permalink to this headline">¶</a></h3>
 <p>This seems to be a PWS bug. Filippo Simoncini found a workaround (at
 this time there is no better fix): remove or comment the <code class="docutils literal notranslate"><span class="pre">DOCTYPE</span></code>
-declarations (2 lines) from the scripts <code class="file docutils literal notranslate"><span class="pre">libraries/classes/Header.php</span></code>
+declarations (2 lines) from the scripts <code class="file docutils literal notranslate"><span class="pre">libraries/Header.class.php</span></code>
 and <code class="file docutils literal notranslate"><span class="pre">index.php</span></code>.</p>
 </div>
 <div class="section" id="how-can-i-gzip-a-dump-or-a-csv-export-it-does-not-seem-to-work">
@@ -155,14 +155,14 @@ these problems should not occur. If possible, upgrade your phpMyAdmin
 to the latest version to take advantage of the new import features.</p>
 <p>The first things to check (or ask your host provider to check) are the values
 of <code class="docutils literal notranslate"><span class="pre">max_execution_time</span></code>, <code class="docutils literal notranslate"><span class="pre">upload_max_filesize</span></code>, <code class="docutils literal notranslate"><span class="pre">memory_limit</span></code> and
-<code class="docutils literal notranslate"><span class="pre">post_max_size</span></code> in the <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code> configuration file. All of these
+<code class="docutils literal notranslate"><span class="pre">post_max_size</span></code> in the <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code> configuration file. All of these three
 settings limit the maximum size of data that can be submitted and handled by
 PHP. Please note that <code class="docutils literal notranslate"><span class="pre">post_max_size</span></code> needs to be larger than
 <code class="docutils literal notranslate"><span class="pre">upload_max_filesize</span></code>. There exist several workarounds if your upload is too
 big or your hosting provider is unwilling to change the settings:</p>
 <ul>
 <li><p>Look at the <span class="target" id="index-2"></span><a class="reference internal" href="config.html#cfg_UploadDir"><code class="xref config config-option docutils literal notranslate"><span class="pre">$cfg['UploadDir']</span></code></a> feature. This allows one to upload a file to the server
-via scp, FTP, or your favorite file transfer method. PhpMyAdmin is
+via scp, ftp, or your favorite file transfer method. PhpMyAdmin is
 then able to import the files from the temporary directory. More
 information is available in the <a class="reference internal" href="config.html#config"><span class="std std-ref">Configuration</span></a>  of this document.</p></li>
 <li><p>Using a utility (such as <a class="reference external" href="https://www.ozerov.de/bigdump/">BigDump</a>) to split the files before
@@ -214,8 +214,8 @@ dynamically. Its name is probably <em>mysqli.so</em> or <em>php_mysqli.dll</em>.
 phpMyAdmin tried to load the extension but failed. Usually, the
 problem is solved by installing a software package called “PHP-MySQL”
 or something similar.</p>
-<p>There was two interfaces PHP provided as MySQL extensions - <code class="docutils literal notranslate"><span class="pre">mysql</span></code>
-and <code class="docutils literal notranslate"><span class="pre">mysqli</span></code>. The <code class="docutils literal notranslate"><span class="pre">mysql</span></code> interface was removed in PHP 7.0.</p>
+<p>There are currently two interfaces PHP provides as MySQL extensions - <code class="docutils literal notranslate"><span class="pre">mysql</span></code>
+and <code class="docutils literal notranslate"><span class="pre">mysqli</span></code>. The <code class="docutils literal notranslate"><span class="pre">mysqli</span></code> is tried first, because it’s the best one.</p>
 <p>This problem can be also caused by wrong paths in the <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code> or using
 wrong <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code>.</p>
 <p>Make sure that the extension files do exist in the folder which the
@@ -231,9 +231,10 @@ current setup):</p>
 <p>The <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code> can be loaded from several locations (especially on
 Windows), so please check you’re updating the correct one. If using Apache, you
 can tell it to use specific path for this file using <code class="docutils literal notranslate"><span class="pre">PHPIniDir</span></code> directive:</p>
-<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">LoadModule</span> php7_module <span class="s2">&quot;C:/php7/php7apache2_4.dll&quot;</span>
-<span class="nt">&lt;IfModule</span> <span class="s">php7_module</span><span class="nt">&gt;</span>
-    <span class="nb">PHPIniDir</span> <span class="s2">&quot;C:/php7&quot;</span>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">LoadFile</span> <span class="s2">&quot;C:/php/php5ts.dll&quot;</span>
+<span class="nb">LoadModule</span> php5_module <span class="s2">&quot;C:/php/php5apache2_2.dll&quot;</span>
+<span class="nt">&lt;IfModule</span> <span class="s">php5_module</span><span class="nt">&gt;</span>
+    <span class="nb">PHPIniDir</span> <span class="s2">&quot;C:/PHP&quot;</span>
     <span class="nt">&lt;Location&gt;</span>
        <span class="nb">AddType</span> text/html .php
        <span class="nb">AddHandler</span> application/x-httpd-php .php
@@ -243,7 +244,7 @@ can tell it to use specific path for this file using <code class="docutils liter
 </div>
 <p>In some rare cases this problem can be also caused by other extensions loaded
 in PHP which prevent MySQL extensions to be loaded. If anything else fails, you
-can try commenting out extensions for other databases from <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code>.</p>
+can try commenting out extensions for other databses from <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code>.</p>
 </div>
 <div class="section" id="i-am-running-the-cgi-version-of-php-under-unix-and-i-cannot-log-in-using-cookie-auth">
 <span id="faq1-21"></span><h3>1.21 I am running the CGI version of PHP under Unix, and I cannot log in using cookie auth.<a class="headerlink" href="#i-am-running-the-cgi-version-of-php-under-unix-and-i-cannot-log-in-using-cookie-auth" title="Permalink to this headline">¶</a></h3>
@@ -298,7 +299,7 @@ PHP scripts. Of course you have to restart Apache.</p>
 <span id="faq1-26"></span><h3>1.26 I just installed phpMyAdmin in my document root of IIS but I get the error “No input file specified” when trying to run phpMyAdmin.<a class="headerlink" href="#i-just-installed-phpmyadmin-in-my-document-root-of-iis-but-i-get-the-error-no-input-file-specified-when-trying-to-run-phpmyadmin" title="Permalink to this headline">¶</a></h3>
 <p>This is a permission problem. Right-click on the phpmyadmin folder and
 choose properties. Under the tab Security, click on “Add” and select
-the user “IUSR_machine” from the list. Now set their permissions and it
+the user “IUSR_machine” from the list. Now set his permissions and it
 should work.</p>
 </div>
 <div class="section" id="i-get-empty-page-when-i-want-to-view-huge-page-eg-db-structure-php-with-plenty-of-tables">
@@ -353,9 +354,7 @@ MMCache but upgrading MMCache to version 2.3.21 solves the problem.</p>
 releases.</p>
 <p>PHP 7 is supported since phpMyAdmin 4.6, PHP 7.1 is supported since 4.6.5,
 PHP 7.2 is supported since 4.7.4.</p>
-<p>HHVM is supported up to phpMyAdmin 4.8.</p>
-<p>Since release 5.0, phpMyAdmin supports only PHP 7.1 and newer.
-Since release 5.2, phpMyAdmin supports only PHP 7.2 and newer.</p>
+<p>phpMyAdmin also works fine with HHVM.</p>
 </div>
 <div class="section" id="can-i-use-http-authentication-with-iis">
 <span id="faq1-32"></span><h3>1.32 Can I use HTTP authentication with IIS?<a class="headerlink" href="#can-i-use-http-authentication-with-iis" title="Permalink to this headline">¶</a></h3>
@@ -379,20 +378,19 @@ and click the <code class="docutils literal notranslate"><span class="pre">Set</
 <div class="section" id="faq1-33">
 <span id="id6"></span><h3>1.33 (withdrawn).<a class="headerlink" href="#faq1-33" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="can-i-directly-access-a-database-or-table-pages">
-<span id="faq1-34"></span><h3>1.34 Can I directly access a database or table pages?<a class="headerlink" href="#can-i-directly-access-a-database-or-table-pages" title="Permalink to this headline">¶</a></h3>
-<p>Yes. Out of the box, you can use a <a class="reference internal" href="glossary.html#term-URL"><span class="xref std std-term">URL</span></a> like
+<div class="section" id="can-i-access-directly-to-database-or-table-pages">
+<span id="faq1-34"></span><h3>1.34 Can I access directly to database or table pages?<a class="headerlink" href="#can-i-access-directly-to-database-or-table-pages" title="Permalink to this headline">¶</a></h3>
+<p>Yes. Out of the box, you can use <a class="reference internal" href="glossary.html#term-URL"><span class="xref std std-term">URL</span></a> like
 <code class="docutils literal notranslate"><span class="pre">http://server/phpMyAdmin/index.php?server=X&amp;db=database&amp;table=table&amp;target=script</span></code>.
-For <code class="docutils literal notranslate"><span class="pre">server</span></code> you can use the server number
-which refers to the numeric host index (from <code class="docutils literal notranslate"><span class="pre">$i</span></code>) in
-<code class="file docutils literal notranslate"><span class="pre">config.inc.php</span></code>. The table and script parts are optional.</p>
-<p>If you want a URL like
-<code class="docutils literal notranslate"><span class="pre">http://server/phpMyAdmin/database[/table][/script]</span></code>, you need to do some additional configuration. The following
-lines apply only for the <a class="reference external" href="https://httpd.apache.org">Apache</a> web server.
-First, make sure that you have enabled some features within the Apache global
+For <code class="docutils literal notranslate"><span class="pre">server</span></code> you use the server number
+which refers to the order of the server paragraph in
+<code class="file docutils literal notranslate"><span class="pre">config.inc.php</span></code>. Table and script parts are optional. If you want
+<code class="docutils literal notranslate"><span class="pre">http://server/phpMyAdmin/database[/table][/script]</span></code> <a class="reference internal" href="glossary.html#term-URL"><span class="xref std std-term">URL</span></a>, you need to do some configuration. Following
+lines apply only for <a class="reference external" href="https://httpd.apache.org">Apache</a> web server.
+First make sure, that you have enabled some features within global
 configuration. You need <code class="docutils literal notranslate"><span class="pre">Options</span> <span class="pre">SymLinksIfOwnerMatch</span></code> and <code class="docutils literal notranslate"><span class="pre">AllowOverride</span>
 <span class="pre">FileInfo</span></code> enabled for directory where phpMyAdmin is installed and you
-need mod_rewrite to be enabled. Then you just need to create the
+need mod_rewrite to be enabled. Then you just need to create
 following <a class="reference internal" href="glossary.html#term-.htaccess"><span class="xref std std-term">.htaccess</span></a> file in root folder of phpMyAdmin installation (don’t
 forget to change directory name inside of it):</p>
 <div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">RewriteEngine</span> <span class="k">On</span>
@@ -402,14 +400,6 @@ forget to change directory name inside of it):</p>
 <span class="nb">RewriteRule</span> ^([a-zA-Z0-9_]+)/([a-zA-Z0-9_]+)$ index.php?db=$1&amp;table=$2 [R]
 <span class="nb">RewriteRule</span> ^([a-zA-Z0-9_]+)$ index.php?db=$1 [R]
 </pre></div>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#faq4-8"><span class="std std-ref">4.8 Which parameters can I use in the URL that starts phpMyAdmin?</span></a></p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 5.1.0: </span>Support for using the <code class="docutils literal notranslate"><span class="pre">target</span></code> parameter was removed in phpMyAdmin 5.1.0.
-Use the <code class="docutils literal notranslate"><span class="pre">route</span></code> parameter instead.</p>
 </div>
 </div>
 <div class="section" id="can-i-use-http-authentication-with-apache-cgi">
@@ -429,8 +419,8 @@ error log file might give a clue.</p>
 <div class="section" id="i-run-phpmyadmin-on-cluster-of-different-machines-and-password-encryption-in-cookie-auth-doesn-t-work">
 <span id="faq1-37"></span><h3>1.37 I run phpMyAdmin on cluster of different machines and password encryption in cookie auth doesn’t work.<a class="headerlink" href="#i-run-phpmyadmin-on-cluster-of-different-machines-and-password-encryption-in-cookie-auth-doesn-t-work" title="Permalink to this headline">¶</a></h3>
 <p>If your cluster consist of different architectures, PHP code used for
-encryption/decryption won’t work correctly. This is caused by use of
-pack/unpack functions in code. Only solution is to use openssl
+encryption/decryption won’t work correct. This is caused by use of
+pack/unpack functions in code. Only solution is to use mcrypt
 extension which works fine in this case.</p>
 </div>
 <div class="section" id="can-i-use-phpmyadmin-on-a-server-on-which-suhosin-is-enabled">
@@ -560,41 +550,17 @@ some robots accessing your installation.</p>
 This is not recommended and could lead to confusion over missing features, but can be done.
 A list of files and corresponding functionality which degrade gracefully when removed include:</p>
 <ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">./vendor/tecnickcom/tcpdf</span></code> folder (exporting to PDF)</p></li>
 <li><p><code class="file docutils literal notranslate"><span class="pre">./locale/</span></code> folder, or unused subfolders (interface translations)</p></li>
-<li><p>Any unused themes in <code class="file docutils literal notranslate"><span class="pre">./themes/</span></code> except the default theme <cite>pmahomme</cite>.</p></li>
-<li><p><code class="file docutils literal notranslate"><span class="pre">./libraries/language_stats.inc.php</span></code> (translation statistics)</p></li>
+<li><p>Any unused themes in <code class="file docutils literal notranslate"><span class="pre">./themes/</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">./js/vendor/jquery/src/</span></code> (included for licensing reasons)</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">./js/line_counts.php</span></code> (removed in phpMyAdmin 4.8)</p></li>
 <li><p><code class="file docutils literal notranslate"><span class="pre">./doc/</span></code> (documentation)</p></li>
 <li><p><code class="file docutils literal notranslate"><span class="pre">./setup/</span></code> (setup script)</p></li>
-<li><p><code class="file docutils literal notranslate"><span class="pre">./examples/</span></code> (configuration examples)</p></li>
-<li><p><code class="file docutils literal notranslate"><span class="pre">./sql/</span></code> (SQL scripts to configure advanced functionalities)</p></li>
-<li><p><code class="file docutils literal notranslate"><span class="pre">./js/src/</span></code> (Source files to re-build <cite>./js/dist/</cite>)</p></li>
-<li><p><code class="file docutils literal notranslate"><span class="pre">./js/config/</span></code> (Configuration files to re-build <cite>./js/dist/</cite>)</p></li>
-<li><p>Run <cite>rm -rv vendor/tecnickcom/tcpdf &amp;&amp; composer dump-autoload –no-interaction –optimize –dev</cite> (exporting to PDF)</p></li>
-<li><p>Run <cite>rm -rv vendor/williamdes/mariadb-mysql-kbs &amp;&amp; composer dump-autoload –no-interaction –optimize –dev</cite> (external links to MariaDB and MySQL documentations)</p></li>
-<li><p>Run <cite>rm -rv vendor/code-lts/u2f-php-server &amp;&amp; composer dump-autoload –no-interaction –optimize –dev</cite> (U2F second factor authentication)</p></li>
-<li><p>Run <cite>rm -rv vendor/pragmarx/* &amp;&amp; composer dump-autoload –no-interaction –optimize –dev</cite> (2FA second factor authentication)</p></li>
-<li><p>Run <cite>rm -rv vendor/bacon/bacon-qr-code &amp;&amp; composer dump-autoload –no-interaction –optimize –dev</cite> (QRcode generation for 2FA second factor authentication)</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">./examples/</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">./sql/</span></code> (SQL scripts to configure advanced functionality)</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">./js/vendor/openlayers/</span></code> (GIS visualization)</p></li>
 </ul>
-</div>
-<div class="section" id="i-get-an-error-message-about-unknown-authentication-method-caching-sha2-password-when-trying-to-log-in">
-<span id="faq1-45"></span><h3>1.45 I get an error message about unknown authentication method caching_sha2_password when trying to log in<a class="headerlink" href="#i-get-an-error-message-about-unknown-authentication-method-caching-sha2-password-when-trying-to-log-in" title="Permalink to this headline">¶</a></h3>
-<p>When logging in using MySQL version 8 or newer, you may encounter an error message like this:</p>
-<blockquote>
-<div><p>mysqli_real_connect(): The server requested authentication method unknown to the client [caching_sha2_password]</p>
-<p>mysqli_real_connect(): (HY000/2054): The server requested authentication method unknown to the client</p>
-</div></blockquote>
-<p>This error is because of a version compatibility problem between PHP and MySQL. The MySQL project introduced a new authentication
-method (our tests show this began with version 8.0.11) however PHP did not include the ability to use that authentication method.
-PHP reports that this was fixed in PHP version 7.4.</p>
-<p>Users experiencing this are encouraged to upgrade their PHP installation, however a workaround exists. Your MySQL user account
-can be set to use the older authentication with a command such as</p>
-<div class="highlight-mysql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;root&#39;</span><span class="nv">@&#39;localhost&#39;</span> <span class="k">IDENTIFIED</span> <span class="k">WITH</span> <span class="n">mysql_native_password</span> <span class="k">BY</span> <span class="s1">&#39;PASSWORD&#39;</span><span class="p">;</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>&lt;<a class="reference external" href="https://github.com/phpmyadmin/phpmyadmin/issues/14220">https://github.com/phpmyadmin/phpmyadmin/issues/14220</a>&gt;, &lt;<a class="reference external" href="https://stackoverflow.com/questions/49948350/phpmyadmin-on-mysql-8-0">https://stackoverflow.com/questions/49948350/phpmyadmin-on-mysql-8-0</a>&gt;, &lt;<a class="reference external" href="https://bugs.php.net/bug.php?id=76243">https://bugs.php.net/bug.php?id=76243</a>&gt;</p>
-</div>
 </div>
 </div>
 <div class="section" id="configuration">
@@ -696,34 +662,19 @@ by <a class="reference external" href="https://bugs.php.net/bug.php?id=39842">bu
 <div class="section" id="seeing-an-upload-progress-bar">
 <span id="faq2-9"></span><h3>2.9 Seeing an upload progress bar<a class="headerlink" href="#seeing-an-upload-progress-bar" title="Permalink to this headline">¶</a></h3>
 <p>To be able to see a progress bar during your uploads, your server must
-have the <a class="reference external" href="https://pecl.php.net/package/uploadprogress">uploadprogress</a> extension, and
+have the <a class="reference external" href="https://www.php.net/manual/en/book.apc.php">APC</a> extension, the
+<a class="reference external" href="https://pecl.php.net/package/uploadprogress">uploadprogress</a> one, or
 you must be running PHP 5.4.0 or higher. Moreover, the JSON extension
 has to be enabled in your PHP.</p>
+<p>If using APC, you must set <code class="docutils literal notranslate"><span class="pre">apc.rfc1867</span></code> to <code class="docutils literal notranslate"><span class="pre">on</span></code> in your <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code>.</p>
 <p>If using PHP 5.4.0 or higher, you must set
 <code class="docutils literal notranslate"><span class="pre">session.upload_progress.enabled</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code> in your <code class="file docutils literal notranslate"><span class="pre">php.ini</span></code>. However,
 starting from phpMyAdmin version 4.0.4, session-based upload progress has
 been temporarily deactivated due to its problematic behavior.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><span class="target" id="index-11"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc1867.html"><strong>RFC 1867</strong></a></p>
 </div>
-<div class="section" id="how-to-generate-a-string-of-random-bytes">
-<span id="faq2-10"></span><h3>2.10 How to generate a string of random bytes<a class="headerlink" href="#how-to-generate-a-string-of-random-bytes" title="Permalink to this headline">¶</a></h3>
-<p>One way to generate a string of random bytes suitable for cryptographic use is using the
-<a class="reference external" href="https://www.php.net/random_bytes">random_bytes</a> <a class="reference internal" href="glossary.html#term-PHP"><span class="xref std std-term">PHP</span></a> function. Since this function returns a binary string,
-the returned value should be converted to printable format before being able to copy it.</p>
-<p>For example, the <span class="target" id="index-11"></span><a class="reference internal" href="config.html#cfg_blowfish_secret"><code class="xref config config-option docutils literal notranslate"><span class="pre">$cfg['blowfish_secret']</span></code></a> configuration directive requires a 32-bytes long string. The
-following command can be used to generate a hexadecimal representation of this string.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>php -r <span class="s1">&#39;echo bin2hex(random_bytes(32)) . PHP_EOL;&#39;</span>
-</pre></div>
-</div>
-<p>The above example will output something similar to:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>f16ce59f45714194371b48fe362072dc3b019da7861558cd4ad29e4d6fb13851
-</pre></div>
-</div>
-<p>And then this hexadecimal value can be used in the configuration file.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="nv">$cfg</span><span class="p">[</span><span class="s1">&#39;blowfish_secret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">sodium_hex2bin</span><span class="p">(</span><span class="s1">&#39;f16ce59f45714194371b48fe362072dc3b019da7861558cd4ad29e4d6fb13851&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>The <a class="reference external" href="https://www.php.net/sodium_hex2bin">sodium_hex2bin</a> is used here to convert the hexadecimal value back to the
-binary format.</p>
 </div>
 </div>
 <div class="section" id="known-limitations">
@@ -938,7 +889,7 @@ authentication, so remove it.</p></li>
 wildcard database name for a user (for example “joe%”), and put the
 privileges you want. For example, adding <code class="docutils literal notranslate"><span class="pre">SELECT,</span> <span class="pre">INSERT,</span> <span class="pre">UPDATE,</span>
 <span class="pre">DELETE,</span> <span class="pre">CREATE,</span> <span class="pre">DROP,</span> <span class="pre">INDEX,</span> <span class="pre">ALTER</span></code> would let a user create/manage
-their database(s).</p>
+his/her database(s).</p>
 </div>
 <div class="section" id="how-can-i-use-the-host-based-authentication-additions">
 <span id="faq4-6"></span><h3>4.6 How can I use the Host-based authentication additions?<a class="headerlink" href="#how-can-i-use-the-host-based-authentication-additions" title="Permalink to this headline">¶</a></h3>
@@ -953,13 +904,13 @@ just add those updated lines into the
 network <a class="reference internal" href="glossary.html#term-IP"><span class="xref std std-term">IP</span></a> blocks.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="c1">//block root from logging in except from the private networks</span>
 <span class="nv">$cfg</span><span class="p">[</span><span class="s1">&#39;Servers&#39;</span><span class="p">][</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;AllowDeny&#39;</span><span class="p">][</span><span class="s1">&#39;order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;deny,allow&#39;</span><span class="p">;</span>
-<span class="nv">$cfg</span><span class="p">[</span><span class="s1">&#39;Servers&#39;</span><span class="p">][</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;AllowDeny&#39;</span><span class="p">][</span><span class="s1">&#39;rules&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+<span class="nv">$cfg</span><span class="p">[</span><span class="s1">&#39;Servers&#39;</span><span class="p">][</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;AllowDeny&#39;</span><span class="p">][</span><span class="s1">&#39;rules&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
     <span class="s1">&#39;deny root from all&#39;</span><span class="p">,</span>
     <span class="s1">&#39;allow root from localhost&#39;</span><span class="p">,</span>
     <span class="s1">&#39;allow root from 10.0.0.0/8&#39;</span><span class="p">,</span>
     <span class="s1">&#39;allow root from 192.168.0.0/16&#39;</span><span class="p">,</span>
     <span class="s1">&#39;allow root from 172.16.0.0/12&#39;</span><span class="p">,</span>
-<span class="p">];</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -978,10 +929,6 @@ either the numeric host index (from <code class="docutils literal notranslate"><
 or one of the host names present in the configuration file.</p>
 <p>For example, to jump directly to a particular database, a URL can be constructed as
 <code class="docutils literal notranslate"><span class="pre">https://example.com/phpmyadmin/?db=sakila</span></code>.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#faq1-34"><span class="std std-ref">1.34 Can I directly access a database or table pages?</span></a></p>
-</div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 4.9.0: </span>Support for using the <code class="docutils literal notranslate"><span class="pre">pma_username</span></code> and <code class="docutils literal notranslate"><span class="pre">pma_password</span></code> parameters was removed
 in phpMyAdmin 4.9.0 (see <a class="reference external" href="https://www.phpmyadmin.net/security/PMASA-2019-4/">PMASA-2019-4</a>).</p>
@@ -1050,7 +997,7 @@ by the recent versions of the most browsers.</p>
 </div>
 <div class="section" id="mac-os-x-safari-browser-changes-special-characters-to">
 <span id="faq5-12"></span><h3>5.12 Mac OS X Safari browser changes special characters to “?”.<a class="headerlink" href="#mac-os-x-safari-browser-changes-special-characters-to" title="Permalink to this headline">¶</a></h3>
-<p>This issue has been reported by a <a class="reference internal" href="glossary.html#term-macOS"><span class="xref std std-term">macOS</span></a> user, who adds that Chimera,
+<p>This issue has been reported by a <a class="reference internal" href="glossary.html#term-Mac-OS-X"><span class="xref std std-term">Mac OS X</span></a> user, who adds that Chimera,
 Netscape and Mozilla do not have this problem.</p>
 </div>
 <div class="section" id="faq5-13">
@@ -1119,7 +1066,7 @@ override the ones from phpMyAdmin).</p>
 <p>This is usually caused by web application firewall doing requests filtering. It
 tries to prevent SQL injection, however phpMyAdmin is tool designed to execute
 SQL queries, thus it makes it unusable.</p>
-<p>Please allow phpMyAdmin scripts from the web application firewall settings
+<p>Please whitelist phpMyAdmin scripts from the web application firewall settings
 or disable it completely for phpMyAdmin path.</p>
 <p>Programs known to cause these kind of errors:</p>
 <ul class="simple">
@@ -1219,7 +1166,7 @@ create the example tables:</p>
 <p>To setup appropriate links and display information:</p>
 <ul class="simple">
 <li><p>on table “REL_persons” click Structure, then Relation view</p></li>
-<li><p>for “town_code”, choose from dropdowns, “mydb”, “REL_towns”, “town_code”
+<li><p>for “town_code”, choose from dropdowns, “mydb”, “REL_towns”, “code”
 for foreign database, table and column respectively</p></li>
 <li><p>for “country_code”, choose  from dropdowns, “mydb”, “REL_countries”,
 “country_code” for foreign database, table and column respectively</p></li>
@@ -1253,15 +1200,33 @@ enables: drop-down list of possible values.</p>
 <div class="section" id="how-can-i-produce-a-pdf-schema-of-my-database">
 <span id="faqpdf"></span><h3>6.8 How can I produce a PDF schema of my database?<a class="headerlink" href="#how-can-i-produce-a-pdf-schema-of-my-database" title="Permalink to this headline">¶</a></h3>
 <p>First the configuration variables “relation”, “table_coords” and
-“pdf_pages” have to be filled in.</p>
+“pdf_pages” have to be filled in.  Then you need to think about your
+schema layout. Which tables will go on which pages?</p>
 <ul class="simple">
 <li><p>Select your database in the navigation panel.</p></li>
-<li><p>Choose “<span class="guilabel">Designer</span>” in the navigation bar at the top.</p></li>
-<li><p>Move the tables the way you want them.</p></li>
-<li><p>Choose “<span class="guilabel">Export schema</span>” in the left menu.</p></li>
-<li><p>The export modal will open.</p></li>
-<li><p>Select the type of export to <a class="reference internal" href="glossary.html#term-PDF"><span class="xref std std-term">PDF</span></a>, you may adjust the other settings.</p></li>
-<li><p>Submit the form and the file will start downloading.</p></li>
+<li><p>Choose “Operations” in the navigation bar at the top.</p></li>
+<li><p>Choose “Edit <a class="reference internal" href="glossary.html#term-PDF"><span class="xref std std-term">PDF</span></a> Pages” near the
+bottom of the page.</p></li>
+<li><p>Enter a name for the first <a class="reference internal" href="glossary.html#term-PDF"><span class="xref std std-term">PDF</span></a> page
+and click Go. If you like, you can use the “automatic layout,” which
+will put all your linked tables onto the new page.</p></li>
+<li><p>Select the name of the new page (making sure the Edit radio button is
+selected) and click Go.</p></li>
+<li><p>Select a table from the list, enter its coordinates and click Save.
+Coordinates are relative; your diagram will be automatically scaled to
+fit the page. When initially placing tables on the page, just pick any
+coordinates – say, 50x50. After clicking Save, you can then use the
+<a class="reference internal" href="#wysiwyg"><span class="std std-ref">6.28 How can I easily edit relational schema for export?</span></a> to position the element correctly.</p></li>
+<li><p>When you’d like to look at your <a class="reference internal" href="glossary.html#term-PDF"><span class="xref std std-term">PDF</span></a>, first be sure to click the Save
+button beneath the list of tables and coordinates, to save any changes you
+made there. Then scroll all the way down, select the <a class="reference internal" href="glossary.html#term-PDF"><span class="xref std std-term">PDF</span></a> options you
+want, and click Go.</p></li>
+<li><p>Internet Explorer for Windows may suggest an incorrect filename when
+you try to save a generated <a class="reference internal" href="glossary.html#term-PDF"><span class="xref std std-term">PDF</span></a>.
+When saving a generated <a class="reference internal" href="glossary.html#term-PDF"><span class="xref std std-term">PDF</span></a>, be
+sure that the filename ends in “.pdf”, for example “schema.pdf”.
+Browsers on other operating systems, and other browsers on Windows, do
+not have this problem.</p></li>
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -1298,7 +1263,7 @@ different structure.</p></li>
 any) will be included in backup.</p></li>
 <li><p>“Enclose table and column names with backquotes” ensures that column
 and table names formed with special characters are protected.</p></li>
-<li><p>“Add into comments” includes column comments, relations, and media
+<li><p>“Add into comments” includes column comments, relations, and MIME
 types set in the pmadb in the dump as <a class="reference internal" href="glossary.html#term-SQL"><span class="xref std std-term">SQL</span></a> comments
 (<em>/* xxx */</em>).</p></li>
 </ul>
@@ -1348,7 +1313,7 @@ checking issues and validation, this introduces a high-risk false-
 user-input situation. Instead you have to initialize mimetypes using
 functions or empty mimetype definitions.</p>
 <p>Plus, you have a whole overview of available mimetypes. Who knows all those
-mimetypes by heart so they can enter it at will?</p>
+mimetypes by heart so he/she can enter it at will?</p>
 </div>
 <div class="section" id="bookmarks-where-can-i-store-bookmarks-why-can-t-i-see-any-bookmarks-below-the-query-box-what-are-these-variables-for">
 <span id="faqbookmark"></span><h3>6.18 Bookmarks: Where can I store bookmarks? Why can’t I see any bookmarks below the query box? What are these variables for?<a class="headerlink" href="#bookmarks-where-can-i-store-bookmarks-why-can-t-i-see-any-bookmarks-below-the-query-box-what-are-these-variables-for" title="Permalink to this headline">¶</a></h3>
@@ -1454,8 +1419,25 @@ name), but the following variables can be used:</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="faq6-28">
-<span id="id22"></span><h3>6.28 (withdrawn).<a class="headerlink" href="#faq6-28" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="how-can-i-easily-edit-relational-schema-for-export">
+<span id="wysiwyg"></span><h3>6.28 How can I easily edit relational schema for export?<a class="headerlink" href="#how-can-i-easily-edit-relational-schema-for-export" title="Permalink to this headline">¶</a></h3>
+<p>By clicking on the button ‘toggle scratchboard’ on the page where you
+edit x/y coordinates of those elements you can activate a scratchboard
+where all your elements are placed. By clicking on an element, you can
+move them around in the pre-defined area and the x/y coordinates will
+get updated dynamically. Likewise, when entering a new position
+directly into the input field, the new position in the scratchboard
+changes after your cursor leaves the input field.</p>
+<p>You have to click on the ‘OK’-button below the tables to save the new
+positions. If you want to place a new element, first add it to the
+table of elements and then you can drag the new element around.</p>
+<p>By changing the paper size and the orientation you can change the size
+of the scratchboard as well. You can do so by just changing the
+dropdown field below, and the scratchboard will resize automatically,
+without interfering with the current placement of the elements.</p>
+<p>If ever an element gets out of range you can either enlarge the paper
+size or click on the ‘reset’ button to place all elements below each
+other.</p>
 </div>
 <div class="section" id="why-can-t-i-get-a-chart-from-my-query-result-table">
 <span id="faq6-29"></span><h3>6.29 Why can’t I get a chart from my query result table?<a class="headerlink" href="#why-can-t-i-get-a-chart-from-my-query-result-table" title="Permalink to this headline">¶</a></h3>
@@ -1513,7 +1495,7 @@ you want to be displayed in the plot by specifing it in the ‘Max rows
 to plot’ field. Once you have decided over your criteria, click ‘Go’
 to display the plot.</p>
 <p>After the plot is generated, you can use the
-mouse wheel to zoom in and out of the plot. In addition, panning
+mousewheel to zoom in and out of the plot. In addition, panning
 feature is enabled to navigate through the plot. You can zoom-in to a
 certain level of detail and use panning to locate your area of
 interest. Clicking on a point opens a dialogue box, displaying field
@@ -1736,7 +1718,7 @@ section on our website</a>.</p>
 authentication to the Apache environment and it can be used in Apache
 logs. Currently there are two variables available:</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">userID</span></code></dt><dd><p>User name of currently active user (they do not have to be logged in).</p>
+<dt><code class="docutils literal notranslate"><span class="pre">userID</span></code></dt><dd><p>User name of currently active user (he does not have to be logged in).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">userStatus</span></code></dt><dd><p>Status of currently active user, one of <code class="docutils literal notranslate"><span class="pre">ok</span></code> (user is logged in),
 <code class="docutils literal notranslate"><span class="pre">mysql-denied</span></code> (MySQL denied user login), <code class="docutils literal notranslate"><span class="pre">allow-denied</span></code> (user denied
@@ -1770,10 +1752,10 @@ spreadsheet program to properly parse and sanitize such data on input instead.</
 <div class="section" id="synchronization">
 <span id="faqsynchronization"></span><h2>Synchronization<a class="headerlink" href="#synchronization" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="faq9-1">
-<span id="id23"></span><h3>9.1 (withdrawn).<a class="headerlink" href="#faq9-1" title="Permalink to this headline">¶</a></h3>
+<span id="id22"></span><h3>9.1 (withdrawn).<a class="headerlink" href="#faq9-1" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="faq9-2">
-<span id="id24"></span><h3>9.2 (withdrawn).<a class="headerlink" href="#faq9-2" title="Permalink to this headline">¶</a></h3>
+<span id="id23"></span><h3>9.2 (withdrawn).<a class="headerlink" href="#faq9-2" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1823,7 +1805,7 @@ spreadsheet program to properly parse and sanitize such data on input instead.</
 <li><a class="reference internal" href="#which-php-versions-does-phpmyadmin-support">1.31 Which PHP versions does phpMyAdmin support?</a></li>
 <li><a class="reference internal" href="#can-i-use-http-authentication-with-iis">1.32 Can I use HTTP authentication with IIS?</a></li>
 <li><a class="reference internal" href="#faq1-33">1.33 (withdrawn).</a></li>
-<li><a class="reference internal" href="#can-i-directly-access-a-database-or-table-pages">1.34 Can I directly access a database or table pages?</a></li>
+<li><a class="reference internal" href="#can-i-access-directly-to-database-or-table-pages">1.34 Can I access directly to database or table pages?</a></li>
 <li><a class="reference internal" href="#can-i-use-http-authentication-with-apache-cgi">1.35 Can I use HTTP authentication with Apache CGI?</a></li>
 <li><a class="reference internal" href="#i-get-an-error-500-internal-server-error">1.36 I get an error “500 Internal Server Error”.</a></li>
 <li><a class="reference internal" href="#i-run-phpmyadmin-on-cluster-of-different-machines-and-password-encryption-in-cookie-auth-doesn-t-work">1.37 I run phpMyAdmin on cluster of different machines and password encryption in cookie auth doesn’t work.</a></li>
@@ -1834,7 +1816,6 @@ spreadsheet program to properly parse and sanitize such data on input instead.</
 <li><a class="reference internal" href="#how-can-i-prevent-robots-from-accessing-phpmyadmin">1.42 How can I prevent robots from accessing phpMyAdmin?</a></li>
 <li><a class="reference internal" href="#why-can-t-i-display-the-structure-of-my-table-containing-hundreds-of-columns">1.43 Why can’t I display the structure of my table containing hundreds of columns?</a></li>
 <li><a class="reference internal" href="#how-can-i-reduce-the-installed-size-of-phpmyadmin-on-disk">1.44 How can I reduce the installed size of phpMyAdmin on disk?</a></li>
-<li><a class="reference internal" href="#i-get-an-error-message-about-unknown-authentication-method-caching-sha2-password-when-trying-to-log-in">1.45 I get an error message about unknown authentication method caching_sha2_password when trying to log in</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configuration">Configuration</a><ul>
@@ -1847,7 +1828,6 @@ spreadsheet program to properly parse and sanitize such data on input instead.</
 <li><a class="reference internal" href="#using-and-creating-themes">2.7 Using and creating themes</a></li>
 <li><a class="reference internal" href="#i-get-missing-parameters-errors-what-can-i-do">2.8 I get “Missing parameters” errors, what can I do?</a></li>
 <li><a class="reference internal" href="#seeing-an-upload-progress-bar">2.9 Seeing an upload progress bar</a></li>
-<li><a class="reference internal" href="#how-to-generate-a-string-of-random-bytes">2.10 How to generate a string of random bytes</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#known-limitations">Known limitations</a><ul>
@@ -1937,7 +1917,7 @@ spreadsheet program to properly parse and sanitize such data on input instead.</
 <li><a class="reference internal" href="#faq6-25">6.25 (withdrawn).</a></li>
 <li><a class="reference internal" href="#how-can-i-select-a-range-of-rows">6.26 How can I select a range of rows?</a></li>
 <li><a class="reference internal" href="#what-format-strings-can-i-use">6.27 What format strings can I use?</a></li>
-<li><a class="reference internal" href="#faq6-28">6.28 (withdrawn).</a></li>
+<li><a class="reference internal" href="#how-can-i-easily-edit-relational-schema-for-export">6.28 How can I easily edit relational schema for export?</a></li>
 <li><a class="reference internal" href="#why-can-t-i-get-a-chart-from-my-query-result-table">6.29 Why can’t I get a chart from my query result table?</a></li>
 <li><a class="reference internal" href="#import-how-can-i-import-esri-shapefiles">6.30 Import: How can I import ESRI Shapefiles?</a></li>
 <li><a class="reference internal" href="#how-do-i-create-a-relation-in-designer">6.31 How do I create a relation in designer?</a></li>
@@ -2014,12 +1994,12 @@ spreadsheet program to properly parse and sanitize such data on input instead.</
         <li class="right" >
           <a href="other.html" title="Other sources of information"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 5.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 4.9.11 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">FAQ - Frequently Asked Questions</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; <a href="copyright.html">Copyright</a> 2012 - 2021, The phpMyAdmin devel team.
+        &#169; <a href="copyright.html">Copyright</a> 2012 - 2018, The phpMyAdmin devel team.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
     </div>
   </body>

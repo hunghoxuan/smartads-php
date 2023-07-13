@@ -1,108 +1,116 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Superclass for the single Property Item classes.
+ *
+ * @package PhpMyAdmin
  */
-
-declare(strict_types=1);
-
 namespace PhpMyAdmin\Properties\Options;
 
 /**
  * Parents only single property items (not groups).
  * Defines possible options and getters and setters for them.
+ *
+ * @package PhpMyAdmin
  */
 abstract class OptionsPropertyOneItem extends OptionsPropertyItem
 {
     /**
      * Whether to force or not
      *
-     * @var bool|string
+     * @var bool
      */
-    private $forceOne;
+    private $_force_one;
     /**
      * Values
      *
      * @var array
      */
-    private $values;
+    private $_values;
     /**
      * Doc
      *
-     * @var string|array
+     * @var string
      */
-    private $doc;
+    private $_doc;
     /**
      * Length
      *
      * @var int
      */
-    private $len;
+    private $_len;
     /**
      * Size
      *
      * @var int
      */
-    private $size;
+    private $_size;
     /* ~~~~~~~~~~~~~~~~~~~~ Getters and Setters ~~~~~~~~~~~~~~~~~~~~ */
 
     /**
      * Gets the force parameter
      *
-     * @return bool|string
+     * @return string
      */
     public function getForce()
     {
-        return $this->forceOne;
+        return $this->_force_one;
     }
 
     /**
      * Sets the force parameter
      *
-     * @param bool|string $force force parameter
+     * @param bool $force force parameter
+     *
+     * @return void
      */
-    public function setForce($force): void
+    public function setForce($force)
     {
-        $this->forceOne = $force;
+        $this->_force_one = $force;
     }
 
     /**
      * Gets the values
      *
-     * @return array
+     * @return string
      */
     public function getValues()
     {
-        return $this->values;
+        return $this->_values;
     }
 
     /**
      * Sets the values
      *
      * @param array $values values
+     *
+     * @return void
      */
-    public function setValues(array $values): void
+    public function setValues(array $values)
     {
-        $this->values = $values;
+        $this->_values = $values;
     }
 
     /**
      * Gets MySQL documentation pointer
      *
-     * @return string|array
+     * @return array
      */
     public function getDoc()
     {
-        return $this->doc;
+        return $this->_doc;
     }
 
     /**
      * Sets the doc
      *
-     * @param string|array $doc MySQL documentation pointer
+     * @param string $doc MySQL documentation pointer
+     *
+     * @return void
      */
-    public function setDoc($doc): void
+    public function setDoc($doc)
     {
-        $this->doc = $doc;
+        $this->_doc = $doc;
     }
 
     /**
@@ -112,17 +120,19 @@ abstract class OptionsPropertyOneItem extends OptionsPropertyItem
      */
     public function getLen()
     {
-        return $this->len;
+        return $this->_len;
     }
 
     /**
      * Sets the length
      *
      * @param int $len length
+     *
+     * @return void
      */
-    public function setLen($len): void
+    public function setLen($len)
     {
-        $this->len = $len;
+        $this->_len = $len;
     }
 
     /**
@@ -132,16 +142,18 @@ abstract class OptionsPropertyOneItem extends OptionsPropertyItem
      */
     public function getSize()
     {
-        return $this->size;
+        return $this->_size;
     }
 
     /**
      * Sets the size
      *
      * @param int $size size
+     *
+     * @return void
      */
-    public function setSize($size): void
+    public function setSize($size)
     {
-        $this->size = $size;
+        $this->_size = $size;
     }
 }

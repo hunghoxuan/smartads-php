@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+/**
+ * Parses a function call.
+ */
 
 namespace PhpMyAdmin\SqlParser\Components;
 
@@ -9,32 +11,34 @@ use PhpMyAdmin\SqlParser\Parser;
 use PhpMyAdmin\SqlParser\Token;
 use PhpMyAdmin\SqlParser\TokensList;
 
-use function is_array;
-
 /**
  * Parses a function call.
  *
- * @final
+ * @category   Keywords
+ *
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 class FunctionCall extends Component
 {
     /**
      * The name of this function.
      *
-     * @var string|null
+     * @var string
      */
     public $name;
 
     /**
      * The list of parameters.
      *
-     * @var ArrayObj|null
+     * @var ArrayObj
      */
     public $parameters;
 
     /**
-     * @param string|null            $name       the name of the function to be called
-     * @param string[]|ArrayObj|null $parameters the parameters of this function
+     * Constructor.
+     *
+     * @param string         $name       the name of the function to be called
+     * @param array|ArrayObj $parameters the parameters of this function
      */
     public function __construct($name = null, $parameters = null)
     {
@@ -47,15 +51,15 @@ class FunctionCall extends Component
     }
 
     /**
-     * @param Parser               $parser  the parser that serves as context
-     * @param TokensList           $list    the list of tokens that are being parsed
-     * @param array<string, mixed> $options parameters for parsing
+     * @param Parser     $parser  the parser that serves as context
+     * @param TokensList $list    the list of tokens that are being parsed
+     * @param array      $options parameters for parsing
      *
      * @return FunctionCall
      */
-    public static function parse(Parser $parser, TokensList $list, array $options = [])
+    public static function parse(Parser $parser, TokensList $list, array $options = array())
     {
-        $ret = new static();
+        $ret = new self();
 
         /**
          * The state of the parser.
@@ -73,6 +77,8 @@ class FunctionCall extends Component
         for (; $list->idx < $list->count; ++$list->idx) {
             /**
              * Token parsed at this moment.
+             *
+             * @var Token
              */
             $token = $list->tokens[$list->idx];
 
@@ -93,7 +99,6 @@ class FunctionCall extends Component
                 if (($token->type === Token::TYPE_OPERATOR) && ($token->value === '(')) {
                     $ret->parameters = ArrayObj::parse($parser, $list);
                 }
-
                 break;
             }
         }
@@ -102,12 +107,12 @@ class FunctionCall extends Component
     }
 
     /**
-     * @param FunctionCall         $component the component to be built
-     * @param array<string, mixed> $options   parameters for building
+     * @param FunctionCall $component the component to be built
+     * @param array        $options   parameters for building
      *
      * @return string
      */
-    public static function build($component, array $options = [])
+    public static function build($component, array $options = array())
     {
         return $component->name . $component->parameters;
     }
