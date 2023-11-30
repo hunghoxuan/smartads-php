@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\BaseInflector;
 use yii\helpers\StringHelper;
 use backend\models\AuthPermission;
+use Exception;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -458,79 +459,83 @@ class BaseDataObject extends BaseAPIObject
     public function save($runValidation = true, $attributeNames = null)
     {
 
-        $insert = $this->isNewRecord;
-        $tableName = $this::tableName();
+        try {
+            $insert = $this->isNewRecord;
+            $tableName = $this::tableName();
 
-        //unique Columns, find duplicated Models
-        $unqiue_columns = $this->getUniqueFields();
-        if (!empty($unqiue_columns)) {
-            $duplicated_models = FModel::findDuplicatedModels($this);
-            if (!empty($duplicated_models)) {
-                foreach ($duplicated_models as $column => $errors) {
-                    $this->addError($column, FHtml::t('message', "Duplicated value") . ". " . FHtml::getFieldLabel($this, $column) . " (" . FHtml::getFieldValue($this, $column) . ") " . FHtml::t('message', "has already been taken"));
+            //unique Columns, find duplicated Models
+            $unqiue_columns = $this->getUniqueFields();
+            if (!empty($unqiue_columns)) {
+                $duplicated_models = FModel::findDuplicatedModels($this);
+                if (!empty($duplicated_models)) {
+                    foreach ($duplicated_models as $column => $errors) {
+                        $this->addError($column, FHtml::t('message', "Duplicated value") . ". " . FHtml::getFieldLabel($this, $column) . " (" . FHtml::getFieldValue($this, $column) . ") " . FHtml::t('message', "has already been taken"));
+                    }
+
+                    if (FHtml::isAjaxRequest()) {
+                        FHtml::clearMessages();
+                        return $this->getInnerMessage();
+                    }
+
+                    return false;
                 }
+            }
 
-                if (FHtml::isAjaxRequest()) {
-                    FHtml::clearMessages();
+            $this->saveUploadFiles();
+
+            $lang = FHtml::currentLang();
+            $saveLang = $this->isDBLanguagesEnabled() && $lang != FConfig::defaultLang() && FHtml::isLanguagesEnabled($this);
+            if (!$insert && $saveLang) {
+                // Save languages data
+                FModel::saveTranslatedModel($this, $lang, false);
+                $save = parent::save(false, $attributeNames);
+            } else {
+                $save = parent::save($runValidation, $attributeNames);
+
+                if ($insert && $saveLang && $save) {
+                    //if is Insert, then after insert, save translated model for different language
+                    FModel::saveTranslatedModel($this, $lang, true);
+                }
+            }
+
+            //Show success/ error message
+            if (!$save || !empty($this->errors)) {
+                if (\Yii::$app->request->isAjax) {
+                    FHtml::clearMessages(); // neu la goi Ajax thi show Error ở popup luôn, nên clear ở Session để không show Error ở view nữa
                     return $this->getInnerMessage();
                 }
+            } else {
+                if (!FHtml::isInArray($tableName, ['object_*'])) {
+                    $this->saveObjectItems();
 
-                return false;
-            }
-        }
-
-        $this->saveUploadFiles();
-
-        $lang = FHtml::currentLang();
-        $saveLang = $this->isDBLanguagesEnabled() && $lang != FConfig::defaultLang() && FHtml::isLanguagesEnabled($this);
-        if (!$insert && $saveLang) {
-            // Save languages data
-            FModel::saveTranslatedModel($this, $lang, false);
-            $save = parent::save(false, $attributeNames);
-        } else {
-            $save = parent::save($runValidation, $attributeNames);
-
-            if ($insert && $saveLang && $save) {
-                //if is Insert, then after insert, save translated model for different language
-                FModel::saveTranslatedModel($this, $lang, true);
-            }
-        }
-
-        //Show success/ error message
-        if (!$save || !empty($this->errors)) {
-            if (\Yii::$app->request->isAjax) {
-                FHtml::clearMessages(); // neu la goi Ajax thi show Error ở popup luôn, nên clear ở Session để không show Error ở view nữa
-                return $this->getInnerMessage();
-            }
-        } else {
-            if (!FHtml::isInArray($tableName, ['object_*'])) {
-                $this->saveObjectItems();
-
-                //unique Boolean Columns
-                FModel::setModelUniqueBooleanColumns($this, $this->getUniqueBooleanFields(), $this->getUniqueBooleanFieldsCondition());
-            }
-
-            if (FHtml::isObjectActionsLogEnabled($this->getTableName())) {
-                //Show success/ error message
-                $object = FHtml::t('common', BaseInflector::camel2words(static::getTableName()));
-                $object_title = FHtml::getFieldValue($this, ['name', 'title']);
-                $object_id = FHtml::getFieldValue($this, ['id']);
-                $action = FHtml::currentAction();
-
-                // If Enabled Object Changes Log - Log data changed into Object_actions table
-                FHtml::logObjectActions($this, $insert ? FHtml::ACTION_CREATE : FHtml::ACTION_EDIT, $this->oldContent, $this->attributes);
-
-                if (!FHtml::isAjaxRequest() && in_array($action, ['create', 'update'])) {
-                    $message = FHtml::t('common', 'Saved successfully');
-                    FHtml::addMessage("$message. $object #$object_id - $object_title");
+                    //unique Boolean Columns
+                    FModel::setModelUniqueBooleanColumns($this, $this->getUniqueBooleanFields(), $this->getUniqueBooleanFieldsCondition());
                 }
+
+                if (FHtml::isObjectActionsLogEnabled($this->getTableName())) {
+                    //Show success/ error message
+                    $object = FHtml::t('common', BaseInflector::camel2words(static::getTableName()));
+                    $object_title = FHtml::getFieldValue($this, ['name', 'title']);
+                    $object_id = FHtml::getFieldValue($this, ['id']);
+                    $action = FHtml::currentAction();
+
+                    // If Enabled Object Changes Log - Log data changed into Object_actions table
+                    FHtml::logObjectActions($this, $insert ? FHtml::ACTION_CREATE : FHtml::ACTION_EDIT, $this->oldContent, $this->attributes);
+
+                    if (!FHtml::isAjaxRequest() && in_array($action, ['create', 'update'])) {
+                        $message = FHtml::t('common', 'Saved successfully');
+                        FHtml::addMessage("$message. $object #$object_id - $object_title");
+                    }
+                }
+
+                $this->refreshCache();
             }
 
-            $this->refreshCache();
+            return $save;
+        } catch (Exception $exception) {
+            FHtml::addError($exception);
+            return false;
         }
-
-
-        return $save;
     }
 
     public function getUploadedFiles()
@@ -594,6 +599,10 @@ class BaseDataObject extends BaseAPIObject
     protected $isLoaded = false;
     public function beforeSave($insert)
     {
+        if (FHtml::isDangerous($this->getAttributes())) {
+            return false;
+        }
+
         if (!$this->isLoaded) {
             $this->normalizeFieldValues();
             $this->isLoaded = true;

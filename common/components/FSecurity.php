@@ -26,6 +26,7 @@ use yii\helpers\BaseInflector;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\StringHelper;
+use yii\web\UploadedFile;
 
 class FSecurity extends FFile
 {
@@ -2543,47 +2544,59 @@ class FSecurity extends FFile
         return md5($user_id . time());
     }
 
-    public static function validateParam($params)
+    // check if $params is dangerous (SQL injection, XSS, PHP injection, etc.)
+    // if $params is array and is $file upload (contain 'tmp_name' key)
+    // if $params is string and contain SQL injection, XSS, PHP injection, etc.
+    // 
+    public static function isDangerous($params)
     {
-        return $params;
-    }
+        if ($params instanceof UploadedFile) {
+            $params = [
+                'tmp_name' => $params->tempName,
+                'name' => $params->name
+            ];
+        }
+        // if $params is array and is $file upload (contain 'tmp_name' key)
+        if (is_array($params) && key_exists('tmp_name', $params) && key_exists('name', $params)) {
 
-    public static function validateSQL($sql)
-    {
-        if (!is_string($sql))
-            return $sql;
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($params['tmp_name']);
+            $ext = strtolower(pathinfo($params['name'], PATHINFO_EXTENSION));
 
-        $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
-        $replace = array("\\\\", "\\0", "\\n", "\\r", "\'", '\"', "\\Z");
+            $safeExtensions = ['jpg', 'jpeg', 'png', 'gif', 'txt', 'pdf', 'doc', 'mp4', 'mp3', 'avi', 'mov' .
+                'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', '7z', 'tar', 'gz', 'sql', 'csv', 'xml', 'json'];
 
-        $sql = str_replace($search, $replace, trim($sql));
+            if (!in_array($ext, $safeExtensions)) {
+                FHtml::addError("Could not save file because file extension is not safe: $ext");
+                return true;
+            }
 
-        // Expanded list of risky words that might indicate SQL injection vulnerability
-        // $riskyWords = [
-        //     'SELECT', 'INSERT', 'UPDATE', 'DELETE', // Basic SQL commands
-        //     ';', '--', '/*', '*/',                 // SQL comment signs
-        //     "' OR '", "' AND '",                   // Logical operators
-        //     "'='", "'--", "'/*", "OR 1=1",         // Common SQL injection patterns
-        //     "DROP", "UNION", "ALTER", "EXEC",      // Other SQL commands
-        //     "XP_", "UTL_", "WAITFOR DELAY",        // Specific SQL commands related to SQL Server, Oracle, etc.
-        //     "#",                                   // MySQL comment sign
-        //     "' OR '1'='1",                         // Tautology based injection
-        //     "SLEEP(", "BENCHMARK(",                // Functions used to measure query execution time
-        //     "CHAR(", "CONCAT(",                     // Functions used in SQL injection
-        //     "INTO OUTFILE", "INTO DUMPFILE"        // Data export commands
-        // ];
+            $safeMimeTypes = [
+                'image/jpeg', 'image/png', 'image/gif', 'text/plain', 'application/pdf',
+                'application/msword', 'video/mp4', 'video/quicktime', 'video/x-msvideo',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'application/zip', 'application/x-rar-compressed', 'application/x-7z-compressed', 'application/x-tar',
+                'application/gzip', 'application/sql', 'text/csv', 'application/xml', 'application/json'
+            ];
 
+            if (!in_array($mimeType, $safeMimeTypes)) {
+                FHtml::addError("Could not save file because MIME type is not safe: $mimeType");
+                return true;
+            }
 
-        // $upperSQL = strtoupper($sql);
+            return false;
+        }
 
-        // // Check for presence of risky words
-        // foreach ($riskyWords as $word) {
-        //     if (strpos($upperSQL, $word) !== false) {
-        //         return false;
-        //     }
-        // }
-        // More comprehensive list of risky patterns and words
+        if (!is_array($params)) {
+            $params = [
+                'sql' => $params
+            ];
+        }
+
         $riskyPatterns = [
+            // Patterns for SQL injection, XSS, PHP injection, etc.
             '/\bSELECT\b/i', '/\bINSERT\b/i', '/\bUPDATE\b/i', '/\bDELETE\b/i',
             '/--/', '/\*{2,}/', '/\bOR\b\s+1=1\b/i', '/\bUNION\b\s+SELECT\b/i',
             '/\bDROP\b/i', '/\bALTER\b/i', '/\bEXEC\b/i',
@@ -2597,18 +2610,42 @@ class FSecurity extends FFile
             '/\bSHOW\b\s+COLUMNS\b/i', '/\bEXTRACTVALUE\b\(/i',
             '/\bUPDATEXML\b\(/i', '/\bXMLTYPE\b\./i',
             '/\bDBMS_LOB\b\./i', '/\bDBMS_PIPE\b\./i',
-            '/\bSYS_CONTEXT\b\(/i', '/\bSYS_\b/i'
+            '/\bSYS_CONTEXT\b\(/i', '/\bSYS_\b/i',
+            // Cross-Site Scripting (XSS) patterns
+            '/<script\s*/i',
+            '/<script.*?>.*?<\/script>/is',    // Basic XSS script tags
+            '/on(mouse|key|error|load|click)\s*=\s*/i',  // Event handlers
+            '/javascript:/i',                 // JavaScript URIs
+            '/vbscript:/i',                   // VBScript URIs
+            '/data:text\/html/i',             // Data URIs
+            '/<iframe.*?>.*?<\/iframe>/is',   // iFrames
+            '/<object.*?>.*?<\/object>/is',   // Objects
+            '/<embed.*?>.*?<\/embed>/is',     // Embeds
+            // PHP Code Injection patterns
+            '/<\?php/i',                      // Opening PHP tags
+            '/<\?=|<\?php echo/i',            // PHP echo short tags
+            '/\bexec\s*\(/i',                 // exec function
+            '/\beval\s*\(/i',                 // eval function
+            '/\bshell_exec\s*\(/i',           // shell_exec function
+            '/\bsystem\s*\(/i',               // system function
+            '/\bpassthru\s*\(/i',             // passthru function
+            '/\bbacktick operator `.*?`/'     // Backtick operator
+            // html tags        
         ];
 
-        // Check for presence of risky patterns using regular expressions
-        foreach ($riskyPatterns as $pattern) {
-            if (preg_match($pattern, $sql)) {
-                var_dump("This SQL potientially contains SQL Injection risk: $sql");
-                die;
-                return false;
+        $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+        $replace = array("\\\\", "\\0", "\\n", "\\r", "\'", '\"', "\\Z");
+
+        foreach ($params as $field => $value) {
+            // Check for presence of risky patterns using regular expressions
+            foreach ($riskyPatterns as $pattern) {
+                if (preg_match($pattern, $value)) {
+                    FHtml::addError("[$field] is not safe: $value");
+                    return true;
+                }
             }
         }
 
-        return $sql;
+        return false;
     }
 }

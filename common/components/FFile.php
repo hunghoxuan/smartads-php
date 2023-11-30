@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://github.com/creocoder/yii2-flysystem
  * @copyright Copyright (c) 2015 Alexander Kochetov
@@ -195,7 +196,6 @@ class FFile extends FSystem
                     FError::addError($ex);
                     return false;
                 }
-
             } else {
                 if (is_file($filename) && !is_writable($filename)) {
                     FError::addError("Permission denied: $filename");
@@ -421,22 +421,31 @@ class FFile extends FSystem
             }
 
             $file_name_full = self::getUploadFileName($folder, $file_name, true);
-            if (!empty($file) && !empty($file_name_full) && move_uploaded_file($file, $file_name_full)) {
+
+            if (!empty($file) && !empty($file_name_full)) {
+                if (FHtml::isDangerous(['name' => $file_name_full, 'tmp_name' => $file])) {
+                    return false;
+                }
+                move_uploaded_file($file, $file_name_full);
                 return $file_name_full;
             }
 
             return false;
-
         } elseif (is_object($file)) {
             if ($file instanceof UploadedFile) {
+                if (FHtml::isDangerous($file)) {
+                    return false;
+                }
                 if (empty($file_name))
                     $file_name = $file->name;
+
                 $file_name_full = self::getUploadFileName($folder, $file_name, true);
 
                 if (!is_file($file->tempName)) {
                     FHtml::addError("Temp File does not existed. " . $file->tempName);
                     return false;
                 }
+
                 if ($file->saveAs($file_name_full)) {
                     return $file_name;
                 }
@@ -446,12 +455,17 @@ class FFile extends FSystem
                 if (is_array($folder)) {
                     foreach ($folder as $field1) {
                         if (in_array($field1, $fields)) {
-                            $field = $field1; break;
+                            $field = $field1;
+                            break;
                         }
                     }
-                } else
+                } else {
                     $field = $folder;
+                }
 
+                if (FHtml::isDangerous($_FILES[$field])) {
+                    return false;
+                }
                 $file_path = FHtml::getApplicationUploadFolder($file);
 
                 $ext = pathinfo($_FILES[$field]['name'], PATHINFO_EXTENSION);
@@ -460,9 +474,9 @@ class FFile extends FSystem
 
                 $image_path = $file_path . DS . $file_name;
 
-                if (!is_dir($file_path))
-                {
+                if (!is_dir($file_path)) {
                     FError::addError("Error Upload. Folder does not exists: $file_path");
+                    return false;
                 }
 
                 $upload = move_uploaded_file($_FILES[$field]['tmp_name'], $image_path);
@@ -471,7 +485,6 @@ class FFile extends FSystem
             }
 
             return false;
-
         } else {
             if (!empty($_FILES)) {
                 foreach ($_FILES as $key => $array) {
@@ -486,6 +499,9 @@ class FFile extends FSystem
             }
 
             if (is_array($file) && !empty($file) && key_exists('tmp_name', $file)) {
+                if (FHtml::isDangerous($file)) {
+                    return false;
+                }
                 $names = $file['name'];
                 $tmps = $file['tmp_name'];
                 $result = [];
@@ -518,7 +534,7 @@ class FFile extends FSystem
         // if (is_file($filename))
         //     return false;
 
-        $zip = new ZipArchive ();
+        $zip = new ZipArchive();
         $file_name = $filename . '.zip';
         if ($zip->open($file_name, ZipArchive::CREATE) === TRUE) {
             $zip->addFile(self::getFullPath() . $filename, basename($filename));
@@ -538,7 +554,6 @@ class FFile extends FSystem
     public static function zipFolder($directory, $filename = '', $included = [], $deleteAfterZip = false)
     {
         FSystem::execRemoteUrl('api/zipFile', ['folder' => $directory, 'save_to' => $filename, 'delete_after_zip' => $deleteAfterZip], false);
-
     }
 
     public static function zipFolderDirect($directory, $filename = '', $included = [], $deleteAfterZip = false)
@@ -562,12 +577,10 @@ class FFile extends FSystem
             $zip = new ZipArchive();
             $filename = FFile::getFullFileName($filename);
             $zip->open($filename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
         } else if (is_object($filename)) {
             $zip = $filename;
             $filename = $zip->filename;
             $close_zip = false;
-
         } else {
             return;
         }
@@ -655,7 +668,7 @@ class FFile extends FSystem
                 $extractTo = dirname($file_name);
             }
 
-            $zip = new ZipArchive ();
+            $zip = new ZipArchive();
             if ($zip->open($file_name)) {
                 $zip->extractTo($extractTo);
                 $zip->close();
@@ -739,23 +752,23 @@ class FFile extends FSystem
 
     public static function replaceFileContent($FilePath, $pairs = [])
     {
-//        $iterator = static::fileReadIterator($FilePath);
-//
-//        $buffer = "";
-//
-//        foreach ($iterator as $iteration) {
-//            preg_match("/\n{3}/", $buffer, $matches);
-//
-//            if (count($matches)) {
-//                print ".";
-//                $buffer = "";
-//            } else {
-//                $buffer .= FHtml::strReplace($iteration, $pairs) . PHP_EOL;
-//            }
-//        }
-//
-//        static::write($FilePath, $buffer);
-//        return;
+        //        $iterator = static::fileReadIterator($FilePath);
+        //
+        //        $buffer = "";
+        //
+        //        foreach ($iterator as $iteration) {
+        //            preg_match("/\n{3}/", $buffer, $matches);
+        //
+        //            if (count($matches)) {
+        //                print ".";
+        //                $buffer = "";
+        //            } else {
+        //                $buffer .= FHtml::strReplace($iteration, $pairs) . PHP_EOL;
+        //            }
+        //        }
+        //
+        //        static::write($FilePath, $buffer);
+        //        return;
 
         $Result = null;
         if (file_exists($FilePath) === TRUE) {
@@ -930,9 +943,13 @@ class FFile extends FSystem
         return static::listFiles($path, $recursive, $included, $excluded, []);
     }
 
-    public static function listFolders($path = '', $recursive = true, $included = [], $excluded = [],
-                                       &$folders = [])
-    {
+    public static function listFolders(
+        $path = '',
+        $recursive = true,
+        $included = [],
+        $excluded = [],
+        &$folders = []
+    ) {
         if (empty($path))
             $path = FHtml::getRootFolder();
 
@@ -1020,7 +1037,6 @@ class FFile extends FSystem
      */
     public function init()
     {
-
     }
 
     /**
@@ -1064,8 +1080,10 @@ class FFile extends FSystem
 
         if ($doStream == true) {
             /* extensions to stream */
-            $array_listen = array('mp3', 'm3u', 'm4a', 'mid', 'ogg', 'ra', 'ram', 'wm',
-                'wav', 'wma', 'aac', '3gp', 'avi', 'mov', 'mp4', 'mpeg', 'mpg', 'swf', 'wmv', 'divx', 'asf');
+            $array_listen = array(
+                'mp3', 'm3u', 'm4a', 'mid', 'ogg', 'ra', 'ram', 'wm',
+                'wav', 'wma', 'aac', '3gp', 'avi', 'mov', 'mp4', 'mpeg', 'mpg', 'swf', 'wmv', 'divx', 'asf'
+            );
             if (in_array($extension, $array_listen)) {
                 $contentDisposition = 'inline';
             }
@@ -1140,20 +1158,20 @@ class FFile extends FSystem
             else
                 $file_save = FHtml::getRootFolder() . DS . "applications" . DS . "$application_id" . DS . "download" . DS . "$file_name.$file_ext";
 
-//            if (file_exists($file_path)) {
-//                header('Content-Description: File Transfer');
-//                header('Content-Type: application/octet-stream');
-//                header('Content-Disposition: attachment; filename='.basename($file_path));
-//                header('Content-Transfer-Encoding: binary');
-//                header('Expires: 0');
-//                header('Cache-Control: must-revalidate');
-//                header('Pragma: public');
-//                header('Content-Length: ' . filesize($file_path));
-//                ob_clean();
-//                flush();
-//                readfile($file_path);
-//                exit;
-//            }
+            //            if (file_exists($file_path)) {
+            //                header('Content-Description: File Transfer');
+            //                header('Content-Type: application/octet-stream');
+            //                header('Content-Disposition: attachment; filename='.basename($file_path));
+            //                header('Content-Transfer-Encoding: binary');
+            //                header('Expires: 0');
+            //                header('Cache-Control: must-revalidate');
+            //                header('Pragma: public');
+            //                header('Content-Length: ' . filesize($file_path));
+            //                ob_clean();
+            //                flush();
+            //                readfile($file_path);
+            //                exit;
+            //            }
 
             FFile::write($file_save, $content);
             exit;
@@ -1200,7 +1218,7 @@ class FFile extends FSystem
         // hide notices
         @ini_set('error_reporting', E_ALL & ~E_NOTICE);
 
-//- turn off compression on the server
+        //- turn off compression on the server
         @apache_setenv('no-gzip', 1);
         @ini_set('zlib.output_compression', 'Off');
 
@@ -1209,10 +1227,10 @@ class FFile extends FSystem
             exit;
         }
 
-// allow a file to be streamed instead of sent as an attachment
+        // allow a file to be streamed instead of sent as an attachment
         $is_attachment = isset($is_attachment) ? $is_attachment : FHtml::getRequestParam(['is_attachment'], true);
 
-// make sure the file exists
+        // make sure the file exists
         if (is_file($file_path)) {
             $file_size = filesize($file_path);
             $file = @fopen($file_path, "rb");
@@ -1311,9 +1329,9 @@ class FFile extends FSystem
         if (StringHelper::startsWith($file1, $base_url))
             $file1 = str_replace($base_url, $root . DS, $file1);
 
-//        if (ends_with($file, 'no_image.jpg')) {
-//            echo "Haha: $file $file1 $base_url $root <br/>";
-//        }
+        //        if (ends_with($file, 'no_image.jpg')) {
+        //            echo "Haha: $file $file1 $base_url $root <br/>";
+        //        }
         if (!StringHelper::startsWith($file1, $root) && !StringHelper::startsWith($file1, '@'))
             $file1 = "$root" . DS . "$file1";
 
@@ -1476,13 +1494,13 @@ class FFile extends FSystem
     {
         return FHtml::getFilePath($file, $model_dir, \Globals::NO_IMAGE);
 
-//        $baseUpload = Yii::getAlias('@' . UPLOAD_DIR);
-//        if (is_file($baseUpload . DS . $model_dir . DS . $file)) {
-//            $image_path = $baseUpload . DS . $model_dir . DS . $file;
-//        } else {
-//            $image_path = $baseUpload . DS . WWW_DIR . DS . \Globals::NO_IMAGE;
-//        }
-//        return $image_path;
+        //        $baseUpload = Yii::getAlias('@' . UPLOAD_DIR);
+        //        if (is_file($baseUpload . DS . $model_dir . DS . $file)) {
+        //            $image_path = $baseUpload . DS . $model_dir . DS . $file;
+        //        } else {
+        //            $image_path = $baseUpload . DS . WWW_DIR . DS . \Globals::NO_IMAGE;
+        //        }
+        //        return $image_path;
     }
 
     public static function saveFiles($files, $folder, $model = null, $autoSave = true)
@@ -1781,4 +1799,3 @@ class FFile extends FSystem
         return $content;
     }
 }
-

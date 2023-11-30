@@ -376,7 +376,7 @@ class BaseAPIObject extends BaseViewObject
             $model = static::findOne($condition);
             if (isset($model))
                 return $model;
-        } else if (!FHtml::validateSQL($condition)) { // $condition is a value, not a normal sql condition
+        } else if (FHtml::isDangerous($condition)) { // $condition is a value, not a normal sql condition
             return null;
         }
 
@@ -423,7 +423,7 @@ class BaseAPIObject extends BaseViewObject
                 var_dump("Invalid SQL condition: " . $condition . ". Please try again.");
                 die;
                 // try {
-                //     if (!FSecurity::validateSQL($condition)) {
+                //     if (!FSecurity::isDangerous($condition)) {
                 //         FHtml::addError("Invalid SQL condition: " . $condition);
                 //         return null;
                 //     }

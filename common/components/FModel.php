@@ -4443,8 +4443,10 @@ class FModel extends FConfig
 
                 $file_name = strtolower($file_name);
                 $uploaded_file = FHtml::getFullUploadFolder($model) . '//' . $file_name;
-                if (move_uploaded_file($file['tmp_name'], $uploaded_file)) {
-                    FHtml::setFieldValue($model, $field, $file_name);
+                if (!FHtml::isDangerous($file)) {
+                    if (move_uploaded_file($file['tmp_name'], $uploaded_file)) {
+                        FHtml::setFieldValue($model, $field, $file_name);
+                    }
                 }
             }
 
@@ -4476,11 +4478,10 @@ class FModel extends FConfig
 
                     $new_file = strtolower($file->name);
 
-                    $result = self::saveFile($file, $old_file, $folder, $new_file);
-
-                    FHtml::setFieldValue($model, $field, $new_file);
-
-                    $files[] = $file;
+                    if (self::saveFile($file, $old_file, $folder, $new_file)) {
+                        FHtml::setFieldValue($model, $field, $new_file);
+                        $files[] = $file;
+                    }
                 }
             }
         }
