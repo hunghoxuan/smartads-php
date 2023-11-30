@@ -43,8 +43,8 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
     const STATUS_REJECTED = FHtml::USER_STATUS_DELETED;
     const STATUS_PENDING = FHtml::USER_STATUS_DELETED;
     const STATUS_NORMAL = FHtml::USER_STATUS_ACTIVE;
-    const STATUS_PRO= FHtml::USER_STATUS_ACTIVE;
-    const STATUS_VIP= FHtml::USER_STATUS_ACTIVE;
+    const STATUS_PRO = FHtml::USER_STATUS_ACTIVE;
+    const STATUS_VIP = FHtml::USER_STATUS_ACTIVE;
 
     const ROLE_USER = FHtml::ROLE_USER;
     const ROLE_MODERATOR = FHtml::ROLE_MODERATOR;
@@ -119,7 +119,7 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
         }
 
         if (strpos($username, '@') !== false) {
-            $model =  self::findOne("email = '$username' and status in (1, " . self::STATUS_ACTIVE . ")", $check_applications);
+            $model =  self::findOne(['email' => $username, 'status' => SELF::STATUS_ACTIVE], $check_applications);
             if (isset($model))
                 return $model;
         }
@@ -128,11 +128,11 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
         else
             $column = 'username';
 
-        $model =  self::findOne("$column = '$username' and status in (1, " . self::STATUS_ACTIVE . ")", $check_applications);
+        $model =  self::findOne([$column => $username, 'status' => SELF::STATUS_ACTIVE], $check_applications);
 
         if ((!isset($model) || !is_object($model)) && in_array($username, FSecurity::USER_NAME_ADMIN)) {
             $username = $username . '_' . FHtml::currentApplicationId();
-            $model =  self::findOne("$column = '$username' and status in (1, " . self::STATUS_ACTIVE . ")", true);
+            $model =  self::findOne([$column => $username, 'status' => SELF::STATUS_ACTIVE], true);
         }
 
         return $model;
@@ -149,7 +149,7 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
         }
 
         if (strpos($username, '@') !== false) {
-            $model =  self::findOne("email = '$username' and status in (1, " . self::STATUS_ACTIVE . ")", $check_applications);
+            $model =  self::findOne(['email' => $username, 'status' => self::STATUS_ACTIVE], $check_applications);
             if (isset($model))
                 return $model;
         }
@@ -158,8 +158,7 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
 
         if ((!isset($model) || !is_object($model)) && in_array($username, FSecurity::USER_NAME_ADMIN)) {
             $username = $username . '_' . FHtml::currentApplicationId();
-            $model =  self::findOne("username = '$username' and status in (1, " . self::STATUS_ACTIVE . ")", true);
-
+            $model =  self::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE], $check_applications);
         }
 
         return $model;
@@ -325,15 +324,13 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
         if (key_exists('User', $_POST)) {
             $this->password_new = key_exists('password_new', $_POST['User']) ? $_POST['User']['password_new'] : '';
             $this->password_retype = key_exists('password_retype', $_POST['User']) ? $_POST['User']['password_retype'] : '';
-
         }
 
         if (empty($this->email))
             $this->email = $this->username . '@' . FHtml::settingEmailDomain();
 
         if (!empty($this->password_new)) {
-            if ($this->password_new != $this->password_retype)
-            {
+            if ($this->password_new != $this->password_retype) {
                 FHtml::addError('Password does not match');
                 return false;
             }
@@ -370,7 +367,8 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
         return [];
     }
 
-    public function getGroupsArray() {
+    public function getGroupsArray()
+    {
         return [];
     }
 
@@ -379,7 +377,8 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
         return [];
     }
 
-    public function getRightsArray() {
+    public function getRightsArray()
+    {
         return [];
     }
 
@@ -388,7 +387,8 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
         return null;
     }
 
-    public function afterFind() {
+    public function afterFind()
+    {
         $this->_username = $this->username;
         return parent::afterFind();
     }
@@ -398,5 +398,4 @@ class BaseUser extends \common\models\BaseModel implements IdentityInterface
     {
         return parent::findOne($condition, $selected_fields, $asArray, $applications_enabled);
     }
-
 }

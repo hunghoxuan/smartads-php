@@ -2542,4 +2542,70 @@ class FSecurity extends FFile
     {
         return md5($user_id . time());
     }
+
+    public static function validateParam($params)
+    {
+        return $params;
+    }
+
+    public static function validateSQL($sql)
+    {
+        $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+        $replace = array("\\\\", "\\0", "\\n", "\\r", "\'", '\"', "\\Z");
+
+        $sql = str_replace($search, $replace, trim($sql));
+
+        // Expanded list of risky words that might indicate SQL injection vulnerability
+        // $riskyWords = [
+        //     'SELECT', 'INSERT', 'UPDATE', 'DELETE', // Basic SQL commands
+        //     ';', '--', '/*', '*/',                 // SQL comment signs
+        //     "' OR '", "' AND '",                   // Logical operators
+        //     "'='", "'--", "'/*", "OR 1=1",         // Common SQL injection patterns
+        //     "DROP", "UNION", "ALTER", "EXEC",      // Other SQL commands
+        //     "XP_", "UTL_", "WAITFOR DELAY",        // Specific SQL commands related to SQL Server, Oracle, etc.
+        //     "#",                                   // MySQL comment sign
+        //     "' OR '1'='1",                         // Tautology based injection
+        //     "SLEEP(", "BENCHMARK(",                // Functions used to measure query execution time
+        //     "CHAR(", "CONCAT(",                     // Functions used in SQL injection
+        //     "INTO OUTFILE", "INTO DUMPFILE"        // Data export commands
+        // ];
+
+
+        // $upperSQL = strtoupper($sql);
+
+        // // Check for presence of risky words
+        // foreach ($riskyWords as $word) {
+        //     if (strpos($upperSQL, $word) !== false) {
+        //         return false;
+        //     }
+        // }
+        // More comprehensive list of risky patterns and words
+        $riskyPatterns = [
+            '/\bSELECT\b/i', '/\bINSERT\b/i', '/\bUPDATE\b/i', '/\bDELETE\b/i',
+            '/--/', '/\*{2,}/', '/\bOR\b\s+1=1\b/i', '/\bUNION\b\s+SELECT\b/i',
+            '/\bDROP\b/i', '/\bALTER\b/i', '/\bEXEC\b/i',
+            '/\bXP_\b/i', '/\bUTL_\b/i', '/\bWAITFOR\b\s+DELAY\b/i',
+            '/\bINTO\b\s+(OUTFILE|DUMPFILE)\b/i',
+            '/\bSLEEP\b\(/i', '/\bBENCHMARK\b\(/i',
+            '/\bLOAD_FILE\b\(/i', '/\bCHAR\b\(/i', '/\bCONCAT\b\(/i',
+            '/\b(?:UNHEX|HEX)\b\(/i', '/\b(?:SELECT|INSERT|UPDATE|DELETE)\b.*\b(?:SELECT|INSERT|UPDATE|DELETE)\b/i',
+            '/\bINFORMATION_SCHEMA\b\./i', '/\bTABLE_SCHEMA\b\./i',
+            '/\bCOLUMN_NAME\b\./i', '/\bSHOW\b\s+TABLES\b/i',
+            '/\bSHOW\b\s+COLUMNS\b/i', '/\bEXTRACTVALUE\b\(/i',
+            '/\bUPDATEXML\b\(/i', '/\bXMLTYPE\b\./i',
+            '/\bDBMS_LOB\b\./i', '/\bDBMS_PIPE\b\./i',
+            '/\bSYS_CONTEXT\b\(/i', '/\bSYS_\b/i'
+        ];
+
+        // Check for presence of risky patterns using regular expressions
+        foreach ($riskyPatterns as $pattern) {
+            if (preg_match($pattern, $sql)) {
+                var_dump("This SQL potientially contains SQL Injection risk: $sql");
+                die;
+                return false;
+            }
+        }
+
+        return $sql;
+    }
 }

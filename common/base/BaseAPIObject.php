@@ -417,9 +417,21 @@ class BaseAPIObject extends BaseViewObject
         if (isset($model)) {
             if (is_numeric($condition)) {
                 $result = $model::find()->where([$model->getPrimaryKey() => $condition])->one();
-            } else {
-                //FHtml::var_dump($model);
+            } elseif (is_array($condition)) {
                 $result = $model::find()->where($condition)->one();
+            } else {
+                var_dump("Invalid SQL condition: " . $condition . ". Please try again.");
+                die;
+                try {
+                    if (!FSecurity::validateSQL($condition)) {
+                        FHtml::addError("Invalid SQL condition: " . $condition);
+                        return null;
+                    }
+                    $result = $model::find()->where($condition)->one();
+                } catch (Exception $ex) {
+                    FHtml::addError($ex);
+                    return null;
+                }
             }
 
             if (isset($result) && is_object($result) && !empty($selected_fields)) {
