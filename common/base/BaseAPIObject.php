@@ -372,11 +372,11 @@ class BaseAPIObject extends BaseViewObject
     //find one and delete others that have same condition
     public static function findUnique($condition)
     {
-        if (is_numeric($condition)) {
+        if (is_numeric($condition) || is_array($condition)) {
             $model = static::findOne($condition);
             if (isset($model))
                 return $model;
-        } else if (is_string($condition) && strpos($condition, ' ') == 0) { // $condition is a value, not a normal sql condition
+        } else if (!FHtml::validateSQL($condition)) { // $condition is a value, not a normal sql condition
             return null;
         }
 
@@ -422,16 +422,16 @@ class BaseAPIObject extends BaseViewObject
             } else {
                 var_dump("Invalid SQL condition: " . $condition . ". Please try again.");
                 die;
-                try {
-                    if (!FSecurity::validateSQL($condition)) {
-                        FHtml::addError("Invalid SQL condition: " . $condition);
-                        return null;
-                    }
-                    $result = $model::find()->where($condition)->one();
-                } catch (Exception $ex) {
-                    FHtml::addError($ex);
-                    return null;
-                }
+                // try {
+                //     if (!FSecurity::validateSQL($condition)) {
+                //         FHtml::addError("Invalid SQL condition: " . $condition);
+                //         return null;
+                //     }
+                //     $result = $model::find()->where($condition)->one();
+                // } catch (Exception $ex) {
+                //     FHtml::addError($ex);
+                //     return null;
+                // }
             }
 
             if (isset($result) && is_object($result) && !empty($selected_fields)) {

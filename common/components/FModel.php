@@ -208,7 +208,6 @@ class FModel extends FConfig
                 $model = $model::findOne($id);
 
             if (!isset($model)) {
-                die;
                 if ($autoCreateNew) {
                     $model = Yii::createObject(['class' => $className::className()]);
                 } else

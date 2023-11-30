@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -74,8 +75,7 @@ class AdminController extends BaseAdminController
         $search_params_required = is_array($search_params) ? [['like', $search_field, $q]] : "$search_field like '%$q%'";
 
         foreach ($search_fields as $search_field1) {
-            if (FHtml::field_exists($search_model, $search_field1) && $search_field1 != $search_field)
-            {
+            if (FHtml::field_exists($search_model, $search_field1) && $search_field1 != $search_field) {
                 if (is_array($search_params_required))
                     $search_params_required[] = ['like', $search_field1, $q];
                 else
@@ -102,7 +102,6 @@ class AdminController extends BaseAdminController
                 $params = [];
 
             $data = FHtml::getArray('@' . $search_object, $search_object, '', true, '', $params);
-
         } elseif ($id > 0) {
             $data = FHtml::getModel($search_object, '', $id, null, false);
         } else {
@@ -181,7 +180,6 @@ class AdminController extends BaseAdminController
                 $model->setSortOrder($i + 1);
                 $model->save();
                 $sort_orders .= $arr[$i] . ', ';
-
             } else if (isset($model) && FHtml::field_exists($model, 'sort_order')) {
                 FHtml::setFieldValue($model, 'sort_order', $i + 1);
                 $model->save();
@@ -252,8 +250,7 @@ class AdminController extends BaseAdminController
         }
 
         foreach ($arr as $field => $value) {
-            if (is_numeric($field))
-            {
+            if (is_numeric($field)) {
                 $field = $value;
                 $value = null;
             }
@@ -273,30 +270,27 @@ class AdminController extends BaseAdminController
         $object_type = FHtml::getRequestParam('object');
         $object_id = FHtml::getRequestParam('id');
 
-        if (empty($object_type) || empty($object_id)) {
+        if (empty($object_type) || empty($object_id) || !is_numeric($object_id)) {
             return FHtml::t('message', 'Missing param') . ": Object: $object_type - Id: $object_id";
         }
 
-        if ($object_type == 'object_relation')
-        {
+        if ($object_type == 'object_relation') {
             FHtml::executeSql("delete from object_relation where id = '$object_id'");
             return '';
         }
 
         $object2_type = FHtml::getRequestParam('object2_type');
-        $object2_id = FHtml::getRequestParam( 'object2_id');
+        $object2_id = FHtml::getRequestParam('object2_id');
 
         $relation_type = FHtml::getRequestParam('relation_type');
 
         if (empty($relation_type)) {
             $relation_condition = "relation_type is null or relation_type = ''";
             $model = FHtml::executeSql("delete from object_relation where (((object_type = '$object_type' and object_id = '$object_id' and object2_type = '$object2_type' and object2_id = '$object2_id') or (object2_type = '$object_type' and object2_id = '$object_id'  and object_type = '$object2_type' and object_id = '$object2_id')) and ($relation_condition))");
-        }
-        else {
+        } else {
             if (FHtml::field_exists($object_type, $relation_type)) {
                 $model = FHtml::getModel($object_type, '', ['id' => $object_id]);
-                if (isset($model))
-                {
+                if (isset($model)) {
                     $model->setFieldValue($relation_type, null);
                     if ($relation_type == 'object_id') {
                         $model->setFieldValue('object_type', null);
@@ -347,7 +341,8 @@ class AdminController extends BaseAdminController
         return '';
     }
 
-    public function actionPost() {
+    public function actionPost()
+    {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         FHtml::saveRequestPost();
         return '';
@@ -389,11 +384,9 @@ class AdminController extends BaseAdminController
             }
 
             $arr = [];
-            if (key_exists('objects', $_POST))
-            {
+            if (key_exists('objects', $_POST)) {
                 $arr = FHtml::decode($_POST['objects']);
-            } else if (key_exists('objects', $_REQUEST))
-            {
+            } else if (key_exists('objects', $_REQUEST)) {
                 $arr = FHtml::decode($_REQUEST['objects']);
             }
 
@@ -408,11 +401,9 @@ class AdminController extends BaseAdminController
                         foreach ($object_params as $param_key => $param_value) {
                             if ($param_value == '{model.id}' || $param_value == '{object_id}') {
                                 $param_value = $model->id;
-                            }
-                            else if ($param_value == '{model.table}' || $param_value == '{object_type}') {
+                            } else if ($param_value == '{model.table}' || $param_value == '{object_type}') {
                                 $param_value = FHtml::getTableName($model);
-                            }
-                            else
+                            } else
                                 continue;
 
                             FHtml::setFieldValue($object_model, $param_key, $param_value);
@@ -421,7 +412,7 @@ class AdminController extends BaseAdminController
                         $object_model->save();
 
                         if (!empty($object_model->getErrors()))
-                            return 'Error: ' . $object_type1 . ': '. FHtml::encode($object_model->getErrors()) . '\n';
+                            return 'Error: ' . $object_type1 . ': ' . FHtml::encode($object_model->getErrors()) . '\n';
                     }
                 }
             }
@@ -663,5 +654,4 @@ class AdminController extends BaseAdminController
 
         return self::exitAction($returnParams);
     }
-
 }

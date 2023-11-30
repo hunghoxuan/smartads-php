@@ -2550,6 +2550,9 @@ class FSecurity extends FFile
 
     public static function validateSQL($sql)
     {
+        if (!is_string($sql))
+            return $sql;
+
         $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
         $replace = array("\\\\", "\\0", "\\n", "\\r", "\'", '\"', "\\Z");
 
